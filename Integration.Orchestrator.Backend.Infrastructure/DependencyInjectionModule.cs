@@ -1,10 +1,9 @@
 ﻿using Autofac;
 using Integration.Orchestrator.Backend.Application.Options;
-using Integration.Orchestrator.Backend.Domain.Entities;
 using Integration.Orchestrator.Backend.Domain.Ports;
-using Integration.Orchestrator.Backend.Domain.Services;
 using Integration.Orchestrator.Backend.Infrastructure.DataAccess.Rest;
 using Integration.Orchestrator.Backend.Infrastructure.DataAccess.Sql.Contexts;
+using Integration.Orchestrator.Backend.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics.CodeAnalysis;
@@ -49,6 +48,11 @@ namespace Integration.Orchestrator.Backend.Infrastructure
                 .As<IIntegrationV1Tov2Port>()
                 .InstancePerLifetimeScope();
 
+            _ = builder.RegisterType<HttpClient>().SingleInstance();
+
+            _ = builder.RegisterType<GenericRestService>()
+                .As<IGenericRestService>()
+                .InstancePerLifetimeScope();
             
 
 
