@@ -35,9 +35,9 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             var mongoSetting = services.BuildServiceProvider()
                 .GetRequiredService<IOptions<MongoOptions>>().Value;
 
-            var clientSettings = MongoClientSettings.FromUrl(new MongoUrl(mongoSetting.ConnectionString));
+            //var clientSettings = MongoClientSettings.FromUrl(new MongoUrl(mongoSetting.ConnectionString));
 
-            var mongoClient = new MongoClient(clientSettings);
+           // var mongoClient = new MongoClient(clientSettings);
             //services.AddSingleton(mongoClient);
             //var database = mongoClient.GetDatabase(mongoSetting.DatabaseName);
 
