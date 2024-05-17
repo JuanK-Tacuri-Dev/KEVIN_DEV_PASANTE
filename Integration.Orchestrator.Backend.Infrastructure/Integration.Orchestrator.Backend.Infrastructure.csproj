@@ -17,13 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Adapters\Mongo\" />
-    <Folder Include="Adapters\Sql\Repositories\" />
-    <Folder Include="Adapters\Mongo\Finders\" />
-    <Folder Include="Adapters\Mongo\Repositories\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Integration.Orchestrator.Backend.Application\Integration.Orchestrator.Backend.Application.csproj" />
   </ItemGroup>
 
