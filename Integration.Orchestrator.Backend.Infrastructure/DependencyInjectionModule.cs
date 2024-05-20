@@ -1,10 +1,12 @@
 ﻿using Autofac;
 using Integration.Orchestrator.Backend.Application.Options;
-using Integration.Orchestrator.Backend.Domain.Entities;
 using Integration.Orchestrator.Backend.Domain.Ports;
-using Integration.Orchestrator.Backend.Domain.Services;
+using Integration.Orchestrator.Backend.Infrastructure.Adapters.Loader;
+using Integration.Orchestrator.Backend.Infrastructure.Adapters.Rest;
+using Integration.Orchestrator.Backend.Infrastructure.Adapters.Transformators;
 using Integration.Orchestrator.Backend.Infrastructure.DataAccess.Rest;
 using Integration.Orchestrator.Backend.Infrastructure.DataAccess.Sql.Contexts;
+using Integration.Orchestrator.Backend.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics.CodeAnalysis;
@@ -49,9 +51,23 @@ namespace Integration.Orchestrator.Backend.Infrastructure
                 .As<IIntegrationV1Tov2Port>()
                 .InstancePerLifetimeScope();
 
-            
+            _ = builder.RegisterType<HttpClient>().SingleInstance();
 
+            _ = builder.RegisterType<GenericRestService>()
+                .As<IGenericRestService>()
+                .InstancePerLifetimeScope();
 
+            _ = builder.RegisterType<ExtractorV1Rest>()
+                .As<IExtractor<string>>()
+                .InstancePerLifetimeScope();
+
+            _ = builder.RegisterType<LoaderToV2Rest>()
+                .As<ILoader<string>>()
+                .InstancePerLifetimeScope();
+
+            _ = builder.RegisterType<TransformatorFromV1toV2Rest>()
+                .As<ITransformator<string, string>>()
+                .InstancePerLifetimeScope();
         }
     }
 }

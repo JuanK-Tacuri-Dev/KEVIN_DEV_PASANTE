@@ -12,14 +12,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.23.1" />
+    <PackageReference Include="Moq" Version="4.20.70" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Adapters\Mongo\" />
-    <Folder Include="Adapters\Sql\Repositories\" />
-    <Folder Include="Adapters\Mongo\Finders\" />
-    <Folder Include="Adapters\Mongo\Repositories\" />
   </ItemGroup>
 
   <ItemGroup>

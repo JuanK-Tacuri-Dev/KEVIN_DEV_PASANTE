@@ -45,3 +45,4 @@ Integration.Orchestrator.Backend.Infrastructure/bin/
 .vs/Integration.Orchestrator.Backend/FileContentIndex/079dceb8-3c72-4244-8324-076cedade1e1.vsidx
 .vs/Integration.Orchestrator.Backend/FileContentIndex/6f59f5c5-f145-452c-8445-a559897c4d7f.vsidx
 .vs/Integration.Orchestrator.Backend/v17/.futdcache.v2
+*.vsidx
