@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using static Integration.Orchestrator.Backend.Application.Handlers.IntegrationV1ToV2Commands;
 
-namespace Integration.Orchestrator.Backend.Api.Controllers
+namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Integrations
 {
     [Route("api/v1/[controller]/[action]")]
     [ApiController]
@@ -27,6 +27,6 @@ namespace Integration.Orchestrator.Backend.Api.Controllers
                 return NotFound("Integración V1toV2 Falló");
             }
         }
-     
+
     }
 }
