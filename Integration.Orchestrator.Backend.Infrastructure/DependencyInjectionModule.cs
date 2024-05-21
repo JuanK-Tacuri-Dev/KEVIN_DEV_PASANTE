@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Integration.Orchestrator.Backend.Application.Options;
+using Integration.Orchestrator.Backend.Domain.Entities.V2ToV1;
 using Integration.Orchestrator.Backend.Domain.Ports;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Loader;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Rest;
@@ -57,6 +58,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure
                 .As<IGenericRestService>()
                 .InstancePerLifetimeScope();
 
+            //V1ToV2
             _ = builder.RegisterType<ExtractorV1Rest>()
                 .As<IExtractor<string>>()
                 .InstancePerLifetimeScope();
@@ -67,6 +69,19 @@ namespace Integration.Orchestrator.Backend.Infrastructure
 
             _ = builder.RegisterType<TransformatorFromV1toV2Rest>()
                 .As<ITransformator<string, string>>()
+                .InstancePerLifetimeScope();
+
+            //V2ToV1
+            _ = builder.RegisterType<ExtractorV2Rest>()
+                .As<IExtractor<TestEntityLegacy>>()
+                .InstancePerLifetimeScope();
+
+            _ = builder.RegisterType<LoaderToV1Rest>()
+                .As<ILoader<TestEntity>>()
+                .InstancePerLifetimeScope();
+
+            _ = builder.RegisterType<TransformatorFromV2toV1Rest>()
+                .As<ITransformator<TestEntityLegacy, TestEntity>>()
                 .InstancePerLifetimeScope();
         }
     }
