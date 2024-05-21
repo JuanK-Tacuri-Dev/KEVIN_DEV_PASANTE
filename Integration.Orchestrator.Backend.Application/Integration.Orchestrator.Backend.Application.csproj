@@ -13,7 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Folder Include="Handlers\Adminitrations\" />
+    <Folder Include="Handlers\Integrations\" />
+    <Folder Include="Models\Adminitrations\" />
+    <Folder Include="Models\Integrations\" />
   </ItemGroup>
 
   <ItemGroup>

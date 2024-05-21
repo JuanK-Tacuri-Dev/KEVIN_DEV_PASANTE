@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Integration.Orchestrator.Backend.Infrastructure.DataAccess.Sql.Contexts
+namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Extractors.ExtractorSql.Contexts
 {
     public partial class LegacyDbContext : DbContext
     {
@@ -14,7 +14,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.DataAccess.Sql.Context
             : base(options)
         {
         }
-              
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

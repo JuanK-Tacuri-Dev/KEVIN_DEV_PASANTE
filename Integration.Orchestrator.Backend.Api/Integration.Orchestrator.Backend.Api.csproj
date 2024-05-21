@@ -21,4 +21,9 @@
     <ProjectReference Include="..\Integration.Orchestrator.Backend.Infrastructure\Integration.Orchestrator.Backend.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\v1\Adminitrations\" />
+    <Folder Include="Controllers\v1\Integrations\" />
+  </ItemGroup>
+
 </Project>
