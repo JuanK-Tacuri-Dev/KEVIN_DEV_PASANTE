@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using Integration.Orchestrator.Backend.Domain.Models;
+using Integration.Orchestrator.Backend.Domain.Specifications;
+using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization.Interfaces
 {
@@ -8,7 +10,10 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synch
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
         Task<T> GetByIdAsync(Guid id);
-        Task<IEnumerable<T>> GetByFranchiseId(Guid franchiseId);
+        Task<IEnumerable<T>> GetByFranchiseIdAsync(Guid franchiseId);
+        Task<IEnumerable<T>> GetAllAsync(ISpecification<T> specification);
+        public Task<long> GetTotalRows(ISpecification<T> specification);
+
 
     }
 }

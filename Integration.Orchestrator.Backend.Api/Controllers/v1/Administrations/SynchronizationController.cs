@@ -37,7 +37,7 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administrations
             return Ok(await _mediator.Send(new GetByFranchiseIdSynchronizationCommandRequest(new GetByFranchiseIdSynchronizationRequest { FranchiseId = franchiseId })));
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> GetAllPaginated(SynchronizationGetAllPaginatedRequest request)
         {
             return Ok(await _mediator.Send(new GetAllPaginatedSynchronizationCommandRequest(request)));

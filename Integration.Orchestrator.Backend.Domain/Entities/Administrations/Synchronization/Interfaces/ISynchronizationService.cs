@@ -1,4 +1,7 @@
-﻿namespace Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization.Interfaces
+﻿using Integration.Orchestrator.Backend.Domain.Models;
+using System.Linq.Expressions;
+
+namespace Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization.Interfaces
 {
     public interface ISynchronizationService<T>
     {
@@ -6,8 +9,11 @@
         Task UpdateAsync(T synchronization);
         Task DeleteAsync(T synchronization);
         Task<T> GetByIdAsync(Guid id);
-        Task<IEnumerable<T>> GetByFranchiseId(Guid franchiseId);
-        //Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetByFranchiseIdAsync(Guid franchiseId);
+        Task<IEnumerable<T>> GetAllPaginatedAsync(PaginatedModel paginatedModel);
+        Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel);
+
+
 
     }
 }

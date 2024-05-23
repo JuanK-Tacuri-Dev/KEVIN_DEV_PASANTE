@@ -2,12 +2,13 @@
 
 namespace Integration.Orchestrator.Backend.Domain.Specifications
 {
-    public interface ISpecification<T, M>
+    public interface ISpecification<T>
     {
         Expression<Func<T, bool>> Criteria { get; }
         Expression<Func<T, object>> OrderBy { get; }
+        Expression<Func<T, object>> OrderByDescending { get; }
+        
         int Skip { get; }
         int Limit { get; }
-        Expression<Func<T, bool>> BuildCriteria(M paginatedModel);
     }
 }

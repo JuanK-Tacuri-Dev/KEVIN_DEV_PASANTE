@@ -1,5 +1,8 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
 using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Models;
+using Integration.Orchestrator.Backend.Domain.Specifications;
+using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Adminitrations
 {
@@ -27,9 +30,21 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Adminitrations
             await _synchronizationRepository.DeleteAsync(synchronization);
         }
 
-        public Task<IEnumerable<SynchronizationEntity>> GetByFranchiseId(Guid franchiseId)
+        public Task<IEnumerable<SynchronizationEntity>> GetByFranchiseIdAsync(Guid franchiseId)
         {
-            return _synchronizationRepository.GetByFranchiseId(franchiseId);
+            return _synchronizationRepository.GetByFranchiseIdAsync(franchiseId);
+        }
+
+        public Task<IEnumerable<SynchronizationEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
+        {
+            var spec = new SynchronizationSpecification(paginatedModel);
+            return _synchronizationRepository.GetAllAsync(spec);
+        }
+
+        public Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel)
+        {
+            var spec = new SynchronizationSpecification(paginatedModel);
+            return _synchronizationRepository.GetTotalRows(spec);
         }
     }
 }

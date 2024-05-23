@@ -1,7 +1,9 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
 using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Driver;
 using System.Linq.Expressions;
+using System.Threading;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
@@ -42,7 +44,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return _collection.DeleteOneAsync(filter);
         }
 
-        public async Task<IEnumerable<SynchronizationEntity>> GetByFranchiseId(Guid franchiseId)
+        public async Task<IEnumerable<SynchronizationEntity>> GetByFranchiseIdAsync(Guid franchiseId)
         {
             Expression<Func<SynchronizationEntity, bool>> specification = x => x.franchise_id == franchiseId;
             var filter = Builders<SynchronizationEntity>.Filter.Where(specification);
@@ -50,6 +52,25 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .Find(filter)
                 .ToListAsync();
             return synchronizationEntity;
+        }
+
+        public async Task<IEnumerable<SynchronizationEntity>> GetAllAsync(ISpecification<SynchronizationEntity> specification)
+        {
+            var filter = Builders<SynchronizationEntity>.Filter.Where(specification.Criteria);
+            var synchronizationEntity = await _collection
+                .Find(filter)
+                .Limit(specification.Limit)
+                .Skip(specification.Skip)
+                .Sort(specification.OrderBy != null
+                                               ? Builders<SynchronizationEntity>.Sort.Ascending(specification.OrderBy)
+                                               : Builders<SynchronizationEntity>.Sort.Descending(specification.OrderByDescending))
+                .ToListAsync();
+            return synchronizationEntity;
+        }
+
+        public async Task<long> GetTotalRows(ISpecification<SynchronizationEntity> specification)
+        {
+            return await _collection.Find(specification.Criteria).CountDocumentsAsync();
         }
     }
 }
