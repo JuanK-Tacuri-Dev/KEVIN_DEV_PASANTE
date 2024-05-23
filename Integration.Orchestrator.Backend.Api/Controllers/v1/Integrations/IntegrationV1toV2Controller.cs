@@ -1,7 +1,7 @@
 ﻿using Integration.Orchestrator.Backend.Api.Filter;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static Integration.Orchestrator.Backend.Application.Handlers.IntegrationV1ToV2Commands;
+using static Integration.Orchestrator.Backend.Application.Handlers.Integrations.IntegrationV1ToV2Commands;
 
 namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Integrations
 {

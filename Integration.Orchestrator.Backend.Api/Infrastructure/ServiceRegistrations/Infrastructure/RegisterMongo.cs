@@ -1,5 +1,6 @@
 ﻿using Integration.Orchestrator.Backend.Api.Infrastructure.Extensions;
 using Integration.Orchestrator.Backend.Application.Options;
+using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -35,15 +36,15 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             var mongoSetting = services.BuildServiceProvider()
                 .GetRequiredService<IOptions<MongoOptions>>().Value;
 
-            //var clientSettings = MongoClientSettings.FromUrl(new MongoUrl(mongoSetting.ConnectionString));
+            var clientSettings = MongoClientSettings.FromUrl(new MongoUrl(mongoSetting.ConnectionString));
 
-           // var mongoClient = new MongoClient(clientSettings);
-            //services.AddSingleton(mongoClient);
-            //var database = mongoClient.GetDatabase(mongoSetting.DatabaseName);
+            var mongoClient = new MongoClient(clientSettings);
+            services.AddSingleton(mongoClient);
+            var database = mongoClient.GetDatabase(mongoSetting.DatabaseName);
 
-            // var productTypesCollection = mongoSetting.Collections!.Type_PLU;
+             var synchronizationCollection = mongoSetting.Collections!.Synchronization;
 
-            // services.AddSingleton(s => database.GetCollection<ProductTypeEntity>(productTypesCollection));
+             services.AddSingleton(s => database.GetCollection<SynchronizationEntity>(synchronizationCollection));
 
             BsonSerializer.RegisterSerializer(new DecimalSerializer(BsonType.Decimal128));
 

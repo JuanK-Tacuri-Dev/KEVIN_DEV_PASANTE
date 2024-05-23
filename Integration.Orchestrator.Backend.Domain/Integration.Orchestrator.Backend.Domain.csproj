@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,12 +29,9 @@
 
   <ItemGroup>
     <Folder Include="Entities\Integrations\" />
-    <Folder Include="Entities\Adminitrations\" />
-    <Folder Include="Ports\Adminitrations\" />
     <Folder Include="Ports\Integrations\" />
     <Folder Include="Resources\Adminitrations\" />
     <Folder Include="Resources\Integrations\" />
-    <Folder Include="Services\Adminitrations\" />
     <Folder Include="Services\Integrations\" />
   </ItemGroup>
 

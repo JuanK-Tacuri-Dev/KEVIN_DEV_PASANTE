@@ -61,6 +61,42 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Synchronization not found.
+        /// </summary>
+        public static string Application_SynchronizationNotFound {
+            get {
+                return ResourceManager.GetString("Application_SynchronizationNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization Created Succesfully.
+        /// </summary>
+        public static string Application_SynchronizationResponseCreated {
+            get {
+                return ResourceManager.GetString("Application_SynchronizationResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization Deleted Succesfully.
+        /// </summary>
+        public static string Application_SynchronizationResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_SynchronizationResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization Updated Succesfully.
+        /// </summary>
+        public static string Application_SynchronizationResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_SynchronizationResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Domain layer error.
         /// </summary>
         public static string Exception_ArgumentException {

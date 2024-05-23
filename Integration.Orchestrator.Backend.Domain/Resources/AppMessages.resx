@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Application_SynchronizationNotFound" xml:space="preserve">
+    <value>Synchronization not found</value>
+  </data>
+  <data name="Application_SynchronizationResponseCreated" xml:space="preserve">
+    <value>Synchronization Created Succesfully</value>
+  </data>
+  <data name="Application_SynchronizationResponseDeleted" xml:space="preserve">
+    <value>Synchronization Deleted Succesfully</value>
+  </data>
+  <data name="Application_SynchronizationResponseUpdated" xml:space="preserve">
+    <value>Synchronization Updated Succesfully</value>
+  </data>
   <data name="Exception.BadRequestException" xml:space="preserve">
     <value>Api layer error</value>
   </data>

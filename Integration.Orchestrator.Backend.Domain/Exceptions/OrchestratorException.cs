@@ -3,14 +3,14 @@
 namespace Integration.Orchestrator.Backend.Domain.Exceptions
 {
     [ExcludeFromCodeCoverage]
-    public class IntegrationException : Exception
+    public class OrchestratorException : Exception
     {
-        public IntegrationException() { }
+        public OrchestratorException() { }
 
-        public IntegrationException(string message)
+        public OrchestratorException(string message)
             : base(message) { }
 
-        public IntegrationException(string message, Exception inner)
+        public OrchestratorException(string message, Exception inner)
             : base(message, inner) { }
     }
 }

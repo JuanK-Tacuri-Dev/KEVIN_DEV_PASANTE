@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Integration.Orchestrator.Backend.Application.Handlers
+namespace Integration.Orchestrator.Backend.Application.Handlers.Integrations
 {
     public class IntegrationV1ToV2Commands
     {

@@ -29,42 +29,42 @@ namespace Integration.Orchestrator.Backend.Api.Filter
             Exception exception = context.Exception;
             context.ExceptionHandled = true;
 
-            ExceptionType(exception, out string message, out int httpCode);
+            ExceptionType(exception, out string typeError, out int httpCode);
 
             string detail = exception.InnerException?.Message ?? exception.Message;
 
             // Log the exception details
             _logger.LogError(exception, "An exception occurred: {Message}, HTTP Code: {HttpCode}, Detail: {Detail}, StackTrace: {StackTrace}, Source: {Source}",
-                            message, httpCode, detail, exception.StackTrace, exception.Source);
+                            typeError, httpCode, detail, exception.StackTrace, exception.Source);
 
-            ObjectResult result = new ObjectResult(new { Code = httpCode, Message = message });
+            ObjectResult result = new ObjectResult(new { Message = new { Code = httpCode, TypeError = typeError, Message = new List<string> { detail } } }) ;
             
             context.Result = result;
             context.HttpContext.Response.StatusCode = httpCode;
         }
 
-        private static void ExceptionType(Exception exception, out string message, out int code)
+        private static void ExceptionType(Exception exception, out string typeError, out int code)
         {
             switch (exception)
             {
                 case ArgumentException _:
-                    message = AppMessages.Exception_ArgumentException;
-                    code = (int)HttpStatusCode.BadRequest;
+                    typeError = AppMessages.Exception_ArgumentException;
+                    code = (int)HttpStatusCode.NotFound;
                     break;
                
-                case IntegrationException _:
-                    message = AppMessages.Exception_IntegrationException;
+                case OrchestratorException _:
+                    typeError = AppMessages.Exception_IntegrationException;
                     code = (int)HttpStatusCode.BadRequest;
                     break;
 
                 case FrontEndException _:
-                    message = AppMessages.Exception_IntegrationException;
+                    typeError = AppMessages.Exception_IntegrationException;
                     code = (int)HttpStatusCode.Conflict;
                     break;
 
                 // When Produce Not Controled Exception
                 default:
-                    message = AppMessages.Exception_UnexpectedException;
+                    typeError = AppMessages.Exception_UnexpectedException;
                     code = (int)HttpStatusCode.InternalServerError;
                     break;
             }

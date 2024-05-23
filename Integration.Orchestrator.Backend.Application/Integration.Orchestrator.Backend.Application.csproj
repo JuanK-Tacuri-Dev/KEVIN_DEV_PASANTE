@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,9 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handlers\Adminitrations\" />
-    <Folder Include="Handlers\Integrations\" />
-    <Folder Include="Models\Adminitrations\" />
     <Folder Include="Models\Integrations\" />
   </ItemGroup>
 
