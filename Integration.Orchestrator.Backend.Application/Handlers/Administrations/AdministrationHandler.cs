@@ -36,6 +36,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations
                         }
                     });
             }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
             catch (Exception ex)
             {
                 throw new OrchestratorException(ex.Message);
@@ -65,6 +69,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations
                             }
                         });
             }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
             catch (Exception ex)
             {
                 throw new OrchestratorException(ex.Message);
@@ -89,6 +97,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Application_SynchronizationResponseDeleted
                     });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
             catch (Exception ex)
             {
@@ -123,6 +135,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations
 
                         }).ToList()
                     });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
             catch (Exception ex)
             {

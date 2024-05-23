@@ -25,6 +25,12 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administrations
             return Ok(await _mediator.Send(new UpdateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationUpdateRequest>(request), id)));
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            return Ok(await _mediator.Send(new DeleteSynchronizationCommandRequest(new SynchronizationDeleteRequest { Id = id })));
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetByFranchiseId(Guid franchiseId)
         {
