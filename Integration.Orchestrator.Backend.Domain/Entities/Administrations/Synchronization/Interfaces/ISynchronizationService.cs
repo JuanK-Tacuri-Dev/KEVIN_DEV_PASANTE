@@ -1,5 +1,4 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Models;
-using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization.Interfaces
 {

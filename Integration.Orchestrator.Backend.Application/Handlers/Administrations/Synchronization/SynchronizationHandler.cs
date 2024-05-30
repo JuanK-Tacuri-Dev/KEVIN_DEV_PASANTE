@@ -7,11 +7,11 @@ using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
 using System.Net;
-using static Integration.Orchestrator.Backend.Application.Handlers.Administrations.AdministrationsCommands;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administrations.Synchronization.SynchronizationCommands;
 
-namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations
+namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Synchronization
 {
-    public class AdministrationHandler(ISynchronizationService<SynchronizationEntity> synchronizationService)
+    public class SynchronizationHandler(ISynchronizationService<SynchronizationEntity> synchronizationService)
         :
         IRequestHandler<CreateSynchronizationCommandRequest, CreateSynchronizationCommandResponse>,
         IRequestHandler<UpdateSynchronizationCommandRequest, UpdateSynchronizationCommandResponse>,
@@ -153,7 +153,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations
         {
             var model = request.Synchronization.Adapt<PaginatedModel>();
             var result = await _synchronizationService.GetAllPaginatedAsync(model);
-            var rows = await _synchronizationService.GetTotalRowsAsync(model); 
+            var rows = await _synchronizationService.GetTotalRowsAsync(model);
 
             return new GetAllPaginatedSynchronizationCommandResponse(
                 new SynchronizationGetAllPaginatedResponse

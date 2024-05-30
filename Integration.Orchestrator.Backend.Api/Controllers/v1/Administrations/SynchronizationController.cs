@@ -2,7 +2,7 @@
 using Integration.Orchestrator.Backend.Application.Models.Administrations.Synchronization;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static Integration.Orchestrator.Backend.Application.Handlers.Administrations.AdministrationsCommands;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administrations.Synchronization.SynchronizationCommands;
 
 namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administrations
 {

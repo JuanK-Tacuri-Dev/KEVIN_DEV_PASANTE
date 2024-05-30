@@ -147,4 +147,34 @@
   <data name="Exception_IntegrationException" xml:space="preserve">
     <value>Integration Exception</value>
   </data>
+  <data name="Synchronization_FranchiseId_Required" xml:space="preserve">
+    <value>The franchiseId is required</value>
+  </data>
+  <data name="Synchronization_HourToExecute_Invalid" xml:space="preserve">
+    <value>The hourToExecute is invalid</value>
+  </data>
+  <data name="Synchronization_HourToExecute_Required" xml:space="preserve">
+    <value>The hourToExecute is required</value>
+  </data>
+  <data name="Synchronization_Id_Required" xml:space="preserve">
+    <value>The id is required</value>
+  </data>
+  <data name="Synchronization_Observations_MaximumSize" xml:space="preserve">
+    <value>The hourToExecute requires a maximum of 255 character</value>
+  </data>
+  <data name="Synchronization_Observations_MinimumSize" xml:space="preserve">
+    <value>The observations requires a minimum of 1 character</value>
+  </data>
+  <data name="Synchronization_Observations_Required" xml:space="preserve">
+    <value>The observations is required</value>
+  </data>
+  <data name="Synchronization_Status_MaximumSize" xml:space="preserve">
+    <value>The status requires a maximum of 1 character</value>
+  </data>
+  <data name="Synchronization_Status_MinimumSize" xml:space="preserve">
+    <value>The status requires a minimum of 1 character</value>
+  </data>
+  <data name="Synchronization_Status_Required" xml:space="preserve">
+    <value>The status is required</value>
+  </data>
 </root>

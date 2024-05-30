@@ -1,11 +1,11 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administrations.Synchronization;
 using MediatR;
 
-namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations
+namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Synchronization
 {
-    public class AdministrationsCommands
+    public class SynchronizationCommands
     {
-        public readonly record struct CreateSynchronizationCommandRequest (SynchronizationBasicInfoRequest<SynchronizationCreateRequest> Synchronization) : IRequest<CreateSynchronizationCommandResponse>;
+        public readonly record struct CreateSynchronizationCommandRequest(SynchronizationBasicInfoRequest<SynchronizationCreateRequest> Synchronization) : IRequest<CreateSynchronizationCommandResponse>;
         public readonly record struct CreateSynchronizationCommandResponse(SynchronizationCreateResponse Message);
 
         public readonly record struct UpdateSynchronizationCommandRequest(SynchronizationBasicInfoRequest<SynchronizationUpdateRequest> Synchronization, Guid Id) : IRequest<UpdateSynchronizationCommandResponse>;
@@ -16,8 +16,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations
 
         public readonly record struct GetByFranchiseIdSynchronizationCommandRequest(GetByFranchiseIdSynchronizationRequest Synchronization) : IRequest<GetByFranchiseIdSynchronizationCommandResponse>;
         public readonly record struct GetByFranchiseIdSynchronizationCommandResponse(GetByFranchiseIdSynchronizationResponse Message);
-        
+
         public readonly record struct GetAllPaginatedSynchronizationCommandRequest(SynchronizationGetAllPaginatedRequest Synchronization) : IRequest<GetAllPaginatedSynchronizationCommandResponse>;
-        public readonly record struct GetAllPaginatedSynchronizationCommandResponse(SynchronizationGetAllPaginatedResponse Message); 
+        public readonly record struct GetAllPaginatedSynchronizationCommandResponse(SynchronizationGetAllPaginatedResponse Message);
     }
 }
