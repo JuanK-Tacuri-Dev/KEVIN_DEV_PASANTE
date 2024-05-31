@@ -24,7 +24,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Services
             {
                 id = Guid.NewGuid(),
                 franchise_id = Guid.NewGuid(),
-                status = "B",
+                status = Guid.NewGuid(),
                 observations = "Observation",
                 user_id = Guid.NewGuid(),
                 hour_to_execute = DateTime.Now
@@ -42,7 +42,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Services
             {
                 id = Guid.NewGuid(),
                 franchise_id = Guid.NewGuid(),
-                status = "B",
+                status = Guid.NewGuid(),
                 observations = "Observation",
                 user_id = Guid.NewGuid(),
                 hour_to_execute = DateTime.Now
@@ -61,7 +61,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Services
             {
                 id = id,
                 franchise_id = Guid.NewGuid(),
-                status = "B",
+                status = Guid.NewGuid(),
                 observations = "Observation",
                 user_id = Guid.NewGuid(),
                 hour_to_execute = DateTime.Now
@@ -82,7 +82,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Services
             {
                 id = Guid.NewGuid(),
                 franchise_id = Guid.NewGuid(),
-                status = "B",
+                status = Guid.NewGuid(),
                 observations = "Observation",
                 user_id = Guid.NewGuid(),
                 hour_to_execute = DateTime.Now
@@ -101,7 +101,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Services
             {
                 id = Guid.NewGuid(),
                 franchise_id = franchiseId,
-                status = "B",
+                status = Guid.NewGuid(),
                 observations = "Observation",
                 user_id = Guid.NewGuid(),
                 hour_to_execute = DateTime.Now
@@ -132,7 +132,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Services
             {
                 id = Guid.NewGuid(),
                 franchise_id = Guid.NewGuid(),
-                status = "B",
+                status = Guid.NewGuid(),
                 observations = "Observation",
                 user_id = Guid.NewGuid(),
                 hour_to_execute = DateTime.Now

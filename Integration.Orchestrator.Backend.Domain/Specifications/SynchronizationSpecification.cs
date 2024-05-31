@@ -72,7 +72,6 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.status.ToUpper().Contains(search.ToUpper()) ||
                 x.observations.ToUpper().Contains(search.ToUpper()));
             }
 

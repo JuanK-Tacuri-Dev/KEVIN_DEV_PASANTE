@@ -134,7 +134,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Status = s.status,
                             Observations = s.observations,
                             UserId = s.user_id,
-                            HourToExecute = s.hour_to_execute
+                            HourToExecute = s.hour_to_execute.ToString()
 
                         }).ToList()
                     });
@@ -164,10 +164,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     Data = result.Select(r => new SynchronizationGetAllPaginated
                     {
                         Id = r.id,
+                        Name = r.name,
                         FranchiseId = r.franchise_id,
                         Status = r.status,
                         Observations = r.observations,
-                        HourToExecute = r.hour_to_execute,
+                        HourToExecute = r.hour_to_execute.ToString(),
+                        Integrations = r.integrations.Select(i=> new IntegrationRequest { Id = i}).ToList(),
                         UserId = r.user_id
 
                     }).ToList()
@@ -179,11 +181,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             var synchronizationEntity = new SynchronizationEntity()
             {
+                name = request.Name,
                 id = id,
                 franchise_id = request.FranchiseId,
                 status = request.Status,
                 observations = request.Observations,
-                hour_to_execute = request.HourToExecute,
+                hour_to_execute = Convert.ToDateTime(request.HourToExecute),
+                integrations = request.Integrations.Select( i=> i.Id).ToList(),
                 user_id = request.UserId
             };
             return synchronizationEntity;

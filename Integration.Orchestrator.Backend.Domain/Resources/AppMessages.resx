@@ -159,6 +159,12 @@
   <data name="Synchronization_Id_Required" xml:space="preserve">
     <value>The id is required</value>
   </data>
+  <data name="Synchronization_Integrations_MinimumValue" xml:space="preserve">
+    <value>The integrations must contain at least one value</value>
+  </data>
+  <data name="Synchronization_Integrations_Required" xml:space="preserve">
+    <value>The integrations is required</value>
+  </data>
   <data name="Synchronization_Observations_MaximumSize" xml:space="preserve">
     <value>The hourToExecute requires a maximum of 255 character</value>
   </data>

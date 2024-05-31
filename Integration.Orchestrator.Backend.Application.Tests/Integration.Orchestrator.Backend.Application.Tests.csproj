@@ -21,10 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Administrations\Handlers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Integration.Orchestrator.Backend.Application\Integration.Orchestrator.Backend.Application.csproj" />
   </ItemGroup>
 

@@ -187,6 +187,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The integrations must contain at least one value.
+        /// </summary>
+        public static string Synchronization_Integrations_MinimumValue {
+            get {
+                return ResourceManager.GetString("Synchronization_Integrations_MinimumValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The integrations is required.
+        /// </summary>
+        public static string Synchronization_Integrations_Required {
+            get {
+                return ResourceManager.GetString("Synchronization_Integrations_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The hourToExecute requires a maximum of 255 character.
         /// </summary>
         public static string Synchronization_Observations_MaximumSize {

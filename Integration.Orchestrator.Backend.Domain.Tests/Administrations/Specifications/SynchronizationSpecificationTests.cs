@@ -24,7 +24,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Specific
             var compiledCriteria = criteria.Compile();
             var testEntity = new SynchronizationEntity
             {
-                status = "status",
+                status = Guid.NewGuid(),
                 observations = "some observations"
             };
 
@@ -47,7 +47,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Specific
             var compiledCriteria = criteria.Compile();
             var testEntity = new SynchronizationEntity
             {
-                status = "any status",
+                status = Guid.NewGuid(),
                 observations = "any observations"
             };
 
