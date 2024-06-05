@@ -3,7 +3,6 @@ using Integration.Orchestrator.Backend.Domain.Ports.Administrations.Synchronizat
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Driver;
 using System.Linq.Expressions;
-using System.Threading;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {

@@ -1,8 +1,7 @@
 ﻿namespace Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization
 {
-    public class SynchronizationStatesEntity
+    public class SynchronizationStatesEntity : Entity<Guid>
     {
-        public Guid id { get; set; }
         public string name { get; set; }
         public string code { get; set; }
         public string color { get; set; }

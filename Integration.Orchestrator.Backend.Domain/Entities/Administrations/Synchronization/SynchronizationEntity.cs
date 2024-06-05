@@ -2,10 +2,8 @@
 
 namespace Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization
 {
-    public class SynchronizationEntity
+    public class SynchronizationEntity : Entity<Guid>
     {
-        [Key]
-        public Guid id { get; set; }
         public string name { get; set; }
         public Guid franchise_id { get; set; }
         public Guid status { get; set; }

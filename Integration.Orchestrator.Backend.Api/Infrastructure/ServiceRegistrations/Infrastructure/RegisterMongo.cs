@@ -1,5 +1,6 @@
 ﻿using Integration.Orchestrator.Backend.Api.Infrastructure.Extensions;
 using Integration.Orchestrator.Backend.Application.Options;
+using Integration.Orchestrator.Backend.Domain.Entities;
 using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
@@ -47,6 +48,13 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             services.AddSingleton(s => database.GetCollection<SynchronizationStatesEntity>(synchronizationStatesCollection));
 
             BsonSerializer.RegisterSerializer(new DecimalSerializer(BsonType.Decimal128));
+            BsonClassMap.RegisterClassMap<Entity<Guid>>(
+                map =>
+                {
+                    map.AutoMap();
+                    map.MapProperty(x => x.id).SetSerializer(new GuidSerializer(BsonType.String));
+                    map.MapIdMember(d => d.id).SetSerializer(new GuidSerializer(GuidRepresentation.Standard));
+                });
         }
     }
 }
