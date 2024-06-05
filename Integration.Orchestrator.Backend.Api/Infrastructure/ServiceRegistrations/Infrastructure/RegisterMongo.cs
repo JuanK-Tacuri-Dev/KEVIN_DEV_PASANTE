@@ -41,8 +41,10 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             var database = mongoClient.GetDatabase(mongoSetting.DatabaseName);
 
              var synchronizationCollection = mongoSetting.Collections!.Synchronization;
+            var synchronizationStatesCollection = mongoSetting.Collections!.SynchronizationStates;
 
              services.AddSingleton(s => database.GetCollection<SynchronizationEntity>(synchronizationCollection));
+            services.AddSingleton(s => database.GetCollection<SynchronizationStatesEntity>(synchronizationStatesCollection));
 
             BsonSerializer.RegisterSerializer(new DecimalSerializer(BsonType.Decimal128));
         }

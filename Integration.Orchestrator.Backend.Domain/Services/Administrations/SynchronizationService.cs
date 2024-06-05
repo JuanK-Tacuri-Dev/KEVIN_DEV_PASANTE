@@ -1,6 +1,8 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
+﻿using Integration.Orchestrator.Backend.Domain.Commons;
+using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
 using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Models;
+using Integration.Orchestrator.Backend.Domain.Ports.Administrations.Synchronization;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Administrations
@@ -33,6 +35,11 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administrations
         public async Task<IEnumerable<SynchronizationEntity>> GetByFranchiseIdAsync(Guid franchiseId)
         {
             return await _synchronizationRepository.GetByFranchiseIdAsync(franchiseId);
+        }
+
+        public async Task<string> GetStatusByIdAsync(Guid idStatus) 
+        {
+            return await Task.Run(() => "");
         }
 
         public async Task<IEnumerable<SynchronizationEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)

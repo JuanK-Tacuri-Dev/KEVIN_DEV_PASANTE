@@ -1,7 +1,10 @@
-﻿namespace Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization
 {
     public class SynchronizationEntity
     {
+        [Key]
         public Guid id { get; set; }
         public string name { get; set; }
         public Guid franchise_id { get; set; }
@@ -14,4 +17,6 @@
         public DateTime updated_at { get; private set; } = DateTime.UtcNow;
 
     }
+
+
 }

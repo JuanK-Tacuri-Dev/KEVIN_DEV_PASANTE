@@ -1,4 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administrations.Synchronization;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
 using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
@@ -58,6 +59,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 {
                     throw new ArgumentException(AppMessages.Application_SynchronizationNotFound);
                 }
+                //obtener estado petición
+                var stateIntegration = await _synchronizationService.GetStatusByIdAsync(request.Synchronization.SynchronizationRequest.Status);
+
+
+                //obtener estado actual
+                var stateIntegrationCurrent = GetStateIntegrating(await _synchronizationService.GetStatusByIdAsync(synchronizationById.status));
+                if (stateIntegrationCurrent == StateIntegrating.Running) 
+                { 
+                }
+
+               
                 var synchronizationEntity = MapAynchronizer(request.Synchronization.SynchronizationRequest, request.Id);
                 await _synchronizationService.UpdateAsync(synchronizationEntity);
 
@@ -191,6 +203,20 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 user_id = request.UserId
             };
             return synchronizationEntity;
+        }
+
+        private string GetStatusIntegration(StateIntegrating state)
+        {
+            return Enum.GetName(typeof(StateIntegrating), state);
+        }
+
+        private StateIntegrating GetStateIntegrating(string statusCode)
+        {
+            if (Enum.TryParse(typeof(StateIntegrating), statusCode, out var state))
+            {
+                return (StateIntegrating)state;
+            }
+            throw new ArgumentException($"Invalid code: {statusCode}");
         }
     }
 }

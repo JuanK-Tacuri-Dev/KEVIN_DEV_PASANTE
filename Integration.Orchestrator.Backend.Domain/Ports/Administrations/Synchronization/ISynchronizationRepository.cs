@@ -1,5 +1,4 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
-using Integration.Orchestrator.Backend.Domain.Specifications;
+﻿using Integration.Orchestrator.Backend.Domain.Specifications;
 
 namespace Integration.Orchestrator.Backend.Domain.Ports.Administrations.Synchronization
 {
@@ -9,7 +8,10 @@ namespace Integration.Orchestrator.Backend.Domain.Ports.Administrations.Synchron
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
         Task<T> GetByIdAsync(Guid id);
-        Task<IEnumerable<T>> GetAllPaginatedAsync(ISpecification<T> specification);
-        Task<long> GetTotalRows(ISpecification<T> specification);
+        Task<IEnumerable<T>> GetByFranchiseIdAsync(Guid franchiseId);
+        Task<IEnumerable<T>> GetAllAsync(ISpecification<T> specification);
+        public Task<long> GetTotalRows(ISpecification<T> specification);
+
+
     }
 }

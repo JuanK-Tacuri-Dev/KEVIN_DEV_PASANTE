@@ -33,6 +33,10 @@ namespace Integration.Orchestrator.Backend.Domain
                 .As<ISynchronizationService<SynchronizationEntity>>()
                 .InstancePerLifetimeScope();
 
+            _ = builder.RegisterType<SynchronizationStatesService>()
+                .As<ISynchronizationStatesService<SynchronizationStatesEntity>>()
+                .InstancePerLifetimeScope();
+
         }
     }
 }

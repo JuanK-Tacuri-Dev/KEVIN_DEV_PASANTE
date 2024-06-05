@@ -1,9 +1,9 @@
 ﻿using Autofac;
 using Integration.Orchestrator.Backend.Application.Options;
 using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
-using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Entities.V2ToV1;
 using Integration.Orchestrator.Backend.Domain.Ports;
+using Integration.Orchestrator.Backend.Domain.Ports.Administrations.Synchronization;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Extractors.ExtractorSql.Contexts;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Loader;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories;
@@ -90,6 +90,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure
             //
             _ = builder.RegisterType<SynchronizationRepository>()
                 .As<ISynchronizationRepository<SynchronizationEntity>>()
+                .SingleInstance();
+
+            _ = builder.RegisterType<SynchronizationStatesRepository>()
+                .As<ISynchronizationStatesRepository<SynchronizationStatesEntity>>()
                 .SingleInstance();
         }
     }

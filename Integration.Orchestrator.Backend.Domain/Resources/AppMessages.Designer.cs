@@ -97,6 +97,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Synchronization States Created Succesfully.
+        /// </summary>
+        public static string Application_SynchronizationStatesResponseCreated {
+            get {
+                return ResourceManager.GetString("Application_SynchronizationStatesResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Domain layer error.
         /// </summary>
         public static string Exception_ArgumentException {

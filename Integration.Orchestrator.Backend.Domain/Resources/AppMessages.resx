@@ -129,6 +129,9 @@
   <data name="Application_SynchronizationResponseUpdated" xml:space="preserve">
     <value>Synchronization Updated Succesfully</value>
   </data>
+  <data name="Application_SynchronizationStatesResponseCreated" xml:space="preserve">
+    <value>Synchronization States Created Succesfully</value>
+  </data>
   <data name="Exception.BadRequestException" xml:space="preserve">
     <value>Api layer error</value>
   </data>

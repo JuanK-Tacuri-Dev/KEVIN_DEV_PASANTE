@@ -35,5 +35,6 @@ namespace Integration.Orchestrator.Backend.Application.Options
     public class Collection
     {
         public string Synchronization { get; set; }
+        public string SynchronizationStates { get; set; }
     }
 }

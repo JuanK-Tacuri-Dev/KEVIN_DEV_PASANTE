@@ -6,22 +6,22 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Administratio
 
 namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Handlers.Validators
 {
-    public class CreateSynchronizationCommandRequestValidatorTests
+    public class UpdateSynchronizationCommandRequestValidatorTests
     {
-        private readonly CreateSynchronizationCommandRequestValidator _validator;
+        private readonly UpdateSynchronizationCommandRequestValidator _validator;
 
-        public CreateSynchronizationCommandRequestValidatorTests()
+        public UpdateSynchronizationCommandRequestValidatorTests()
         {
-            _validator = new CreateSynchronizationCommandRequestValidator();
+            _validator = new UpdateSynchronizationCommandRequestValidator();
         }
 
         [Fact]
         public void Should_Have_Error_When_FranchiseId_Is_Empty()
         {
-            var model = new CreateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationCreateRequest>( new SynchronizationCreateRequest 
+            var model = new UpdateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationUpdateRequest>( new SynchronizationUpdateRequest 
             {
                 FranchiseId = Guid.Empty,
-            }));
+            }), Guid.NewGuid());
             
 
             var result = _validator.TestValidate(model);
@@ -32,10 +32,10 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         [Fact]
         public void Should_Not_Have_Error_When_FranchiseId_Is_Provided()
         {
-            var model = new CreateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationCreateRequest>(new SynchronizationCreateRequest
+            var model = new UpdateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationUpdateRequest>(new SynchronizationUpdateRequest
             {
                 FranchiseId = Guid.NewGuid()
-            }));
+            }), Guid.NewGuid());
 
             var result = _validator.TestValidate(model);
             result.ShouldNotHaveValidationErrorFor(request => request.Synchronization.SynchronizationRequest.FranchiseId);
@@ -44,9 +44,9 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         [Fact]
         public void Should_Have_Error_When_Status_Is_Empty()
         {
-            var model = new CreateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationCreateRequest>(new SynchronizationCreateRequest
+            var model = new UpdateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationUpdateRequest>(new SynchronizationUpdateRequest
             {
-            }));
+            }), Guid.NewGuid());
 
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(request => request.Synchronization.SynchronizationRequest.Status)
@@ -57,10 +57,10 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         [Fact]
         public void Should_Not_Have_Error_When_Status_Is_Valid()
         {
-            var model = new CreateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationCreateRequest>(new SynchronizationCreateRequest
+            var model = new UpdateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationUpdateRequest>(new SynchronizationUpdateRequest
             {
                 Status = Guid.NewGuid()
-            }));
+            }), Guid.NewGuid());
 
             var result = _validator.TestValidate(model);
             result.ShouldNotHaveValidationErrorFor(request => request.Synchronization.SynchronizationRequest.Status);
@@ -69,10 +69,10 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         [Fact]
         public void Should_Have_Error_When_Observations_Is_Empty()
         {
-            var model = new CreateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationCreateRequest>(new SynchronizationCreateRequest
+            var model = new UpdateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationUpdateRequest>(new SynchronizationUpdateRequest
             {
                 Observations = ""
-            }));
+            }), Guid.NewGuid());
 
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(request => request.Synchronization.SynchronizationRequest.Observations)
@@ -82,10 +82,10 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         [Fact]
         public void Should_Have_Error_When_Observations_Is_Too_Short()
         {
-            var model = new CreateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationCreateRequest>(new SynchronizationCreateRequest
+            var model = new UpdateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationUpdateRequest>(new SynchronizationUpdateRequest
             {
                 Observations = ""
-            }));
+            }), Guid.NewGuid());
 
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(request => request.Synchronization.SynchronizationRequest.Observations)
@@ -95,10 +95,10 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         [Fact]
         public void Should_Have_Error_When_Observations_Is_Too_Long()
         {
-            var model = new CreateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationCreateRequest>(new SynchronizationCreateRequest
+            var model = new UpdateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationUpdateRequest>(new SynchronizationUpdateRequest
             {
                 Observations = new string('a', 256)
-            })) ;
+            }), Guid.NewGuid()) ;
 
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(request => request.Synchronization.SynchronizationRequest.Observations)
@@ -108,10 +108,10 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         [Fact]
         public void Should_Not_Have_Error_When_Observations_Is_Valid()
         {
-            var model = new CreateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationCreateRequest>(new SynchronizationCreateRequest
+            var model = new UpdateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationUpdateRequest>(new SynchronizationUpdateRequest
             {
                 Observations = "Valid observations"
-            }));
+            }), Guid.NewGuid());
 
             var result = _validator.TestValidate(model);
             result.ShouldNotHaveValidationErrorFor(request => request.Synchronization.SynchronizationRequest.Observations);
@@ -120,10 +120,10 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         [Fact]
         public void Should_Have_Error_When_HourToExecute_Is_Null()
         {
-            var model = new CreateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationCreateRequest>(new SynchronizationCreateRequest
+            var model = new UpdateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationUpdateRequest>(new SynchronizationUpdateRequest
             {
                 HourToExecute = null
-            }));
+            }), Guid.NewGuid());
 
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(request => request.Synchronization.SynchronizationRequest.HourToExecute)
@@ -133,10 +133,10 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         [Fact]
         public void Should_Not_Have_Error_When_HourToExecute_Is_Valid()
         {
-            var model = new CreateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationCreateRequest>(new SynchronizationCreateRequest
+            var model = new UpdateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationUpdateRequest>(new SynchronizationUpdateRequest
             {
                 HourToExecute = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
-            }));
+            }), Guid.NewGuid());
 
             var result = _validator.TestValidate(model);
             result.ShouldNotHaveValidationErrorFor(request => request.Synchronization.SynchronizationRequest.HourToExecute);

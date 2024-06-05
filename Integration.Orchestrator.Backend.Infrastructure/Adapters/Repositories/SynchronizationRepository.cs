@@ -1,5 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
-using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Ports.Administrations.Synchronization;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Driver;
 using System.Linq.Expressions;
@@ -31,7 +31,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
         public async Task<SynchronizationEntity> GetByIdAsync(Guid id)
         {
-            var specification = (Expression<Func<SynchronizationEntity, bool>>)(x => x.id == id);
+            var specification = (Expression<Func<SynchronizationEntity, bool>>)(x =>  x.id == id);
             var filter = Builders<SynchronizationEntity>.Filter.Where(specification);
             var synchronizationEntity = await _collection
                 .Find(filter)
@@ -39,6 +39,12 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return synchronizationEntity;
         }
 
+        public static Expression<Func<SynchronizationEntity, bool>> GetByUuid(Expression<Func<SynchronizationEntity, Guid>> propertySelector, Guid uuid)
+        {
+            var parameter = propertySelector.Parameters[0];
+            var body = Expression.Equal(propertySelector.Body, Expression.Constant(uuid));
+            return Expression.Lambda<Func<SynchronizationEntity, bool>>(body, parameter);
+        }
         public Task DeleteAsync(SynchronizationEntity entity)
         {
             var filter = Builders<SynchronizationEntity>.Filter.Eq("_id", entity.id);
