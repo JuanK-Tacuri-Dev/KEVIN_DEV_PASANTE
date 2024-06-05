@@ -1,4 +1,6 @@
-﻿using Integration.Orchestrator.Backend.Domain.Exceptions;
+﻿using Integration.Orchestrator.Backend.Application.Exceptions;
+using Integration.Orchestrator.Backend.Application.Models;
+using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -25,46 +27,51 @@ namespace Integration.Orchestrator.Backend.Api.Filter
         /// </summary>    
         public override void OnException(ExceptionContext context)
         {
-            ArgumentNullException.ThrowIfNull(context);
-            Exception exception = context.Exception;
+            var exception = context.Exception;
             context.ExceptionHandled = true;
 
-            ExceptionType(exception, out string message, out int httpCode);
+            ExceptionType(exception, out string typeError, out int httpCode);
 
-            string detail = exception.InnerException?.Message ?? exception.Message;
+            var detail = exception.InnerException?.Message ?? exception.Message;
 
             // Log the exception details
-            _logger.LogError(exception, "An exception occurred: {Message}, HTTP Code: {HttpCode}, Detail: {Detail}, StackTrace: {StackTrace}, Source: {Source}",
-                            message, httpCode, detail, exception.StackTrace, exception.Source);
+            _logger.LogError(exception, "An exception occurred: {TypeError}, HTTP Code: {HttpCode}, Detail: {Detail}, StackTrace: {StackTrace}, Source: {Source}",
+                             typeError, httpCode, detail, exception.StackTrace, exception.Source);
 
-            ObjectResult result = new ObjectResult(new { Code = httpCode, Message = message });
-            
+            var result = exception is InvalidRequestException invalidRequestException
+                ? new ObjectResult(new { Code = httpCode, Message = typeError, invalidRequestException.Details })
+                : new ObjectResult(new ErrorResponse { Code = httpCode, Message = typeError, Details = detail });
+
             context.Result = result;
             context.HttpContext.Response.StatusCode = httpCode;
         }
 
-        private static void ExceptionType(Exception exception, out string message, out int code)
+        private static void ExceptionType(Exception exception, out string typeError, out int code)
         {
             switch (exception)
             {
-                case ArgumentException _:
-                    message = AppMessages.Exception_ArgumentException;
-                    code = (int)HttpStatusCode.BadRequest;
-                    break;
-               
-                case IntegrationException _:
-                    message = AppMessages.Exception_IntegrationException;
+                case InvalidRequestException:
+                    typeError = AppMessages.Exception_InvalidRequestException;
                     code = (int)HttpStatusCode.BadRequest;
                     break;
 
-                case FrontEndException _:
-                    message = AppMessages.Exception_IntegrationException;
+                case ArgumentException:
+                    typeError = AppMessages.Exception_ArgumentException;
+                    code = (int)HttpStatusCode.NotFound;
+                    break;
+
+                case OrchestratorException:
+                    typeError = AppMessages.Exception_IntegrationException;
+                    code = (int)HttpStatusCode.BadRequest;
+                    break;
+
+                case FrontEndException:
+                    typeError = AppMessages.Exception_IntegrationException;
                     code = (int)HttpStatusCode.Conflict;
                     break;
 
-                // When Produce Not Controled Exception
                 default:
-                    message = AppMessages.Exception_UnexpectedException;
+                    typeError = AppMessages.Exception_UnexpectedException;
                     code = (int)HttpStatusCode.InternalServerError;
                     break;
             }

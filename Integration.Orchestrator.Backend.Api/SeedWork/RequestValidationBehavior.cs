@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using Integration.Orchestrator.Backend.Application.Exceptions;
+using Integration.Orchestrator.Backend.Application.Models;
 using MediatR;
 using System.Diagnostics.CodeAnalysis;
 
@@ -27,39 +29,40 @@ namespace Integration.Orchestrator.Backend.Api.SeedWork
         /// <param name="request"> Request to validate</param>
         /// <param name="cancellationToken">MediatR Cancelation Token</param>
         /// <param name="next">Delegate response</param>
-        public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             var errors = _validators
-                .Select(v => v.Validate(request))
-                .SelectMany(result => result.Errors)
+                .SelectMany(v => v.Validate(request).Errors)
                 .Where(f => f != null)
                 .ToList();
 
-            //if (errors.Any())
-            //{
-            //    var errorDetails = new List<ErrorDetail>();
-            //    foreach (var error in errors)
-            //    {
-            //        var errorDetail = new ErrorDetail();
-            //        errorDetail.Params.Add(error.PropertyName);
-            //        if (error.ErrorMessage.Contains('|'))
-            //        {
-            //            var messages = error.ErrorMessage.Split("|");
-            //            errorDetail.Message = messages[0];
-            //            errorDetail.Params.AddRange(messages.Skip(1).ToList());
-            //        }
-            //        else
-            //        {
-            //            errorDetail.Message = error.ErrorMessage;
-            //        }
+            if (errors.Any())
+            {
+                var errorDetails = errors.Select(error =>
+                {
+                    var errorDetail = new ErrorDetail
+                    {
+                        Params = { error.PropertyName }
+                    };
 
-            //        errorDetails.Add(errorDetail);
-            //    }
+                    if (error.ErrorMessage.Contains('|'))
+                    {
+                        var messages = error.ErrorMessage.Split('|');
+                        errorDetail.Message = messages[0];
+                        errorDetail.Params.AddRange(messages.Skip(1));
+                    }
+                    else
+                    {
+                        errorDetail.Message = error.ErrorMessage;
+                    }
 
-            //    //throw new InvalidRequestException(string.Empty, errorDetails);
-            //}
+                    return errorDetail;
+                }).Distinct().ToList();
 
-            return next();
+                throw new InvalidRequestException(string.Empty, errorDetails);
+            }
+
+            return await next();
         }
     }
 }

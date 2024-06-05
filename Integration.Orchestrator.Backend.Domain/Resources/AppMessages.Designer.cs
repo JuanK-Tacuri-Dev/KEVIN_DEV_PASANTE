@@ -61,6 +61,51 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Synchronization not found.
+        /// </summary>
+        public static string Application_SynchronizationNotFound {
+            get {
+                return ResourceManager.GetString("Application_SynchronizationNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization Created Succesfully.
+        /// </summary>
+        public static string Application_SynchronizationResponseCreated {
+            get {
+                return ResourceManager.GetString("Application_SynchronizationResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization Deleted Succesfully.
+        /// </summary>
+        public static string Application_SynchronizationResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_SynchronizationResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization Updated Succesfully.
+        /// </summary>
+        public static string Application_SynchronizationResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_SynchronizationResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization States Created Succesfully.
+        /// </summary>
+        public static string Application_SynchronizationStatesResponseCreated {
+            get {
+                return ResourceManager.GetString("Application_SynchronizationStatesResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Domain layer error.
         /// </summary>
         public static string Exception_ArgumentException {
@@ -111,6 +156,114 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Exception_UnexpectedException {
             get {
                 return ResourceManager.GetString("Exception.UnexpectedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The franchiseId is required.
+        /// </summary>
+        public static string Synchronization_FranchiseId_Required {
+            get {
+                return ResourceManager.GetString("Synchronization_FranchiseId_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The hourToExecute is invalid.
+        /// </summary>
+        public static string Synchronization_HourToExecute_Invalid {
+            get {
+                return ResourceManager.GetString("Synchronization_HourToExecute_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The hourToExecute is required.
+        /// </summary>
+        public static string Synchronization_HourToExecute_Required {
+            get {
+                return ResourceManager.GetString("Synchronization_HourToExecute_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The id is required.
+        /// </summary>
+        public static string Synchronization_Id_Required {
+            get {
+                return ResourceManager.GetString("Synchronization_Id_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The integrations must contain at least one value.
+        /// </summary>
+        public static string Synchronization_Integrations_MinimumValue {
+            get {
+                return ResourceManager.GetString("Synchronization_Integrations_MinimumValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The integrations is required.
+        /// </summary>
+        public static string Synchronization_Integrations_Required {
+            get {
+                return ResourceManager.GetString("Synchronization_Integrations_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The hourToExecute requires a maximum of 255 character.
+        /// </summary>
+        public static string Synchronization_Observations_MaximumSize {
+            get {
+                return ResourceManager.GetString("Synchronization_Observations_MaximumSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The observations requires a minimum of 1 character.
+        /// </summary>
+        public static string Synchronization_Observations_MinimumSize {
+            get {
+                return ResourceManager.GetString("Synchronization_Observations_MinimumSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The observations is required.
+        /// </summary>
+        public static string Synchronization_Observations_Required {
+            get {
+                return ResourceManager.GetString("Synchronization_Observations_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The status requires a maximum of 1 character.
+        /// </summary>
+        public static string Synchronization_Status_MaximumSize {
+            get {
+                return ResourceManager.GetString("Synchronization_Status_MaximumSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The status requires a minimum of 1 character.
+        /// </summary>
+        public static string Synchronization_Status_MinimumSize {
+            get {
+                return ResourceManager.GetString("Synchronization_Status_MinimumSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The status is required.
+        /// </summary>
+        public static string Synchronization_Status_Required {
+            get {
+                return ResourceManager.GetString("Synchronization_Status_Required", resourceCulture);
             }
         }
     }
