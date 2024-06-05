@@ -38,7 +38,7 @@
 ## Paso 3: Configurar y Ejecutar el Microservicio
 
 1. **Configurar Variables de Entorno (si es necesario)**:
-   - Asegúrate de que todas las variables de entorno necesarias estén configuradas. Puedes hacerlo en el archivo `launchSettings.json` o directamente en las propiedades del proyecto en Visual Studio.
+   - Asegúrate de que todas las variables de entorno necesarias estén configuradas. Puedes hacerlo en el archivo `appsettings.json` o directamente en las propiedades del proyecto en Visual Studio.
 
 2. **Ejecutar el Microservicio**:
    - Configura el proyecto principal (si hay más de uno) haciendo clic derecho en el proyecto y seleccionando "Establecer como proyecto de inicio".
