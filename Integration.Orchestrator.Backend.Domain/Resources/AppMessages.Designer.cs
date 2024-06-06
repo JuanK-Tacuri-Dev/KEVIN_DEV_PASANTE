@@ -61,6 +61,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Synchronization data get successfully.
+        /// </summary>
+        public static string Api_SynchronizationResponse {
+            get {
+                return ResourceManager.GetString("Api_SynchronizationResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization states data get successfully.
+        /// </summary>
+        public static string Api_SynchronizationStatesResponse {
+            get {
+                return ResourceManager.GetString("Api_SynchronizationStatesResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Synchronization not found.
         /// </summary>
         public static string Application_SynchronizationNotFound {
@@ -93,6 +111,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Application_SynchronizationResponseUpdated {
             get {
                 return ResourceManager.GetString("Application_SynchronizationResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization States not found.
+        /// </summary>
+        public static string Application_SynchronizationStatesNotFound {
+            get {
+                return ResourceManager.GetString("Application_SynchronizationStatesNotFound", resourceCulture);
             }
         }
         

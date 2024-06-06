@@ -1,5 +1,4 @@
-﻿using Integration.Orchestrator.Backend.Domain.Commons;
-using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
+﻿using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
 using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administrations.Synchronization;
@@ -24,7 +23,8 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administrations
 
         public async Task<SynchronizationEntity> GetByIdAsync(Guid id)
         {
-            return await _synchronizationRepository.GetByIdAsync(id);
+            var specification = SynchronizationSpecification.GetByIdExpression(id);
+            return await _synchronizationRepository.GetByIdAsync(specification);
         }
 
         public async Task DeleteAsync(SynchronizationEntity synchronization)
@@ -34,12 +34,8 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administrations
 
         public async Task<IEnumerable<SynchronizationEntity>> GetByFranchiseIdAsync(Guid franchiseId)
         {
-            return await _synchronizationRepository.GetByFranchiseIdAsync(franchiseId);
-        }
-
-        public async Task<string> GetStatusByIdAsync(Guid idStatus) 
-        {
-            return await Task.Run(() => "");
+            var specification = SynchronizationSpecification.GetByFranchiseIdExpression(franchiseId);
+            return await _synchronizationRepository.GetByFranchiseIdAsync(specification);
         }
 
         public async Task<IEnumerable<SynchronizationEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)

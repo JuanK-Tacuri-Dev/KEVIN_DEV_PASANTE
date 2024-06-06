@@ -28,9 +28,14 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return _collection.UpdateOneAsync(filter, update);
         }
 
-        public async Task<SynchronizationEntity> GetByIdAsync(Guid id)
+        public Task DeleteAsync(SynchronizationEntity entity)
         {
-            var specification = (Expression<Func<SynchronizationEntity, bool>>)(x =>  x.id == id);
+            var filter = Builders<SynchronizationEntity>.Filter.Eq("_id", entity.id);
+            return _collection.DeleteOneAsync(filter);
+        }
+
+        public async Task<SynchronizationEntity> GetByIdAsync(Expression<Func<SynchronizationEntity, bool>> specification)
+        {
             var filter = Builders<SynchronizationEntity>.Filter.Where(specification);
             var synchronizationEntity = await _collection
                 .Find(filter)
@@ -38,21 +43,8 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return synchronizationEntity;
         }
 
-        public static Expression<Func<SynchronizationEntity, bool>> GetByUuid(Expression<Func<SynchronizationEntity, Guid>> propertySelector, Guid uuid)
+        public async Task<IEnumerable<SynchronizationEntity>> GetByFranchiseIdAsync(Expression<Func<SynchronizationEntity, bool>> specification)
         {
-            var parameter = propertySelector.Parameters[0];
-            var body = Expression.Equal(propertySelector.Body, Expression.Constant(uuid));
-            return Expression.Lambda<Func<SynchronizationEntity, bool>>(body, parameter);
-        }
-        public Task DeleteAsync(SynchronizationEntity entity)
-        {
-            var filter = Builders<SynchronizationEntity>.Filter.Eq("_id", entity.id);
-            return _collection.DeleteOneAsync(filter);
-        }
-
-        public async Task<IEnumerable<SynchronizationEntity>> GetByFranchiseIdAsync(Guid franchiseId)
-        {
-            Expression<Func<SynchronizationEntity, bool>> specification = x => true && x.franchise_id == franchiseId;
             var filter = Builders<SynchronizationEntity>.Filter.Where(specification);
             var synchronizationEntity = await _collection
                 .Find(filter)
@@ -78,5 +70,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             return await _collection.Find(specification.Criteria).CountDocumentsAsync();
         }
+
     }
 }

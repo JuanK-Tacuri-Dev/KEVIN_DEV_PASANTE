@@ -59,15 +59,15 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 {
                     throw new ArgumentException(AppMessages.Application_SynchronizationNotFound);
                 }
-                //obtener estado petición
-                var stateIntegration = await _synchronizationService.GetStatusByIdAsync(request.Synchronization.SynchronizationRequest.Status);
+                ////obtener estado petición
+                //var stateIntegration = await _synchronizationService.GetStatusByIdAsync(request.Synchronization.SynchronizationRequest.Status);
 
 
-                //obtener estado actual
-                var stateIntegrationCurrent = GetStateIntegrating(await _synchronizationService.GetStatusByIdAsync(synchronizationById.status));
-                if (stateIntegrationCurrent == StateIntegrating.Running) 
-                { 
-                }
+                ////obtener estado actual
+                //var stateIntegrationCurrent = GetStateIntegrating(await _synchronizationService.GetStatusByIdAsync(synchronizationById.status));
+                //if (stateIntegrationCurrent == StateIntegrating.Running) 
+                //{ 
+                //}
 
                
                 var synchronizationEntity = MapAynchronizer(request.Synchronization.SynchronizationRequest, request.Id);
@@ -137,17 +137,18 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new GetByFranchiseIdSynchronizationResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = "",
+                        Description = AppMessages.Api_SynchronizationResponse,
                         Data = synchronizationByFranchise
-                        .Select(s => new GetByFranchiseIdSynchronization
+                        .Select(syn => new GetByFranchiseIdSynchronization
                         {
-                            Id = s.id,
-                            FranchiseId = s.franchise_id,
-                            Status = s.status,
-                            Observations = s.observations,
-                            UserId = s.user_id,
-                            HourToExecute = s.hour_to_execute.ToString()
-
+                            Id = syn.id,
+                            Name = syn.name,
+                            FranchiseId = syn.franchise_id,
+                            Status = syn.status,
+                            Observations = syn.observations,
+                            HourToExecute = syn.hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
+                            Integrations = syn.integrations.Select(i => new IntegrationRequest { Id = i }).ToList(),
+                            UserId = syn.user_id
                         }).ToList()
                     });
             }
@@ -164,25 +165,30 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         public async Task<GetAllPaginatedSynchronizationCommandResponse> Handle(GetAllPaginatedSynchronizationCommandRequest request, CancellationToken cancellationToken)
         {
             var model = request.Synchronization.Adapt<PaginatedModel>();
-            var result = await _synchronizationService.GetAllPaginatedAsync(model);
             var rows = await _synchronizationService.GetTotalRowsAsync(model);
+            if (rows == 0) 
+            {
+                throw new ArgumentException(AppMessages.Application_SynchronizationNotFound);
+            }
+            var result = await _synchronizationService.GetAllPaginatedAsync(model);
+            
 
             return new GetAllPaginatedSynchronizationCommandResponse(
                 new SynchronizationGetAllPaginatedResponse
                 {
                     Code = HttpStatusCode.OK.GetHashCode(),
-                    Description = "",
+                    Description = AppMessages.Api_SynchronizationResponse,
                     TotalRows = rows,
-                    Data = result.Select(r => new SynchronizationGetAllPaginated
+                    Data = result.Select(syn => new SynchronizationGetAllPaginated
                     {
-                        Id = r.id,
-                        Name = r.name,
-                        FranchiseId = r.franchise_id,
-                        Status = r.status,
-                        Observations = r.observations,
-                        HourToExecute = r.hour_to_execute.ToString(),
-                        Integrations = r.integrations.Select(i=> new IntegrationRequest { Id = i}).ToList(),
-                        UserId = r.user_id
+                        Id = syn.id,
+                        Name = syn.name,
+                        FranchiseId = syn.franchise_id,
+                        Status = syn.status,
+                        Observations = syn.observations,
+                        HourToExecute = syn.hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
+                        Integrations = syn.integrations.Select(i=> new IntegrationRequest { Id = i}).ToList(),
+                        UserId = syn.user_id
 
                     }).ToList()
                 }
