@@ -28,7 +28,10 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
         )
         {
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
-           // BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
+#pragma warning disable CS0618
+            BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
+#pragma warning restore CS0618
+
 
             services.Configure<MongoOptions>(configuration.GetSection(MongoOptions.Section));
 
@@ -47,12 +50,12 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
              services.AddSingleton(s => database.GetCollection<SynchronizationEntity>(synchronizationCollection));
             services.AddSingleton(s => database.GetCollection<SynchronizationStatesEntity>(synchronizationStatesCollection));
 
-            BsonSerializer.RegisterSerializer(new DecimalSerializer(BsonType.Decimal128));
+            //BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.Binary));
             BsonClassMap.RegisterClassMap<Entity<Guid>>(
                 map =>
                 {
                     map.AutoMap();
-                    map.MapProperty(x => x.id).SetSerializer(new GuidSerializer(BsonType.String));
+                    map.MapProperty(x => x.id).SetSerializer(new GuidSerializer(BsonType.Binary));
                     map.MapIdMember(d => d.id).SetSerializer(new GuidSerializer(GuidRepresentation.Standard));
                 });
         }

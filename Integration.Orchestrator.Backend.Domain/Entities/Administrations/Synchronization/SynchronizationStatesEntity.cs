@@ -1,5 +1,6 @@
 ﻿namespace Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization
 {
+    [Serializable]
     public class SynchronizationStatesEntity : Entity<Guid>
     {
         public string name { get; set; }

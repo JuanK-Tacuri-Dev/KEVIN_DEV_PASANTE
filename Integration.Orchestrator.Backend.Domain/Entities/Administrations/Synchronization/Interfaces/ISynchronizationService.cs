@@ -8,7 +8,6 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synch
         Task UpdateAsync(T synchronization);
         Task DeleteAsync(T synchronization);
         Task<T> GetByIdAsync(Guid id);
-        Task<string> GetStatusByIdAsync(Guid idStatus);
         Task<IEnumerable<T>> GetByFranchiseIdAsync(Guid franchiseId);
         Task<IEnumerable<T>> GetAllPaginatedAsync(PaginatedModel paginatedModel);
         Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel);

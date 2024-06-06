@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace Integration.Orchestrator.Backend.Domain.Entities
 {
@@ -7,6 +8,8 @@ namespace Integration.Orchestrator.Backend.Domain.Entities
     {
         [BsonId]
         [BsonRepresentation(BsonType.String)]
-        public T id { get; set; }
+        [Key]
+        public virtual T id { get; set; }
+
     }
 }
