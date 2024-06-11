@@ -1,9 +1,11 @@
 ﻿
 using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Services
 {
+    [ExcludeFromCodeCoverage]
     public class GenericRestService : IGenericRestService
     {
         private readonly HttpClient _httpClient;

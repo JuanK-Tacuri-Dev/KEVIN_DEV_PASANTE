@@ -211,7 +211,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             return synchronizationEntity;
         }
 
-        private string GetStatusIntegration(StateIntegrating state)
+        /*private string GetStatusIntegration(StateIntegrating state)
         {
             return Enum.GetName(typeof(StateIntegrating), state);
         }
@@ -223,6 +223,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return (StateIntegrating)state;
             }
             throw new ArgumentException($"Invalid code: {statusCode}");
-        }
+        }*/
     }
 }

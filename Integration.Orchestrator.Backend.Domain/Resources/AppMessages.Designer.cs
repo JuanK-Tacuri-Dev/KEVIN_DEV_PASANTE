@@ -293,5 +293,32 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
                 return ResourceManager.GetString("Synchronization_Status_Required", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The code is required.
+        /// </summary>
+        public static string SynchronizationStates_Code_Required {
+            get {
+                return ResourceManager.GetString("SynchronizationStates_Code_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The color is required.
+        /// </summary>
+        public static string SynchronizationStates_Color_Required {
+            get {
+                return ResourceManager.GetString("SynchronizationStates_Color_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name is required.
+        /// </summary>
+        public static string SynchronizationStates_Name_Required {
+            get {
+                return ResourceManager.GetString("SynchronizationStates_Name_Required", resourceCulture);
+            }
+        }
     }
 }

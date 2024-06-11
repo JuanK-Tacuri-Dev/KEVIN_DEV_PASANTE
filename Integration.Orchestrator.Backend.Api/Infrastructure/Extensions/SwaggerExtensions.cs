@@ -1,9 +1,11 @@
 ﻿using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Api.Infrastructure.Extensions
 {
+    [ExcludeFromCodeCoverage]
     public static class SwaggerExtensions
     {
         public static void SaveSwaggerJson(this IServiceProvider provider)

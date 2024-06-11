@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization
+﻿namespace Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization
 {
     [Serializable]
     public class SynchronizationEntity : Entity<Guid>

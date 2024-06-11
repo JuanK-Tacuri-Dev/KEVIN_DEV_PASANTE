@@ -4,6 +4,7 @@ using Integration.Orchestrator.Backend.Domain.Ports.Administrations.Synchronizat
 using Integration.Orchestrator.Backend.Domain.Services.Administrations;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using Moq;
+using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Services
 {
@@ -23,10 +24,12 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Services
             var synchronization = new SynchronizationEntity
             {
                 id = Guid.NewGuid(),
+                name = "Synchronization",
                 franchise_id = Guid.NewGuid(),
                 status = Guid.NewGuid(),
                 observations = "Observation",
                 user_id = Guid.NewGuid(),
+                integrations = new List<Guid> { },
                 hour_to_execute = DateTime.Now
             };
 
@@ -66,13 +69,16 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Services
                 user_id = Guid.NewGuid(),
                 hour_to_execute = DateTime.Now
             };
-            _mockRepo.Setup(repo => repo.GetByIdAsync(id)).ReturnsAsync(synchronization);
+
+            var expression = SynchronizationSpecification.GetByIdExpression(id);
+
+            _mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<SynchronizationEntity, bool>>>())).ReturnsAsync(synchronization);
 
             var result = await _service.GetByIdAsync(id);
 
             Assert.Equal(synchronization, result);
-
-            _mockRepo.Verify(repo => repo.GetByIdAsync(id), Times.Once);
+            _mockRepo.Verify(repo => repo.GetByIdAsync(It.Is<Expression<Func<SynchronizationEntity, bool>>>(expr =>
+                expr.Compile()(synchronization))), Times.Once);
         }
 
         [Fact]
@@ -96,6 +102,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Services
         [Fact]
         public async Task GetByFranchiseIdAsync_ShouldReturnEntitiesFromRepository()
         {
+            // Arrange
             var franchiseId = Guid.NewGuid();
             var synchronization = new SynchronizationEntity
             {
@@ -108,12 +115,18 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Services
             };
 
             var synchronizations = new List<SynchronizationEntity> { synchronization };
-            _mockRepo.Setup(repo => repo.GetByFranchiseIdAsync(franchiseId)).ReturnsAsync(synchronizations);
+            var specification = SynchronizationSpecification.GetByFranchiseIdExpression(franchiseId);
 
+            _mockRepo.Setup(repo => repo.GetByFranchiseIdAsync(It.IsAny<Expression<Func<SynchronizationEntity, bool>>>()))
+                     .ReturnsAsync(synchronizations);
+
+            // Act
             var result = await _service.GetByFranchiseIdAsync(franchiseId);
 
+            // Assert
             Assert.Equal(synchronizations, result);
-            _mockRepo.Verify(repo => repo.GetByFranchiseIdAsync(franchiseId), Times.Once);
+            _mockRepo.Verify(repo => repo.GetByFranchiseIdAsync(It.Is<Expression<Func<SynchronizationEntity, bool>>>(expr =>
+                expr.Compile()(synchronization))), Times.Once);
         }
 
         [Fact]
@@ -139,11 +152,11 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Services
             };
             var synchronizations = new List<SynchronizationEntity> { synchronization };
             var spec = new SynchronizationSpecification(paginatedModel);
-            _mockRepo.Setup(repo => repo.GetAllAsync(spec)).ReturnsAsync(synchronizations);
+            _mockRepo.Setup(repo => repo.GetAllAsync(It.IsAny<ISpecification<SynchronizationEntity>>())).ReturnsAsync(synchronizations);
 
             var result = await _service.GetAllPaginatedAsync(paginatedModel);
             List<SynchronizationEntity> r = result.ToList();
-            //Assert.Equal(synchronizations, result);
+            Assert.Equal(synchronizations, result);
             _mockRepo.Verify(repo => repo.GetAllAsync(It.IsAny<SynchronizationSpecification>()), Times.Once);
         }
 
@@ -160,11 +173,11 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Services
             };
             var totalRows = 10L;
             var spec = new SynchronizationSpecification(paginatedModel);
-            _mockRepo.Setup(repo => repo.GetTotalRows(spec)).ReturnsAsync(totalRows);
+            _mockRepo.Setup(repo => repo.GetTotalRows(It.IsAny<ISpecification<SynchronizationEntity>>())).ReturnsAsync(totalRows);
 
             var result = await _service.GetTotalRowsAsync(paginatedModel);
 
-            //Assert.Equal(totalRows, result);
+            Assert.Equal(totalRows, result);
             _mockRepo.Verify(repo => repo.GetTotalRows(It.IsAny<SynchronizationSpecification>()), Times.Once);
         }
     }
