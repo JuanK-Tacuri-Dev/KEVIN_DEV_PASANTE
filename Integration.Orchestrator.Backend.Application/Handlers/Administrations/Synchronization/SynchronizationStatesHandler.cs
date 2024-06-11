@@ -1,5 +1,4 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administrations.Synchronization;
-using Integration.Orchestrator.Backend.Application.Models.Administrations.SynchronizationStates;
+﻿using Integration.Orchestrator.Backend.Application.Models.Administrations.SynchronizationStates;
 using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
 using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;

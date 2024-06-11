@@ -159,6 +159,15 @@
   <data name="Exception_IntegrationException" xml:space="preserve">
     <value>Integration Exception</value>
   </data>
+  <data name="SynchronizationStates_Code_Required" xml:space="preserve">
+    <value>The code is required</value>
+  </data>
+  <data name="SynchronizationStates_Color_Required" xml:space="preserve">
+    <value>The color is required</value>
+  </data>
+  <data name="SynchronizationStates_Name_Required" xml:space="preserve">
+    <value>The name is required</value>
+  </data>
   <data name="Synchronization_FranchiseId_Required" xml:space="preserve">
     <value>The franchiseId is required</value>
   </data>

@@ -21,6 +21,9 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             var model = new UpdateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationUpdateRequest>( new SynchronizationUpdateRequest 
             {
                 FranchiseId = Guid.Empty,
+                UserId = Guid.Empty,
+                Name = "Synchronization",
+                Integrations = new List<IntegrationRequest> { } 
             }), Guid.NewGuid());
             
 

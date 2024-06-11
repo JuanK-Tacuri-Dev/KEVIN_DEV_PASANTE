@@ -1,7 +1,9 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Domain.Specifications
 {
+    [ExcludeFromCodeCoverage]
     public static class ExpressionExtensions
     {
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
