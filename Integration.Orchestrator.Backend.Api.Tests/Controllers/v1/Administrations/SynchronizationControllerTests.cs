@@ -1,4 +1,4 @@
-﻿using Integration.Orchestrator.Backend.Api.Controllers.v1.Administrations;
+﻿using Integration.Orchestrator.Backend.Api.Controllers.v1.Administration;
 using Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using MediatR;

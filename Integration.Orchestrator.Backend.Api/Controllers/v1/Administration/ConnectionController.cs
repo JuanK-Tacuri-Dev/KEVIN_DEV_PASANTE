@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection.ConnectionCommands;
 
-namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administrations
+namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
 {
     [Route("api/v1/[controller]/[action]")]
     [ApiController]

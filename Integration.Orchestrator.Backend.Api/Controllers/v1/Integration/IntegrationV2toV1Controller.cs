@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using static Integration.Orchestrator.Backend.Application.Handlers.Integrations.IntegrationV2ToV1Commands;
 
-namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Integrations
+namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Integration
 {
     [Route("api/v1/[controller]/[action]")]
     [ApiController]

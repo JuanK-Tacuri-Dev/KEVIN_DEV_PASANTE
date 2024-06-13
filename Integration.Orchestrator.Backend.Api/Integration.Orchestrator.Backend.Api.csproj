@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\v1\Integrations\" />
+    <Folder Include="Controllers\v1\Integration\" />
   </ItemGroup>
 
 </Project>
