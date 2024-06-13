@@ -1,8 +1,8 @@
 ﻿using FluentValidation.TestHelper;
-using Integration.Orchestrator.Backend.Application.Handlers.Administrations.SynchronizationStates.Validators;
-using Integration.Orchestrator.Backend.Application.Models.Administrations.SynchronizationStates;
+using Integration.Orchestrator.Backend.Application.Handlers.Administration.SynchronizationStates.Validators;
+using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStates;
 using Integration.Orchestrator.Backend.Domain.Resources;
-using static Integration.Orchestrator.Backend.Application.Handlers.Administrations.SynchronizationStates.SynchronizationStatesStatesCommands;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.SynchronizationStates.SynchronizationStatesStatesCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Handlers.Validators
 {

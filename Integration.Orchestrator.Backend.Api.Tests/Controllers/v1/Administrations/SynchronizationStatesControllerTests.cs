@@ -1,10 +1,10 @@
 ﻿using Integration.Orchestrator.Backend.Api.Controllers.v1.Administrations;
-using Integration.Orchestrator.Backend.Application.Models.Administrations.SynchronizationStates;
+using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStates;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using static Integration.Orchestrator.Backend.Application.Handlers.Administrations.SynchronizationStates.SynchronizationStatesStatesCommands;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.SynchronizationStates.SynchronizationStatesStatesCommands;
 
 namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrations
 {

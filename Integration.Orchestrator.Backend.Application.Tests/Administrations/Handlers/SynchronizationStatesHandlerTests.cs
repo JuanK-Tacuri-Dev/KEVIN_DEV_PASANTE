@@ -1,12 +1,12 @@
 ﻿using Integration.Orchestrator.Backend.Application.Handlers.Administrations.SynchronizationStates;
-using Integration.Orchestrator.Backend.Application.Models.Administrations.SynchronizationStates;
-using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
-using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization.Interfaces;
+using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStates;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Moq;
 using System.Net;
-using static Integration.Orchestrator.Backend.Application.Handlers.Administrations.SynchronizationStates.SynchronizationStatesStatesCommands;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.SynchronizationStates.SynchronizationStatesStatesCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Handlers
 {

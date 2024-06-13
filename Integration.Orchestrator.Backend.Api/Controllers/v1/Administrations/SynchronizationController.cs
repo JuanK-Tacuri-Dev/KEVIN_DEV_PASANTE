@@ -1,8 +1,8 @@
 ﻿using Integration.Orchestrator.Backend.Api.Filter;
-using Integration.Orchestrator.Backend.Application.Models.Administrations.Synchronization;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static Integration.Orchestrator.Backend.Application.Handlers.Administrations.Synchronization.SynchronizationCommands;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization.SynchronizationCommands;
 
 namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administrations
 {

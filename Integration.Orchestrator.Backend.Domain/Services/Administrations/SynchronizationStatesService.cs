@@ -1,7 +1,7 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
-using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization.Interfaces;
+﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Models;
-using Integration.Orchestrator.Backend.Domain.Ports.Administrations.Synchronization;
+using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Administrations

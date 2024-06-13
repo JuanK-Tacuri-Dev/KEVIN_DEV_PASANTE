@@ -117,11 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Api_ConnectionResponse" xml:space="preserve">
+    <value>Connection data get successfully</value>
+  </data>
   <data name="Api_SynchronizationResponse" xml:space="preserve">
     <value>Synchronization data get successfully</value>
   </data>
   <data name="Api_SynchronizationStatesResponse" xml:space="preserve">
     <value>Synchronization states data get successfully</value>
+  </data>
+  <data name="Application_ConnectionNotFound" xml:space="preserve">
+    <value>Connection not found</value>
+  </data>
+  <data name="Application_ConnectionResponseCreated" xml:space="preserve">
+    <value>Connection Created Succesfully</value>
   </data>
   <data name="Application_SynchronizationNotFound" xml:space="preserve">
     <value>Synchronization not found</value>
