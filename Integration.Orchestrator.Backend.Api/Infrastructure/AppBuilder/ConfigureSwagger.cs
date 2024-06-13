@@ -18,8 +18,8 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.AppBuilder
         {
             // Use swagger Doc
             app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "GrupoKFC.BackOffice.Menus"); });
-            app.ApplicationServices.SaveSwaggerJson();
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Integration.Orchestrator.Backend"); });
+            //app.ApplicationServices.SaveSwaggerJson();
         }
     }
 }
