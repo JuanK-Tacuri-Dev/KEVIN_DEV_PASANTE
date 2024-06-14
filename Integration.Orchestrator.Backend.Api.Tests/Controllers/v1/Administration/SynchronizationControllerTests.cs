@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization.SynchronizationCommands;
 
-namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrations
+namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administration
 {
     public class SynchronizationControllerTests
     {
@@ -31,13 +31,13 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 Observations = "observation",
                 UserId = Guid.NewGuid(),
                 HourToExecute = DateTime.Now.ToString(),
-                Integrations = new List<IntegrationRequest> 
+                Integrations = new List<IntegrationRequest>
                 {
                    new IntegrationRequest
                    {
                        Id = Guid.NewGuid(),
                    }
-                } 
+                }
             };
 
             var response = new CreateSynchronizationCommandResponse(
@@ -147,17 +147,17 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                     Description = AppMessages.Api_SynchronizationResponse,
                     Data = new List<GetByFranchiseIdSynchronization>
                     {
-                new GetByFranchiseIdSynchronization
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Test",
-                    FranchiseId = franchiseId,
-                    Status = Guid.NewGuid(),
-                    Observations = "Observation",
-                    HourToExecute = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
-                    Integrations = new List<IntegrationRequest>(){ new IntegrationRequest {Id = Guid.NewGuid() } },
-                    UserId = Guid.NewGuid()
-                }
+                        new GetByFranchiseIdSynchronization
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = "Test",
+                            FranchiseId = franchiseId,
+                            Status = Guid.NewGuid(),
+                            Observations = "Observation",
+                            HourToExecute = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
+                            Integrations = new List<IntegrationRequest>(){ new IntegrationRequest {Id = Guid.NewGuid() } },
+                            UserId = Guid.NewGuid()
+                        }
                     }
                 });
 

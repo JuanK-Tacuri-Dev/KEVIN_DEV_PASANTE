@@ -4,7 +4,7 @@ using Integration.Orchestrator.Backend.Application.Models.Administration.Synchro
 using Integration.Orchestrator.Backend.Domain.Resources;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.SynchronizationStates.SynchronizationStatesStatesCommands;
 
-namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Handlers.Validators
+namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Handlers.Administration.Synchronization.Validators
 {
     public class CreateSynchronizationStatesCommandRequestValidatorTests
     {

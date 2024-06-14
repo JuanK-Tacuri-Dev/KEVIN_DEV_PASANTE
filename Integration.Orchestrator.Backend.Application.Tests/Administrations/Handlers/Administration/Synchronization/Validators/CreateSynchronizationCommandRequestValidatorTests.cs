@@ -4,7 +4,7 @@ using Integration.Orchestrator.Backend.Application.Models.Administration.Synchro
 using Integration.Orchestrator.Backend.Domain.Resources;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization.SynchronizationCommands;
 
-namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Handlers.Validators
+namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Handlers.Administration.Synchronization.Validators
 {
     public class CreateSynchronizationCommandRequestValidatorTests
     {
@@ -18,11 +18,11 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         [Fact]
         public void Should_Have_Error_When_FranchiseId_Is_Empty()
         {
-            var model = new CreateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationCreateRequest>( new SynchronizationCreateRequest 
+            var model = new CreateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationCreateRequest>(new SynchronizationCreateRequest
             {
                 FranchiseId = Guid.Empty,
             }));
-            
+
 
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(request => request.Synchronization.SynchronizationRequest.FranchiseId)
@@ -53,7 +53,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                   .WithErrorMessage(AppMessages.Synchronization_Status_Required);
         }
 
-   
+
         [Fact]
         public void Should_Not_Have_Error_When_Status_Is_Valid()
         {
@@ -98,7 +98,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             var model = new CreateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationCreateRequest>(new SynchronizationCreateRequest
             {
                 Observations = new string('a', 256)
-            })) ;
+            }));
 
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(request => request.Synchronization.SynchronizationRequest.Observations)

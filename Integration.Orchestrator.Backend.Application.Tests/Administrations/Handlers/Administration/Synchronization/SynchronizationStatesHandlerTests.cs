@@ -8,7 +8,7 @@ using Moq;
 using System.Net;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.SynchronizationStates.SynchronizationStatesStatesCommands;
 
-namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Handlers
+namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Handlers.Administration.Synchronization
 {
     public class SynchronizationStatesHandlerTests
     {
@@ -85,7 +85,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             };
 
             var synchronizationStates = new List<SynchronizationStatesEntity>
-            { 
+            {
                 new SynchronizationStatesEntity
                 {
                     id = Guid.NewGuid(),
@@ -126,7 +126,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             // Arrange
             var request = new GetAllPaginatedSynchronizationStatesCommandRequest
             {
-                Synchronization = new SynchronizationStatesGetAllPaginatedRequest 
+                Synchronization = new SynchronizationStatesGetAllPaginatedRequest
                 {
                     Page = 1,
                     Rows = 1,

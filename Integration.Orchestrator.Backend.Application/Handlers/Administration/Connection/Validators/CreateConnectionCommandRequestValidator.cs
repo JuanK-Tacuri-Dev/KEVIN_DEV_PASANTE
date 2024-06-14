@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using System.Globalization;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection.ConnectionCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection.Validators
@@ -25,12 +24,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
 
             RuleFor(request => request.Connection.ConnectionRequest.Adapter)
             .NotEmpty().WithMessage("AppMessages.Connection_Adapter_Required");
-        }
-
-        private bool BeAValidDateTime(string dateTimeString)
-        {
-            const string dateTimeFormat = "yyyy-MM-ddTHH:mm:ss";
-            return DateTime.TryParseExact(dateTimeString, dateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
         }
     }
 }

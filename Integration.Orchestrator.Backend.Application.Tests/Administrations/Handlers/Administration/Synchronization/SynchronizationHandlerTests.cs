@@ -8,7 +8,7 @@ using Moq;
 using System.Net;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization.SynchronizationCommands;
 
-namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Handlers
+namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Handlers.Administration.Synchronization
 {
     public class SynchronizationHandlerTests
     {

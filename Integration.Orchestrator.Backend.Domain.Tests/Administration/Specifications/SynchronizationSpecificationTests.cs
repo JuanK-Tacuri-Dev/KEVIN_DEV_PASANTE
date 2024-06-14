@@ -3,7 +3,7 @@ using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 
-namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Specifications
+namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifications
 {
     public class SynchronizationSpecificationTests
     {

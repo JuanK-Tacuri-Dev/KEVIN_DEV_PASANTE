@@ -4,7 +4,7 @@ using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 
-namespace Integration.Orchestrator.Backend.Domain.Services.Administrations
+namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     public class ConnectionService(
         IConnectionRepository<ConnectionEntity> connectionRepository) 

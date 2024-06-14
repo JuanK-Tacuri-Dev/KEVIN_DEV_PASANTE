@@ -1,11 +1,11 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
-using Integration.Orchestrator.Backend.Domain.Services.Administrations;
+using Integration.Orchestrator.Backend.Domain.Services.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using Moq;
 
-namespace Integration.Orchestrator.Backend.Domain.Tests.Administrations.Services
+namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
 {
     public class SynchronizationStatesServiceTests
     {

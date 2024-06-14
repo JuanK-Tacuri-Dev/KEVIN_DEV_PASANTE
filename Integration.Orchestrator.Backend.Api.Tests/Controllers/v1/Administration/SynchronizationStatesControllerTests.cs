@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.SynchronizationStates.SynchronizationStatesStatesCommands;
 
-namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrations
+namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administration
 {
     public class SynchronizationStatesControllerTests
     {
