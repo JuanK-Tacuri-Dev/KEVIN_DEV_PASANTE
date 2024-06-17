@@ -1,5 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities;
-using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories;
 using MongoDB.Driver;

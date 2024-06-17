@@ -14,6 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddServicesInAssembly(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
+//builder.Configuration.AddEnvironmentVariables();
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>

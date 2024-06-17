@@ -1,7 +1,7 @@
 ﻿using Integration.Orchestrator.Backend.Api.Infrastructure.Extensions;
 using Integration.Orchestrator.Backend.Application.Options;
 using Integration.Orchestrator.Backend.Domain.Entities;
-using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -44,13 +44,14 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             services.AddSingleton(mongoClient);
             var database = mongoClient.GetDatabase(mongoSetting.DatabaseName);
 
-             var synchronizationCollection = mongoSetting.Collections!.Synchronization;
+            var synchronizationCollection = mongoSetting.Collections!.Synchronization;
             var synchronizationStatesCollection = mongoSetting.Collections!.SynchronizationStates;
+            var connectionCollection = mongoSetting.Collections!.Connection;
 
-             services.AddSingleton(s => database.GetCollection<SynchronizationEntity>(synchronizationCollection));
+            services.AddSingleton(s => database.GetCollection<SynchronizationEntity>(synchronizationCollection));
             services.AddSingleton(s => database.GetCollection<SynchronizationStatesEntity>(synchronizationStatesCollection));
+            services.AddSingleton(s => database.GetCollection<ConnectionEntity>(connectionCollection));
 
-            //BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.Binary));
             BsonClassMap.RegisterClassMap<Entity<Guid>>(
                 map =>
                 {

@@ -1,10 +1,10 @@
 ﻿using Autofac;
 using Integration.Orchestrator.Backend.Domain.Entities;
-using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
-using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Entities.V2ToV1;
 using Integration.Orchestrator.Backend.Domain.Services;
-using Integration.Orchestrator.Backend.Domain.Services.Administrations;
+using Integration.Orchestrator.Backend.Domain.Services.Administration;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Domain
@@ -37,6 +37,9 @@ namespace Integration.Orchestrator.Backend.Domain
                 .As<ISynchronizationStatesService<SynchronizationStatesEntity>>()
                 .InstancePerLifetimeScope();
 
+            _ = builder.RegisterType<ConnectionService>()
+                .As<IConnectionService<ConnectionEntity>>()
+                .InstancePerLifetimeScope();
         }
     }
 }

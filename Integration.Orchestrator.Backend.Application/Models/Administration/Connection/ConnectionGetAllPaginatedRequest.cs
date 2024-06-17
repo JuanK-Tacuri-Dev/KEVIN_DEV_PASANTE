@@ -1,0 +1,8 @@
+﻿using Integration.Orchestrator.Backend.Application.Commons;
+
+namespace Integration.Orchestrator.Backend.Application.Models.Administration.Connection
+{
+    public class ConnectionGetAllPaginatedRequest : PaginatedDefinition
+    {
+    }
+}

@@ -1,4 +1,4 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
+﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories;
 using MongoDB.Driver;
 using Moq;

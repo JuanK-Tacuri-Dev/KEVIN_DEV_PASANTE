@@ -61,6 +61,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connection data get successfully.
+        /// </summary>
+        public static string Api_ConnectionResponse {
+            get {
+                return ResourceManager.GetString("Api_ConnectionResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Synchronization data get successfully.
         /// </summary>
         public static string Api_SynchronizationResponse {
@@ -75,6 +84,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Api_SynchronizationStatesResponse {
             get {
                 return ResourceManager.GetString("Api_SynchronizationStatesResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection not found.
+        /// </summary>
+        public static string Application_ConnectionNotFound {
+            get {
+                return ResourceManager.GetString("Application_ConnectionNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection Created Succesfully.
+        /// </summary>
+        public static string Application_ConnectionResponseCreated {
+            get {
+                return ResourceManager.GetString("Application_ConnectionResponseCreated", resourceCulture);
             }
         }
         

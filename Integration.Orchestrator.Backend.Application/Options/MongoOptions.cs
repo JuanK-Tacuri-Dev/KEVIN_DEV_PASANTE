@@ -36,5 +36,7 @@ namespace Integration.Orchestrator.Backend.Application.Options
     {
         public string Synchronization { get; set; }
         public string SynchronizationStates { get; set; }
+        public string Connection { get; set; }
+
     }
 }
