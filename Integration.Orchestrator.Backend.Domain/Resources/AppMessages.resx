@@ -150,6 +150,9 @@
   <data name="Application_SynchronizationStatesResponseCreated" xml:space="preserve">
     <value>Synchronization States Created Succesfully</value>
   </data>
+  <data name="Domain_ConnectionExists" xml:space="preserve">
+    <value>The code exists</value>
+  </data>
   <data name="Exception.BadRequestException" xml:space="preserve">
     <value>Api layer error</value>
   </data>

@@ -48,7 +48,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
         public async Task<long> GetTotalRows(ISpecification<ConnectionEntity> specification)
         {
-            return await _collection.Find(specification.Criteria).CountDocumentsAsync();
+            return await _collection
+                .Find(specification.Criteria)
+                .Limit(specification.Limit)
+                .Skip(specification.Skip).CountDocumentsAsync();
         }
 
     }
