@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
+using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Administration
@@ -14,6 +15,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         public async Task InsertAsync(ConnectionEntity connection)
         {
+            await ValidateBussinesLogic(connection, true);
             await _connectionRepository.InsertAsync(connection);
         }
 
@@ -39,6 +41,18 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             var spec = new ConnectionSpecification(paginatedModel);
             return await _connectionRepository.GetTotalRows(spec);
-        } 
+        }
+
+        private async Task ValidateBussinesLogic(ConnectionEntity connection, bool create = false) 
+        {
+            if (create) 
+            {
+                var connectionByCode = await GetByCodeAsync(connection.code);
+                if (connectionByCode != null) 
+                {
+                    throw new ArgumentException(AppMessages.Domain_ConnectionExists);
+                }
+            }
+        }
     }
 }

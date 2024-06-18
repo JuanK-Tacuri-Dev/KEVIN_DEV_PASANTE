@@ -160,6 +160,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The code exists.
+        /// </summary>
+        public static string Domain_ConnectionExists {
+            get {
+                return ResourceManager.GetString("Domain_ConnectionExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Domain layer error.
         /// </summary>
         public static string Exception_ArgumentException {
