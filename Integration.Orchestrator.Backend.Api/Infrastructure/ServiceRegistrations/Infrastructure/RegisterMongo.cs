@@ -48,11 +48,13 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             var synchronizationStatesCollection = mongoSetting.Collections!.SynchronizationStates;
             var connectionCollection = mongoSetting.Collections!.Connection;
             var integrationCollection = mongoSetting.Collections!?.Integration;
+            var processCollection = mongoSetting.Collections!?.Process;
 
             services.AddSingleton(s => database.GetCollection<SynchronizationEntity>(synchronizationCollection));
             services.AddSingleton(s => database.GetCollection<SynchronizationStatesEntity>(synchronizationStatesCollection));
             services.AddSingleton(s => database.GetCollection<ConnectionEntity>(connectionCollection));
             services.AddSingleton(s => database.GetCollection<IntegrationEntity>(integrationCollection));
+            services.AddSingleton(s => database.GetCollection<ProcessEntity>(processCollection));
 
             BsonClassMap.RegisterClassMap<Entity<Guid>>(
                 map =>

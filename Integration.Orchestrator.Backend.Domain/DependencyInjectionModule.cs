@@ -44,6 +44,10 @@ namespace Integration.Orchestrator.Backend.Domain
             _ = builder.RegisterType<IntegrationService>()
                 .As<IIntegrationService<IntegrationEntity>>()
                 .InstancePerLifetimeScope();
+
+            _ = builder.RegisterType<ProcessService>()
+                .As<IProcessService<ProcessEntity>>()
+                .InstancePerLifetimeScope();
         }
     }
 }

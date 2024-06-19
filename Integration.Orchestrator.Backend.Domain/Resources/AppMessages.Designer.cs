@@ -79,6 +79,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Process data get successfully.
+        /// </summary>
+        public static string Api_ProcessResponse {
+            get {
+                return ResourceManager.GetString("Api_ProcessResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Synchronization data get successfully.
         /// </summary>
         public static string Api_SynchronizationResponse {
@@ -151,6 +160,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Process not found.
+        /// </summary>
+        public static string Application_ProcessNotFound {
+            get {
+                return ResourceManager.GetString("Application_ProcessNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process Created Succesfully.
+        /// </summary>
+        public static string Application_ProcessResponseCreated {
+            get {
+                return ResourceManager.GetString("Application_ProcessResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Synchronization not found.
         /// </summary>
         public static string Application_SynchronizationNotFound {
@@ -219,6 +246,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Domain_IntegrationMinTwoRequired {
             get {
                 return ResourceManager.GetString("Domain_IntegrationMinTwoRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The code exists.
+        /// </summary>
+        public static string Domain_ProcessExists {
+            get {
+                return ResourceManager.GetString("Domain_ProcessExists", resourceCulture);
             }
         }
         
