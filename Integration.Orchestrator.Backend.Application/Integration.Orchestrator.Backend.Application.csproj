@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Handlers\Administration\Integration\Validators\" />
     <Folder Include="Models\Integrations\" />
   </ItemGroup>
 

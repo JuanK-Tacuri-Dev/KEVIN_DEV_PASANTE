@@ -40,6 +40,10 @@ namespace Integration.Orchestrator.Backend.Domain
             _ = builder.RegisterType<ConnectionService>()
                 .As<IConnectionService<ConnectionEntity>>()
                 .InstancePerLifetimeScope();
+
+            _ = builder.RegisterType<IntegrationService>()
+                .As<IIntegrationService<IntegrationEntity>>()
+                .InstancePerLifetimeScope();
         }
     }
 }

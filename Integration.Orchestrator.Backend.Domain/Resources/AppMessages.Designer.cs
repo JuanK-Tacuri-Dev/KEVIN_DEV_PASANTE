@@ -70,6 +70,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Integration data get successfully.
+        /// </summary>
+        public static string Api_IntegrationResponse {
+            get {
+                return ResourceManager.GetString("Api_IntegrationResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Synchronization data get successfully.
         /// </summary>
         public static string Api_SynchronizationResponse {
@@ -102,6 +111,42 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Application_ConnectionResponseCreated {
             get {
                 return ResourceManager.GetString("Application_ConnectionResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Integration not found.
+        /// </summary>
+        public static string Application_IntegrationNotFound {
+            get {
+                return ResourceManager.GetString("Application_IntegrationNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Integration Created Succesfully.
+        /// </summary>
+        public static string Application_IntegrationResponseCreated {
+            get {
+                return ResourceManager.GetString("Application_IntegrationResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Integration Deleted Succesfully.
+        /// </summary>
+        public static string Application_IntegrationResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_IntegrationResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Integration Updated Succesfully.
+        /// </summary>
+        public static string Application_IntegrationResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_IntegrationResponseUpdated", resourceCulture);
             }
         }
         
@@ -165,6 +210,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Domain_ConnectionExists {
             get {
                 return ResourceManager.GetString("Domain_ConnectionExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The process must have at least two records.
+        /// </summary>
+        public static string Domain_IntegrationMinTwoRequired {
+            get {
+                return ResourceManager.GetString("Domain_IntegrationMinTwoRequired", resourceCulture);
             }
         }
         

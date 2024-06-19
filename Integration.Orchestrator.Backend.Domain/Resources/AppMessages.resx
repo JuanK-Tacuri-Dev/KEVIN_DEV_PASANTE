@@ -120,6 +120,9 @@
   <data name="Api_ConnectionResponse" xml:space="preserve">
     <value>Connection data get successfully</value>
   </data>
+  <data name="Api_IntegrationResponse" xml:space="preserve">
+    <value>Integration data get successfully</value>
+  </data>
   <data name="Api_SynchronizationResponse" xml:space="preserve">
     <value>Synchronization data get successfully</value>
   </data>
@@ -131,6 +134,18 @@
   </data>
   <data name="Application_ConnectionResponseCreated" xml:space="preserve">
     <value>Connection Created Succesfully</value>
+  </data>
+  <data name="Application_IntegrationNotFound" xml:space="preserve">
+    <value>Integration not found</value>
+  </data>
+  <data name="Application_IntegrationResponseCreated" xml:space="preserve">
+    <value>Integration Created Succesfully</value>
+  </data>
+  <data name="Application_IntegrationResponseDeleted" xml:space="preserve">
+    <value>Integration Deleted Succesfully</value>
+  </data>
+  <data name="Application_IntegrationResponseUpdated" xml:space="preserve">
+    <value>Integration Updated Succesfully</value>
   </data>
   <data name="Application_SynchronizationNotFound" xml:space="preserve">
     <value>Synchronization not found</value>
@@ -152,6 +167,9 @@
   </data>
   <data name="Domain_ConnectionExists" xml:space="preserve">
     <value>The code exists</value>
+  </data>
+  <data name="Domain_IntegrationMinTwoRequired" xml:space="preserve">
+    <value>The process must have at least two records</value>
   </data>
   <data name="Exception.BadRequestException" xml:space="preserve">
     <value>Api layer error</value>
