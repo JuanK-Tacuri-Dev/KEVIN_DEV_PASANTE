@@ -99,6 +99,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure
             _ = builder.RegisterType<ConnectionRepository>()
                 .As<IConnectionRepository<ConnectionEntity>>()
                 .SingleInstance();
+
+            _ = builder.RegisterType<IntegrationRepository>()
+                .As<IIntegrationRepository<IntegrationEntity>>()
+                .SingleInstance();
         }
     }
 }
