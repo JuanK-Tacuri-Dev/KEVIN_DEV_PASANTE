@@ -39,6 +39,7 @@ namespace Integration.Orchestrator.Backend.Application.Options
         public string Connection { get; set; }
         public string Integration { get; set; }
         public string Process { get; set; }
+        public string Status { get; set; }
 
     }
 }
