@@ -30,8 +30,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             { nameof(ProcessEntity.connection_id), x => x.connection_id },
             { nameof(ProcessEntity.process_type), x => x.process_type },
-            { nameof(ProcessEntity.process_code), x => x.process_code },
-            { nameof(ProcessEntity.updated_at), x => x.updated_at },
+            { nameof(ProcessEntity.process_code), x => x.process_code }
         };
         private void SetupPagination(PaginatedModel model)
         {

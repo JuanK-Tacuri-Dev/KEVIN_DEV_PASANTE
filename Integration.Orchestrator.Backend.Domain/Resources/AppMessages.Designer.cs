@@ -88,6 +88,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status data get successfully.
+        /// </summary>
+        public static string Api_StatusResponse {
+            get {
+                return ResourceManager.GetString("Api_StatusResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Synchronization data get successfully.
         /// </summary>
         public static string Api_SynchronizationResponse {
@@ -178,6 +187,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status not found.
+        /// </summary>
+        public static string Application_StatusNotFound {
+            get {
+                return ResourceManager.GetString("Application_StatusNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status Created Succesfully.
+        /// </summary>
+        public static string Application_StatusResponseCreated {
+            get {
+                return ResourceManager.GetString("Application_StatusResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Synchronization not found.
         /// </summary>
         public static string Application_SynchronizationNotFound {
@@ -228,6 +255,60 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Application_SynchronizationStatesResponseCreated {
             get {
                 return ResourceManager.GetString("Application_SynchronizationStatesResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The adapter is required.
+        /// </summary>
+        public static string Connection_Adapter_Required {
+            get {
+                return ResourceManager.GetString("Connection_Adapter_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The code is required.
+        /// </summary>
+        public static string Connection_Code_Required {
+            get {
+                return ResourceManager.GetString("Connection_Code_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The password is required.
+        /// </summary>
+        public static string Connection_Password_Required {
+            get {
+                return ResourceManager.GetString("Connection_Password_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The port is required.
+        /// </summary>
+        public static string Connection_Port_Required {
+            get {
+                return ResourceManager.GetString("Connection_Port_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server is required.
+        /// </summary>
+        public static string Connection_Server_Required {
+            get {
+                return ResourceManager.GetString("Connection_Server_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The user is required.
+        /// </summary>
+        public static string Connection_User_Required {
+            get {
+                return ResourceManager.GetString("Connection_User_Required", resourceCulture);
             }
         }
         
@@ -309,6 +390,114 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Exception_UnexpectedException {
             get {
                 return ResourceManager.GetString("Exception.UnexpectedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name is required.
+        /// </summary>
+        public static string Integration_Name_Required {
+            get {
+                return ResourceManager.GetString("Integration_Name_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The observations is required.
+        /// </summary>
+        public static string Integration_Observations_Required {
+            get {
+                return ResourceManager.GetString("Integration_Observations_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The process is required.
+        /// </summary>
+        public static string Integration_Process_Required {
+            get {
+                return ResourceManager.GetString("Integration_Process_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The status is required.
+        /// </summary>
+        public static string Integration_Status_Required {
+            get {
+                return ResourceManager.GetString("Integration_Status_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The userId is required.
+        /// </summary>
+        public static string Integration_UserId_Required {
+            get {
+                return ResourceManager.GetString("Integration_UserId_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The connectionId is required.
+        /// </summary>
+        public static string Process_ConnectionId_Required {
+            get {
+                return ResourceManager.GetString("Process_ConnectionId_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The objects is required.
+        /// </summary>
+        public static string Process_Objects_Required {
+            get {
+                return ResourceManager.GetString("Process_Objects_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The processCode is required.
+        /// </summary>
+        public static string Process_ProcessCode_Required {
+            get {
+                return ResourceManager.GetString("Process_ProcessCode_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type is required.
+        /// </summary>
+        public static string Process_Type_Required {
+            get {
+                return ResourceManager.GetString("Process_Type_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The color is required.
+        /// </summary>
+        public static string Status_Color_Required {
+            get {
+                return ResourceManager.GetString("Status_Color_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The key is required.
+        /// </summary>
+        public static string Status_Key_Required {
+            get {
+                return ResourceManager.GetString("Status_Key_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The text is required.
+        /// </summary>
+        public static string Status_Text_Required {
+            get {
+                return ResourceManager.GetString("Status_Text_Required", resourceCulture);
             }
         }
         

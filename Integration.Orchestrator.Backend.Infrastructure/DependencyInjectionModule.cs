@@ -107,6 +107,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure
             _ = builder.RegisterType<ProcessRepository>()
                 .As<IProcessRepository<ProcessEntity>>()
                 .SingleInstance();
+
+            _ = builder.RegisterType<StatusRepository>()
+                .As<IStatusRepository<StatusEntity>>()
+                .SingleInstance();
         }
     }
 }
