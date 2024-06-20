@@ -126,6 +126,9 @@
   <data name="Api_ProcessResponse" xml:space="preserve">
     <value>Process data get successfully</value>
   </data>
+  <data name="Api_StatusResponse" xml:space="preserve">
+    <value>Status data get successfully</value>
+  </data>
   <data name="Api_SynchronizationResponse" xml:space="preserve">
     <value>Synchronization data get successfully</value>
   </data>
@@ -156,6 +159,12 @@
   <data name="Application_ProcessResponseCreated" xml:space="preserve">
     <value>Process Created Succesfully</value>
   </data>
+  <data name="Application_StatusNotFound" xml:space="preserve">
+    <value>Status not found</value>
+  </data>
+  <data name="Application_StatusResponseCreated" xml:space="preserve">
+    <value>Status Created Succesfully</value>
+  </data>
   <data name="Application_SynchronizationNotFound" xml:space="preserve">
     <value>Synchronization not found</value>
   </data>
@@ -173,6 +182,24 @@
   </data>
   <data name="Application_SynchronizationStatesResponseCreated" xml:space="preserve">
     <value>Synchronization States Created Succesfully</value>
+  </data>
+  <data name="Connection_Adapter_Required" xml:space="preserve">
+    <value>The adapter is required</value>
+  </data>
+  <data name="Connection_Code_Required" xml:space="preserve">
+    <value>The code is required</value>
+  </data>
+  <data name="Connection_Password_Required" xml:space="preserve">
+    <value>The password is required</value>
+  </data>
+  <data name="Connection_Port_Required" xml:space="preserve">
+    <value>The port is required</value>
+  </data>
+  <data name="Connection_Server_Required" xml:space="preserve">
+    <value>The server is required</value>
+  </data>
+  <data name="Connection_User_Required" xml:space="preserve">
+    <value>The user is required</value>
   </data>
   <data name="Domain_ConnectionExists" xml:space="preserve">
     <value>The code exists</value>
@@ -200,6 +227,42 @@
   </data>
   <data name="Exception_IntegrationException" xml:space="preserve">
     <value>Integration Exception</value>
+  </data>
+  <data name="Integration_Name_Required" xml:space="preserve">
+    <value>The name is required</value>
+  </data>
+  <data name="Integration_Observations_Required" xml:space="preserve">
+    <value>The observations is required</value>
+  </data>
+  <data name="Integration_Process_Required" xml:space="preserve">
+    <value>The process is required</value>
+  </data>
+  <data name="Integration_Status_Required" xml:space="preserve">
+    <value>The status is required</value>
+  </data>
+  <data name="Integration_UserId_Required" xml:space="preserve">
+    <value>The userId is required</value>
+  </data>
+  <data name="Process_ConnectionId_Required" xml:space="preserve">
+    <value>The connectionId is required</value>
+  </data>
+  <data name="Process_Objects_Required" xml:space="preserve">
+    <value>The objects is required</value>
+  </data>
+  <data name="Process_ProcessCode_Required" xml:space="preserve">
+    <value>The processCode is required</value>
+  </data>
+  <data name="Process_Type_Required" xml:space="preserve">
+    <value>The type is required</value>
+  </data>
+  <data name="Status_Color_Required" xml:space="preserve">
+    <value>The color is required</value>
+  </data>
+  <data name="Status_Key_Required" xml:space="preserve">
+    <value>The key is required</value>
+  </data>
+  <data name="Status_Text_Required" xml:space="preserve">
+    <value>The text is required</value>
   </data>
   <data name="SynchronizationStates_Code_Required" xml:space="preserve">
     <value>The code is required</value>
