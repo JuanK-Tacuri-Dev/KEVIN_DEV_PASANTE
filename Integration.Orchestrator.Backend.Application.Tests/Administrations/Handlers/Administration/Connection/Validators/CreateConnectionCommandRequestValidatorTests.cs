@@ -1,6 +1,7 @@
 ﻿using FluentValidation.TestHelper;
 using Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection.Validators;
 using Integration.Orchestrator.Backend.Application.Models.Administration.Connection;
+using Integration.Orchestrator.Backend.Domain.Resources;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection.ConnectionCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Handlers.Administration.Connection.Validators
@@ -28,7 +29,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             result.ShouldHaveValidationErrorFor(r => r.Connection.ConnectionRequest.Code)
-                  .WithErrorMessage("AppMessages.Connection_Code_Required");
+                  .WithErrorMessage(AppMessages.Connection_Code_Required);
         }
 
         [Fact]
@@ -45,7 +46,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             result.ShouldHaveValidationErrorFor(r => r.Connection.ConnectionRequest.Server)
-                  .WithErrorMessage("AppMessages.Connection_Server_Required");
+                  .WithErrorMessage(AppMessages.Connection_Server_Required);
         }
 
         [Fact]
@@ -62,7 +63,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             result.ShouldHaveValidationErrorFor(r => r.Connection.ConnectionRequest.Port)
-                  .WithErrorMessage("AppMessages.Connection_Port_Required");
+                  .WithErrorMessage(AppMessages.Connection_Port_Required);
         }
 
         [Fact]
@@ -79,7 +80,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             result.ShouldHaveValidationErrorFor(r => r.Connection.ConnectionRequest.User)
-                  .WithErrorMessage("AppMessages.Connection_User_Required");
+                  .WithErrorMessage(AppMessages.Connection_User_Required);
         }
 
         [Fact]
@@ -96,7 +97,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             result.ShouldHaveValidationErrorFor(r => r.Connection.ConnectionRequest.Password)
-                  .WithErrorMessage("AppMessages.Connection_Password_Required");
+                  .WithErrorMessage(AppMessages.Connection_Password_Required);
         }
 
         [Fact]
@@ -113,7 +114,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             result.ShouldHaveValidationErrorFor(r => r.Connection.ConnectionRequest.Adapter)
-                  .WithErrorMessage("AppMessages.Connection_Adapter_Required");
+                  .WithErrorMessage(AppMessages.Connection_Adapter_Required);
         }
     }
 }

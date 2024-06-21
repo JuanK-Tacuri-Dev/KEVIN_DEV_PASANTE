@@ -113,33 +113,44 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
         public async Task<GetAllPaginatedIntegrationCommandResponse> Handle(GetAllPaginatedIntegrationCommandRequest request, CancellationToken cancellationToken)
         {
-            var model = request.Integration.Adapt<PaginatedModel>();
-            var rows = await _integrationService.GetTotalRowsAsync(model);
-            if (rows == 0)
+            try
             {
-                throw new ArgumentException(AppMessages.Application_IntegrationNotFound);
-            }
-            var result = await _integrationService.GetAllPaginatedAsync(model);
-
-
-            return new GetAllPaginatedIntegrationCommandResponse(
-                new IntegrationGetAllPaginatedResponse
+                var model = request.Integration.Adapt<PaginatedModel>();
+                var rows = await _integrationService.GetTotalRowsAsync(model);
+                if (rows == 0)
                 {
-                    Code = HttpStatusCode.OK.GetHashCode(),
-                    Description = AppMessages.Api_IntegrationResponse,
-                    TotalRows = rows,
-                    Data = result.Select(syn => new IntegrationGetAllPaginated
-                    {
-                        Id = syn.id,
-                        Name = syn.name,
-                        Status = syn.status,
-                        Observations = syn.observations,
-                        Process = syn.process.Select(i => new ProcessRequest { Id = i }).ToList(),
-                        UserId = syn.user_id
-
-                    }).ToList()
+                    throw new ArgumentException(AppMessages.Application_IntegrationNotFound);
                 }
-                );
+                var result = await _integrationService.GetAllPaginatedAsync(model);
+
+
+                return new GetAllPaginatedIntegrationCommandResponse(
+                    new IntegrationGetAllPaginatedResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_IntegrationResponse,
+                        TotalRows = rows,
+                        Data = result.Select(syn => new IntegrationGetAllPaginated
+                        {
+                            Id = syn.id,
+                            Name = syn.name,
+                            Status = syn.status,
+                            Observations = syn.observations,
+                            Process = syn.process.Select(i => new ProcessRequest { Id = i }).ToList(),
+                            UserId = syn.user_id
+
+                        }).ToList()
+                    }
+                    );
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
         }
 
         private IntegrationEntity MapAynchronizer(IntegrationCreateRequest request, Guid id)
