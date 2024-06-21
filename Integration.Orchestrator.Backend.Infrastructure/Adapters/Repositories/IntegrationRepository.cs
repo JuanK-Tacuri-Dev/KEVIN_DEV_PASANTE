@@ -36,16 +36,16 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<IntegrationEntity> GetByIdAsync(Expression<Func<IntegrationEntity, bool>> specification)
         {
             var filter = Builders<IntegrationEntity>.Filter.Where(specification);
-            var synchronizationEntity = await _collection
+            var integrationEntity = await _collection
                 .Find(filter)
                 .FirstOrDefaultAsync();
-            return synchronizationEntity;
+            return integrationEntity;
         }
 
         public async Task<IEnumerable<IntegrationEntity>> GetAllAsync(ISpecification<IntegrationEntity> specification)
         {
             var filter = Builders<IntegrationEntity>.Filter.Where(specification.Criteria);
-            var synchronizationEntity = await _collection
+            var integrationEntity = await _collection
                 .Find(filter)
                 .Limit(specification.Limit)
                 .Skip(specification.Skip)
@@ -53,7 +53,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                                                ? Builders<IntegrationEntity>.Sort.Ascending(specification.OrderBy)
                                                : Builders<IntegrationEntity>.Sort.Descending(specification.OrderByDescending))
                 .ToListAsync();
-            return synchronizationEntity;
+            return integrationEntity;
         }
 
         public async Task<long> GetTotalRows(ISpecification<IntegrationEntity> specification)

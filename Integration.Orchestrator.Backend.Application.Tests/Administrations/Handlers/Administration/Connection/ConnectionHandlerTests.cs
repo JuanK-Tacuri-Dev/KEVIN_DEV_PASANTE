@@ -60,7 +60,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             var connectionEntity = new ConnectionEntity 
             { 
                 id = Guid.NewGuid(), 
-                code = "TestCode", 
+                connection_code = "TestCode", 
                 server = "TestServer", 
                 port = "1234", 
                 user = "TestUser", 
@@ -88,8 +88,8 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             var cancellationToken = CancellationToken.None;
             var connectionEntities = new List<ConnectionEntity>
         {
-            new ConnectionEntity { id = Guid.NewGuid(), code = "TestCode1", server = "TestServer1", port = "1234", user = "TestUser1", password = "TestPassword1", adapter = "TestAdapter1" },
-            new ConnectionEntity { id = Guid.NewGuid(), code = "TestCode2", server = "TestServer2", port = "1234", user = "TestUser2", password = "TestPassword2", adapter = "TestAdapter2" }
+            new ConnectionEntity { id = Guid.NewGuid(), connection_code = "TestCode1", server = "TestServer1", port = "1234", user = "TestUser1", password = "TestPassword1", adapter = "TestAdapter1" },
+            new ConnectionEntity { id = Guid.NewGuid(), connection_code = "TestCode2", server = "TestServer2", port = "1234", user = "TestUser2", password = "TestPassword2", adapter = "TestAdapter2" }
         };
 
             _serviceMock.Setup(s => s.GetByTypeAsync(It.IsAny<string>()))
@@ -122,8 +122,8 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             };
             var connectionEntities = new List<ConnectionEntity>
         {
-            new ConnectionEntity { id = Guid.NewGuid(), code = "TestCode1", server = "TestServer1", port = "1234", user = "TestUser1", password = "TestPassword1", adapter = "TestAdapter1" },
-            new ConnectionEntity { id = Guid.NewGuid(), code = "TestCode2", server = "TestServer2", port = "1234", user = "TestUser2", password = "TestPassword2", adapter = "TestAdapter2" }
+            new ConnectionEntity { id = Guid.NewGuid(), connection_code = "TestCode1", server = "TestServer1", port = "1234", user = "TestUser1", password = "TestPassword1", adapter = "TestAdapter1" },
+            new ConnectionEntity { id = Guid.NewGuid(), connection_code = "TestCode2", server = "TestServer2", port = "1234", user = "TestUser2", password = "TestPassword2", adapter = "TestAdapter2" }
         };
 
             _serviceMock.Setup(s => s.GetTotalRowsAsync(It.IsAny<PaginatedModel>()))

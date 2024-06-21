@@ -50,6 +50,9 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             var integrationCollection = mongoSetting.Collections!?.Integration;
             var processCollection = mongoSetting.Collections!?.Process;
             var statusCollection = mongoSetting.Collections!?.Status;
+            var entityCollection = mongoSetting.Collections!?.Entity;
+            var propertyCollection = mongoSetting.Collections!?.Property;
+            var valueCollection = mongoSetting.Collections!?.Value;
 
             services.AddSingleton(s => database.GetCollection<SynchronizationEntity>(synchronizationCollection));
             services.AddSingleton(s => database.GetCollection<SynchronizationStatesEntity>(synchronizationStatesCollection));
@@ -57,6 +60,9 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             services.AddSingleton(s => database.GetCollection<IntegrationEntity>(integrationCollection));
             services.AddSingleton(s => database.GetCollection<ProcessEntity>(processCollection));
             services.AddSingleton(s => database.GetCollection<StatusEntity>(statusCollection));
+            services.AddSingleton(s => database.GetCollection<EntitiesEntity>(entityCollection));
+            services.AddSingleton(s => database.GetCollection<PropertyEntity>(propertyCollection));
+            services.AddSingleton(s => database.GetCollection<ValueEntity>(valueCollection));
 
             BsonClassMap.RegisterClassMap<Entity<Guid>>(
                 map =>

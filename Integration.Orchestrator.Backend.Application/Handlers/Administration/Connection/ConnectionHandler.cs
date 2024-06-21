@@ -66,7 +66,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new GetByCodeConnection
                         {
                             Id = connectionByCode.id,
-                            Code = connectionByCode.code,
+                            Code = connectionByCode.connection_code,
                             Server = connectionByCode.server,
                             Port = connectionByCode.port,
                             User = connectionByCode.user,
@@ -103,7 +103,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = connectionByType.Select(c => new GetByTypeConnection
                         {
                             Id = c.id,
-                            Code = c.code,
+                            Code = c.connection_code,
                             Server = c.server,
                             Port = c.port,
                             User = c.user,
@@ -142,7 +142,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     Data = result.Select(c => new ConnectionGetAllPaginated
                     {
                         Id = c.id,
-                        Code = c.code,
+                        Code = c.connection_code,
                         Server = c.server,
                         Port = c.port,
                         User = c.user,
@@ -159,7 +159,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             var connectionEntity = new ConnectionEntity()
             {
                 id = id,
-                code = request.Code,
+                connection_code = request.Code,
                 server = request.Server,
                 port = request.Port,
                 user = request.User,

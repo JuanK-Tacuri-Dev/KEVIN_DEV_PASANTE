@@ -51,7 +51,19 @@ namespace Integration.Orchestrator.Backend.Domain
 
             _ = builder.RegisterType<StatusService>()
                 .As<IStatusService<StatusEntity>>()
-                .InstancePerLifetimeScope(); 
+                .InstancePerLifetimeScope();
+
+            _ = builder.RegisterType<EntitiesService>()
+                .As<IEntitiesService<EntitiesEntity>>()
+                .InstancePerLifetimeScope();
+
+            _ = builder.RegisterType<PropertyService>()
+                .As<IPropertyService<PropertyEntity>>()
+                .InstancePerLifetimeScope();
+
+            _ = builder.RegisterType<ValueService>()
+                .As<IValueService<ValueEntity>>()
+                .InstancePerLifetimeScope();
         }
     }
 }

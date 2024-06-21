@@ -111,6 +111,18 @@ namespace Integration.Orchestrator.Backend.Infrastructure
             _ = builder.RegisterType<StatusRepository>()
                 .As<IStatusRepository<StatusEntity>>()
                 .SingleInstance();
+
+            _ = builder.RegisterType<PropertyRepository>()
+                .As<IPropertyRepository<PropertyEntity>>()
+                .SingleInstance();
+
+            _ = builder.RegisterType<EntitiesRepository>()
+                .As<IEntitiesRepository<EntitiesEntity>>()
+                .SingleInstance();
+
+            _ = builder.RegisterType<ValueRepository>()
+                .As<IValueRepository<ValueEntity>>()
+                .SingleInstance();
         }
     }
 }

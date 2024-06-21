@@ -120,11 +120,17 @@
   <data name="Api_ConnectionResponse" xml:space="preserve">
     <value>Connection data get successfully</value>
   </data>
+  <data name="Api_EntitiesResponse" xml:space="preserve">
+    <value>Entity data get successfully</value>
+  </data>
   <data name="Api_IntegrationResponse" xml:space="preserve">
     <value>Integration data get successfully</value>
   </data>
   <data name="Api_ProcessResponse" xml:space="preserve">
     <value>Process data get successfully</value>
+  </data>
+  <data name="Api_PropertyResponse" xml:space="preserve">
+    <value>Property data get successfully</value>
   </data>
   <data name="Api_StatusResponse" xml:space="preserve">
     <value>Status data get successfully</value>
@@ -135,11 +141,20 @@
   <data name="Api_SynchronizationStatesResponse" xml:space="preserve">
     <value>Synchronization states data get successfully</value>
   </data>
+  <data name="Api_ValueResponse" xml:space="preserve">
+    <value>Value data get successfully</value>
+  </data>
   <data name="Application_ConnectionNotFound" xml:space="preserve">
     <value>Connection not found</value>
   </data>
   <data name="Application_ConnectionResponseCreated" xml:space="preserve">
     <value>Connection Created Succesfully</value>
+  </data>
+  <data name="Application_EntitiesNotFound" xml:space="preserve">
+    <value>Entity not found</value>
+  </data>
+  <data name="Application_EntitiesResponseCreated" xml:space="preserve">
+    <value>Entity Created Succesfully</value>
   </data>
   <data name="Application_IntegrationNotFound" xml:space="preserve">
     <value>Integration not found</value>
@@ -158,6 +173,12 @@
   </data>
   <data name="Application_ProcessResponseCreated" xml:space="preserve">
     <value>Process Created Succesfully</value>
+  </data>
+  <data name="Application_PropertyNotFound" xml:space="preserve">
+    <value>Property not found</value>
+  </data>
+  <data name="Application_PropertyResponseCreated" xml:space="preserve">
+    <value>Property Created Succesfully</value>
   </data>
   <data name="Application_StatusNotFound" xml:space="preserve">
     <value>Status not found</value>
@@ -183,6 +204,12 @@
   <data name="Application_SynchronizationStatesResponseCreated" xml:space="preserve">
     <value>Synchronization States Created Succesfully</value>
   </data>
+  <data name="Application_ValueNotFound" xml:space="preserve">
+    <value>Value not found</value>
+  </data>
+  <data name="Application_ValueResponseCreated" xml:space="preserve">
+    <value>Value Created Succesfully</value>
+  </data>
   <data name="Connection_Adapter_Required" xml:space="preserve">
     <value>The adapter is required</value>
   </data>
@@ -204,11 +231,29 @@
   <data name="Domain_ConnectionExists" xml:space="preserve">
     <value>The code exists</value>
   </data>
+  <data name="Domain_EntitiesExists" xml:space="preserve">
+    <value>The entity exists</value>
+  </data>
   <data name="Domain_IntegrationMinTwoRequired" xml:space="preserve">
     <value>The process must have at least two records</value>
   </data>
   <data name="Domain_ProcessExists" xml:space="preserve">
     <value>The code exists</value>
+  </data>
+  <data name="Domain_PropertyExists" xml:space="preserve">
+    <value>The property exists</value>
+  </data>
+  <data name="Domain_ValueExists" xml:space="preserve">
+    <value>The value exists</value>
+  </data>
+  <data name="Entities_Code_Required" xml:space="preserve">
+    <value>The code is required</value>
+  </data>
+  <data name="Entities_Name_Required" xml:space="preserve">
+    <value>The name is required</value>
+  </data>
+  <data name="Entities_Type_Required" xml:space="preserve">
+    <value>The type is required</value>
   </data>
   <data name="Exception.BadRequestException" xml:space="preserve">
     <value>Api layer error</value>
@@ -253,6 +298,15 @@
     <value>The processCode is required</value>
   </data>
   <data name="Process_Type_Required" xml:space="preserve">
+    <value>The type is required</value>
+  </data>
+  <data name="Property_Code_Required" xml:space="preserve">
+    <value>The code is required</value>
+  </data>
+  <data name="Property_Name_Required" xml:space="preserve">
+    <value>The name is required</value>
+  </data>
+  <data name="Property_Type_Required" xml:space="preserve">
     <value>The type is required</value>
   </data>
   <data name="Status_Color_Required" xml:space="preserve">
@@ -308,5 +362,14 @@
   </data>
   <data name="Synchronization_Status_Required" xml:space="preserve">
     <value>The status is required</value>
+  </data>
+  <data name="Value_Code_Required" xml:space="preserve">
+    <value>The code is required</value>
+  </data>
+  <data name="Value_Name_Required" xml:space="preserve">
+    <value>The name is required</value>
+  </data>
+  <data name="Value_Type_Required" xml:space="preserve">
+    <value>The type is required</value>
   </data>
 </root>

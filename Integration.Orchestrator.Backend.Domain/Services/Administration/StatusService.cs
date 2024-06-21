@@ -7,30 +7,30 @@ using Integration.Orchestrator.Backend.Domain.Specifications;
 namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     public class StatusService(
-        IStatusRepository<StatusEntity> connectionRepository) 
+        IStatusRepository<StatusEntity> statusRepository) 
         : IStatusService<StatusEntity>
     {
-        private readonly IStatusRepository<StatusEntity> _connectionRepository = connectionRepository;
+        private readonly IStatusRepository<StatusEntity> _statusRepository = statusRepository;
 
-        public async Task InsertAsync(StatusEntity connection)
+        public async Task InsertAsync(StatusEntity status)
         {
-            await ValidateBussinesLogic(connection, true);
-            await _connectionRepository.InsertAsync(connection);
+            await ValidateBussinesLogic(status, true);
+            await _statusRepository.InsertAsync(status);
         }
 
         public async Task<IEnumerable<StatusEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
         {
             var spec = new StatusSpecification(paginatedModel);
-            return await _connectionRepository.GetAllAsync(spec);
+            return await _statusRepository.GetAllAsync(spec);
         }
 
         public async Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel)
         {
             var spec = new StatusSpecification(paginatedModel);
-            return await _connectionRepository.GetTotalRows(spec);
+            return await _statusRepository.GetTotalRows(spec);
         }
 
-        private async Task ValidateBussinesLogic(StatusEntity connection, bool create = false) 
+        private async Task ValidateBussinesLogic(StatusEntity status, bool create = false) 
         {
             if (create) 
             {

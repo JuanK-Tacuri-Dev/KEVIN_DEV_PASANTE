@@ -11,9 +11,9 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
     {
         private readonly ISynchronizationStatesRepository<SynchronizationStatesEntity> _synchronizationStatesRepository = synchronizationStatesRepository;
 
-        public async Task InsertAsync(SynchronizationStatesEntity synchronization)
+        public async Task InsertAsync(SynchronizationStatesEntity synchronizationStates)
         {
-            await _synchronizationStatesRepository.InsertAsync(synchronization);
+            await _synchronizationStatesRepository.InsertAsync(synchronizationStates);
         }
 
         public async Task<SynchronizationStatesEntity> GetByIdAsync(Guid id)
