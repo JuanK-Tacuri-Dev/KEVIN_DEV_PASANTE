@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
+using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Administration
@@ -18,6 +19,12 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             await _statusRepository.InsertAsync(status);
         }
 
+        public async Task<StatusEntity> GetByCodeAsync(string code)
+        {
+            var specification = StatusSpecification.GetByCodeExpression(code);
+            return await _statusRepository.GetByCodeAsync(specification);
+        }
+
         public async Task<IEnumerable<StatusEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
         {
             var spec = new StatusSpecification(paginatedModel);
@@ -30,10 +37,15 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _statusRepository.GetTotalRows(spec);
         }
 
-        private async Task ValidateBussinesLogic(StatusEntity status, bool create = false) 
+        private async Task ValidateBussinesLogic(StatusEntity status, bool create = false)
         {
             if (create) 
             {
+                var processByCode = await GetByCodeAsync(status.key);
+                if (processByCode != null)
+                {
+                    throw new ArgumentException(AppMessages.Domain_StatusExists);
+                }
             }
         }
     }

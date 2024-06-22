@@ -475,6 +475,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The status exists.
+        /// </summary>
+        public static string Domain_StatusExists {
+            get {
+                return ResourceManager.GetString("Domain_StatusExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value exists.
         /// </summary>
         public static string Domain_ValueExists {

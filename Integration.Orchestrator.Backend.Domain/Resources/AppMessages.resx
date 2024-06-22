@@ -255,6 +255,9 @@
   <data name="Domain_PropertyExists" xml:space="preserve">
     <value>The property exists</value>
   </data>
+  <data name="Domain_StatusExists" xml:space="preserve">
+    <value>The status exists</value>
+  </data>
   <data name="Domain_ValueExists" xml:space="preserve">
     <value>The value exists</value>
   </data>
