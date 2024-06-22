@@ -88,6 +88,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operator data get successfully.
+        /// </summary>
+        public static string Api_OperatorResponse {
+            get {
+                return ResourceManager.GetString("Api_OperatorResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Process data get successfully.
         /// </summary>
         public static string Api_ProcessResponse {
@@ -210,6 +219,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Application_IntegrationResponseUpdated {
             get {
                 return ResourceManager.GetString("Application_IntegrationResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator not found.
+        /// </summary>
+        public static string Application_OperatorNotFound {
+            get {
+                return ResourceManager.GetString("Application_OperatorNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator Created Succesfully.
+        /// </summary>
+        public static string Application_OperatorResponseCreated {
+            get {
+                return ResourceManager.GetString("Application_OperatorResponseCreated", resourceCulture);
             }
         }
         
@@ -421,6 +448,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The operation exists.
+        /// </summary>
+        public static string Domain_OperatorExists {
+            get {
+                return ResourceManager.GetString("Domain_OperatorExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The code exists.
         /// </summary>
         public static string Domain_ProcessExists {
@@ -570,6 +606,33 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Integration_UserId_Required {
             get {
                 return ResourceManager.GetString("Integration_UserId_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The code is required.
+        /// </summary>
+        public static string Operator_Code_Required {
+            get {
+                return ResourceManager.GetString("Operator_Code_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name is required.
+        /// </summary>
+        public static string Operator_Name_Required {
+            get {
+                return ResourceManager.GetString("Operator_Name_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type is required.
+        /// </summary>
+        public static string Operator_Type_Required {
+            get {
+                return ResourceManager.GetString("Operator_Type_Required", resourceCulture);
             }
         }
         

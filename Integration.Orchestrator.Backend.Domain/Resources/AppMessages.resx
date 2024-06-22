@@ -126,6 +126,9 @@
   <data name="Api_IntegrationResponse" xml:space="preserve">
     <value>Integration data get successfully</value>
   </data>
+  <data name="Api_OperatorResponse" xml:space="preserve">
+    <value>Operator data get successfully</value>
+  </data>
   <data name="Api_ProcessResponse" xml:space="preserve">
     <value>Process data get successfully</value>
   </data>
@@ -167,6 +170,12 @@
   </data>
   <data name="Application_IntegrationResponseUpdated" xml:space="preserve">
     <value>Integration Updated Succesfully</value>
+  </data>
+  <data name="Application_OperatorNotFound" xml:space="preserve">
+    <value>Operator not found</value>
+  </data>
+  <data name="Application_OperatorResponseCreated" xml:space="preserve">
+    <value>Operator Created Succesfully</value>
   </data>
   <data name="Application_ProcessNotFound" xml:space="preserve">
     <value>Process not found</value>
@@ -237,6 +246,9 @@
   <data name="Domain_IntegrationMinTwoRequired" xml:space="preserve">
     <value>The process must have at least two records</value>
   </data>
+  <data name="Domain_OperatorExists" xml:space="preserve">
+    <value>The operation exists</value>
+  </data>
   <data name="Domain_ProcessExists" xml:space="preserve">
     <value>The code exists</value>
   </data>
@@ -287,6 +299,15 @@
   </data>
   <data name="Integration_UserId_Required" xml:space="preserve">
     <value>The userId is required</value>
+  </data>
+  <data name="Operator_Code_Required" xml:space="preserve">
+    <value>The code is required</value>
+  </data>
+  <data name="Operator_Name_Required" xml:space="preserve">
+    <value>The name is required</value>
+  </data>
+  <data name="Operator_Type_Required" xml:space="preserve">
+    <value>The type is required</value>
   </data>
   <data name="Process_ConnectionId_Required" xml:space="preserve">
     <value>The connectionId is required</value>

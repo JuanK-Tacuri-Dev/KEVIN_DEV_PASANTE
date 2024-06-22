@@ -64,6 +64,10 @@ namespace Integration.Orchestrator.Backend.Domain
             _ = builder.RegisterType<ValueService>()
                 .As<IValueService<ValueEntity>>()
                 .InstancePerLifetimeScope();
+
+            _ = builder.RegisterType<OperatorService>()
+                .As<IOperatorService<OperatorEntity>>()
+                .InstancePerLifetimeScope();
         }
     }
 }
