@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Driver;
+using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
@@ -11,6 +12,15 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public Task InsertAsync(StatusEntity entity)
         {
             return _collection.InsertOneAsync(entity);
+        }
+
+        public async Task<StatusEntity> GetByCodeAsync(Expression<Func<StatusEntity, bool>> specification)
+        {
+            var filter = Builders<StatusEntity>.Filter.Where(specification);
+            var propertyEntity = await _collection
+                .Find(filter)
+                .FirstOrDefaultAsync();
+            return propertyEntity;
         }
 
         public async Task<IEnumerable<StatusEntity>> GetAllAsync(ISpecification<StatusEntity> specification)

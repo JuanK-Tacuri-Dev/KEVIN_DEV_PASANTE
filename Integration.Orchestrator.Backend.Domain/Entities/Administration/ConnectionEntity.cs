@@ -3,7 +3,7 @@
     [Serializable]
     public class ConnectionEntity : Entity<Guid>
     {
-        public string code { get; set; }
+        public string connection_code { get; set; }
         public string server { get; set; }
         public string port { get; set; }
         public string user { get; set; }

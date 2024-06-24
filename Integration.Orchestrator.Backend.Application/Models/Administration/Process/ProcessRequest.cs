@@ -6,8 +6,6 @@
         public string Type { get; set; }
         public Guid ConnectionId { get; set; }
         public List<ObjectRequest> Objects { get; set; }
-        public DateTime Created_at { get; private set; } = DateTime.UtcNow;
-        public DateTime Updated_at { get; private set; } = DateTime.UtcNow;
     }
 
     public class ObjectRequest

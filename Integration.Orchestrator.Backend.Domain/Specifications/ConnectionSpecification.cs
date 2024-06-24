@@ -27,7 +27,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<ConnectionEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<ConnectionEntity, object>>>
         {
-            { nameof(ConnectionEntity.code), x => x.code },
+            { nameof(ConnectionEntity.connection_code), x => x.connection_code },
             { nameof(ConnectionEntity.server), x => x.server },
             { nameof(ConnectionEntity.adapter), x => x.adapter }
         };
@@ -72,7 +72,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.code.ToUpper().Contains(search.ToUpper()));
+                x.connection_code.ToUpper().Contains(search.ToUpper()));
             }
 
             return criteria;
@@ -80,7 +80,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
         public static Expression<Func<ConnectionEntity, bool>> GetByCodeExpression(string code)
         {
-            return x => true && x.code == code;
+            return x => true && x.connection_code == code;
         }
 
         public static Expression<Func<ConnectionEntity, bool>> GetByTypeExpression(string type)

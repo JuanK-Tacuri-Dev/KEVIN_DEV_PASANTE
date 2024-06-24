@@ -17,25 +17,25 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<ProcessEntity> GetByCodeAsync(Expression<Func<ProcessEntity, bool>> specification)
         {
             var filter = Builders<ProcessEntity>.Filter.Where(specification);
-            var synchronizationEntity = await _collection
+            var processEntity = await _collection
                 .Find(filter)
                 .FirstOrDefaultAsync();
-            return synchronizationEntity;
+            return processEntity;
         }
 
         public async Task<IEnumerable<ProcessEntity>> GetByTypeAsync(Expression<Func<ProcessEntity, bool>> specification)
         {
             var filter = Builders<ProcessEntity>.Filter.Where(specification);
-            var synchronizationEntity = await _collection
+            var processEntity = await _collection
                 .Find(filter)
                 .ToListAsync();
-            return synchronizationEntity;
+            return processEntity;
         }
 
         public async Task<IEnumerable<ProcessEntity>> GetAllAsync(ISpecification<ProcessEntity> specification)
         {
             var filter = Builders<ProcessEntity>.Filter.Where(specification.Criteria);
-            var synchronizationEntity = await _collection
+            var processEntity = await _collection
                 .Find(filter)
                 .Limit(specification.Limit)
                 .Skip(specification.Skip)
@@ -43,7 +43,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                                                ? Builders<ProcessEntity>.Sort.Ascending(specification.OrderBy)
                                                : Builders<ProcessEntity>.Sort.Descending(specification.OrderByDescending))
                 .ToListAsync();
-            return synchronizationEntity;
+            return processEntity;
         }
 
         public async Task<long> GetTotalRows(ISpecification<ProcessEntity> specification)

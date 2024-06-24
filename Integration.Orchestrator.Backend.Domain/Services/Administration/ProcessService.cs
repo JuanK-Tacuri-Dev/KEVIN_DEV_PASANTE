@@ -8,47 +8,47 @@ using Integration.Orchestrator.Backend.Domain.Specifications;
 namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     public class ProcessService(
-        IProcessRepository<ProcessEntity> connectionRepository) 
+        IProcessRepository<ProcessEntity> processRepository) 
         : IProcessService<ProcessEntity>
     {
-        private readonly IProcessRepository<ProcessEntity> _connectionRepository = connectionRepository;
+        private readonly IProcessRepository<ProcessEntity> _processRepository = processRepository;
 
-        public async Task InsertAsync(ProcessEntity connection)
+        public async Task InsertAsync(ProcessEntity process)
         {
-            await ValidateBussinesLogic(connection, true);
-            await _connectionRepository.InsertAsync(connection);
+            await ValidateBussinesLogic(process, true);
+            await _processRepository.InsertAsync(process);
         }
 
         public async Task<ProcessEntity> GetByCodeAsync(string code)
         {
             var specification = ProcessSpecification.GetByCodeExpression(code);
-            return await _connectionRepository.GetByCodeAsync(specification);
+            return await _processRepository.GetByCodeAsync(specification);
         }
 
         public async Task<IEnumerable<ProcessEntity>> GetByTypeAsync(string type)
         {
             var specification = ProcessSpecification.GetByTypeExpression(type);
-            return await _connectionRepository.GetByTypeAsync(specification);
+            return await _processRepository.GetByTypeAsync(specification);
         }
 
         public async Task<IEnumerable<ProcessEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
         {
             var spec = new ProcessSpecification(paginatedModel);
-            return await _connectionRepository.GetAllAsync(spec);
+            return await _processRepository.GetAllAsync(spec);
         }
 
         public async Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel)
         {
             var spec = new ProcessSpecification(paginatedModel);
-            return await _connectionRepository.GetTotalRows(spec);
+            return await _processRepository.GetTotalRows(spec);
         }
 
-        private async Task ValidateBussinesLogic(ProcessEntity connection, bool create = false) 
+        private async Task ValidateBussinesLogic(ProcessEntity process, bool create = false) 
         {
             if (create) 
             {
-                var connectionByCode = await GetByCodeAsync(connection.process_code);
-                if (connectionByCode != null) 
+                var processByCode = await GetByCodeAsync(process.process_code);
+                if (processByCode != null) 
                 {
                     throw new ArgumentException(AppMessages.Domain_ProcessExists);
                 }

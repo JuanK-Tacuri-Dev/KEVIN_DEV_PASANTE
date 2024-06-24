@@ -17,25 +17,25 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<ConnectionEntity> GetByCodeAsync(Expression<Func<ConnectionEntity, bool>> specification)
         {
             var filter = Builders<ConnectionEntity>.Filter.Where(specification);
-            var synchronizationEntity = await _collection
+            var connectionEntity = await _collection
                 .Find(filter)
                 .FirstOrDefaultAsync();
-            return synchronizationEntity;
+            return connectionEntity;
         }
 
         public async Task<IEnumerable<ConnectionEntity>> GetByTypeAsync(Expression<Func<ConnectionEntity, bool>> specification)
         {
             var filter = Builders<ConnectionEntity>.Filter.Where(specification);
-            var synchronizationEntity = await _collection
+            var connectionEntity = await _collection
                 .Find(filter)
                 .ToListAsync();
-            return synchronizationEntity;
+            return connectionEntity;
         }
 
         public async Task<IEnumerable<ConnectionEntity>> GetAllAsync(ISpecification<ConnectionEntity> specification)
         {
             var filter = Builders<ConnectionEntity>.Filter.Where(specification.Criteria);
-            var synchronizationEntity = await _collection
+            var connectionEntity = await _collection
                 .Find(filter)
                 .Limit(specification.Limit)
                 .Skip(specification.Skip)
@@ -43,7 +43,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                                                ? Builders<ConnectionEntity>.Sort.Ascending(specification.OrderBy)
                                                : Builders<ConnectionEntity>.Sort.Descending(specification.OrderByDescending))
                 .ToListAsync();
-            return synchronizationEntity;
+            return connectionEntity;
         }
 
         public async Task<long> GetTotalRows(ISpecification<ConnectionEntity> specification)
