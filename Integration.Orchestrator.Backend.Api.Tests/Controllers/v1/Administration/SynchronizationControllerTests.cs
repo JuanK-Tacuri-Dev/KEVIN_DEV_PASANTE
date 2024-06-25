@@ -175,6 +175,42 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
         }
 
         [Fact]
+        public async Task GetById_ReturnsOkResult()
+        {
+            // Arrange
+            var franchiseId = Guid.NewGuid();
+            var response = new GetByIdSynchronizationCommandResponse(
+                new GetByIdSynchronizationResponse
+                {
+                    Code = 200,
+                    Description = AppMessages.Api_SynchronizationResponse,
+                    Data = new GetByIdSynchronization
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "Test",
+                        FranchiseId = franchiseId,
+                        Status = Guid.NewGuid(),
+                        Observations = "Observation",
+                        HourToExecute = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
+                        Integrations = new List<IntegrationRequest>() { new IntegrationRequest { Id = Guid.NewGuid() } },
+                        UserId = Guid.NewGuid()
+                    }
+                });
+
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetByIdSynchronizationCommandRequest>(), default))
+                         .ReturnsAsync(response);
+
+            // Act
+            var result = await _controller.GetById(franchiseId);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var returnValue = Assert.IsType<GetByIdSynchronizationCommandResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Message.Code);
+            Assert.Equal(AppMessages.Api_SynchronizationResponse, returnValue.Message.Description);
+        }
+
+        [Fact]
         public async Task GetAllPaginated_ReturnsOkResult()
         {
             // Arrange
