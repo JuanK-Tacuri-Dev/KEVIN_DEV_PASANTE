@@ -6,5 +6,7 @@
         public string entity_code { get; set; }
         public string entity_type { get; set; }
         public DateTime created_at { get; private set; } = DateTime.UtcNow;
+        public DateTime updated_at { get; private set; } = DateTime.UtcNow;
+        
     }
 }

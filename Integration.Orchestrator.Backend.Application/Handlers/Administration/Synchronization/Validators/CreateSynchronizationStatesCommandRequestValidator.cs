@@ -8,13 +8,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
     {
         public CreateSynchronizationStatesCommandRequestValidator()
         {
-            RuleFor(request => request.SynchronizationStates.Name)
+            RuleFor(request => request.SynchronizationStates.SynchronizationStatesRequest.Name)
             .NotEmpty().WithMessage(AppMessages.SynchronizationStates_Name_Required);
 
-            RuleFor(request => request.SynchronizationStates.Code)
+            RuleFor(request => request.SynchronizationStates.SynchronizationStatesRequest.Code)
             .NotEmpty().WithMessage(AppMessages.SynchronizationStates_Code_Required);
 
-            RuleFor(request => request.SynchronizationStates.Color)
+            RuleFor(request => request.SynchronizationStates.SynchronizationStatesRequest.Color)
             .NotEmpty().WithMessage(AppMessages.SynchronizationStates_Color_Required);
         }
 

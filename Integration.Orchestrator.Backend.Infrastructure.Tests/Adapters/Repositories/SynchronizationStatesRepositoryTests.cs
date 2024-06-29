@@ -65,8 +65,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
                            .ReturnsAsync(_mockCursor.Object);
 
 
+
+
             // Act
-            var result = await _repository.GetByIdAsync(id);
+            var result = await _repository.GetByIdAsync(e => e.id == entity.id);
 
             // Assert
             Assert.Equal(entity, result);

@@ -11,12 +11,12 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
     public class SynchronizationControllerTests
     {
         private readonly Mock<IMediator> _mediatorMock;
-        private readonly SynchronizationController _controller;
+        private readonly SynchronizationsController _controller;
 
         public SynchronizationControllerTests()
         {
             _mediatorMock = new Mock<IMediator>();
-            _controller = new SynchronizationController(_mediatorMock.Object);
+            _controller = new SynchronizationsController(_mediatorMock.Object);
         }
 
         [Fact]
@@ -141,13 +141,13 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             // Arrange
             var franchiseId = Guid.NewGuid();
             var response = new GetByFranchiseIdSynchronizationCommandResponse(
-                new GetByFranchiseIdSynchronizationResponse
+                new SynchronizationGetByFranchiseIdResponse
                 {
                     Code = 200,
                     Description = AppMessages.Api_SynchronizationResponse,
-                    Data = new List<GetByFranchiseIdSynchronization>
+                    Data = new List<SynchronizationGetByFranchiseId>
                     {
-                        new GetByFranchiseIdSynchronization
+                        new SynchronizationGetByFranchiseId
                         {
                             Id = Guid.NewGuid(),
                             Name = "Test",

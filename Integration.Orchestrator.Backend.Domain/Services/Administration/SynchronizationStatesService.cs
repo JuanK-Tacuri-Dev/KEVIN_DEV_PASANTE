@@ -7,30 +7,42 @@ using Integration.Orchestrator.Backend.Domain.Specifications;
 namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     public class SynchronizationStatesService(
-        ISynchronizationStatesRepository<SynchronizationStatesEntity> synchronizationStatesRepository) : ISynchronizationStatesService<SynchronizationStatesEntity>
+        ISynchronizationStatesRepository<SynchronizationStatesEntity> synchronizationStatesStatesRepository) 
+        : ISynchronizationStatesService<SynchronizationStatesEntity>
     {
-        private readonly ISynchronizationStatesRepository<SynchronizationStatesEntity> _synchronizationStatesRepository = synchronizationStatesRepository;
+        private readonly ISynchronizationStatesRepository<SynchronizationStatesEntity> _synchronizationStatesStatesRepository = synchronizationStatesStatesRepository;
 
-        public async Task InsertAsync(SynchronizationStatesEntity synchronizationStates)
+        public async Task InsertAsync(SynchronizationStatesEntity synchronizationStatesStates)
         {
-            await _synchronizationStatesRepository.InsertAsync(synchronizationStates);
+            await _synchronizationStatesStatesRepository.InsertAsync(synchronizationStatesStates);
+        }
+
+        public async Task UpdateAsync(SynchronizationStatesEntity synchronizationStates)
+        {
+            await _synchronizationStatesStatesRepository.UpdateAsync(synchronizationStates);
+        }
+
+        public async Task DeleteAsync(SynchronizationStatesEntity synchronizationStates)
+        {
+            await _synchronizationStatesStatesRepository.DeleteAsync(synchronizationStates);
         }
 
         public async Task<SynchronizationStatesEntity> GetByIdAsync(Guid id)
         {
-            return await _synchronizationStatesRepository.GetByIdAsync(id);
+            var specification = SynchronizationStatesSpecification.GetByIdExpression(id);
+            return await _synchronizationStatesStatesRepository.GetByIdAsync(specification);
         }
 
         public async Task<IEnumerable<SynchronizationStatesEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
         {
             var spec = new SynchronizationStatesSpecification(paginatedModel);
-            return await _synchronizationStatesRepository.GetAllAsync(spec);
+            return await _synchronizationStatesStatesRepository.GetAllAsync(spec);
         }
 
         public async Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel)
         {
             var spec = new SynchronizationStatesSpecification(paginatedModel);
-            return await _synchronizationStatesRepository.GetTotalRows(spec);
+            return await _synchronizationStatesStatesRepository.GetTotalRows(spec);
         }
     }
 }

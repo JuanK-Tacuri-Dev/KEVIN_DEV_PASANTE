@@ -15,14 +15,30 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return _collection.InsertOneAsync(entity);
         }
 
-        public async Task<SynchronizationStatesEntity> GetByIdAsync(Guid id)
+        public Task UpdateAsync(SynchronizationStatesEntity entity)
         {
-            var specification = (Expression<Func<SynchronizationStatesEntity, bool>>)(x => x.id == id);
+            var filter = Builders<SynchronizationStatesEntity>.Filter.Eq("_id", entity.id);
+            var update = Builders<SynchronizationStatesEntity>.Update
+                .Set(m => m.name, entity.name)
+                .Set(m => m.code, entity.code)
+                .Set(m => m.color, entity.color)
+                .Set(m => m.updated_at, entity.updated_at);
+            return _collection.UpdateOneAsync(filter, update);
+        }
+
+        public async Task DeleteAsync(SynchronizationStatesEntity entity)
+        {
+            var filter = Builders<SynchronizationStatesEntity>.Filter.Eq("_id", entity.id);
+            await _collection.DeleteOneAsync(filter);
+        }
+
+        public async Task<SynchronizationStatesEntity> GetByIdAsync(Expression<Func<SynchronizationStatesEntity, bool>> specification)
+        {
             var filter = Builders<SynchronizationStatesEntity>.Filter.Where(specification);
-            var synchronizationEntity = await _collection
+            var integrationEntity = await _collection
                 .Find(filter)
                 .FirstOrDefaultAsync();
-            return synchronizationEntity;
+            return integrationEntity;
         }
 
         public async Task<IEnumerable<SynchronizationStatesEntity>> GetAllAsync(ISpecification<SynchronizationStatesEntity> specification)

@@ -55,7 +55,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         public async Task Handle_GetByCode_Success()
         {
             // Arrange
-            var request = new GetByCodeConnectionCommandRequest(new GetByCodeConnectionRequest { Code = "TestCode" });
+            var request = new GetByCodeConnectionCommandRequest(new ConnectionGetByCodeRequest { Code = "TestCode" });
             var cancellationToken = CancellationToken.None;
             var connectionEntity = new ConnectionEntity 
             { 
@@ -84,7 +84,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         public async Task Handle_GetByType_Success()
         {
             // Arrange
-            var request = new GetByTypeConnectionCommandRequest(new GetByTypeConnectionRequest { Type = "TestType" });
+            var request = new GetByTypeConnectionCommandRequest(new ConnectionGetByTypeRequest { Type = "TestType" });
             var cancellationToken = CancellationToken.None;
             var connectionEntities = new List<ConnectionEntity>
         {

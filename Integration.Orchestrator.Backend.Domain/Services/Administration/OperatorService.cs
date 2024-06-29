@@ -19,6 +19,23 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             await _operatorRepository.InsertAsync(operatorEntity);
         }
 
+        public async Task UpdateAsync(OperatorEntity operatorEntity)
+        {
+            await ValidateBussinesLogic(operatorEntity);
+            await _operatorRepository.UpdateAsync(operatorEntity);
+        }
+
+        public async Task DeleteAsync(OperatorEntity operatorEntity)
+        {
+            await _operatorRepository.DeleteAsync(operatorEntity);
+        }
+
+        public async Task<OperatorEntity> GetByIdAsync(Guid id)
+        {
+            var specification = OperatorSpecification.GetByIdExpression(id);
+            return await _operatorRepository.GetByIdAsync(specification);
+        }
+
         public async Task<OperatorEntity> GetByCodeAsync(string code)
         {
             var specification = OperatorSpecification.GetByCodeExpression(code);

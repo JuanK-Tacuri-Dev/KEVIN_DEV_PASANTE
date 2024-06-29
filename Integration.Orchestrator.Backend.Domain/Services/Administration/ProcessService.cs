@@ -8,7 +8,7 @@ using Integration.Orchestrator.Backend.Domain.Specifications;
 namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     public class ProcessService(
-        IProcessRepository<ProcessEntity> processRepository) 
+        IProcessRepository<ProcessEntity> processRepository)
         : IProcessService<ProcessEntity>
     {
         private readonly IProcessRepository<ProcessEntity> _processRepository = processRepository;
@@ -17,6 +17,22 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             await ValidateBussinesLogic(process, true);
             await _processRepository.InsertAsync(process);
+        }
+
+        public async Task UpdateAsync(ProcessEntity process)
+        {
+            await _processRepository.UpdateAsync(process);
+        }
+
+        public async Task DeleteAsync(ProcessEntity process)
+        {
+            await _processRepository.DeleteAsync(process);
+        }
+
+        public async Task<ProcessEntity> GetByIdAsync(Guid id)
+        {
+            var specification = ProcessSpecification.GetByIdExpression(id);
+            return await _processRepository.GetByIdAsync(specification);
         }
 
         public async Task<ProcessEntity> GetByCodeAsync(string code)
@@ -43,12 +59,12 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _processRepository.GetTotalRows(spec);
         }
 
-        private async Task ValidateBussinesLogic(ProcessEntity process, bool create = false) 
+        private async Task ValidateBussinesLogic(ProcessEntity process, bool create = false)
         {
-            if (create) 
+            if (create)
             {
                 var processByCode = await GetByCodeAsync(process.process_code);
-                if (processByCode != null) 
+                if (processByCode != null)
                 {
                     throw new ArgumentException(AppMessages.Domain_ProcessExists);
                 }

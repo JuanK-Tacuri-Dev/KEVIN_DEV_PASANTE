@@ -9,6 +9,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
     public class IntegrationRepository(IMongoCollection<IntegrationEntity> collection) : IIntegrationRepository<IntegrationEntity>
     {
         private readonly IMongoCollection<IntegrationEntity> _collection = collection;
+        
         public Task InsertAsync(IntegrationEntity entity)
         {
             return _collection.InsertOneAsync(entity);
@@ -27,10 +28,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return _collection.UpdateOneAsync(filter, update);
         }
 
-        public Task DeleteAsync(IntegrationEntity entity)
+        public async Task DeleteAsync(IntegrationEntity entity)
         {
             var filter = Builders<IntegrationEntity>.Filter.Eq("_id", entity.id);
-            return _collection.DeleteOneAsync(filter);
+            await _collection.DeleteOneAsync(filter);
         }
 
         public async Task<IntegrationEntity> GetByIdAsync(Expression<Func<IntegrationEntity, bool>> specification)

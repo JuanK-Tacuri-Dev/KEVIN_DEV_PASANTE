@@ -14,6 +14,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
     public class ConnectionHandler(IConnectionService<ConnectionEntity> connectionService)
         :
         IRequestHandler<CreateConnectionCommandRequest, CreateConnectionCommandResponse>,
+        IRequestHandler<UpdateConnectionCommandRequest, UpdateConnectionCommandResponse>,
+        IRequestHandler<DeleteConnectionCommandRequest, DeleteConnectionCommandResponse>,
+        IRequestHandler<GetByIdConnectionCommandRequest, GetByIdConnectionCommandResponse>,
         IRequestHandler<GetByCodeConnectionCommandRequest, GetByCodeConnectionCommandResponse>,
         IRequestHandler<GetByTypeConnectionCommandRequest, GetByTypeConnectionCommandResponse>,
         IRequestHandler<GetAllPaginatedConnectionCommandRequest, GetAllPaginatedConnectionCommandResponse>
@@ -24,7 +27,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var connectionEntity = MapAynchronizer(request.Connection.ConnectionRequest, Guid.NewGuid());
+                var connectionEntity = MapConnection(request.Connection.ConnectionRequest, Guid.NewGuid());
                 await _connectionService.InsertAsync(connectionEntity);
 
                 return new CreateConnectionCommandResponse(
@@ -35,6 +38,106 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new ConnectionCreate()
                         {
                             Id = connectionEntity.id
+                        }
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<UpdateConnectionCommandResponse> Handle(UpdateConnectionCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var connectionById = await _connectionService.GetByIdAsync(request.Id);
+                if (connectionById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_ConnectionNotFound);
+                }
+
+                var connectionEntity = MapConnection(request.Connection.ConnectionRequest, request.Id);
+                await _connectionService.UpdateAsync(connectionEntity);
+
+                return new UpdateConnectionCommandResponse(
+                        new ConnectionUpdateResponse
+                        {
+                            Code = HttpStatusCode.OK.GetHashCode(),
+                            Description = AppMessages.Application_ConnectionResponseUpdated,
+                            Data = new ConnectionUpdate()
+                            {
+                                Id = connectionEntity.id
+                            }
+                        });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<DeleteConnectionCommandResponse> Handle(DeleteConnectionCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var connectionById = await _connectionService.GetByIdAsync(request.Connection.Id);
+                if (connectionById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_ConnectionNotFound);
+                }
+
+                await _connectionService.DeleteAsync(connectionById);
+
+                return new DeleteConnectionCommandResponse(
+                    new ConnectionDeleteResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Application_ConnectionResponseDeleted
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<GetByIdConnectionCommandResponse> Handle(GetByIdConnectionCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var connectionById = await _connectionService.GetByIdAsync(request.Connection.Id);
+                if (connectionById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_ConnectionNotFound);
+                }
+
+                return new GetByIdConnectionCommandResponse(
+                    new ConnectionGetByIdResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_ConnectionResponse,
+                        Data = new ConnectionGetById
+                        {
+                            Id = connectionById.id,
+                            Code = connectionById.connection_code,
+                            Server = connectionById.server,
+                            Port = connectionById.port,
+                            User = connectionById.user,
+                            Password = connectionById.password,
+                            Adapter = connectionById.adapter
                         }
                     });
             }
@@ -59,11 +162,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 }
 
                 return new GetByCodeConnectionCommandResponse(
-                    new GetByCodeConnectionResponse
+                    new ConnectionGetByCodeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_ConnectionResponse,
-                        Data = new GetByCodeConnection
+                        Data = new ConnectionGetByCode
                         {
                             Id = connectionByCode.id,
                             Code = connectionByCode.connection_code,
@@ -96,11 +199,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 }
 
                 return new GetByTypeConnectionCommandResponse(
-                    new GetByTypeConnectionResponse
+                    new ConnectionGetByTypeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_ConnectionResponse,
-                        Data = connectionByType.Select(c => new GetByTypeConnection
+                        Data = connectionByType.Select(c => new ConnectionGetByType
                         {
                             Id = c.id,
                             Code = c.connection_code,
@@ -154,7 +257,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 );
         }
 
-        private ConnectionEntity MapAynchronizer(ConnectionCreateRequest request, Guid id)
+        private ConnectionEntity MapConnection(ConnectionCreateRequest request, Guid id)
         {
             var connectionEntity = new ConnectionEntity()
             {

@@ -77,6 +77,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return criteria;
         }
 
+        public static Expression<Func<PropertyEntity, bool>> GetByIdExpression(Guid id)
+        {
+            return BaseSpecification<PropertyEntity>.GetByUuid(x => x.id, id);
+        }
+
         public static Expression<Func<PropertyEntity, bool>> GetByCodeExpression(string code)
         {
             return x => true && x.property_code == code;

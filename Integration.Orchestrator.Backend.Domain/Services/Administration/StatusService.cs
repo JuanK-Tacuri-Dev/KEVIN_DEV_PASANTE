@@ -19,6 +19,23 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             await _statusRepository.InsertAsync(status);
         }
 
+        public async Task UpdateAsync(StatusEntity status)
+        {
+            await ValidateBussinesLogic(status);
+            await _statusRepository.UpdateAsync(status);
+        }
+
+        public async Task DeleteAsync(StatusEntity status)
+        {
+            await _statusRepository.DeleteAsync(status);
+        }
+
+        public async Task<StatusEntity> GetByIdAsync(Guid id)
+        {
+            var specification = StatusSpecification.GetByIdExpression(id);
+            return await _statusRepository.GetByIdAsync(specification);
+        }
+
         public async Task<StatusEntity> GetByCodeAsync(string code)
         {
             var specification = StatusSpecification.GetByCodeExpression(code);

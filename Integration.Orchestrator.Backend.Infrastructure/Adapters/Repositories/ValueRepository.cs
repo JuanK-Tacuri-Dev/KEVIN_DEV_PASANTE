@@ -9,9 +9,36 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
     public class ValueRepository(IMongoCollection<ValueEntity> collection) : IValueRepository<ValueEntity>
     {
         private readonly IMongoCollection<ValueEntity> _collection = collection;
+
         public Task InsertAsync(ValueEntity entity)
         {
             return _collection.InsertOneAsync(entity);
+        }
+
+        public Task UpdateAsync(ValueEntity entity)
+        {
+            var filter = Builders<ValueEntity>.Filter.Eq("_id", entity.id);
+            var update = Builders<ValueEntity>.Update
+                .Set(m => m.name, entity.name)
+                .Set(m => m.value_code, entity.value_code)
+                .Set(m => m.value_type, entity.value_type)
+                .Set(m => m.updated_at, entity.updated_at);
+            return _collection.UpdateOneAsync(filter, update);
+        }
+        
+        public async Task DeleteAsync(ValueEntity entity)
+        {
+            var filter = Builders<ValueEntity>.Filter.Eq("_id", entity.id);
+            await _collection.DeleteOneAsync(filter);
+        }
+
+        public async Task<ValueEntity> GetByIdAsync(Expression<Func<ValueEntity, bool>> specification)
+        {
+            var filter = Builders<ValueEntity>.Filter.Where(specification);
+            var integrationEntity = await _collection
+                .Find(filter)
+                .FirstOrDefaultAsync();
+            return integrationEntity;
         }
 
         public async Task<ValueEntity> GetByCodeAsync(Expression<Func<ValueEntity, bool>> specification)

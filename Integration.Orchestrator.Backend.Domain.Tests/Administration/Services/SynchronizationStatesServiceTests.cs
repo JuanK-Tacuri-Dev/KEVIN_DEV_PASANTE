@@ -4,6 +4,7 @@ using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Services.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using Moq;
+using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
 {
@@ -37,14 +38,14 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             // Arrange
             var id = Guid.NewGuid();
             var expectedEntity = new SynchronizationStatesEntity { id = id };
-            _mockRepo.Setup(repo => repo.GetByIdAsync(id)).ReturnsAsync(expectedEntity);
+            _mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<SynchronizationStatesEntity,bool>>>())).ReturnsAsync(expectedEntity);
 
             // Act
             var result = await _service.GetByIdAsync(id);
 
             // Assert
             Assert.Equal(expectedEntity, result);
-            _mockRepo.Verify(repo => repo.GetByIdAsync(id), Times.Once);
+            _mockRepo.Verify(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<SynchronizationStatesEntity, bool>>>()), Times.Once);
         }
 
         [Fact]

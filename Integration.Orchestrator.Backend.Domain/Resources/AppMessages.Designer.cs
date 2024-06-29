@@ -169,6 +169,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connection Deleted Succesfully.
+        /// </summary>
+        public static string Application_ConnectionResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_ConnectionResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection Updated Succesfully.
+        /// </summary>
+        public static string Application_ConnectionResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_ConnectionResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Entity not found.
         /// </summary>
         public static string Application_EntitiesNotFound {
@@ -183,6 +201,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Application_EntitiesResponseCreated {
             get {
                 return ResourceManager.GetString("Application_EntitiesResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entity Deleted Succesfully.
+        /// </summary>
+        public static string Application_EntitiesResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_EntitiesResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entity Updated Succesfully.
+        /// </summary>
+        public static string Application_EntitiesResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_EntitiesResponseUpdated", resourceCulture);
             }
         }
         
@@ -241,6 +277,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operator Deleted Succesfully.
+        /// </summary>
+        public static string Application_OperatorResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_OperatorResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator Updated Succesfully.
+        /// </summary>
+        public static string Application_OperatorResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_OperatorResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Process not found.
         /// </summary>
         public static string Application_ProcessNotFound {
@@ -255,6 +309,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Application_ProcessResponseCreated {
             get {
                 return ResourceManager.GetString("Application_ProcessResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process Deleted Succesfully.
+        /// </summary>
+        public static string Application_ProcessResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_ProcessResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process Updated Succesfully.
+        /// </summary>
+        public static string Application_ProcessResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_ProcessResponseUpdated", resourceCulture);
             }
         }
         
@@ -277,6 +349,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Property Deleted Succesfully.
+        /// </summary>
+        public static string Application_PropertyResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_PropertyResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Property Updated Succesfully.
+        /// </summary>
+        public static string Application_PropertyResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_PropertyResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status not found.
         /// </summary>
         public static string Application_StatusNotFound {
@@ -291,6 +381,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Application_StatusResponseCreated {
             get {
                 return ResourceManager.GetString("Application_StatusResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status Deleted Succesfully.
+        /// </summary>
+        public static string Application_StatusResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_StatusResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status Updated Succesfully.
+        /// </summary>
+        public static string Application_StatusResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_StatusResponseUpdated", resourceCulture);
             }
         }
         
@@ -349,6 +457,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Synchronization States Deleted Succesfully.
+        /// </summary>
+        public static string Application_SynchronizationStatesResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_SynchronizationStatesResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization States Updated Succesfully.
+        /// </summary>
+        public static string Application_SynchronizationStatesResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_SynchronizationStatesResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value not found.
         /// </summary>
         public static string Application_ValueNotFound {
@@ -363,6 +489,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Application_ValueResponseCreated {
             get {
                 return ResourceManager.GetString("Application_ValueResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value Deleted Succesfully.
+        /// </summary>
+        public static string Application_ValueResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_ValueResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value Updated Succesfully.
+        /// </summary>
+        public static string Application_ValueResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_ValueResponseUpdated", resourceCulture);
             }
         }
         

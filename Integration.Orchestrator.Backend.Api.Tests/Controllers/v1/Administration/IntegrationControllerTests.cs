@@ -11,12 +11,12 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
     public class IntegrationControllerTests
     {
         private readonly Mock<IMediator> _mediatorMock;
-        private readonly IntegrationController _controller;
+        private readonly IntegrationsController _controller;
 
         public IntegrationControllerTests()
         {
             _mediatorMock = new Mock<IMediator>();
-            _controller = new IntegrationController(_mediatorMock.Object);
+            _controller = new IntegrationsController(_mediatorMock.Object);
         }
 
         [Fact]

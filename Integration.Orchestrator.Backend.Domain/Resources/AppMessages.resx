@@ -153,11 +153,23 @@
   <data name="Application_ConnectionResponseCreated" xml:space="preserve">
     <value>Connection Created Succesfully</value>
   </data>
+  <data name="Application_ConnectionResponseDeleted" xml:space="preserve">
+    <value>Connection Deleted Succesfully</value>
+  </data>
+  <data name="Application_ConnectionResponseUpdated" xml:space="preserve">
+    <value>Connection Updated Succesfully</value>
+  </data>
   <data name="Application_EntitiesNotFound" xml:space="preserve">
     <value>Entity not found</value>
   </data>
   <data name="Application_EntitiesResponseCreated" xml:space="preserve">
     <value>Entity Created Succesfully</value>
+  </data>
+  <data name="Application_EntitiesResponseDeleted" xml:space="preserve">
+    <value>Entity Deleted Succesfully</value>
+  </data>
+  <data name="Application_EntitiesResponseUpdated" xml:space="preserve">
+    <value>Entity Updated Succesfully</value>
   </data>
   <data name="Application_IntegrationNotFound" xml:space="preserve">
     <value>Integration not found</value>
@@ -177,11 +189,23 @@
   <data name="Application_OperatorResponseCreated" xml:space="preserve">
     <value>Operator Created Succesfully</value>
   </data>
+  <data name="Application_OperatorResponseDeleted" xml:space="preserve">
+    <value>Operator Deleted Succesfully</value>
+  </data>
+  <data name="Application_OperatorResponseUpdated" xml:space="preserve">
+    <value>Operator Updated Succesfully</value>
+  </data>
   <data name="Application_ProcessNotFound" xml:space="preserve">
     <value>Process not found</value>
   </data>
   <data name="Application_ProcessResponseCreated" xml:space="preserve">
     <value>Process Created Succesfully</value>
+  </data>
+  <data name="Application_ProcessResponseDeleted" xml:space="preserve">
+    <value>Process Deleted Succesfully</value>
+  </data>
+  <data name="Application_ProcessResponseUpdated" xml:space="preserve">
+    <value>Process Updated Succesfully</value>
   </data>
   <data name="Application_PropertyNotFound" xml:space="preserve">
     <value>Property not found</value>
@@ -189,11 +213,23 @@
   <data name="Application_PropertyResponseCreated" xml:space="preserve">
     <value>Property Created Succesfully</value>
   </data>
+  <data name="Application_PropertyResponseDeleted" xml:space="preserve">
+    <value>Property Deleted Succesfully</value>
+  </data>
+  <data name="Application_PropertyResponseUpdated" xml:space="preserve">
+    <value>Property Updated Succesfully</value>
+  </data>
   <data name="Application_StatusNotFound" xml:space="preserve">
     <value>Status not found</value>
   </data>
   <data name="Application_StatusResponseCreated" xml:space="preserve">
     <value>Status Created Succesfully</value>
+  </data>
+  <data name="Application_StatusResponseDeleted" xml:space="preserve">
+    <value>Status Deleted Succesfully</value>
+  </data>
+  <data name="Application_StatusResponseUpdated" xml:space="preserve">
+    <value>Status Updated Succesfully</value>
   </data>
   <data name="Application_SynchronizationNotFound" xml:space="preserve">
     <value>Synchronization not found</value>
@@ -213,11 +249,23 @@
   <data name="Application_SynchronizationStatesResponseCreated" xml:space="preserve">
     <value>Synchronization States Created Succesfully</value>
   </data>
+  <data name="Application_SynchronizationStatesResponseDeleted" xml:space="preserve">
+    <value>Synchronization States Deleted Succesfully</value>
+  </data>
+  <data name="Application_SynchronizationStatesResponseUpdated" xml:space="preserve">
+    <value>Synchronization States Updated Succesfully</value>
+  </data>
   <data name="Application_ValueNotFound" xml:space="preserve">
     <value>Value not found</value>
   </data>
   <data name="Application_ValueResponseCreated" xml:space="preserve">
     <value>Value Created Succesfully</value>
+  </data>
+  <data name="Application_ValueResponseDeleted" xml:space="preserve">
+    <value>Value Deleted Succesfully</value>
+  </data>
+  <data name="Application_ValueResponseUpdated" xml:space="preserve">
+    <value>Value Updated Succesfully</value>
   </data>
   <data name="Connection_Adapter_Required" xml:space="preserve">
     <value>The adapter is required</value>

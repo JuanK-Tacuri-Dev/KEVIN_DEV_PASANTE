@@ -14,6 +14,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
     public class EntitiesHandler(IEntitiesService<EntitiesEntity> entitiesService)
         :
         IRequestHandler<CreateEntitiesCommandRequest, CreateEntitiesCommandResponse>,
+        IRequestHandler<UpdateEntitiesCommandRequest, UpdateEntitiesCommandResponse>,
+        IRequestHandler<DeleteEntitiesCommandRequest, DeleteEntitiesCommandResponse>,
+        IRequestHandler<GetByIdEntitiesCommandRequest, GetByIdEntitiesCommandResponse>,
         IRequestHandler<GetByCodeEntitiesCommandRequest, GetByCodeEntitiesCommandResponse>,
         IRequestHandler<GetByTypeEntitiesCommandRequest, GetByTypeEntitiesCommandResponse>,
         IRequestHandler<GetAllPaginatedEntitiesCommandRequest, GetAllPaginatedEntitiesCommandResponse>
@@ -24,7 +27,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var entitiesEntity = MapAynchronizer(request.Entities.EntitiesRequest, Guid.NewGuid());
+                var entitiesEntity = MapEntities(request.Entities.EntitiesRequest, Guid.NewGuid());
                 await _entitiesService.InsertAsync(entitiesEntity);
 
                 return new CreateEntitiesCommandResponse(
@@ -35,6 +38,103 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new EntitiesCreate()
                         {
                             Id = entitiesEntity.id
+                        }
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<UpdateEntitiesCommandResponse> Handle(UpdateEntitiesCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var entitiesById = await _entitiesService.GetByIdAsync(request.Id);
+                if (entitiesById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_EntitiesNotFound);
+                }
+
+                var entitiesEntity = MapEntities(request.Entities.EntitiesRequest, request.Id);
+                await _entitiesService.UpdateAsync(entitiesEntity);
+
+                return new UpdateEntitiesCommandResponse(
+                        new EntitiesUpdateResponse
+                        {
+                            Code = HttpStatusCode.OK.GetHashCode(),
+                            Description = AppMessages.Application_EntitiesResponseUpdated,
+                            Data = new EntitiesUpdate()
+                            {
+                                Id = entitiesEntity.id
+                            }
+                        });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<DeleteEntitiesCommandResponse> Handle(DeleteEntitiesCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var entitiesById = await _entitiesService.GetByIdAsync(request.Entities.Id);
+                if (entitiesById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_EntitiesNotFound);
+                }
+
+                await _entitiesService.DeleteAsync(entitiesById);
+
+                return new DeleteEntitiesCommandResponse(
+                    new EntitiesDeleteResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Application_EntitiesResponseDeleted
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<GetByIdEntitiesCommandResponse> Handle(GetByIdEntitiesCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var entitiesById = await _entitiesService.GetByIdAsync(request.Entities.Id);
+                if (entitiesById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_EntitiesNotFound);
+                }
+
+                return new GetByIdEntitiesCommandResponse(
+                    new EntitiesGetByIdResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_EntitiesResponse,
+                        Data = new EntitiesGetById
+                        {
+                            Id = entitiesById.id,
+                            Name = entitiesById.name,
+                            Code = entitiesById.entity_code,
+                            Type = entitiesById.entity_type
                         }
                     });
             }
@@ -59,7 +159,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 }
 
                 return new GetByCodeEntitiesCommandResponse(
-                    new GetByCodeEntitiesResponse
+                    new EntitiesGetByCodeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_EntitiesResponse,
@@ -93,11 +193,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 }
 
                 return new GetByTypeEntitiesCommandResponse(
-                    new GetByTypeEntitiesResponse
+                    new EntitiesGetByTypeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_EntitiesResponse,
-                        Data = entitiesByType.Select(c => new GetByTypeEntities
+                        Data = entitiesByType.Select(c => new EntitiesGetByType
                         {
                             Id = c.id,
                             Name = c.name,
@@ -143,7 +243,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 });
         }
 
-        private EntitiesEntity MapAynchronizer(EntitiesCreateRequest request, Guid id)
+        private EntitiesEntity MapEntities(EntitiesCreateRequest request, Guid id)
         {
             var entitiesEntity = new EntitiesEntity()
             {

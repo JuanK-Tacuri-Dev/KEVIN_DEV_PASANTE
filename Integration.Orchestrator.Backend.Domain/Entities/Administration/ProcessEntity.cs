@@ -8,6 +8,8 @@
         public Guid connection_id { get; set; }
         public List<ObjectEntity> objects { get; set; }
         public DateTime created_at { get; private set; } = DateTime.UtcNow;
+        public DateTime updated_at { get; private set; } = DateTime.UtcNow;
+        
     }
 
     public class ObjectEntity

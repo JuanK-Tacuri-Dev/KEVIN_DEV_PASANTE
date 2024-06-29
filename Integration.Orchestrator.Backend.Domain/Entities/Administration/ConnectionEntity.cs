@@ -10,6 +10,8 @@
         public string password { get; set; }
         public string adapter { get; set; }
         public DateTime created_at { get; private set; } = DateTime.UtcNow;
+        public DateTime updated_at { get; private set; } = DateTime.UtcNow;
+        
 
     }
 

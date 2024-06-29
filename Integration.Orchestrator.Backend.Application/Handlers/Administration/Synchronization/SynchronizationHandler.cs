@@ -1,5 +1,4 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization;
-using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
@@ -17,6 +16,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         IRequestHandler<CreateSynchronizationCommandRequest, CreateSynchronizationCommandResponse>,
         IRequestHandler<UpdateSynchronizationCommandRequest, UpdateSynchronizationCommandResponse>,
         IRequestHandler<DeleteSynchronizationCommandRequest, DeleteSynchronizationCommandResponse>,
+        IRequestHandler<GetByIdSynchronizationCommandRequest, GetByIdSynchronizationCommandResponse>,
         IRequestHandler<GetByFranchiseIdSynchronizationCommandRequest, GetByFranchiseIdSynchronizationCommandResponse>,
         IRequestHandler<GetAllPaginatedSynchronizationCommandRequest, GetAllPaginatedSynchronizationCommandResponse>
     {
@@ -123,6 +123,44 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             }
         }
 
+        public async Task<GetByIdSynchronizationCommandResponse> Handle(GetByIdSynchronizationCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var synchronizationById = await _synchronizationService.GetByIdAsync(request.Synchronization.Id);
+                if (synchronizationById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_SynchronizationNotFound);
+                }
+
+                return new GetByIdSynchronizationCommandResponse(
+                    new SynchronizationGetByIdResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_SynchronizationResponse,
+                        Data = new SynchronizationGetById
+                        {
+                            Id = synchronizationById.id,
+                            Name = synchronizationById.name,
+                            FranchiseId = synchronizationById.franchise_id,
+                            Status = synchronizationById.status,
+                            Observations = synchronizationById.observations,
+                            HourToExecute = synchronizationById.hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
+                            Integrations = synchronizationById.integrations.Select(i => new IntegrationRequest { Id = i }).ToList(),
+                            UserId = synchronizationById.user_id
+                        }
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
         public async Task<GetByFranchiseIdSynchronizationCommandResponse> Handle(GetByFranchiseIdSynchronizationCommandRequest request, CancellationToken cancellationToken)
         {
             try
@@ -134,12 +172,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 }
 
                 return new GetByFranchiseIdSynchronizationCommandResponse(
-                    new GetByFranchiseIdSynchronizationResponse
+                    new SynchronizationGetByFranchiseIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_SynchronizationResponse,
                         Data = synchronizationByFranchise
-                        .Select(syn => new GetByFranchiseIdSynchronization
+                        .Select(syn => new SynchronizationGetByFranchiseId
                         {
                             Id = syn.id,
                             Name = syn.name,

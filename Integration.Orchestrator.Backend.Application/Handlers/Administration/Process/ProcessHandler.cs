@@ -14,6 +14,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
     public class ProcessHandler(IProcessService<ProcessEntity> processService)
         :
         IRequestHandler<CreateProcessCommandRequest, CreateProcessCommandResponse>,
+        IRequestHandler<UpdateProcessCommandRequest, UpdateProcessCommandResponse>,
+        IRequestHandler<DeleteProcessCommandRequest, DeleteProcessCommandResponse>,
+        IRequestHandler<GetByIdProcessCommandRequest, GetByIdProcessCommandResponse>,
         IRequestHandler<GetByCodeProcessCommandRequest, GetByCodeProcessCommandResponse>,
         IRequestHandler<GetByTypeProcessCommandRequest, GetByTypeProcessCommandResponse>,
         IRequestHandler<GetAllPaginatedProcessCommandRequest, GetAllPaginatedProcessCommandResponse>
@@ -24,7 +27,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var processEntity = MapAynchronizer(request.Process.ProcessRequest, Guid.NewGuid());
+                var processEntity = MapProcess(request.Process.ProcessRequest, Guid.NewGuid());
                 await _processService.InsertAsync(processEntity);
 
                 return new CreateProcessCommandResponse(
@@ -48,6 +51,112 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             }
         }
 
+        public async Task<UpdateProcessCommandResponse> Handle(UpdateProcessCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var processById = await _processService.GetByIdAsync(request.Id);
+                if (processById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_ProcessNotFound);
+                }
+
+                var processEntity = MapProcess(request.Process.ProcessRequest, request.Id);
+                await _processService.UpdateAsync(processEntity);
+
+                return new UpdateProcessCommandResponse(
+                        new ProcessUpdateResponse
+                        {
+                            Code = HttpStatusCode.OK.GetHashCode(),
+                            Description = AppMessages.Application_ProcessResponseUpdated,
+                            Data = new ProcessUpdate()
+                            {
+                                Id = processEntity.id
+                            }
+                        });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<DeleteProcessCommandResponse> Handle(DeleteProcessCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var processById = await _processService.GetByIdAsync(request.Process.Id);
+                if (processById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_ProcessNotFound);
+                }
+
+                await _processService.DeleteAsync(processById);
+
+                return new DeleteProcessCommandResponse(
+                    new ProcessDeleteResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Application_ProcessResponseDeleted
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<GetByIdProcessCommandResponse> Handle(GetByIdProcessCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var processById = await _processService.GetByIdAsync(request.Process.Id);
+                if (processById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_ProcessNotFound);
+                }
+
+                return new GetByIdProcessCommandResponse(
+                    new ProcessGetByIdResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_ProcessResponse,
+                        Data = new ProcessGetById
+                        {
+                            Id = processById.id,
+                            ProcessCode = processById.process_code,
+                            Type = processById.process_type,
+                            ConnectionId = processById.connection_id,
+                            Objects = processById.objects.Select(obj => new ObjectRequest
+                            {
+                                Name = obj.name,
+                                Filters = obj.filters.Select(f => new FilterRequest
+                                {
+                                    Key = f.key,
+                                    Value = f.value
+                                }).ToList()
+                            }).ToList()
+                        }
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+        
         public async Task<GetByCodeProcessCommandResponse> Handle(GetByCodeProcessCommandRequest request, CancellationToken cancellationToken)
         {
             try
@@ -59,11 +168,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 }
 
                 return new GetByCodeProcessCommandResponse(
-                    new GetByCodeProcessResponse
+                    new ProcessGetByCodeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_ProcessResponse,
-                        Data = new GetByCodeProcess
+                        Data = new ProcessGetByCode
                         {
                             Id = processByCode.id,
                             ProcessCode = processByCode.process_code,
@@ -102,11 +211,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 }
 
                 return new GetByTypeProcessCommandResponse(
-                    new GetByTypeProcessResponse
+                    new ProcessGetByTypeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_ProcessResponse,
-                        Data = processByType.Select(c => new GetByTypeProcess
+                        Data = processByType.Select(c => new ProcessGetByType
                         {
                             Id = c.id,
                             ProcessCode = c.process_code,
@@ -171,7 +280,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 });
         }
 
-        private ProcessEntity MapAynchronizer(ProcessCreateRequest request, Guid id)
+        private ProcessEntity MapProcess(ProcessCreateRequest request, Guid id)
         {
             var processEntity = new ProcessEntity()
             {
