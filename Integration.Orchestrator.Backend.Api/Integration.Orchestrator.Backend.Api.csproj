@@ -32,4 +32,10 @@
     <Folder Include="Controllers\v1\Integration\" />
   </ItemGroup>
 
+	<ItemGroup>
+		<None Update="config\appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
 </Project>
