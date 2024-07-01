@@ -17,6 +17,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         public readonly record struct GetByFranchiseIdSynchronizationCommandRequest(GetByFranchiseIdSynchronizationRequest Synchronization) : IRequest<GetByFranchiseIdSynchronizationCommandResponse>;
         public readonly record struct GetByFranchiseIdSynchronizationCommandResponse(GetByFranchiseIdSynchronizationResponse Message);
 
+        public readonly record struct GetByIdSynchronizationCommandRequest(GetByIdSynchronizationRequest Synchronization) : IRequest<GetByIdSynchronizationCommandResponse>;
+        public readonly record struct GetByIdSynchronizationCommandResponse(GetByIdSynchronizationResponse Message);
+
         public readonly record struct GetAllPaginatedSynchronizationCommandRequest(SynchronizationGetAllPaginatedRequest Synchronization) : IRequest<GetAllPaginatedSynchronizationCommandResponse>;
         public readonly record struct GetAllPaginatedSynchronizationCommandResponse(SynchronizationGetAllPaginatedResponse Message);
     }
