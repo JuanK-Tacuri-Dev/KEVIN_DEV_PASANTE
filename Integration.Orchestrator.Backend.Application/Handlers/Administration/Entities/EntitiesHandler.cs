@@ -134,7 +134,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Id = entitiesById.id,
                             Name = entitiesById.name,
                             Code = entitiesById.entity_code,
-                            Type = entitiesById.entity_type
+                            Type = entitiesById.entity_type,
+                            IdServer = entitiesById.server_id
                         }
                     });
             }
@@ -168,7 +169,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Id = entitiesByCode.id,
                             Name = entitiesByCode.name,
                             Code = entitiesByCode.entity_code,
-                            Type = entitiesByCode.entity_type
+                            Type = entitiesByCode.entity_type,
+                            IdServer= entitiesByCode.server_id
                         }
                     });
             }
@@ -202,7 +204,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Id = c.id,
                             Name = c.name,
                             Code = c.entity_code,
-                            Type = c.entity_type
+                            Type = c.entity_type,
+                            IdServer = c.server_id
                         }).ToList()
                     });
             }
@@ -238,7 +241,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Id = c.id,
                         Name = c.name,
                         Code = c.entity_code,
-                        Type = c.entity_type
+                        Type = c.entity_type,
+                        IdServer = c.server_id
                     }).ToList()
                 });
         }
@@ -250,7 +254,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 id = id,
                 name = request.Name,
                 entity_code = request.Code,
-                entity_type = request.Type
+                entity_type = request.Type,
+                server_id = request.IdServer
             };
             return entitiesEntity;
         }

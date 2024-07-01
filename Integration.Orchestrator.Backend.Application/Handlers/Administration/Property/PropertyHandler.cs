@@ -134,7 +134,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Id = propertyById.id,
                             Name = propertyById.name,
                             Code = propertyById.property_code,
-                            Type = propertyById.property_type
+                            Type = propertyById.property_type,
+                            IdEntity = propertyById.entity_id
                         }
                     });
             }
@@ -168,7 +169,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Id = propertyByCode.id,
                             Name = propertyByCode.name,
                             Code = propertyByCode.property_code,
-                            Type = propertyByCode.property_type
+                            Type = propertyByCode.property_type,
+                            IdEntity = propertyByCode.entity_id
                         }
                     });
             }
@@ -202,7 +204,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Id = c.id,
                             Name = c.name,
                             Code = c.property_code,
-                            Type = c.property_type
+                            Type = c.property_type,
+                            IdEntity = c.entity_id
                         }).ToList()
                     });
             }
@@ -238,7 +241,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Id = c.id,
                         Name = c.name,
                         Code = c.property_code,
-                        Type = c.property_type
+                        Type = c.property_type,
+                        IdEntity = c.entity_id,
                     }).ToList()
                 });
         }
@@ -250,7 +254,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 id = id,
                 name = request.Name,
                 property_code = request.Code,
-                property_type = request.Type
+                property_type = request.Type,
+                entity_id = request.IdEntity
             };
             return propertyEntity;
         }

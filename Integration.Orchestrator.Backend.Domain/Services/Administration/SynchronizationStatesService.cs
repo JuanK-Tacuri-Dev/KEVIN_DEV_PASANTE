@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
+using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Administration
@@ -12,13 +13,15 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
     {
         private readonly ISynchronizationStatesRepository<SynchronizationStatesEntity> _synchronizationStatesStatesRepository = synchronizationStatesStatesRepository;
 
-        public async Task InsertAsync(SynchronizationStatesEntity synchronizationStatesStates)
+        public async Task InsertAsync(SynchronizationStatesEntity synchronizationStates)
         {
-            await _synchronizationStatesStatesRepository.InsertAsync(synchronizationStatesStates);
+            await ValidateBussinesLogic(synchronizationStates, true);
+            await _synchronizationStatesStatesRepository.InsertAsync(synchronizationStates);
         }
 
         public async Task UpdateAsync(SynchronizationStatesEntity synchronizationStates)
         {
+            await ValidateBussinesLogic(synchronizationStates);
             await _synchronizationStatesStatesRepository.UpdateAsync(synchronizationStates);
         }
 
@@ -33,6 +36,12 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _synchronizationStatesStatesRepository.GetByIdAsync(specification);
         }
 
+        public async Task<SynchronizationStatesEntity> GetByCodeAsync(string code)
+        {
+            var specification = SynchronizationStatesSpecification.GetByCodeExpression(code);
+            return await _synchronizationStatesStatesRepository.GetByCodeAsync(specification);
+        }
+
         public async Task<IEnumerable<SynchronizationStatesEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
         {
             var spec = new SynchronizationStatesSpecification(paginatedModel);
@@ -43,6 +52,18 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             var spec = new SynchronizationStatesSpecification(paginatedModel);
             return await _synchronizationStatesStatesRepository.GetTotalRows(spec);
+        }
+
+        private async Task ValidateBussinesLogic(SynchronizationStatesEntity synchronizationStatesEntity, bool create = false)
+        {
+            if (create)
+            {
+                var processByCode = await GetByCodeAsync(synchronizationStatesEntity.code);
+                if (processByCode != null)
+                {
+                    throw new ArgumentException(AppMessages.Domain_SynchronizationStatesExists);
+                }
+            }
         }
     }
 }

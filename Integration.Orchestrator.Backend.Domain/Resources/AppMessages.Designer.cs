@@ -628,6 +628,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The synchronization states exists.
+        /// </summary>
+        public static string Domain_SynchronizationStatesExists {
+            get {
+                return ResourceManager.GetString("Domain_SynchronizationStatesExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value exists.
         /// </summary>
         public static string Domain_ValueExists {

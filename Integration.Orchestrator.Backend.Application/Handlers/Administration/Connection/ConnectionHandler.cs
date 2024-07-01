@@ -137,7 +137,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Port = connectionById.port,
                             User = connectionById.user,
                             Password = connectionById.password,
-                            Adapter = connectionById.adapter
+                            Adapter = connectionById.adapter,
+                            Repository = connectionById.repository
                         }
                     });
             }
@@ -174,7 +175,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Port = connectionByCode.port,
                             User = connectionByCode.user,
                             Password = connectionByCode.password,
-                            Adapter = connectionByCode.adapter
+                            Adapter = connectionByCode.adapter,
+                            Repository = connectionByCode.repository,
                         }
                     });
             }
@@ -211,7 +213,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Port = c.port,
                             User = c.user,
                             Password = c.password,
-                            Adapter = c.adapter
+                            Adapter = c.adapter,
+                            Repository = c.repository
                         }).ToList()
                     });
             }
@@ -250,7 +253,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Port = c.port,
                         User = c.user,
                         Password = c.password,
-                        Adapter = c.adapter
+                        Adapter = c.adapter,
+                        Repository = c.repository,
 
                     }).ToList()
                 }
@@ -267,7 +271,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 port = request.Port,
                 user = request.User,
                 password = request.Password,
-                adapter = request.Adapter
+                adapter = request.Adapter,
+                repository = request.Repository
             };
             return connectionEntity;
         }

@@ -41,6 +41,15 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return integrationEntity;
         }
 
+        public async Task<SynchronizationStatesEntity> GetByCodeAsync(Expression<Func<SynchronizationStatesEntity, bool>> specification)
+        {
+            var filter = Builders<SynchronizationStatesEntity>.Filter.Where(specification);
+            var propertyEntity = await _collection
+                .Find(filter)
+                .FirstOrDefaultAsync();
+            return propertyEntity;
+        }
+
         public async Task<IEnumerable<SynchronizationStatesEntity>> GetAllAsync(ISpecification<SynchronizationStatesEntity> specification)
         {
             var filter = Builders<SynchronizationStatesEntity>.Filter.Where(specification.Criteria);
