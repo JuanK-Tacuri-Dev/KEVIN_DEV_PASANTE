@@ -18,7 +18,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         IRequestHandler<DeleteSynchronizationCommandRequest, DeleteSynchronizationCommandResponse>,
         IRequestHandler<GetByIdSynchronizationCommandRequest, GetByIdSynchronizationCommandResponse>,
         IRequestHandler<GetByFranchiseIdSynchronizationCommandRequest, GetByFranchiseIdSynchronizationCommandResponse>,
-        IRequestHandler<GetByIdSynchronizationCommandRequest, GetByIdSynchronizationCommandResponse>,
         IRequestHandler<GetAllPaginatedSynchronizationCommandRequest, GetAllPaginatedSynchronizationCommandResponse>
     {
         public readonly ISynchronizationService<SynchronizationEntity> _synchronizationService = synchronizationService;
@@ -189,44 +188,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Integrations = syn.integrations.Select(i => new IntegrationRequest { Id = i }).ToList(),
                             UserId = syn.user_id
                         }).ToList()
-                    });
-            }
-            catch (ArgumentException ex)
-            {
-                throw new ArgumentException(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new OrchestratorException(ex.Message);
-            }
-        }
-
-        public async Task<GetByIdSynchronizationCommandResponse> Handle(GetByIdSynchronizationCommandRequest request, CancellationToken cancellationToken)
-        {
-            try
-            {
-                var synchronizationById = await _synchronizationService.GetByIdAsync(request.Synchronization.Id);
-                if (synchronizationById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_SynchronizationNotFound);
-                }
-
-                return new GetByIdSynchronizationCommandResponse(
-                    new GetByIdSynchronizationResponse
-                    {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_SynchronizationResponse,
-                        Data = new GetByIdSynchronization
-                        {
-                            Id = synchronizationById.id,
-                            Name = synchronizationById.name,
-                            FranchiseId = synchronizationById.franchise_id,
-                            Status = synchronizationById.status,
-                            Observations = synchronizationById.observations,
-                            HourToExecute = synchronizationById.hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
-                            Integrations = synchronizationById.integrations.Select(i => new IntegrationRequest { Id = i }).ToList(),
-                            UserId = synchronizationById.user_id
-                        }
                     });
             }
             catch (ArgumentException ex)

@@ -180,11 +180,11 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             // Arrange
             var franchiseId = Guid.NewGuid();
             var response = new GetByIdSynchronizationCommandResponse(
-                new GetByIdSynchronizationResponse
+                new SynchronizationGetByIdResponse
                 {
                     Code = 200,
                     Description = AppMessages.Api_SynchronizationResponse,
-                    Data = new GetByIdSynchronization
+                    Data = new SynchronizationGetById
                     {
                         Id = Guid.NewGuid(),
                         Name = "Test",
