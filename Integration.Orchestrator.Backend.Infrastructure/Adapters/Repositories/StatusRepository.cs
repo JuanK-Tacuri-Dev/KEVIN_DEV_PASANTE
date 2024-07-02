@@ -35,25 +35,25 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<StatusEntity> GetByIdAsync(Expression<Func<StatusEntity, bool>> specification)
         {
             var filter = Builders<StatusEntity>.Filter.Where(specification);
-            var integrationEntity = await _collection
+            var statusEntity = await _collection
                 .Find(filter)
                 .FirstOrDefaultAsync();
-            return integrationEntity;
+            return statusEntity;
         }
 
         public async Task<StatusEntity> GetByCodeAsync(Expression<Func<StatusEntity, bool>> specification)
         {
             var filter = Builders<StatusEntity>.Filter.Where(specification);
-            var propertyEntity = await _collection
+            var statusEntity = await _collection
                 .Find(filter)
                 .FirstOrDefaultAsync();
-            return propertyEntity;
+            return statusEntity;
         }
 
         public async Task<IEnumerable<StatusEntity>> GetAllAsync(ISpecification<StatusEntity> specification)
         {
             var filter = Builders<StatusEntity>.Filter.Where(specification.Criteria);
-            var synchronizationEntity = await _collection
+            var statusEntity = await _collection
                 .Find(filter)
                 .Limit(specification.Limit)
                 .Skip(specification.Skip)
@@ -61,7 +61,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                                                ? Builders<StatusEntity>.Sort.Ascending(specification.OrderBy)
                                                : Builders<StatusEntity>.Sort.Descending(specification.OrderByDescending))
                 .ToListAsync();
-            return synchronizationEntity;
+            return statusEntity;
         }
 
         public async Task<long> GetTotalRows(ISpecification<StatusEntity> specification)

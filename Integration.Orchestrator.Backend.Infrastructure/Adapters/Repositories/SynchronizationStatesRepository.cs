@@ -35,25 +35,25 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<SynchronizationStatesEntity> GetByIdAsync(Expression<Func<SynchronizationStatesEntity, bool>> specification)
         {
             var filter = Builders<SynchronizationStatesEntity>.Filter.Where(specification);
-            var integrationEntity = await _collection
+            var synchronizationStatesEntity = await _collection
                 .Find(filter)
                 .FirstOrDefaultAsync();
-            return integrationEntity;
+            return synchronizationStatesEntity;
         }
 
         public async Task<SynchronizationStatesEntity> GetByCodeAsync(Expression<Func<SynchronizationStatesEntity, bool>> specification)
         {
             var filter = Builders<SynchronizationStatesEntity>.Filter.Where(specification);
-            var propertyEntity = await _collection
+            var synchronizationStatesEntity = await _collection
                 .Find(filter)
                 .FirstOrDefaultAsync();
-            return propertyEntity;
+            return synchronizationStatesEntity;
         }
 
         public async Task<IEnumerable<SynchronizationStatesEntity>> GetAllAsync(ISpecification<SynchronizationStatesEntity> specification)
         {
             var filter = Builders<SynchronizationStatesEntity>.Filter.Where(specification.Criteria);
-            var synchronizationEntity = await _collection
+            var synchronizationStatesEntity = await _collection
                 .Find(filter)
                 .Limit(specification.Limit)
                 .Skip(specification.Skip)
@@ -61,7 +61,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                                                ? Builders<SynchronizationStatesEntity>.Sort.Ascending(specification.OrderBy)
                                                : Builders<SynchronizationStatesEntity>.Sort.Descending(specification.OrderByDescending))
                 .ToListAsync();
-            return synchronizationEntity;
+            return synchronizationStatesEntity;
         }
 
         public async Task<long> GetTotalRows(ISpecification<SynchronizationStatesEntity> specification)

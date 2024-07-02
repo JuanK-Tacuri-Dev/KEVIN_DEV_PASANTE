@@ -221,30 +221,41 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
         public async Task<GetAllPaginatedPropertyCommandResponse> Handle(GetAllPaginatedPropertyCommandRequest request, CancellationToken cancellationToken)
         {
-            var model = request.Property.Adapt<PaginatedModel>();
-            var rows = await _propertyService.GetTotalRowsAsync(model);
-            if (rows == 0)
+            try
             {
-                throw new ArgumentException(AppMessages.Application_PropertyNotFound);
-            }
-            var result = await _propertyService.GetAllPaginatedAsync(model);
-
-
-            return new GetAllPaginatedPropertyCommandResponse(
-                new PropertyGetAllPaginatedResponse
+                var model = request.Property.Adapt<PaginatedModel>();
+                var rows = await _propertyService.GetTotalRowsAsync(model);
+                if (rows == 0)
                 {
-                    Code = HttpStatusCode.OK.GetHashCode(),
-                    Description = AppMessages.Api_PropertyResponse,
-                    TotalRows = rows,
-                    Data = result.Select(c => new PropertyGetAllPaginated
+                    throw new ArgumentException(AppMessages.Application_PropertyNotFound);
+                }
+                var result = await _propertyService.GetAllPaginatedAsync(model);
+
+
+                return new GetAllPaginatedPropertyCommandResponse(
+                    new PropertyGetAllPaginatedResponse
                     {
-                        Id = c.id,
-                        Name = c.name,
-                        Code = c.property_code,
-                        Type = c.property_type,
-                        IdEntity = c.entity_id,
-                    }).ToList()
-                });
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_PropertyResponse,
+                        TotalRows = rows,
+                        Data = result.Select(c => new PropertyGetAllPaginated
+                        {
+                            Id = c.id,
+                            Name = c.name,
+                            Code = c.property_code,
+                            Type = c.property_type,
+                            IdEntity = c.entity_id,
+                        }).ToList()
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
         }
 
         private PropertyEntity MapAynchronizer(PropertyCreateRequest request, Guid id)

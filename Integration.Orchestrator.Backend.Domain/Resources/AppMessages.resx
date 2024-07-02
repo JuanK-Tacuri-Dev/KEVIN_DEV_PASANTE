@@ -135,6 +135,9 @@
   <data name="Api_PropertyResponse" xml:space="preserve">
     <value>Property data get successfully</value>
   </data>
+  <data name="Api_ServerResponse" xml:space="preserve">
+    <value>Server data get successfully</value>
+  </data>
   <data name="Api_StatusResponse" xml:space="preserve">
     <value>Status data get successfully</value>
   </data>
@@ -218,6 +221,18 @@
   </data>
   <data name="Application_PropertyResponseUpdated" xml:space="preserve">
     <value>Property Updated Succesfully</value>
+  </data>
+  <data name="Application_ServerNotFound" xml:space="preserve">
+    <value>Server not found</value>
+  </data>
+  <data name="Application_ServerResponseCreated" xml:space="preserve">
+    <value>Server Created Succesfully</value>
+  </data>
+  <data name="Application_ServerResponseDeleted" xml:space="preserve">
+    <value>Server Deleted Succesfully</value>
+  </data>
+  <data name="Application_ServerResponseUpdated" xml:space="preserve">
+    <value>Server Updated Succesfully</value>
   </data>
   <data name="Application_StatusNotFound" xml:space="preserve">
     <value>Status not found</value>
@@ -303,6 +318,9 @@
   <data name="Domain_PropertyExists" xml:space="preserve">
     <value>The property exists</value>
   </data>
+  <data name="Domain_ServerExists" xml:space="preserve">
+    <value>The server exists</value>
+  </data>
   <data name="Domain_StatusExists" xml:space="preserve">
     <value>The status exists</value>
   </data>
@@ -383,6 +401,18 @@
   </data>
   <data name="Property_Type_Required" xml:space="preserve">
     <value>The type is required</value>
+  </data>
+  <data name="Server_Code_Required" xml:space="preserve">
+    <value>The  code is required</value>
+  </data>
+  <data name="Server_Name_Required" xml:space="preserve">
+    <value>The name is required</value>
+  </data>
+  <data name="Server_Type_Required" xml:space="preserve">
+    <value>The type is required</value>
+  </data>
+  <data name="Server_Url_Required" xml:space="preserve">
+    <value>The url is required</value>
   </data>
   <data name="Status_Color_Required" xml:space="preserve">
     <value>The color is required</value>

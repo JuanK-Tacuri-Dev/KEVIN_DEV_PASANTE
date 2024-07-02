@@ -13,21 +13,21 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
     {
         private readonly IConnectionRepository<ConnectionEntity> _connectionRepository = connectionRepository;
 
-        public async Task InsertAsync(ConnectionEntity connetion)
+        public async Task InsertAsync(ConnectionEntity connection)
         {
-            await ValidateBussinesLogic(connetion, true);
-            await _connectionRepository.InsertAsync(connetion);
+            await ValidateBussinesLogic(connection, true);
+            await _connectionRepository.InsertAsync(connection);
         }
 
-        public async Task UpdateAsync(ConnectionEntity connetion)
+        public async Task UpdateAsync(ConnectionEntity connection)
         {
-            await ValidateBussinesLogic(connetion);
-            await _connectionRepository.UpdateAsync(connetion);
+            await ValidateBussinesLogic(connection);
+            await _connectionRepository.UpdateAsync(connection);
         }
 
-        public async Task DeleteAsync(ConnectionEntity connetion)
+        public async Task DeleteAsync(ConnectionEntity connection)
         {
-            await _connectionRepository.DeleteAsync(connetion);
+            await _connectionRepository.DeleteAsync(connection);
         }
 
         public async Task<ConnectionEntity> GetByIdAsync(Guid id)
@@ -60,11 +60,11 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _connectionRepository.GetTotalRows(spec);
         }
 
-        private async Task ValidateBussinesLogic(ConnectionEntity connetion, bool create = false) 
+        private async Task ValidateBussinesLogic(ConnectionEntity connection, bool create = false) 
         {
             if (create) 
             {
-                var connectionByCode = await GetByCodeAsync(connetion.connection_code);
+                var connectionByCode = await GetByCodeAsync(connection.connection_code);
                 if (connectionByCode != null) 
                 {
                     throw new ArgumentException(AppMessages.Domain_ConnectionExists);

@@ -221,30 +221,41 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
         public async Task<GetAllPaginatedEntitiesCommandResponse> Handle(GetAllPaginatedEntitiesCommandRequest request, CancellationToken cancellationToken)
         {
-            var model = request.Entities.Adapt<PaginatedModel>();
-            var rows = await _entitiesService.GetTotalRowsAsync(model);
-            if (rows == 0)
+            try
             {
-                throw new ArgumentException(AppMessages.Application_EntitiesNotFound);
-            }
-            var result = await _entitiesService.GetAllPaginatedAsync(model);
-
-
-            return new GetAllPaginatedEntitiesCommandResponse(
-                new EntitiesGetAllPaginatedResponse
+                var model = request.Entities.Adapt<PaginatedModel>();
+                var rows = await _entitiesService.GetTotalRowsAsync(model);
+                if (rows == 0)
                 {
-                    Code = HttpStatusCode.OK.GetHashCode(),
-                    Description = AppMessages.Api_EntitiesResponse,
-                    TotalRows = rows,
-                    Data = result.Select(c => new EntitiesGetAllPaginated
+                    throw new ArgumentException(AppMessages.Application_EntitiesNotFound);
+                }
+                var result = await _entitiesService.GetAllPaginatedAsync(model);
+
+
+                return new GetAllPaginatedEntitiesCommandResponse(
+                    new EntitiesGetAllPaginatedResponse
                     {
-                        Id = c.id,
-                        Name = c.name,
-                        Code = c.entity_code,
-                        Type = c.entity_type,
-                        IdServer = c.server_id
-                    }).ToList()
-                });
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_EntitiesResponse,
+                        TotalRows = rows,
+                        Data = result.Select(c => new EntitiesGetAllPaginated
+                        {
+                            Id = c.id,
+                            Name = c.name,
+                            Code = c.entity_code,
+                            Type = c.entity_type,
+                            IdServer = c.server_id
+                        }).ToList()
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
         }
 
         private EntitiesEntity MapEntities(EntitiesCreateRequest request, Guid id)

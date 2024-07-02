@@ -15,7 +15,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         :
         IRequestHandler<CreateStatusCommandRequest, CreateStatusCommandResponse>,
         IRequestHandler<UpdateStatusCommandRequest, UpdateStatusCommandResponse>,
-        IRequestHandler<DeleteStatusCommandRequest, DeleteStatusCommandResponse>, 
+        IRequestHandler<DeleteStatusCommandRequest, DeleteStatusCommandResponse>,
         IRequestHandler<GetByIdStatusCommandRequest, GetByIdStatusCommandResponse>,
         IRequestHandler<GetAllPaginatedStatusCommandRequest, GetAllPaginatedStatusCommandResponse>
     {
@@ -148,30 +148,40 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
         public async Task<GetAllPaginatedStatusCommandResponse> Handle(GetAllPaginatedStatusCommandRequest request, CancellationToken cancellationToken)
         {
-            var model = request.Status.Adapt<PaginatedModel>();
-            var rows = await _statusService.GetTotalRowsAsync(model);
-            if (rows == 0)
+            try
             {
-                throw new ArgumentException(AppMessages.Application_StatusNotFound);
-            }
-            var result = await _statusService.GetAllPaginatedAsync(model);
-
-
-            return new GetAllPaginatedStatusCommandResponse(
-                new StatusGetAllPaginatedResponse
+                var model = request.Status.Adapt<PaginatedModel>();
+                var rows = await _statusService.GetTotalRowsAsync(model);
+                if (rows == 0)
                 {
-                    Code = HttpStatusCode.OK.GetHashCode(),
-                    Description = AppMessages.Api_StatusResponse,
-                    TotalRows = rows,
-                    Data = result.Select(c => new StatusGetAllPaginated
-                    {
-                        Id = c.id,
-                        Key = c.key,
-                        Text = c.text,
-                        Color = c.color
-                    }).ToList()
+                    throw new ArgumentException(AppMessages.Application_StatusNotFound);
                 }
-                );
+                var result = await _statusService.GetAllPaginatedAsync(model);
+
+
+                return new GetAllPaginatedStatusCommandResponse(
+                    new StatusGetAllPaginatedResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_StatusResponse,
+                        TotalRows = rows,
+                        Data = result.Select(c => new StatusGetAllPaginated
+                        {
+                            Id = c.id,
+                            Key = c.key,
+                            Text = c.text,
+                            Color = c.color
+                        }).ToList()
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
         }
 
         private StatusEntity MapStatus(StatusCreateRequest request, Guid id)

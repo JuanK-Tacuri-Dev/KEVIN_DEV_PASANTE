@@ -218,29 +218,40 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
         public async Task<GetAllPaginatedOperatorCommandResponse> Handle(GetAllPaginatedOperatorCommandRequest request, CancellationToken cancellationToken)
         {
-            var model = request.Operator.Adapt<PaginatedModel>();
-            var rows = await _operatorService.GetTotalRowsAsync(model);
-            if (rows == 0)
+            try
             {
-                throw new ArgumentException(AppMessages.Application_OperatorNotFound);
-            }
-            var result = await _operatorService.GetAllPaginatedAsync(model);
-
-
-            return new GetAllPaginatedOperatorCommandResponse(
-                new OperatorGetAllPaginatedResponse
+                var model = request.Operator.Adapt<PaginatedModel>();
+                var rows = await _operatorService.GetTotalRowsAsync(model);
+                if (rows == 0)
                 {
-                    Code = HttpStatusCode.OK.GetHashCode(),
-                    Description = AppMessages.Api_OperatorResponse,
-                    TotalRows = rows,
-                    Data = result.Select(c => new OperatorGetAllPaginated
+                    throw new ArgumentException(AppMessages.Application_OperatorNotFound);
+                }
+                var result = await _operatorService.GetAllPaginatedAsync(model);
+
+
+                return new GetAllPaginatedOperatorCommandResponse(
+                    new OperatorGetAllPaginatedResponse
                     {
-                        Id = c.id,
-                        Name = c.name,
-                        Code = c.operator_code,
-                        Type = c.operator_type
-                    }).ToList()
-                });
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_OperatorResponse,
+                        TotalRows = rows,
+                        Data = result.Select(c => new OperatorGetAllPaginated
+                        {
+                            Id = c.id,
+                            Name = c.name,
+                            Code = c.operator_code,
+                            Type = c.operator_type
+                        }).ToList()
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
         }
 
         private OperatorEntity MapOperator(OperatorCreateRequest request, Guid id)

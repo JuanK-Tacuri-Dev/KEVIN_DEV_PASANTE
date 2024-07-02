@@ -35,10 +35,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<ValueEntity> GetByIdAsync(Expression<Func<ValueEntity, bool>> specification)
         {
             var filter = Builders<ValueEntity>.Filter.Where(specification);
-            var integrationEntity = await _collection
+            var valueEntity = await _collection
                 .Find(filter)
                 .FirstOrDefaultAsync();
-            return integrationEntity;
+            return valueEntity;
         }
 
         public async Task<ValueEntity> GetByCodeAsync(Expression<Func<ValueEntity, bool>> specification)

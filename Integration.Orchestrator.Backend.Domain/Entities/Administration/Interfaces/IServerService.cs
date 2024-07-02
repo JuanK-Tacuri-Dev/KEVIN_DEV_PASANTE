@@ -2,11 +2,11 @@
 
 namespace Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces
 {
-    public interface IConnectionService<T>
+    public interface IServerService<T>
     {
-        Task InsertAsync(T connection);
-        Task UpdateAsync(T connection);
-        Task DeleteAsync(T connection);
+        Task InsertAsync(T server);
+        Task UpdateAsync(T server);
+        Task DeleteAsync(T server);
         Task<T> GetByIdAsync(Guid id);
         Task<T> GetByCodeAsync(string code);
         Task<IEnumerable<T>> GetByTypeAsync(string type);

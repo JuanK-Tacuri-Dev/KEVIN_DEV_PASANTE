@@ -218,29 +218,40 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
         public async Task<GetAllPaginatedValueCommandResponse> Handle(GetAllPaginatedValueCommandRequest request, CancellationToken cancellationToken)
         {
-            var model = request.Value.Adapt<PaginatedModel>();
-            var rows = await _valueService.GetTotalRowsAsync(model);
-            if (rows == 0)
+            try
             {
-                throw new ArgumentException(AppMessages.Application_ValueNotFound);
-            }
-            var result = await _valueService.GetAllPaginatedAsync(model);
-
-
-            return new GetAllPaginatedValueCommandResponse(
-                new ValueGetAllPaginatedResponse
+                var model = request.Value.Adapt<PaginatedModel>();
+                var rows = await _valueService.GetTotalRowsAsync(model);
+                if (rows == 0)
                 {
-                    Code = HttpStatusCode.OK.GetHashCode(),
-                    Description = AppMessages.Api_ValueResponse,
-                    TotalRows = rows,
-                    Data = result.Select(c => new ValueGetAllPaginated
+                    throw new ArgumentException(AppMessages.Application_ValueNotFound);
+                }
+                var result = await _valueService.GetAllPaginatedAsync(model);
+
+
+                return new GetAllPaginatedValueCommandResponse(
+                    new ValueGetAllPaginatedResponse
                     {
-                        Id = c.id,
-                        Name = c.name,
-                        Code = c.value_code,
-                        Type = c.value_type
-                    }).ToList()
-                });
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_ValueResponse,
+                        TotalRows = rows,
+                        Data = result.Select(c => new ValueGetAllPaginated
+                        {
+                            Id = c.id,
+                            Name = c.name,
+                            Code = c.value_code,
+                            Type = c.value_type
+                        }).ToList()
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
         }
 
         private ValueEntity MapValue(ValueCreateRequest request, Guid id)

@@ -37,10 +37,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<ConnectionEntity> GetByIdAsync(Expression<Func<ConnectionEntity, bool>> specification)
         {
             var filter = Builders<ConnectionEntity>.Filter.Where(specification);
-            var synchronizationEntity = await _collection
+            var connectionEntity = await _collection
                 .Find(filter)
                 .FirstOrDefaultAsync();
-            return synchronizationEntity;
+            return connectionEntity;
         }
 
         public async Task<ConnectionEntity> GetByCodeAsync(Expression<Func<ConnectionEntity, bool>> specification)

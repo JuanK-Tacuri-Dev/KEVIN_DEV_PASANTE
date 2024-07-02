@@ -230,35 +230,45 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
         public async Task<GetAllPaginatedConnectionCommandResponse> Handle(GetAllPaginatedConnectionCommandRequest request, CancellationToken cancellationToken)
         {
-            var model = request.Connection.Adapt<PaginatedModel>();
-            var rows = await _connectionService.GetTotalRowsAsync(model);
-            if (rows == 0)
+            try
             {
-                throw new ArgumentException(AppMessages.Application_ConnectionNotFound);
-            }
-            var result = await _connectionService.GetAllPaginatedAsync(model);
-
-
-            return new GetAllPaginatedConnectionCommandResponse(
-                new ConnectionGetAllPaginatedResponse
+                var model = request.Connection.Adapt<PaginatedModel>();
+                var rows = await _connectionService.GetTotalRowsAsync(model);
+                if (rows == 0)
                 {
-                    Code = HttpStatusCode.OK.GetHashCode(),
-                    Description = AppMessages.Api_ConnectionResponse,
-                    TotalRows = rows,
-                    Data = result.Select(c => new ConnectionGetAllPaginated
-                    {
-                        Id = c.id,
-                        Code = c.connection_code,
-                        Server = c.server,
-                        Port = c.port,
-                        User = c.user,
-                        Password = c.password,
-                        Adapter = c.adapter,
-                        Repository = c.repository,
-
-                    }).ToList()
+                    throw new ArgumentException(AppMessages.Application_ConnectionNotFound);
                 }
-                );
+                var result = await _connectionService.GetAllPaginatedAsync(model);
+
+
+                return new GetAllPaginatedConnectionCommandResponse(
+                    new ConnectionGetAllPaginatedResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_ConnectionResponse,
+                        TotalRows = rows,
+                        Data = result.Select(c => new ConnectionGetAllPaginated
+                        {
+                            Id = c.id,
+                            Code = c.connection_code,
+                            Server = c.server,
+                            Port = c.port,
+                            User = c.user,
+                            Password = c.password,
+                            Adapter = c.adapter,
+                            Repository = c.repository,
+
+                        }).ToList()
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
         }
 
         private ConnectionEntity MapConnection(ConnectionCreateRequest request, Guid id)

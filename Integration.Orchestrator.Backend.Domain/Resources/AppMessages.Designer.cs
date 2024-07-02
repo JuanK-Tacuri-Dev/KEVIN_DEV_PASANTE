@@ -115,6 +115,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server data get successfully.
+        /// </summary>
+        public static string Api_ServerResponse {
+            get {
+                return ResourceManager.GetString("Api_ServerResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status data get successfully.
         /// </summary>
         public static string Api_StatusResponse {
@@ -363,6 +372,42 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Application_PropertyResponseUpdated {
             get {
                 return ResourceManager.GetString("Application_PropertyResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server not found.
+        /// </summary>
+        public static string Application_ServerNotFound {
+            get {
+                return ResourceManager.GetString("Application_ServerNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Created Succesfully.
+        /// </summary>
+        public static string Application_ServerResponseCreated {
+            get {
+                return ResourceManager.GetString("Application_ServerResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Deleted Succesfully.
+        /// </summary>
+        public static string Application_ServerResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_ServerResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Updated Succesfully.
+        /// </summary>
+        public static string Application_ServerResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_ServerResponseUpdated", resourceCulture);
             }
         }
         
@@ -619,6 +664,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The server exists.
+        /// </summary>
+        public static string Domain_ServerExists {
+            get {
+                return ResourceManager.GetString("Domain_ServerExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The status exists.
         /// </summary>
         public static string Domain_StatusExists {
@@ -858,6 +912,42 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Property_Type_Required {
             get {
                 return ResourceManager.GetString("Property_Type_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The  code is required.
+        /// </summary>
+        public static string Server_Code_Required {
+            get {
+                return ResourceManager.GetString("Server_Code_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name is required.
+        /// </summary>
+        public static string Server_Name_Required {
+            get {
+                return ResourceManager.GetString("Server_Name_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type is required.
+        /// </summary>
+        public static string Server_Type_Required {
+            get {
+                return ResourceManager.GetString("Server_Type_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The url is required.
+        /// </summary>
+        public static string Server_Url_Required {
+            get {
+                return ResourceManager.GetString("Server_Url_Required", resourceCulture);
             }
         }
         

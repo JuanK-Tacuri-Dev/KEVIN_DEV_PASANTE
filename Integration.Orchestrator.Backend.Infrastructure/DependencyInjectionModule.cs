@@ -124,9 +124,13 @@ namespace Integration.Orchestrator.Backend.Infrastructure
                 .As<IValueRepository<ValueEntity>>()
                 .SingleInstance();
 
-            //_ = builder.RegisterType<OperatorRepository>()
-            //    .As<IOperatorRepository<OperatorEntity>>()
-            //    .SingleInstance();
+            _ = builder.RegisterType<OperatorRepository>()
+                .As<IOperatorRepository<OperatorEntity>>()
+                .SingleInstance();
+
+            _ = builder.RegisterType<ServerRepository>()
+                .As<IServerRepository<ServerEntity>>()
+                .SingleInstance();
         }
     }
 }

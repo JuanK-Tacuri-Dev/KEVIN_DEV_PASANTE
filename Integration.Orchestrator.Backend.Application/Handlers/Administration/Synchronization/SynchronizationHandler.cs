@@ -202,35 +202,45 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
         public async Task<GetAllPaginatedSynchronizationCommandResponse> Handle(GetAllPaginatedSynchronizationCommandRequest request, CancellationToken cancellationToken)
         {
-            var model = request.Synchronization.Adapt<PaginatedModel>();
-            var rows = await _synchronizationService.GetTotalRowsAsync(model);
-            if (rows == 0) 
+            try
             {
-                throw new ArgumentException(AppMessages.Application_SynchronizationNotFound);
-            }
-            var result = await _synchronizationService.GetAllPaginatedAsync(model);
-            
-
-            return new GetAllPaginatedSynchronizationCommandResponse(
-                new SynchronizationGetAllPaginatedResponse
+                var model = request.Synchronization.Adapt<PaginatedModel>();
+                var rows = await _synchronizationService.GetTotalRowsAsync(model);
+                if (rows == 0)
                 {
-                    Code = HttpStatusCode.OK.GetHashCode(),
-                    Description = AppMessages.Api_SynchronizationResponse,
-                    TotalRows = rows,
-                    Data = result.Select(syn => new SynchronizationGetAllPaginated
-                    {
-                        Id = syn.id,
-                        Name = syn.name,
-                        FranchiseId = syn.franchise_id,
-                        Status = syn.status,
-                        Observations = syn.observations,
-                        HourToExecute = syn.hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
-                        Integrations = syn.integrations.Select(i=> new IntegrationRequest { Id = i}).ToList(),
-                        UserId = syn.user_id
-
-                    }).ToList()
+                    throw new ArgumentException(AppMessages.Application_SynchronizationNotFound);
                 }
-                );
+                var result = await _synchronizationService.GetAllPaginatedAsync(model);
+
+
+                return new GetAllPaginatedSynchronizationCommandResponse(
+                    new SynchronizationGetAllPaginatedResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_SynchronizationResponse,
+                        TotalRows = rows,
+                        Data = result.Select(syn => new SynchronizationGetAllPaginated
+                        {
+                            Id = syn.id,
+                            Name = syn.name,
+                            FranchiseId = syn.franchise_id,
+                            Status = syn.status,
+                            Observations = syn.observations,
+                            HourToExecute = syn.hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
+                            Integrations = syn.integrations.Select(i => new IntegrationRequest { Id = i }).ToList(),
+                            UserId = syn.user_id
+
+                        }).ToList()
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
         }
 
         private SynchronizationEntity MapAynchronizer(SynchronizationCreateRequest request, Guid id)

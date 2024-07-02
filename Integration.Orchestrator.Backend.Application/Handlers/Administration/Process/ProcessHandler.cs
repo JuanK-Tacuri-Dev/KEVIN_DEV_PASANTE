@@ -246,38 +246,49 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
         public async Task<GetAllPaginatedProcessCommandResponse> Handle(GetAllPaginatedProcessCommandRequest request, CancellationToken cancellationToken)
         {
-            var model = request.Process.Adapt<PaginatedModel>();
-            var rows = await _processService.GetTotalRowsAsync(model);
-            if (rows == 0)
+            try
             {
-                throw new ArgumentException(AppMessages.Application_ProcessNotFound);
-            }
-            var result = await _processService.GetAllPaginatedAsync(model);
-
-
-            return new GetAllPaginatedProcessCommandResponse(
-                new ProcessGetAllPaginatedResponse
+                var model = request.Process.Adapt<PaginatedModel>();
+                var rows = await _processService.GetTotalRowsAsync(model);
+                if (rows == 0)
                 {
-                    Code = HttpStatusCode.OK.GetHashCode(),
-                    Description = AppMessages.Api_ProcessResponse,
-                    TotalRows = rows,
-                    Data = result.Select(c => new ProcessGetAllPaginated
+                    throw new ArgumentException(AppMessages.Application_ProcessNotFound);
+                }
+                var result = await _processService.GetAllPaginatedAsync(model);
+
+
+                return new GetAllPaginatedProcessCommandResponse(
+                    new ProcessGetAllPaginatedResponse
                     {
-                        Id = c.id,
-                        ProcessCode = c.process_code,
-                        Type = c.process_type,
-                        ConnectionId = c.connection_id,
-                        Objects = c.objects.Select(obj => new ObjectRequest
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_ProcessResponse,
+                        TotalRows = rows,
+                        Data = result.Select(c => new ProcessGetAllPaginated
                         {
-                            Name = obj.name,
-                            Filters = obj.filters.Select(f => new FilterRequest
+                            Id = c.id,
+                            ProcessCode = c.process_code,
+                            Type = c.process_type,
+                            ConnectionId = c.connection_id,
+                            Objects = c.objects.Select(obj => new ObjectRequest
                             {
-                                Key = f.key,
-                                Value = f.value
+                                Name = obj.name,
+                                Filters = obj.filters.Select(f => new FilterRequest
+                                {
+                                    Key = f.key,
+                                    Value = f.value
+                                }).ToList()
                             }).ToList()
                         }).ToList()
-                    }).ToList()
-                });
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
         }
 
         private ProcessEntity MapProcess(ProcessCreateRequest request, Guid id)
