@@ -1,4 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Api.Filter;
+using Integration.Orchestrator.Backend.Application.Handlers.Administrations.Server;
 using Integration.Orchestrator.Backend.Application.Models.Administration.Server;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
     [ServiceFilter(typeof(ErrorHandlingRest))]
     public class ServersController(IMediator mediator) : Controller
     {
+
         private readonly IMediator _mediator = mediator;
 
         [HttpPost]

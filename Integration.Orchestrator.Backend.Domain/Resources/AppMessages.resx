@@ -135,6 +135,9 @@
   <data name="Api_PropertyResponse" xml:space="preserve">
     <value>Property data get successfully</value>
   </data>
+  <data name="Api_RepositoryResponse" xml:space="preserve">
+    <value>Repository data get successfully</value>
+  </data>
   <data name="Api_ServerResponse" xml:space="preserve">
     <value>Server data get successfully</value>
   </data>
@@ -221,6 +224,18 @@
   </data>
   <data name="Application_PropertyResponseUpdated" xml:space="preserve">
     <value>Property Updated Succesfully</value>
+  </data>
+  <data name="Application_RepositoryNotFound" xml:space="preserve">
+    <value>Repository not found</value>
+  </data>
+  <data name="Application_RepositoryResponseCreated" xml:space="preserve">
+    <value>Repository Created Succesfully</value>
+  </data>
+  <data name="Application_RepositoryResponseDeleted" xml:space="preserve">
+    <value>Repository Deleted Succesfully</value>
+  </data>
+  <data name="Application_RepositoryResponseUpdated" xml:space="preserve">
+    <value>Repository Updated Succesfully</value>
   </data>
   <data name="Application_ServerNotFound" xml:space="preserve">
     <value>Server not found</value>
@@ -318,6 +333,9 @@
   <data name="Domain_PropertyExists" xml:space="preserve">
     <value>The property exists</value>
   </data>
+  <data name="Domain_RepositoryExists" xml:space="preserve">
+    <value>The repository exists</value>
+  </data>
   <data name="Domain_ServerExists" xml:space="preserve">
     <value>The server exists</value>
   </data>
@@ -401,6 +419,24 @@
   </data>
   <data name="Property_Type_Required" xml:space="preserve">
     <value>The type is required</value>
+  </data>
+  <data name="Repository_AdapterId_Required" xml:space="preserve">
+    <value>The adapterId is required</value>
+  </data>
+  <data name="Repository_Code_Required" xml:space="preserve">
+    <value>The code is required</value>
+  </data>
+  <data name="Repository_Password_Required" xml:space="preserve">
+    <value>The password is required</value>
+  </data>
+  <data name="Repository_Port_Required" xml:space="preserve">
+    <value>The port is required</value>
+  </data>
+  <data name="Repository_ServerId_Required" xml:space="preserve">
+    <value>The serverId is required</value>
+  </data>
+  <data name="Repository_User_Required" xml:space="preserve">
+    <value>The user is required</value>
   </data>
   <data name="Server_Code_Required" xml:space="preserve">
     <value>The  code is required</value>

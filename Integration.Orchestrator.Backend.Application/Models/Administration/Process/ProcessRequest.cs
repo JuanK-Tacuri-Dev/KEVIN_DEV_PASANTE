@@ -5,10 +5,10 @@
         public string ProcessCode { get; set; }
         public string Type { get; set; }
         public Guid ConnectionId { get; set; }
-        public List<ObjectRequest> Objects { get; set; }
+        public List<EntitiesRequest> Entities { get; set; }
     }
 
-    public class ObjectRequest
+    public class EntitiesRequest
     {
         public string Name { get; set; }
         public List<FilterRequest> Filters { get; set; }

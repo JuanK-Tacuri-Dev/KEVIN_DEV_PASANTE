@@ -6,7 +6,7 @@
         public string process_code { get; set; }
         public string process_type { get; set; }
         public Guid connection_id { get; set; }
-        public List<ObjectEntity> objects { get; set; }
+        public List<ObjectEntity> entities { get; set; }
         public DateTime created_at { get; private set; } = DateTime.UtcNow;
         public DateTime updated_at { get; private set; } = DateTime.UtcNow;
         

@@ -138,7 +138,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             User = connectionById.user,
                             Password = connectionById.password,
                             Adapter = connectionById.adapter,
-                            Repository = connectionById.repository
+                            RepositoryId = connectionById.repository_id
                         }
                     });
             }
@@ -176,7 +176,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             User = connectionByCode.user,
                             Password = connectionByCode.password,
                             Adapter = connectionByCode.adapter,
-                            Repository = connectionByCode.repository,
+                            RepositoryId = connectionByCode.repository_id,
                         }
                     });
             }
@@ -214,7 +214,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             User = c.user,
                             Password = c.password,
                             Adapter = c.adapter,
-                            Repository = c.repository
+                            RepositoryId = c.repository_id
                         }).ToList()
                     });
             }
@@ -256,7 +256,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             User = c.user,
                             Password = c.password,
                             Adapter = c.adapter,
-                            Repository = c.repository,
+                            RepositoryId = c.repository_id,
 
                         }).ToList()
                     });
@@ -282,7 +282,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 user = request.User,
                 password = request.Password,
                 adapter = request.Adapter,
-                repository = request.Repository
+                repository_id = request.RepositoryId
             };
             return connectionEntity;
         }

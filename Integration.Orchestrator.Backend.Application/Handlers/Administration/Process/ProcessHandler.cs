@@ -135,7 +135,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             ProcessCode = processById.process_code,
                             Type = processById.process_type,
                             ConnectionId = processById.connection_id,
-                            Objects = processById.objects.Select(obj => new ObjectRequest
+                            Entities = processById.entities.Select(obj => new EntitiesRequest
                             {
                                 Name = obj.name,
                                 Filters = obj.filters.Select(f => new FilterRequest
@@ -178,7 +178,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             ProcessCode = processByCode.process_code,
                             Type = processByCode.process_type,
                             ConnectionId = processByCode.connection_id,
-                            Objects = processByCode.objects.Select(obj => new ObjectRequest
+                            Entities = processByCode.entities.Select(obj => new EntitiesRequest
                             {
                                 Name = obj.name,
                                 Filters = obj.filters.Select(f => new FilterRequest
@@ -221,7 +221,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             ProcessCode = c.process_code,
                             Type = c.process_type,
                             ConnectionId = c.connection_id,
-                            Objects = c.objects.Select(obj => new ObjectRequest
+                            Entities = c.entities.Select(obj => new EntitiesRequest
                             {
                                 Name = obj.name,
                                 Filters = obj.filters.Select(f => new FilterRequest
@@ -269,7 +269,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             ProcessCode = c.process_code,
                             Type = c.process_type,
                             ConnectionId = c.connection_id,
-                            Objects = c.objects.Select(obj => new ObjectRequest
+                            Entities = c.entities.Select(obj => new EntitiesRequest
                             {
                                 Name = obj.name,
                                 Filters = obj.filters.Select(f => new FilterRequest
@@ -299,7 +299,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 process_code = request.ProcessCode,
                 process_type = request.Type,
                 connection_id = request.ConnectionId,
-                objects = request.Objects
+                entities = request.Entities
                 .Select(obj => new ObjectEntity
                 {
                     name = obj.Name,

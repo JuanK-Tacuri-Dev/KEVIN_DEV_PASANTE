@@ -17,7 +17,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
             RuleFor(request => request.Process.ProcessRequest.ConnectionId)
             .NotEmpty().WithMessage(AppMessages.Process_ConnectionId_Required);
 
-            RuleFor(request => request.Process.ProcessRequest.Objects)
+            RuleFor(request => request.Process.ProcessRequest.Entities)
             .NotEmpty().WithMessage(AppMessages.Process_Objects_Required);
         }
     }
