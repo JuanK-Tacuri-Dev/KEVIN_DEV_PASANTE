@@ -87,7 +87,5 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return BaseSpecification<SynchronizationEntity>.GetByUuid(x => x.franchise_id, franchiseId);
         }
-
-
     }
 }

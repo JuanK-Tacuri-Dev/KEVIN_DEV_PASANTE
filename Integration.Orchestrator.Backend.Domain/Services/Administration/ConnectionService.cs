@@ -19,6 +19,23 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             await _connectionRepository.InsertAsync(connection);
         }
 
+        public async Task UpdateAsync(ConnectionEntity connection)
+        {
+            await ValidateBussinesLogic(connection);
+            await _connectionRepository.UpdateAsync(connection);
+        }
+
+        public async Task DeleteAsync(ConnectionEntity connection)
+        {
+            await _connectionRepository.DeleteAsync(connection);
+        }
+
+        public async Task<ConnectionEntity> GetByIdAsync(Guid id)
+        {
+            var specification = ConnectionSpecification.GetByIdExpression(id);
+            return await _connectionRepository.GetByIdAsync(specification);
+        }
+
         public async Task<ConnectionEntity> GetByCodeAsync(string code)
         {
             var specification = ConnectionSpecification.GetByCodeExpression(code);

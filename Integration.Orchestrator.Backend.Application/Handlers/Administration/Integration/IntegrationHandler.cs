@@ -16,6 +16,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         IRequestHandler<CreateIntegrationCommandRequest, CreateIntegrationCommandResponse>,
         IRequestHandler<UpdateIntegrationCommandRequest, UpdateIntegrationCommandResponse>,
         IRequestHandler<DeleteIntegrationCommandRequest, DeleteIntegrationCommandResponse>,
+        IRequestHandler<GetByIdIntegrationCommandRequest, GetByIdIntegrationCommandResponse>,
         IRequestHandler<GetAllPaginatedIntegrationCommandRequest, GetAllPaginatedIntegrationCommandResponse>
     {
         public readonly IIntegrationService<IntegrationEntity> _integrationService = integrationService;
@@ -24,7 +25,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var integrationEntity = MapAynchronizer(request.Integration.IntegrationRequest, Guid.NewGuid());
+                var integrationEntity = MapIntegration(request.Integration.IntegrationRequest, Guid.NewGuid());
                 await _integrationService.InsertAsync(integrationEntity);
 
                 return new CreateIntegrationCommandResponse(
@@ -58,7 +59,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     throw new ArgumentException(AppMessages.Application_IntegrationNotFound);
                 }
 
-                var integrationEntity = MapAynchronizer(request.Integration.IntegrationRequest, request.Id);
+                var integrationEntity = MapIntegration(request.Integration.IntegrationRequest, request.Id);
                 await _integrationService.UpdateAsync(integrationEntity);
 
                 return new UpdateIntegrationCommandResponse(
@@ -99,6 +100,42 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Application_IntegrationResponseDeleted
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<GetByIdIntegrationCommandResponse> Handle(GetByIdIntegrationCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var integrationById = await _integrationService.GetByIdAsync(request.Integration.Id);
+                if (integrationById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_IntegrationNotFound);
+                }
+
+                return new GetByIdIntegrationCommandResponse(
+                    new IntegrationGetByIdResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_IntegrationResponse,
+                        Data = new IntegrationGetById
+                        {
+                            Id = integrationById.id,
+                            Name = integrationById.name,
+                            Status = integrationById.status,
+                            Observations = integrationById.observations,
+                            Process = integrationById.process.Select(i => new ProcessRequest { Id = i }).ToList(),
+                            UserId = integrationById.user_id
+                        }
                     });
             }
             catch (ArgumentException ex)
@@ -153,7 +190,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             }
         }
 
-        private IntegrationEntity MapAynchronizer(IntegrationCreateRequest request, Guid id)
+        private IntegrationEntity MapIntegration(IntegrationCreateRequest request, Guid id)
         {
             var integrationEntity = new IntegrationEntity()
             {

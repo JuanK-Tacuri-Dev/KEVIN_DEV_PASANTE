@@ -11,12 +11,12 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
     public class ConnectionControllerTests
     {
         private readonly Mock<IMediator> _mediatorMock;
-        private readonly ConnectionController _controller;
+        private readonly ConnectionsController _controller;
 
         public ConnectionControllerTests()
         {
             _mediatorMock = new Mock<IMediator>();
-            _controller = new ConnectionController(_mediatorMock.Object);
+            _controller = new ConnectionsController(_mediatorMock.Object);
         }
 
         [Fact]
@@ -56,11 +56,11 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             // Arrange
             var code = "testCode";
             var response = new GetByCodeConnectionCommandResponse(
-                new GetByCodeConnectionResponse
+                new ConnectionGetByCodeResponse
                 {
                     Code = 200,
                     Description = AppMessages.Api_ConnectionResponse,
-                    Data = new GetByCodeConnection
+                    Data = new ConnectionGetByCode
                     {
                         Id = Guid.NewGuid(),
                         Code = code,
@@ -71,7 +71,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                         Adapter = "ssql"
                     }
                 });
-            var command = new GetByCodeConnectionCommandRequest(new GetByCodeConnectionRequest { Code = code });
+            var command = new GetByCodeConnectionCommandRequest(new ConnectionGetByCodeRequest { Code = code });
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetByCodeConnectionCommandRequest>(), default))
                          .ReturnsAsync(response);
 
@@ -92,12 +92,12 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             // Arrange
             var type = "ssql";
             var response = new GetByTypeConnectionCommandResponse( 
-                new GetByTypeConnectionResponse
+                new ConnectionGetByTypeResponse
                 {
                     Code = 200,
                     Description = AppMessages.Api_ConnectionResponse,
                     Data = [
-                        new GetByTypeConnection
+                        new ConnectionGetByType
                         {
                             Id = Guid.NewGuid(),
                             Code = "testCode",
@@ -108,7 +108,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                             Adapter = type
                         }]
                 });
-            var command = new GetByTypeConnectionCommandRequest(new GetByTypeConnectionRequest { Type = type });
+            var command = new GetByTypeConnectionCommandRequest(new ConnectionGetByTypeRequest { Type = type });
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetByTypeConnectionCommandRequest>(), default))
                          .ReturnsAsync(response);
 

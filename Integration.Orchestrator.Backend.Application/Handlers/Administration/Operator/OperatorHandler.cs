@@ -14,6 +14,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
     public class OperatorHandler(IOperatorService<OperatorEntity> operatorService)
         :
         IRequestHandler<CreateOperatorCommandRequest, CreateOperatorCommandResponse>,
+        IRequestHandler<UpdateOperatorCommandRequest, UpdateOperatorCommandResponse>,
+        IRequestHandler<DeleteOperatorCommandRequest, DeleteOperatorCommandResponse>,
+        IRequestHandler<GetByIdOperatorCommandRequest, GetByIdOperatorCommandResponse>,
         IRequestHandler<GetByCodeOperatorCommandRequest, GetByCodeOperatorCommandResponse>,
         IRequestHandler<GetByTypeOperatorCommandRequest, GetByTypeOperatorCommandResponse>,
         IRequestHandler<GetAllPaginatedOperatorCommandRequest, GetAllPaginatedOperatorCommandResponse>
@@ -24,7 +27,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var operatorEntity = MapAynchronizer(request.Operator.OperatorRequest, Guid.NewGuid());
+                var operatorEntity = MapOperator(request.Operator.OperatorRequest, Guid.NewGuid());
                 await _operatorService.InsertAsync(operatorEntity);
 
                 return new CreateOperatorCommandResponse(
@@ -35,6 +38,103 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new OperatorCreate()
                         {
                             Id = operatorEntity.id
+                        }
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<UpdateOperatorCommandResponse> Handle(UpdateOperatorCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var operatorById = await _operatorService.GetByIdAsync(request.Id);
+                if (operatorById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_OperatorNotFound);
+                }
+
+                var operatorEntity = MapOperator(request.Operator.OperatorRequest, request.Id);
+                await _operatorService.UpdateAsync(operatorEntity);
+
+                return new UpdateOperatorCommandResponse(
+                        new OperatorUpdateResponse
+                        {
+                            Code = HttpStatusCode.OK.GetHashCode(),
+                            Description = AppMessages.Application_OperatorResponseUpdated,
+                            Data = new OperatorUpdate()
+                            {
+                                Id = operatorEntity.id
+                            }
+                        });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<DeleteOperatorCommandResponse> Handle(DeleteOperatorCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var operatorById = await _operatorService.GetByIdAsync(request.Operator.Id);
+                if (operatorById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_OperatorNotFound);
+                }
+
+                await _operatorService.DeleteAsync(operatorById);
+
+                return new DeleteOperatorCommandResponse(
+                    new OperatorDeleteResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Application_OperatorResponseDeleted
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<GetByIdOperatorCommandResponse> Handle(GetByIdOperatorCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var operatorById = await _operatorService.GetByIdAsync(request.Operator.Id);
+                if (operatorById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_OperatorNotFound);
+                }
+
+                return new GetByIdOperatorCommandResponse(
+                    new OperatorGetByIdResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_OperatorResponse,
+                        Data = new OperatorGetById
+                        {
+                            Id = operatorById.id,
+                            Name = operatorById.name,
+                            Code = operatorById.operator_code,
+                            Type = operatorById.operator_type
                         }
                     });
             }
@@ -59,11 +159,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 }
 
                 return new GetByCodeOperatorCommandResponse(
-                    new GetByCodeOperatorResponse
+                    new OperatorGetByCodeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_OperatorResponse,
-                        Data = new GetByCodeOperator
+                        Data = new OperatorGetByCode
                         {
                             Id = operatorByCode.id,
                             Name = operatorByCode.name,
@@ -93,11 +193,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 }
 
                 return new GetByTypeOperatorCommandResponse(
-                    new GetByTypeOperatorResponse
+                    new OperatorGetByTypeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_OperatorResponse,
-                        Data = operatorByType.Select(c => new GetByTypeOperator
+                        Data = operatorByType.Select(c => new OperatorGetByType
                         {
                             Id = c.id,
                             Name = c.name,
@@ -118,32 +218,43 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
         public async Task<GetAllPaginatedOperatorCommandResponse> Handle(GetAllPaginatedOperatorCommandRequest request, CancellationToken cancellationToken)
         {
-            var model = request.Operator.Adapt<PaginatedModel>();
-            var rows = await _operatorService.GetTotalRowsAsync(model);
-            if (rows == 0)
+            try
             {
-                throw new ArgumentException(AppMessages.Application_OperatorNotFound);
-            }
-            var result = await _operatorService.GetAllPaginatedAsync(model);
-
-
-            return new GetAllPaginatedOperatorCommandResponse(
-                new OperatorGetAllPaginatedResponse
+                var model = request.Operator.Adapt<PaginatedModel>();
+                var rows = await _operatorService.GetTotalRowsAsync(model);
+                if (rows == 0)
                 {
-                    Code = HttpStatusCode.OK.GetHashCode(),
-                    Description = AppMessages.Api_OperatorResponse,
-                    TotalRows = rows,
-                    Data = result.Select(c => new OperatorGetAllPaginated
+                    throw new ArgumentException(AppMessages.Application_OperatorNotFound);
+                }
+                var result = await _operatorService.GetAllPaginatedAsync(model);
+
+
+                return new GetAllPaginatedOperatorCommandResponse(
+                    new OperatorGetAllPaginatedResponse
                     {
-                        Id = c.id,
-                        Name = c.name,
-                        Code = c.operator_code,
-                        Type = c.operator_type
-                    }).ToList()
-                });
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_OperatorResponse,
+                        TotalRows = rows,
+                        Data = result.Select(c => new OperatorGetAllPaginated
+                        {
+                            Id = c.id,
+                            Name = c.name,
+                            Code = c.operator_code,
+                            Type = c.operator_type
+                        }).ToList()
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
         }
 
-        private OperatorEntity MapAynchronizer(OperatorCreateRequest request, Guid id)
+        private OperatorEntity MapOperator(OperatorCreateRequest request, Guid id)
         {
             var operatorEntity = new OperatorEntity()
             {

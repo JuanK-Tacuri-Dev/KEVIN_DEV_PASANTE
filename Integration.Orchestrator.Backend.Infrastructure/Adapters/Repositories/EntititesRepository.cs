@@ -9,9 +9,36 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
     public class EntitiesRepository(IMongoCollection<EntitiesEntity> collection) : IEntitiesRepository<EntitiesEntity>
     {
         private readonly IMongoCollection<EntitiesEntity> _collection = collection;
+        
         public Task InsertAsync(EntitiesEntity entity)
         {
             return _collection.InsertOneAsync(entity);
+        }
+
+        public Task UpdateAsync(EntitiesEntity entity)
+        {
+            var filter = Builders<EntitiesEntity>.Filter.Eq("_id", entity.id);
+            var update = Builders<EntitiesEntity>.Update
+                .Set(m => m.name, entity.name)
+                .Set(m => m.entity_code, entity.entity_code)
+                .Set(m => m.entity_type, entity.entity_type)
+                .Set(m => m.updated_at, entity.updated_at);
+            return _collection.UpdateOneAsync(filter, update);
+        }
+
+        public Task DeleteAsync(EntitiesEntity entity)
+        {
+            var filter = Builders<EntitiesEntity>.Filter.Eq("_id", entity.id);
+            return _collection.DeleteOneAsync(filter);
+        }
+
+        public async Task<EntitiesEntity> GetByIdAsync(Expression<Func<EntitiesEntity, bool>> specification)
+        {
+            var filter = Builders<EntitiesEntity>.Filter.Where(specification);
+            var entitiesEntity = await _collection
+                .Find(filter)
+                .FirstOrDefaultAsync();
+            return entitiesEntity;
         }
 
         public async Task<EntitiesEntity> GetByCodeAsync(Expression<Func<EntitiesEntity, bool>> specification)

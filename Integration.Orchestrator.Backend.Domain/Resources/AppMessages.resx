@@ -135,6 +135,12 @@
   <data name="Api_PropertyResponse" xml:space="preserve">
     <value>Property data get successfully</value>
   </data>
+  <data name="Api_RepositoryResponse" xml:space="preserve">
+    <value>Repository data get successfully</value>
+  </data>
+  <data name="Api_ServerResponse" xml:space="preserve">
+    <value>Server data get successfully</value>
+  </data>
   <data name="Api_StatusResponse" xml:space="preserve">
     <value>Status data get successfully</value>
   </data>
@@ -153,11 +159,23 @@
   <data name="Application_ConnectionResponseCreated" xml:space="preserve">
     <value>Connection Created Succesfully</value>
   </data>
+  <data name="Application_ConnectionResponseDeleted" xml:space="preserve">
+    <value>Connection Deleted Succesfully</value>
+  </data>
+  <data name="Application_ConnectionResponseUpdated" xml:space="preserve">
+    <value>Connection Updated Succesfully</value>
+  </data>
   <data name="Application_EntitiesNotFound" xml:space="preserve">
     <value>Entity not found</value>
   </data>
   <data name="Application_EntitiesResponseCreated" xml:space="preserve">
     <value>Entity Created Succesfully</value>
+  </data>
+  <data name="Application_EntitiesResponseDeleted" xml:space="preserve">
+    <value>Entity Deleted Succesfully</value>
+  </data>
+  <data name="Application_EntitiesResponseUpdated" xml:space="preserve">
+    <value>Entity Updated Succesfully</value>
   </data>
   <data name="Application_IntegrationNotFound" xml:space="preserve">
     <value>Integration not found</value>
@@ -177,11 +195,23 @@
   <data name="Application_OperatorResponseCreated" xml:space="preserve">
     <value>Operator Created Succesfully</value>
   </data>
+  <data name="Application_OperatorResponseDeleted" xml:space="preserve">
+    <value>Operator Deleted Succesfully</value>
+  </data>
+  <data name="Application_OperatorResponseUpdated" xml:space="preserve">
+    <value>Operator Updated Succesfully</value>
+  </data>
   <data name="Application_ProcessNotFound" xml:space="preserve">
     <value>Process not found</value>
   </data>
   <data name="Application_ProcessResponseCreated" xml:space="preserve">
     <value>Process Created Succesfully</value>
+  </data>
+  <data name="Application_ProcessResponseDeleted" xml:space="preserve">
+    <value>Process Deleted Succesfully</value>
+  </data>
+  <data name="Application_ProcessResponseUpdated" xml:space="preserve">
+    <value>Process Updated Succesfully</value>
   </data>
   <data name="Application_PropertyNotFound" xml:space="preserve">
     <value>Property not found</value>
@@ -189,11 +219,47 @@
   <data name="Application_PropertyResponseCreated" xml:space="preserve">
     <value>Property Created Succesfully</value>
   </data>
+  <data name="Application_PropertyResponseDeleted" xml:space="preserve">
+    <value>Property Deleted Succesfully</value>
+  </data>
+  <data name="Application_PropertyResponseUpdated" xml:space="preserve">
+    <value>Property Updated Succesfully</value>
+  </data>
+  <data name="Application_RepositoryNotFound" xml:space="preserve">
+    <value>Repository not found</value>
+  </data>
+  <data name="Application_RepositoryResponseCreated" xml:space="preserve">
+    <value>Repository Created Succesfully</value>
+  </data>
+  <data name="Application_RepositoryResponseDeleted" xml:space="preserve">
+    <value>Repository Deleted Succesfully</value>
+  </data>
+  <data name="Application_RepositoryResponseUpdated" xml:space="preserve">
+    <value>Repository Updated Succesfully</value>
+  </data>
+  <data name="Application_ServerNotFound" xml:space="preserve">
+    <value>Server not found</value>
+  </data>
+  <data name="Application_ServerResponseCreated" xml:space="preserve">
+    <value>Server Created Succesfully</value>
+  </data>
+  <data name="Application_ServerResponseDeleted" xml:space="preserve">
+    <value>Server Deleted Succesfully</value>
+  </data>
+  <data name="Application_ServerResponseUpdated" xml:space="preserve">
+    <value>Server Updated Succesfully</value>
+  </data>
   <data name="Application_StatusNotFound" xml:space="preserve">
     <value>Status not found</value>
   </data>
   <data name="Application_StatusResponseCreated" xml:space="preserve">
     <value>Status Created Succesfully</value>
+  </data>
+  <data name="Application_StatusResponseDeleted" xml:space="preserve">
+    <value>Status Deleted Succesfully</value>
+  </data>
+  <data name="Application_StatusResponseUpdated" xml:space="preserve">
+    <value>Status Updated Succesfully</value>
   </data>
   <data name="Application_SynchronizationNotFound" xml:space="preserve">
     <value>Synchronization not found</value>
@@ -213,11 +279,23 @@
   <data name="Application_SynchronizationStatesResponseCreated" xml:space="preserve">
     <value>Synchronization States Created Succesfully</value>
   </data>
+  <data name="Application_SynchronizationStatesResponseDeleted" xml:space="preserve">
+    <value>Synchronization States Deleted Succesfully</value>
+  </data>
+  <data name="Application_SynchronizationStatesResponseUpdated" xml:space="preserve">
+    <value>Synchronization States Updated Succesfully</value>
+  </data>
   <data name="Application_ValueNotFound" xml:space="preserve">
     <value>Value not found</value>
   </data>
   <data name="Application_ValueResponseCreated" xml:space="preserve">
     <value>Value Created Succesfully</value>
+  </data>
+  <data name="Application_ValueResponseDeleted" xml:space="preserve">
+    <value>Value Deleted Succesfully</value>
+  </data>
+  <data name="Application_ValueResponseUpdated" xml:space="preserve">
+    <value>Value Updated Succesfully</value>
   </data>
   <data name="Connection_Adapter_Required" xml:space="preserve">
     <value>The adapter is required</value>
@@ -255,8 +333,17 @@
   <data name="Domain_PropertyExists" xml:space="preserve">
     <value>The property exists</value>
   </data>
+  <data name="Domain_RepositoryExists" xml:space="preserve">
+    <value>The repository exists</value>
+  </data>
+  <data name="Domain_ServerExists" xml:space="preserve">
+    <value>The server exists</value>
+  </data>
   <data name="Domain_StatusExists" xml:space="preserve">
     <value>The status exists</value>
+  </data>
+  <data name="Domain_SynchronizationStatesExists" xml:space="preserve">
+    <value>The synchronization states exists</value>
   </data>
   <data name="Domain_ValueExists" xml:space="preserve">
     <value>The value exists</value>
@@ -332,6 +419,36 @@
   </data>
   <data name="Property_Type_Required" xml:space="preserve">
     <value>The type is required</value>
+  </data>
+  <data name="Repository_AdapterId_Required" xml:space="preserve">
+    <value>The adapterId is required</value>
+  </data>
+  <data name="Repository_Code_Required" xml:space="preserve">
+    <value>The code is required</value>
+  </data>
+  <data name="Repository_Password_Required" xml:space="preserve">
+    <value>The password is required</value>
+  </data>
+  <data name="Repository_Port_Required" xml:space="preserve">
+    <value>The port is required</value>
+  </data>
+  <data name="Repository_ServerId_Required" xml:space="preserve">
+    <value>The serverId is required</value>
+  </data>
+  <data name="Repository_User_Required" xml:space="preserve">
+    <value>The user is required</value>
+  </data>
+  <data name="Server_Code_Required" xml:space="preserve">
+    <value>The  code is required</value>
+  </data>
+  <data name="Server_Name_Required" xml:space="preserve">
+    <value>The name is required</value>
+  </data>
+  <data name="Server_Type_Required" xml:space="preserve">
+    <value>The type is required</value>
+  </data>
+  <data name="Server_Url_Required" xml:space="preserve">
+    <value>The url is required</value>
   </data>
   <data name="Status_Color_Required" xml:space="preserve">
     <value>The color is required</value>

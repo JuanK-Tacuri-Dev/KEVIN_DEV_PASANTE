@@ -9,9 +9,36 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
     public class PropertyRepository(IMongoCollection<PropertyEntity> collection) : IPropertyRepository<PropertyEntity>
     {
         private readonly IMongoCollection<PropertyEntity> _collection = collection;
+        
         public Task InsertAsync(PropertyEntity entity)
         {
             return _collection.InsertOneAsync(entity);
+        }
+
+        public Task UpdateAsync(PropertyEntity entity)
+        {
+            var filter = Builders<PropertyEntity>.Filter.Eq("_id", entity.id);
+            var update = Builders<PropertyEntity>.Update
+                .Set(m => m.name, entity.name)
+                .Set(m => m.property_code, entity.property_code)
+                .Set(m => m.property_type, entity.property_type)
+                .Set(m => m.updated_at, entity.updated_at);
+            return _collection.UpdateOneAsync(filter, update);
+        }
+
+        public async Task DeleteAsync(PropertyEntity entity)
+        {
+            var filter = Builders<PropertyEntity>.Filter.Eq("_id", entity.id);
+            await _collection.DeleteOneAsync(filter);
+        }
+
+        public async Task<PropertyEntity> GetByIdAsync(Expression<Func<PropertyEntity, bool>> specification)
+        {
+            var filter = Builders<PropertyEntity>.Filter.Where(specification);
+            var propertyEntity = await _collection
+                .Find(filter)
+                .FirstOrDefaultAsync();
+            return propertyEntity;
         }
 
         public async Task<PropertyEntity> GetByCodeAsync(Expression<Func<PropertyEntity, bool>> specification)

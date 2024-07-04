@@ -7,7 +7,8 @@ using Integration.Orchestrator.Backend.Domain.Specifications;
 namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     public class SynchronizationService(
-        ISynchronizationRepository<SynchronizationEntity> synchronizationRepository) : ISynchronizationService<SynchronizationEntity>
+        ISynchronizationRepository<SynchronizationEntity> synchronizationRepository) : 
+        ISynchronizationService<SynchronizationEntity>
     {
         private readonly ISynchronizationRepository<SynchronizationEntity> _synchronizationRepository = synchronizationRepository;
 
@@ -21,15 +22,15 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             await _synchronizationRepository.UpdateAsync(synchronization);
         }
 
+        public async Task DeleteAsync(SynchronizationEntity synchronization)
+        {
+            await _synchronizationRepository.DeleteAsync(synchronization);
+        }
+
         public async Task<SynchronizationEntity> GetByIdAsync(Guid id)
         {
             var specification = SynchronizationSpecification.GetByIdExpression(id);
             return await _synchronizationRepository.GetByIdAsync(specification);
-        }
-
-        public async Task DeleteAsync(SynchronizationEntity synchronization)
-        {
-            await _synchronizationRepository.DeleteAsync(synchronization);
         }
 
         public async Task<IEnumerable<SynchronizationEntity>> GetByFranchiseIdAsync(Guid franchiseId)

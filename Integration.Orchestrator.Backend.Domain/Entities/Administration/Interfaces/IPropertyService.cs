@@ -4,7 +4,10 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Administration.Interf
 {
     public interface IPropertyService<T>
     {
-        Task InsertAsync(T connection);
+        Task InsertAsync(T property);
+        Task UpdateAsync(T property);
+        Task DeleteAsync(T property);
+        Task<T> GetByIdAsync(Guid id);
         Task<T> GetByCodeAsync(string code);
         Task<IEnumerable<T>> GetByTypeAsync(string type);
         Task<IEnumerable<T>> GetAllPaginatedAsync(PaginatedModel paginatedModel);

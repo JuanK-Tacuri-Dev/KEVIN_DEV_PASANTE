@@ -4,7 +4,6 @@ using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Specifications;
-using System.ComponentModel;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
@@ -53,10 +52,6 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             if (await validateProcessMinTwo(integration))
             {
                 throw new ArgumentException(AppMessages.Domain_IntegrationMinTwoRequired);
-            }
-
-            if (create)
-            {
             }
         }
 

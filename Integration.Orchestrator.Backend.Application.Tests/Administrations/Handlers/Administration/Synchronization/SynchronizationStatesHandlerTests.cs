@@ -25,15 +25,14 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         public async Task Handle_CreateSynchronizationStatesCommandRequest_ShouldReturnSuccess()
         {
             // Arrange
-            var request = new CreateSynchronizationStatesCommandRequest
-            {
-                SynchronizationStates = new SynchronizationStatesCreateRequest
-                {
-                    Name = "Test State",
-                    Code = "Active",
-                    Color = "Green"
-                }
-            };
+            var request = new CreateSynchronizationStatesCommandRequest(
+                new SynchronizationStatesBasicInfoRequest<SynchronizationStatesCreateRequest>(
+                    new SynchronizationStatesCreateRequest
+                    {
+                        Name = "Test State",
+                        Code = "Active",
+                        Color = "Green"
+                    }));
 
             _mockService.Setup(service => service.InsertAsync(It.IsAny<SynchronizationStatesEntity>()))
                         .Returns(Task.CompletedTask);
@@ -52,15 +51,14 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         public async Task Handle_CreateSynchronizationStatesCommandRequest_ShouldThrowArgumentException()
         {
             // Arrange
-            var request = new CreateSynchronizationStatesCommandRequest
-            {
-                SynchronizationStates = new SynchronizationStatesCreateRequest
-                {
-                    Name = "Test State",
-                    Code = "Active",
-                    Color = "Green"
-                }
-            };
+            var request = new CreateSynchronizationStatesCommandRequest(
+                new SynchronizationStatesBasicInfoRequest<SynchronizationStatesCreateRequest>(
+                    new SynchronizationStatesCreateRequest
+                    {
+                        Name = "Test State",
+                        Code = "Active",
+                        Color = "Green"
+                    }));
 
             _mockService.Setup(service => service.InsertAsync(It.IsAny<SynchronizationStatesEntity>()))
                         .ThrowsAsync(new ArgumentException("Invalid data"));

@@ -8,8 +8,12 @@ using Integration.Orchestrator.Backend.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Configure appsettings.json location
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("Config/appsettings.json", optional: false, reloadOnChange: true);
 
+// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddServicesInAssembly(builder.Configuration);

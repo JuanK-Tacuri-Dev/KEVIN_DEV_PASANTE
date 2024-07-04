@@ -5,9 +5,9 @@ namespace Integration.Orchestrator.Backend.Domain.Ports.Administration
 {
     public interface IIntegrationRepository<T>
     {
-        Task InsertAsync(T entity);
-        Task UpdateAsync(T entity);
-        Task DeleteAsync(T entity);
+        Task InsertAsync(T integration);
+        Task UpdateAsync(T integration);
+        Task DeleteAsync(T integration);
         Task<T> GetByIdAsync(Expression<Func<T, bool>> specification);
         Task<IEnumerable<T>> GetAllAsync(ISpecification<T> specification);
         public Task<long> GetTotalRows(ISpecification<T> specification);

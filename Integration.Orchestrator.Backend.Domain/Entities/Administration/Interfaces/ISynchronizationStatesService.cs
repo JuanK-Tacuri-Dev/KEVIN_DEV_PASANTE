@@ -4,7 +4,9 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Administration.Interf
 {
     public interface ISynchronizationStatesService<T>
     {
-        Task InsertAsync(T synchronization);
+        Task InsertAsync(T synchronizationStates);
+        Task UpdateAsync(T synchronizationStates);
+        Task DeleteAsync(T synchronizationStates);
         Task<T> GetByIdAsync(Guid id);
         Task<IEnumerable<T>> GetAllPaginatedAsync(PaginatedModel paginatedModel);
         Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel);

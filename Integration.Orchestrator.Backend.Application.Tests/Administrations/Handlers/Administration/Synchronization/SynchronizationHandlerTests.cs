@@ -211,7 +211,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             var request = new GetByFranchiseIdSynchronizationCommandRequest
             {
-                Synchronization = new GetByFranchiseIdSynchronizationRequest { FranchiseId = franchiseId }
+                Synchronization = new SynchronizationGetByFranchiseIdRequest { FranchiseId = franchiseId }
             };
 
             // Act
@@ -236,7 +236,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             var request = new GetByFranchiseIdSynchronizationCommandRequest
             {
-                Synchronization = new GetByFranchiseIdSynchronizationRequest { FranchiseId = franchiseId }
+                Synchronization = new SynchronizationGetByFranchiseIdRequest { FranchiseId = franchiseId }
             };
 
             // Act & Assert

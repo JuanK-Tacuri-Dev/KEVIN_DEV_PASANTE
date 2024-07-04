@@ -4,7 +4,10 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Administration.Interf
 {
     public interface IOperatorService<T>
     {
-        Task InsertAsync(T connection);
+        Task InsertAsync(T operatorEntity);
+        Task UpdateAsync(T operatorEntity);
+        Task DeleteAsync(T operatorEntity);
+        Task<T> GetByIdAsync(Guid id);
         Task<T> GetByCodeAsync(string code);
         Task<IEnumerable<T>> GetByTypeAsync(string type);
         Task<IEnumerable<T>> GetAllPaginatedAsync(PaginatedModel paginatedModel);

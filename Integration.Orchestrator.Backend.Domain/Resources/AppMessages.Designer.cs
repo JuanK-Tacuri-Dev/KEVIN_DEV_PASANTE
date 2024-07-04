@@ -115,6 +115,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Repository data get successfully.
+        /// </summary>
+        public static string Api_RepositoryResponse {
+            get {
+                return ResourceManager.GetString("Api_RepositoryResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server data get successfully.
+        /// </summary>
+        public static string Api_ServerResponse {
+            get {
+                return ResourceManager.GetString("Api_ServerResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status data get successfully.
         /// </summary>
         public static string Api_StatusResponse {
@@ -169,6 +187,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connection Deleted Succesfully.
+        /// </summary>
+        public static string Application_ConnectionResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_ConnectionResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection Updated Succesfully.
+        /// </summary>
+        public static string Application_ConnectionResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_ConnectionResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Entity not found.
         /// </summary>
         public static string Application_EntitiesNotFound {
@@ -183,6 +219,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Application_EntitiesResponseCreated {
             get {
                 return ResourceManager.GetString("Application_EntitiesResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entity Deleted Succesfully.
+        /// </summary>
+        public static string Application_EntitiesResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_EntitiesResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entity Updated Succesfully.
+        /// </summary>
+        public static string Application_EntitiesResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_EntitiesResponseUpdated", resourceCulture);
             }
         }
         
@@ -241,6 +295,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operator Deleted Succesfully.
+        /// </summary>
+        public static string Application_OperatorResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_OperatorResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator Updated Succesfully.
+        /// </summary>
+        public static string Application_OperatorResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_OperatorResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Process not found.
         /// </summary>
         public static string Application_ProcessNotFound {
@@ -255,6 +327,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Application_ProcessResponseCreated {
             get {
                 return ResourceManager.GetString("Application_ProcessResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process Deleted Succesfully.
+        /// </summary>
+        public static string Application_ProcessResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_ProcessResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process Updated Succesfully.
+        /// </summary>
+        public static string Application_ProcessResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_ProcessResponseUpdated", resourceCulture);
             }
         }
         
@@ -277,6 +367,96 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Property Deleted Succesfully.
+        /// </summary>
+        public static string Application_PropertyResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_PropertyResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Property Updated Succesfully.
+        /// </summary>
+        public static string Application_PropertyResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_PropertyResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repository not found.
+        /// </summary>
+        public static string Application_RepositoryNotFound {
+            get {
+                return ResourceManager.GetString("Application_RepositoryNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repository Created Succesfully.
+        /// </summary>
+        public static string Application_RepositoryResponseCreated {
+            get {
+                return ResourceManager.GetString("Application_RepositoryResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repository Deleted Succesfully.
+        /// </summary>
+        public static string Application_RepositoryResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_RepositoryResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repository Updated Succesfully.
+        /// </summary>
+        public static string Application_RepositoryResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_RepositoryResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server not found.
+        /// </summary>
+        public static string Application_ServerNotFound {
+            get {
+                return ResourceManager.GetString("Application_ServerNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Created Succesfully.
+        /// </summary>
+        public static string Application_ServerResponseCreated {
+            get {
+                return ResourceManager.GetString("Application_ServerResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Deleted Succesfully.
+        /// </summary>
+        public static string Application_ServerResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_ServerResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Updated Succesfully.
+        /// </summary>
+        public static string Application_ServerResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_ServerResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status not found.
         /// </summary>
         public static string Application_StatusNotFound {
@@ -291,6 +471,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Application_StatusResponseCreated {
             get {
                 return ResourceManager.GetString("Application_StatusResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status Deleted Succesfully.
+        /// </summary>
+        public static string Application_StatusResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_StatusResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status Updated Succesfully.
+        /// </summary>
+        public static string Application_StatusResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_StatusResponseUpdated", resourceCulture);
             }
         }
         
@@ -349,6 +547,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Synchronization States Deleted Succesfully.
+        /// </summary>
+        public static string Application_SynchronizationStatesResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_SynchronizationStatesResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization States Updated Succesfully.
+        /// </summary>
+        public static string Application_SynchronizationStatesResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_SynchronizationStatesResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value not found.
         /// </summary>
         public static string Application_ValueNotFound {
@@ -363,6 +579,24 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Application_ValueResponseCreated {
             get {
                 return ResourceManager.GetString("Application_ValueResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value Deleted Succesfully.
+        /// </summary>
+        public static string Application_ValueResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_ValueResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value Updated Succesfully.
+        /// </summary>
+        public static string Application_ValueResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_ValueResponseUpdated", resourceCulture);
             }
         }
         
@@ -475,11 +709,38 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The repository exists.
+        /// </summary>
+        public static string Domain_RepositoryExists {
+            get {
+                return ResourceManager.GetString("Domain_RepositoryExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server exists.
+        /// </summary>
+        public static string Domain_ServerExists {
+            get {
+                return ResourceManager.GetString("Domain_ServerExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The status exists.
         /// </summary>
         public static string Domain_StatusExists {
             get {
                 return ResourceManager.GetString("Domain_StatusExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The synchronization states exists.
+        /// </summary>
+        public static string Domain_SynchronizationStatesExists {
+            get {
+                return ResourceManager.GetString("Domain_SynchronizationStatesExists", resourceCulture);
             }
         }
         
@@ -705,6 +966,96 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Property_Type_Required {
             get {
                 return ResourceManager.GetString("Property_Type_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The adapterId is required.
+        /// </summary>
+        public static string Repository_AdapterId_Required {
+            get {
+                return ResourceManager.GetString("Repository_AdapterId_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The code is required.
+        /// </summary>
+        public static string Repository_Code_Required {
+            get {
+                return ResourceManager.GetString("Repository_Code_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The password is required.
+        /// </summary>
+        public static string Repository_Password_Required {
+            get {
+                return ResourceManager.GetString("Repository_Password_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The port is required.
+        /// </summary>
+        public static string Repository_Port_Required {
+            get {
+                return ResourceManager.GetString("Repository_Port_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The serverId is required.
+        /// </summary>
+        public static string Repository_ServerId_Required {
+            get {
+                return ResourceManager.GetString("Repository_ServerId_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The user is required.
+        /// </summary>
+        public static string Repository_User_Required {
+            get {
+                return ResourceManager.GetString("Repository_User_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The  code is required.
+        /// </summary>
+        public static string Server_Code_Required {
+            get {
+                return ResourceManager.GetString("Server_Code_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name is required.
+        /// </summary>
+        public static string Server_Name_Required {
+            get {
+                return ResourceManager.GetString("Server_Name_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type is required.
+        /// </summary>
+        public static string Server_Type_Required {
+            get {
+                return ResourceManager.GetString("Server_Type_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The url is required.
+        /// </summary>
+        public static string Server_Url_Required {
+            get {
+                return ResourceManager.GetString("Server_Url_Required", resourceCulture);
             }
         }
         

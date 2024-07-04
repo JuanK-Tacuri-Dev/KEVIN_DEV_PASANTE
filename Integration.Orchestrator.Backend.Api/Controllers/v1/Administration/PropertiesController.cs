@@ -1,0 +1,71 @@
+﻿using Integration.Orchestrator.Backend.Api.Filter;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Property;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Property.PropertyCommands;
+
+namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
+{
+    [Route("api/v1/[controller]/[action]")]
+    [ApiController]
+    [ServiceFilter(typeof(ErrorHandlingRest))]
+    public class PropertiesController(IMediator mediator) : Controller
+    {
+        private readonly IMediator _mediator = mediator;
+
+        [HttpPost]
+        public async Task<IActionResult> Create(PropertyCreateRequest request)
+        {
+            return Ok(await _mediator.Send(
+                new CreatePropertyCommandRequest(
+                    new PropertyBasicInfoRequest<PropertyCreateRequest>(request))));
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(PropertyUpdateRequest request, Guid id)
+        {
+            return Ok(await _mediator.Send(
+                new UpdatePropertyCommandRequest(
+                    new PropertyBasicInfoRequest<PropertyUpdateRequest>(request), id)));
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            return Ok(await _mediator.Send(
+                new DeletePropertyCommandRequest(
+                    new PropertyDeleteRequest { Id = id })));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            return Ok(await _mediator.Send(
+                new GetByIdPropertyCommandRequest(
+                    new PropertyGetByIdRequest { Id = id })));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetByCode(string code)
+        {
+            return Ok(await _mediator.Send(
+                new GetByCodePropertyCommandRequest(
+                    new PropertyGetByCodeRequest { Code = code })));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetByType(string type)
+        {
+            return Ok(await _mediator.Send(
+                new GetByTypePropertyCommandRequest(
+                    new PropertyGetByTypeRequest { Type = type })));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetAllPaginated(PropertyGetAllPaginatedRequest request)
+        {
+            return Ok(await _mediator.Send(
+                new GetAllPaginatedPropertyCommandRequest(request)));
+        }
+    }
+}

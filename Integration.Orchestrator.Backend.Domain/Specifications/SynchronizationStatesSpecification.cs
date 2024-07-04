@@ -85,5 +85,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return BaseSpecification<SynchronizationStatesEntity>.GetByUuid(x => x.id, id);
         }
 
+        public static Expression<Func<SynchronizationStatesEntity, bool>> GetByCodeExpression(string code)
+        {
+            return x => true && x.code == code;
+        }
+
     }
 }

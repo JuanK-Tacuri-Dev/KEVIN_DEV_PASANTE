@@ -14,6 +14,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.I
         public readonly record struct DeleteIntegrationCommandRequest(IntegrationDeleteRequest Integration) : IRequest<DeleteIntegrationCommandResponse>;
         public readonly record struct DeleteIntegrationCommandResponse(IntegrationDeleteResponse Message);
 
+        public readonly record struct GetByIdIntegrationCommandRequest(IntegrationGetByIdRequest Integration) : IRequest<GetByIdIntegrationCommandResponse>;
+        public readonly record struct GetByIdIntegrationCommandResponse(IntegrationGetByIdResponse Message);
+
         public readonly record struct GetAllPaginatedIntegrationCommandRequest(IntegrationGetAllPaginatedRequest Integration) : IRequest<GetAllPaginatedIntegrationCommandResponse>;
         public readonly record struct GetAllPaginatedIntegrationCommandResponse(IntegrationGetAllPaginatedResponse Message);
     }

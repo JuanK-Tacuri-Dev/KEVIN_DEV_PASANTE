@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization;
+﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Status;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization;
 using MediatR;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization
@@ -14,11 +15,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         public readonly record struct DeleteSynchronizationCommandRequest(SynchronizationDeleteRequest Synchronization) : IRequest<DeleteSynchronizationCommandResponse>;
         public readonly record struct DeleteSynchronizationCommandResponse(SynchronizationDeleteResponse Message);
 
-        public readonly record struct GetByFranchiseIdSynchronizationCommandRequest(GetByFranchiseIdSynchronizationRequest Synchronization) : IRequest<GetByFranchiseIdSynchronizationCommandResponse>;
-        public readonly record struct GetByFranchiseIdSynchronizationCommandResponse(GetByFranchiseIdSynchronizationResponse Message);
+        public readonly record struct GetByIdSynchronizationCommandRequest(SynchronizationGetByIdRequest Synchronization) : IRequest<GetByIdSynchronizationCommandResponse>;
+        public readonly record struct GetByIdSynchronizationCommandResponse(SynchronizationGetByIdResponse Message);
 
-        public readonly record struct GetByIdSynchronizationCommandRequest(GetByIdSynchronizationRequest Synchronization) : IRequest<GetByIdSynchronizationCommandResponse>;
-        public readonly record struct GetByIdSynchronizationCommandResponse(GetByIdSynchronizationResponse Message);
+        public readonly record struct GetByFranchiseIdSynchronizationCommandRequest(SynchronizationGetByFranchiseIdRequest Synchronization) : IRequest<GetByFranchiseIdSynchronizationCommandResponse>;
+        public readonly record struct GetByFranchiseIdSynchronizationCommandResponse(SynchronizationGetByFranchiseIdResponse Message);
 
         public readonly record struct GetAllPaginatedSynchronizationCommandRequest(SynchronizationGetAllPaginatedRequest Synchronization) : IRequest<GetAllPaginatedSynchronizationCommandResponse>;
         public readonly record struct GetAllPaginatedSynchronizationCommandResponse(SynchronizationGetAllPaginatedResponse Message);

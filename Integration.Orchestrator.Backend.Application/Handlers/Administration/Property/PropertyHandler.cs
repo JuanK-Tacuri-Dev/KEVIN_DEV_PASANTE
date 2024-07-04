@@ -14,6 +14,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
     public class PropertyHandler(IPropertyService<PropertyEntity> propertyService)
         :
         IRequestHandler<CreatePropertyCommandRequest, CreatePropertyCommandResponse>,
+        IRequestHandler<UpdatePropertyCommandRequest, UpdatePropertyCommandResponse>,
+        IRequestHandler<DeletePropertyCommandRequest, DeletePropertyCommandResponse>,
+        IRequestHandler<GetByIdPropertyCommandRequest, GetByIdPropertyCommandResponse>,
         IRequestHandler<GetByCodePropertyCommandRequest, GetByCodePropertyCommandResponse>,
         IRequestHandler<GetByTypePropertyCommandRequest, GetByTypePropertyCommandResponse>,
         IRequestHandler<GetAllPaginatedPropertyCommandRequest, GetAllPaginatedPropertyCommandResponse>
@@ -48,6 +51,104 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             }
         }
 
+        public async Task<UpdatePropertyCommandResponse> Handle(UpdatePropertyCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var propertyById = await _propertyService.GetByIdAsync(request.Id);
+                if (propertyById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_PropertyNotFound);
+                }
+
+                var propertyEntity = MapAynchronizer(request.Property.PropertyRequest, request.Id);
+                await _propertyService.UpdateAsync(propertyEntity);
+
+                return new UpdatePropertyCommandResponse(
+                        new PropertyUpdateResponse
+                        {
+                            Code = HttpStatusCode.OK.GetHashCode(),
+                            Description = AppMessages.Application_PropertyResponseUpdated,
+                            Data = new PropertyUpdate()
+                            {
+                                Id = propertyEntity.id
+                            }
+                        });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<DeletePropertyCommandResponse> Handle(DeletePropertyCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var propertyById = await _propertyService.GetByIdAsync(request.Property.Id);
+                if (propertyById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_PropertyNotFound);
+                }
+
+                await _propertyService.DeleteAsync(propertyById);
+
+                return new DeletePropertyCommandResponse(
+                    new PropertyDeleteResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Application_PropertyResponseDeleted
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<GetByIdPropertyCommandResponse> Handle(GetByIdPropertyCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var propertyById = await _propertyService.GetByIdAsync(request.Property.Id);
+                if (propertyById == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_PropertyNotFound);
+                }
+
+                return new GetByIdPropertyCommandResponse(
+                    new PropertyGetByIdResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_PropertyResponse,
+                        Data = new PropertyGetById
+                        {
+                            Id = propertyById.id,
+                            Name = propertyById.name,
+                            Code = propertyById.property_code,
+                            Type = propertyById.property_type,
+                            EntityId = propertyById.entity_id
+                        }
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
         public async Task<GetByCodePropertyCommandResponse> Handle(GetByCodePropertyCommandRequest request, CancellationToken cancellationToken)
         {
             try
@@ -59,16 +160,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 }
 
                 return new GetByCodePropertyCommandResponse(
-                    new GetByCodePropertyResponse
+                    new PropertyGetByCodeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_PropertyResponse,
-                        Data = new GetByCodeProperty
+                        Data = new PropertyGetByCode
                         {
                             Id = propertyByCode.id,
                             Name = propertyByCode.name,
                             Code = propertyByCode.property_code,
-                            Type = propertyByCode.property_type
+                            Type = propertyByCode.property_type,
+                            EntityId = propertyByCode.entity_id
                         }
                     });
             }
@@ -93,16 +195,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 }
 
                 return new GetByTypePropertyCommandResponse(
-                    new GetByTypePropertyResponse
+                    new PropertyGetByTypeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_PropertyResponse,
-                        Data = propertyByType.Select(c => new GetByTypeProperty
+                        Data = propertyByType.Select(c => new PropertyGetByType
                         {
                             Id = c.id,
                             Name = c.name,
                             Code = c.property_code,
-                            Type = c.property_type
+                            Type = c.property_type,
+                            EntityId = c.entity_id
                         }).ToList()
                     });
             }
@@ -118,29 +221,41 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
         public async Task<GetAllPaginatedPropertyCommandResponse> Handle(GetAllPaginatedPropertyCommandRequest request, CancellationToken cancellationToken)
         {
-            var model = request.Property.Adapt<PaginatedModel>();
-            var rows = await _propertyService.GetTotalRowsAsync(model);
-            if (rows == 0)
+            try
             {
-                throw new ArgumentException(AppMessages.Application_PropertyNotFound);
-            }
-            var result = await _propertyService.GetAllPaginatedAsync(model);
-
-
-            return new GetAllPaginatedPropertyCommandResponse(
-                new PropertyGetAllPaginatedResponse
+                var model = request.Property.Adapt<PaginatedModel>();
+                var rows = await _propertyService.GetTotalRowsAsync(model);
+                if (rows == 0)
                 {
-                    Code = HttpStatusCode.OK.GetHashCode(),
-                    Description = AppMessages.Api_PropertyResponse,
-                    TotalRows = rows,
-                    Data = result.Select(c => new PropertyGetAllPaginated
+                    throw new ArgumentException(AppMessages.Application_PropertyNotFound);
+                }
+                var result = await _propertyService.GetAllPaginatedAsync(model);
+
+
+                return new GetAllPaginatedPropertyCommandResponse(
+                    new PropertyGetAllPaginatedResponse
                     {
-                        Id = c.id,
-                        Name = c.name,
-                        Code = c.property_code,
-                        Type = c.property_type
-                    }).ToList()
-                });
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Description = AppMessages.Api_PropertyResponse,
+                        TotalRows = rows,
+                        Data = result.Select(c => new PropertyGetAllPaginated
+                        {
+                            Id = c.id,
+                            Name = c.name,
+                            Code = c.property_code,
+                            Type = c.property_type,
+                            EntityId = c.entity_id,
+                        }).ToList()
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
         }
 
         private PropertyEntity MapAynchronizer(PropertyCreateRequest request, Guid id)
@@ -150,7 +265,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 id = id,
                 name = request.Name,
                 property_code = request.Code,
-                property_type = request.Type
+                property_type = request.Type,
+                entity_id = request.EntityId
             };
             return propertyEntity;
         }
