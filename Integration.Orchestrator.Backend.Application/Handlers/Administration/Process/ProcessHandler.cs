@@ -137,11 +137,16 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             ConnectionId = processById.connection_id,
                             Entities = processById.entities.Select(obj => new EntitiesRequest
                             {
-                                Name = obj.name,
+                                Id = obj.id,
+                                Properties = obj.Properties.Select(p => new PropertiesRequest 
+                                {
+                                    KeyId = p.key_id
+                                }).ToList(),
                                 Filters = obj.filters.Select(f => new FilterRequest
                                 {
-                                    Key = f.key,
-                                    Value = f.value
+                                    KeyId = f.key_id,
+                                    OperatorId = f.operator_id,
+                                    ValueId = f.value_id
                                 }).ToList()
                             }).ToList()
                         }
@@ -180,11 +185,16 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             ConnectionId = processByCode.connection_id,
                             Entities = processByCode.entities.Select(obj => new EntitiesRequest
                             {
-                                Name = obj.name,
+                                Id = obj.id,
+                                Properties = obj.Properties.Select(p => new PropertiesRequest
+                                {
+                                    KeyId = p.key_id
+                                }).ToList(),
                                 Filters = obj.filters.Select(f => new FilterRequest
                                 {
-                                    Key = f.key,
-                                    Value = f.value
+                                    KeyId = f.key_id,
+                                    OperatorId = f.operator_id,
+                                    ValueId = f.value_id
                                 }).ToList()
                             }).ToList()
                         }
@@ -215,22 +225,26 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_ProcessResponse,
-                        Data = processByType.Select(c => new ProcessGetByType
+                        Data = processByType.Select(p => new ProcessGetByType
                         {
-                            Id = c.id,
-                            ProcessCode = c.process_code,
-                            Type = c.process_type,
-                            ConnectionId = c.connection_id,
-                            Entities = c.entities.Select(obj => new EntitiesRequest
+                            Id = p.id,
+                            ProcessCode = p.process_code,
+                            Type = p.process_type,
+                            ConnectionId = p.connection_id,
+                            Entities = p.entities.Select(obj => new EntitiesRequest
                             {
-                                Name = obj.name,
+                                Id = obj.id,
+                                Properties = obj.Properties.Select(p => new PropertiesRequest
+                                {
+                                    KeyId = p.key_id
+                                }).ToList(),
                                 Filters = obj.filters.Select(f => new FilterRequest
                                 {
-                                    Key = f.key,
-                                    Value = f.value
+                                    KeyId = f.key_id,
+                                    OperatorId = f.operator_id,
+                                    ValueId = f.value_id
                                 }).ToList()
                             }).ToList()
-
                         }).ToList()
                     });
             }
@@ -263,19 +277,24 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_ProcessResponse,
                         TotalRows = rows,
-                        Data = result.Select(c => new ProcessGetAllPaginated
+                        Data = result.Select(p => new ProcessGetAllPaginated
                         {
-                            Id = c.id,
-                            ProcessCode = c.process_code,
-                            Type = c.process_type,
-                            ConnectionId = c.connection_id,
-                            Entities = c.entities.Select(obj => new EntitiesRequest
+                            Id = p.id,
+                            ProcessCode = p.process_code,
+                            Type = p.process_type,
+                            ConnectionId = p.connection_id,
+                            Entities = p.entities.Select(obj => new EntitiesRequest
                             {
-                                Name = obj.name,
+                                Id = obj.id,
+                                Properties = obj.Properties.Select(p => new PropertiesRequest
+                                {
+                                    KeyId = p.key_id
+                                }).ToList(),
                                 Filters = obj.filters.Select(f => new FilterRequest
                                 {
-                                    Key = f.key,
-                                    Value = f.value
+                                    KeyId = f.key_id,
+                                    OperatorId = f.operator_id,
+                                    ValueId = f.value_id
                                 }).ToList()
                             }).ToList()
                         }).ToList()
@@ -299,15 +318,18 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 process_code = request.ProcessCode,
                 process_type = request.Type,
                 connection_id = request.ConnectionId,
-                entities = request.Entities
-                .Select(obj => new ObjectEntity
+                entities = request.Entities.Select(obj => new ObjectEntity
                 {
-                    name = obj.Name,
-                    filters = obj.Filters
-                    .Select(f => new FilterEntity
+                    id = obj.Id,
+                    Properties = obj.Properties.Select(p => new PropertiesEntity
                     {
-                        key = f.Key,
-                        value = f.Value
+                        key_id = p.KeyId
+                    }).ToList(),
+                    filters = obj.Filters.Select(f => new FiltersEntity
+                    {
+                        key_id = f.KeyId,
+                        operator_id = f.OperatorId,
+                        value_id = f.ValueId
                     }).ToList()
                 }).ToList()
             };

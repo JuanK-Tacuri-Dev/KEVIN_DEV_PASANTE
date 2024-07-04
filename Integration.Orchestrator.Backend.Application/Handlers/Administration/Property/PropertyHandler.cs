@@ -135,7 +135,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Name = propertyById.name,
                             Code = propertyById.property_code,
                             Type = propertyById.property_type,
-                            IdEntity = propertyById.entity_id
+                            EntityId = propertyById.entity_id
                         }
                     });
             }
@@ -170,7 +170,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Name = propertyByCode.name,
                             Code = propertyByCode.property_code,
                             Type = propertyByCode.property_type,
-                            IdEntity = propertyByCode.entity_id
+                            EntityId = propertyByCode.entity_id
                         }
                     });
             }
@@ -205,7 +205,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Name = c.name,
                             Code = c.property_code,
                             Type = c.property_type,
-                            IdEntity = c.entity_id
+                            EntityId = c.entity_id
                         }).ToList()
                     });
             }
@@ -244,7 +244,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Name = c.name,
                             Code = c.property_code,
                             Type = c.property_type,
-                            IdEntity = c.entity_id,
+                            EntityId = c.entity_id,
                         }).ToList()
                     });
             }
@@ -266,7 +266,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 name = request.Name,
                 property_code = request.Code,
                 property_type = request.Type,
-                entity_id = request.IdEntity
+                entity_id = request.EntityId
             };
             return propertyEntity;
         }
