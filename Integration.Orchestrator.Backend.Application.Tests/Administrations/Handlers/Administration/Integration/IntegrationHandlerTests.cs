@@ -266,8 +266,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             Assert.Equal((int)HttpStatusCode.OK, response.Message.Code);
             Assert.Equal(AppMessages.Api_IntegrationResponse, response.Message.Description);
             Assert.NotNull(response.Message.Data);
-            Assert.Equal(connectionEntities.Count(), response.Message.Data.Count());
-            Assert.Equal(connectionEntities.Count(), response.Message.TotalRows);
+            Assert.Equal(connectionEntities.Count(), response.Message.Data.Total_rows);
             _serviceMock.Verify(s => s.GetTotalRowsAsync(It.IsAny<PaginatedModel>()), Times.Once);
             _serviceMock.Verify(s => s.GetAllPaginatedAsync(It.IsAny<PaginatedModel>()), Times.Once);
         }

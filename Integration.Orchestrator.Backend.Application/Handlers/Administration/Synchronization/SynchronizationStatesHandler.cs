@@ -164,15 +164,18 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_SynchronizationStatesResponse,
-                        TotalRows = rows,
-                        Data = result.Select(syn => new SynchronizationStatesGetAllPaginated
+                        Data = new SynchronizationStatesGetAllRows
                         {
-                            Id = syn.id,
-                            Name = syn.name,
-                            Code = syn.code,
-                            Color = syn.color
-                        }
+                            Total_rows = rows,
+                            Rows = result.Select(syn => new SynchronizationStatesGetAllPaginated
+                            {
+                                Id = syn.id,
+                                Name = syn.name,
+                                Code = syn.code,
+                                Color = syn.color
+                            }
                         ).ToList()
+                        }
                     });
             }
             catch (ArgumentException ex)

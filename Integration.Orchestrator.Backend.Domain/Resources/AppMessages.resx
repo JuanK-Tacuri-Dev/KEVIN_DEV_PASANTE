@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Adapter_Code_Required" xml:space="preserve">
+    <value>The code is required</value>
+  </data>
+  <data name="Adapter_Name_Required" xml:space="preserve">
+    <value>The name is required</value>
+  </data>
+  <data name="Adapter_Type_Required" xml:space="preserve">
+    <value>The  type is required</value>
+  </data>
+  <data name="Api_AdapterResponse" xml:space="preserve">
+    <value>Adapter data get successfully</value>
+  </data>
   <data name="Api_ConnectionResponse" xml:space="preserve">
     <value>Connection data get successfully</value>
   </data>
@@ -152,6 +164,18 @@
   </data>
   <data name="Api_ValueResponse" xml:space="preserve">
     <value>Value data get successfully</value>
+  </data>
+  <data name="Application_AdapterNotFound" xml:space="preserve">
+    <value>Adapter not found</value>
+  </data>
+  <data name="Application_AdapterResponseCreated" xml:space="preserve">
+    <value>Adapter Created Succesfully</value>
+  </data>
+  <data name="Application_AdapterResponseDeleted" xml:space="preserve">
+    <value>Adapter Deleted Succesfully</value>
+  </data>
+  <data name="Application_AdapterResponseUpdated" xml:space="preserve">
+    <value>Adapter Updated Succesfully</value>
   </data>
   <data name="Application_ConnectionNotFound" xml:space="preserve">
     <value>Connection not found</value>
@@ -314,6 +338,9 @@
   </data>
   <data name="Connection_User_Required" xml:space="preserve">
     <value>The user is required</value>
+  </data>
+  <data name="Domain_AdapterExists" xml:space="preserve">
+    <value>The adpater exists</value>
   </data>
   <data name="Domain_ConnectionExists" xml:space="preserve">
     <value>The code exists</value>

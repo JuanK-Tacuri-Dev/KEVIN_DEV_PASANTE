@@ -23,7 +23,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
             RuleFor(request => request.Connection.ConnectionRequest.Password)
             .NotEmpty().WithMessage(AppMessages.Connection_Password_Required);
 
-            RuleFor(request => request.Connection.ConnectionRequest.Adapter)
+            RuleFor(request => request.Connection.ConnectionRequest.AdapterId)
             .NotEmpty().WithMessage(AppMessages.Connection_Adapter_Required);
         }
     }

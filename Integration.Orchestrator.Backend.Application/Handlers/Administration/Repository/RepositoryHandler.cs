@@ -205,17 +205,20 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_RepositoryResponse,
-                        TotalRows = rows,
-                        Data = result.Select(c => new RepositoryGetAllPaginated
+                        Data = new RepositoryGetAllRows
                         {
-                            Id = c.id,
-                            Code = c.repository_code,
-                            Port = c.port,
-                            User = c.user,
-                            Password = c.password,
-                            ServerId = c.server_id,
-                            AdapterId = c.adapter_id
-                        }).ToList()
+                            Total_rows = rows,
+                            Rows = result.Select(c => new RepositoryGetAllPaginated
+                            {
+                                Id = c.id,
+                                Code = c.repository_code,
+                                Port = c.port,
+                                User = c.user,
+                                Password = c.password,
+                                ServerId = c.server_id,
+                                AdapterId = c.adapter_id
+                            }).ToList()
+                        }
                     });
             }
             catch (ArgumentException ex)

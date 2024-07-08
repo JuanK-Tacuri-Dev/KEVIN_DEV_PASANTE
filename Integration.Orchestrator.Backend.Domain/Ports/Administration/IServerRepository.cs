@@ -5,9 +5,9 @@ namespace Integration.Orchestrator.Backend.Domain.Ports.Administration
 {
     public interface IServerRepository<T>
     {
-        Task InsertAsync(T server);
-        Task UpdateAsync(T server);
-        Task DeleteAsync(T server);
+        Task InsertAsync(T entity);
+        Task UpdateAsync(T entity);
+        Task DeleteAsync(T entity);
         Task<T> GetByIdAsync(Expression<Func<T, bool>> specification);
         Task<T> GetByCodeAsync(Expression<Func<T, bool>> specification);
         Task<IEnumerable<T>> GetByTypeAsync(Expression<Func<T, bool>> specification);

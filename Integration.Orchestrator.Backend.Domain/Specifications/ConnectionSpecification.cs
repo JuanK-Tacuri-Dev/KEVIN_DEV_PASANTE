@@ -28,8 +28,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             = new Dictionary<string, Expression<Func<ConnectionEntity, object>>>
         {
             { nameof(ConnectionEntity.connection_code), x => x.connection_code },
-            { nameof(ConnectionEntity.server), x => x.server },
-            { nameof(ConnectionEntity.adapter), x => x.adapter }
+            { nameof(ConnectionEntity.server), x => x.server }
         };
         private void SetupPagination(PaginatedModel model)
         {
@@ -87,12 +86,5 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return x => true && x.connection_code == code;
         }
-
-        public static Expression<Func<ConnectionEntity, bool>> GetByTypeExpression(string type)
-        {
-            return x => true && x.adapter == type;
-        }
-
-
     }
 }

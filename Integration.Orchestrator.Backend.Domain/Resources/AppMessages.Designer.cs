@@ -61,6 +61,42 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The code is required.
+        /// </summary>
+        public static string Adapter_Code_Required {
+            get {
+                return ResourceManager.GetString("Adapter_Code_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name is required.
+        /// </summary>
+        public static string Adapter_Name_Required {
+            get {
+                return ResourceManager.GetString("Adapter_Name_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The  type is required.
+        /// </summary>
+        public static string Adapter_Type_Required {
+            get {
+                return ResourceManager.GetString("Adapter_Type_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adapter data get successfully.
+        /// </summary>
+        public static string Api_AdapterResponse {
+            get {
+                return ResourceManager.GetString("Api_AdapterResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connection data get successfully.
         /// </summary>
         public static string Api_ConnectionResponse {
@@ -165,6 +201,42 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Api_ValueResponse {
             get {
                 return ResourceManager.GetString("Api_ValueResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adapter not found.
+        /// </summary>
+        public static string Application_AdapterNotFound {
+            get {
+                return ResourceManager.GetString("Application_AdapterNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adapter Created Succesfully.
+        /// </summary>
+        public static string Application_AdapterResponseCreated {
+            get {
+                return ResourceManager.GetString("Application_AdapterResponseCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adapter Deleted Succesfully.
+        /// </summary>
+        public static string Application_AdapterResponseDeleted {
+            get {
+                return ResourceManager.GetString("Application_AdapterResponseDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adapter Updated Succesfully.
+        /// </summary>
+        public static string Application_AdapterResponseUpdated {
+            get {
+                return ResourceManager.GetString("Application_AdapterResponseUpdated", resourceCulture);
             }
         }
         
@@ -651,6 +723,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Connection_User_Required {
             get {
                 return ResourceManager.GetString("Connection_User_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The adpater exists.
+        /// </summary>
+        public static string Domain_AdapterExists {
+            get {
+                return ResourceManager.GetString("Domain_AdapterExists", resourceCulture);
             }
         }
         

@@ -106,14 +106,14 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             // Arrange
             var request = new CreateConnectionCommandRequest(new ConnectionBasicInfoRequest<ConnectionCreateRequest>(new ConnectionCreateRequest 
             { 
-                Adapter = string.Empty 
+                AdapterId = Guid.Empty
             }));
 
             // Act
             var result = _validator.TestValidate(request);
 
             // Assert
-            result.ShouldHaveValidationErrorFor(r => r.Connection.ConnectionRequest.Adapter)
+            result.ShouldHaveValidationErrorFor(r => r.Connection.ConnectionRequest.AdapterId)
                   .WithErrorMessage(AppMessages.Connection_Adapter_Required);
         }
     }

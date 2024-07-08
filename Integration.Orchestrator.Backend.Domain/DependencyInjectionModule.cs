@@ -76,6 +76,10 @@ namespace Integration.Orchestrator.Backend.Domain
             _ = builder.RegisterType<RepositoryService>()
                 .As<IRepositoryService<RepositoryEntity>>()
                 .InstancePerLifetimeScope();
+
+            _ = builder.RegisterType<AdapterService>()
+                .As<IAdapterService<AdapterEntity>>()
+                .InstancePerLifetimeScope();
         }
     }
 }

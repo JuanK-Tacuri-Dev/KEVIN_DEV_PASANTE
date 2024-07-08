@@ -63,8 +63,8 @@ namespace Value.Orchestrator.Backend.Api.Controllers.v1.Administration
         [HttpPost]
         public async Task<IActionResult> GetAllPaginated(ValueGetAllPaginatedRequest request)
         {
-            return Ok(await _mediator.Send(
-                new GetAllPaginatedValueCommandRequest(request)));
+            return Ok((await _mediator.Send(
+                new GetAllPaginatedValueCommandRequest(request))).Message);
         }
     }
 }

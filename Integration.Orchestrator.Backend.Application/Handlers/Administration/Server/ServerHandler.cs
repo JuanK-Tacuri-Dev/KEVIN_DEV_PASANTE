@@ -237,15 +237,18 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_ServerResponse,
-                        TotalRows = rows,
-                        Data = result.Select(c => new ServerGetAllPaginated
+                        Data = new ServerGetAllRows
                         {
-                            Id = c.id,
-                            Code = c.server_code,
-                            Name = c.name,
-                            Type = c.type,
-                            Url = c.url
-                        }).ToList()
+                            Total_rows = rows,
+                            Rows = result.Select(c => new ServerGetAllPaginated
+                            {
+                                Id = c.id,
+                                Code = c.server_code,
+                                Name = c.name,
+                                Type = c.type,
+                                Url = c.url
+                            }).ToList()
+                        }
                     });
             }
             catch (ArgumentException ex)

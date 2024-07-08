@@ -5,9 +5,9 @@ namespace Integration.Orchestrator.Backend.Domain.Ports.Administration
 {
     public interface IProcessRepository<T>
     {
-        Task InsertAsync(T process);
-        Task UpdateAsync(T process);
-        Task DeleteAsync(T process);
+        Task InsertAsync(T entity);
+        Task UpdateAsync(T entity);
+        Task DeleteAsync(T entity);
         Task<T> GetByIdAsync(Expression<Func<T, bool>> specification);
         Task<T> GetByCodeAsync(Expression<Func<T, bool>> specification);
         Task<IEnumerable<T>> GetByTypeAsync(Expression<Func<T, bool>> specification);

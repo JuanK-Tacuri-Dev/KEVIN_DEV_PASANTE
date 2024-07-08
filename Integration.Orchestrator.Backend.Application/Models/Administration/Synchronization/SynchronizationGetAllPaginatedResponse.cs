@@ -1,10 +1,17 @@
 ﻿namespace Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization
 {
-    public class SynchronizationGetAllPaginatedResponse : ModelResponseGetAll<IEnumerable<SynchronizationGetAllPaginated>>
+    public class SynchronizationGetAllPaginatedResponse : ModelResponseGetAll<SynchronizationGetAllRows>
     {
     }
-    public class SynchronizationGetAllPaginated : SynchronizationRequest
+
+    public class SynchronizationGetAllRows
     {
-        public Guid Id { get; set; }
+        public long Total_rows { get; set; }
+
+        public IEnumerable<SynchronizationGetAllPaginated> Rows { get; set; }
+    }
+
+    public class SynchronizationGetAllPaginated : SynchronizationResponse
+    {
     }
 }

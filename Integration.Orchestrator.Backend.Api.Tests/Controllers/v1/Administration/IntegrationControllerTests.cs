@@ -131,7 +131,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             Assert.Equal(200, returnValue.Message.Code);
             Assert.Equal(AppMessages.Application_IntegrationResponseDeleted, returnValue.Message.Description);
         }
-        
+
         [Fact]
         public async Task GetAllPaginated_ReturnsOkResult()
         {
@@ -147,24 +147,28 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 {
                     Code = 200,
                     Description = AppMessages.Api_IntegrationResponse,
-                    TotalRows = 1,
-                    Data = [
-                        new IntegrationGetAllPaginated
+                    Data = new IntegrationGetAllRows
+                    {
+                        Total_rows = 1,
+                        Rows = [new IntegrationGetAllPaginated
                         {
                             Id = Guid.NewGuid(),
                             Name = "Test",
                             Status = Guid.NewGuid(),
                             Observations = "observation",
                             UserId = Guid.NewGuid(),
-                            Process = new List<ProcessRequest>
+                            Process = new List<ProcessResponse>
                             {
-                                new ProcessRequest
+                                new ProcessResponse
                                 {
                                     Id = Guid.NewGuid()
                             }
                                 }
                         }]
-                });
+
+                    }
+
+                }); ;
             var command = new GetAllPaginatedIntegrationCommandRequest(request);
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetAllPaginatedIntegrationCommandRequest>(), default))
                          .ReturnsAsync(response);

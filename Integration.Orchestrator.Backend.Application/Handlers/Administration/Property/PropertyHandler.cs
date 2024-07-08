@@ -237,15 +237,18 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_PropertyResponse,
-                        TotalRows = rows,
-                        Data = result.Select(c => new PropertyGetAllPaginated
+                        Data = new PropertyGetAllRows
                         {
-                            Id = c.id,
-                            Name = c.name,
-                            Code = c.property_code,
-                            Type = c.property_type,
-                            EntityId = c.entity_id,
-                        }).ToList()
+                            Total_rows = rows,
+                            Rows = result.Select(c => new PropertyGetAllPaginated
+                            {
+                                Id = c.id,
+                                Name = c.name,
+                                Code = c.property_code,
+                                Type = c.property_type,
+                                EntityId = c.entity_id,
+                            }).ToList()
+                        }
                     });
             }
             catch (ArgumentException ex)

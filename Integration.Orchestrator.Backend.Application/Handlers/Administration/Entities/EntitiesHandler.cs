@@ -170,7 +170,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Name = entitiesByCode.name,
                             Code = entitiesByCode.entity_code,
                             Type = entitiesByCode.entity_type,
-                            IdServer= entitiesByCode.server_id
+                            IdServer = entitiesByCode.server_id
                         }
                     });
             }
@@ -237,15 +237,18 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_EntitiesResponse,
-                        TotalRows = rows,
-                        Data = result.Select(c => new EntitiesGetAllPaginated
+                        Data = new EntitiesGetAllRows
                         {
-                            Id = c.id,
-                            Name = c.name,
-                            Code = c.entity_code,
-                            Type = c.entity_type,
-                            IdServer = c.server_id
-                        }).ToList()
+                            Total_rows = rows,
+                            Rows = result.Select(c => new EntitiesGetAllPaginated
+                            {
+                                Id = c.id,
+                                Name = c.name,
+                                Code = c.entity_code,
+                                Type = c.entity_type,
+                                IdServer = c.server_id
+                            }).ToList()
+                        }
                     });
             }
             catch (ArgumentException ex)

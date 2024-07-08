@@ -166,19 +166,20 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_IntegrationResponse,
-                        TotalRows = rows,
-                        Data = result.Select(syn => new IntegrationGetAllPaginated
+                        Data = new IntegrationGetAllRows
                         {
-                            Id = syn.id,
-                            Name = syn.name,
-                            Status = syn.status,
-                            Observations = syn.observations,
-                            Process = syn.process.Select(i => new ProcessRequest { Id = i }).ToList(),
-                            UserId = syn.user_id
-
-                        }).ToList()
-                    }
-                    );
+                            Total_rows = rows,
+                            Rows = result.Select(syn => new IntegrationGetAllPaginated
+                            {
+                                Id = syn.id,
+                                Name = syn.name,
+                                Status = syn.status,
+                                Observations = syn.observations,
+                                Process = syn.process.Select(i => new ProcessResponse { Id = i }).ToList(),
+                                UserId = syn.user_id
+                            }).ToList()
+                        }
+                    });
             }
             catch (ArgumentException ex)
             {

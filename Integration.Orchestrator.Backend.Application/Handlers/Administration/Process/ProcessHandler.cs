@@ -276,28 +276,31 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
                         Description = AppMessages.Api_ProcessResponse,
-                        TotalRows = rows,
-                        Data = result.Select(p => new ProcessGetAllPaginated
+                        Data = new ProcessGetAllRows 
                         {
-                            Id = p.id,
-                            ProcessCode = p.process_code,
-                            Type = p.process_type,
-                            ConnectionId = p.connection_id,
-                            Entities = p.entities.Select(obj => new EntitiesRequest
+                            Total_rows = rows,
+                            Rows = result.Select(p => new ProcessGetAllPaginated
                             {
-                                Id = obj.id,
-                                Properties = obj.Properties.Select(p => new PropertiesRequest
+                                Id = p.id,
+                                ProcessCode = p.process_code,
+                                Type = p.process_type,
+                                ConnectionId = p.connection_id,
+                                Entities = p.entities.Select(obj => new EntitiesResponse
                                 {
-                                    KeyId = p.key_id
-                                }).ToList(),
-                                Filters = obj.filters.Select(f => new FilterRequest
-                                {
-                                    KeyId = f.key_id,
-                                    OperatorId = f.operator_id,
-                                    ValueId = f.value_id
+                                    Id = obj.id,
+                                    Properties = obj.Properties.Select(p => new PropertiesResponse
+                                    {
+                                        KeyId = p.key_id
+                                    }).ToList(),
+                                    Filters = obj.filters.Select(f => new FilterResponse
+                                    {
+                                        KeyId = f.key_id,
+                                        OperatorId = f.operator_id,
+                                        ValueId = f.value_id
+                                    }).ToList()
                                 }).ToList()
                             }).ToList()
-                        }).ToList()
+                        }
                     });
             }
             catch (ArgumentException ex)

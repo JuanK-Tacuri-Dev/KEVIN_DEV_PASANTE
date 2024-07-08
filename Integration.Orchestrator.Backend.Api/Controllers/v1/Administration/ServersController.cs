@@ -64,8 +64,8 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
         [HttpPost]
         public async Task<IActionResult> GetAllPaginated(ServerGetAllPaginatedRequest request)
         {
-            return Ok(await _mediator.Send(
-                new GetAllPaginatedServerCommandRequest(request)));
+            return Ok((await _mediator.Send(
+                new GetAllPaginatedServerCommandRequest(request))).Message);
         }
     }
 }

@@ -48,8 +48,8 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
         [HttpPost]
         public async Task<IActionResult> GetAllPaginated(StatusGetAllPaginatedRequest request)
         {
-            return Ok(await _mediator.Send(
-                new GetAllPaginatedStatusCommandRequest(request)));
+            return Ok((await _mediator.Send(
+                new GetAllPaginatedStatusCommandRequest(request))).Message);
         }
     }
 }

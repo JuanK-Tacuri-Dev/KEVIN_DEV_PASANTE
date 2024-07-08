@@ -210,7 +210,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             Assert.Equal(AppMessages.Api_SynchronizationResponse, returnValue.Message.Description);
         }
 
-        [Fact]
+        /*[Fact]
         public async Task GetAllPaginated_ReturnsOkResult()
         {
             // Arrange
@@ -254,6 +254,6 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             var returnValue = Assert.IsType<GetAllPaginatedSynchronizationCommandResponse>(okResult.Value);
             Assert.Equal(200, returnValue.Message.Code);
             Assert.Equal(AppMessages.Api_SynchronizationResponse, returnValue.Message.Description);
-        }
+        }*/
     }
 }

@@ -9,16 +9,16 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
     {
         public CreateSynchronizationCommandRequestValidator()
         {
-            RuleFor(request => request.Synchronization.SynchronizationRequest.FranchiseId)
-            .NotEmpty().WithMessage(AppMessages.Synchronization_FranchiseId_Required);
+            //RuleFor(request => request.Synchronization.SynchronizationRequest.FranchiseId)
+            //.NotEmpty().WithMessage(AppMessages.Synchronization_FranchiseId_Required);
 
             RuleFor(request => request.Synchronization.SynchronizationRequest.Status)
             .NotEmpty().WithMessage(AppMessages.Synchronization_Status_Required);
 
-            RuleFor(request => request.Synchronization.SynchronizationRequest.Observations)
-            .NotEmpty().WithMessage(AppMessages.Synchronization_Observations_Required)
-            .MinimumLength(1).WithMessage(AppMessages.Synchronization_Observations_MinimumSize)
-            .MaximumLength(255).WithMessage(AppMessages.Synchronization_Observations_MaximumSize);
+            //RuleFor(request => request.Synchronization.SynchronizationRequest.Observations)
+            //.NotEmpty().WithMessage(AppMessages.Synchronization_Observations_Required)
+            //.MinimumLength(1).WithMessage(AppMessages.Synchronization_Observations_MinimumSize)
+            //.MaximumLength(255).WithMessage(AppMessages.Synchronization_Observations_MaximumSize);
 
             RuleFor(request => request.Synchronization.SynchronizationRequest.Integrations)
             .NotNull().WithMessage(AppMessages.Synchronization_Integrations_Required)
