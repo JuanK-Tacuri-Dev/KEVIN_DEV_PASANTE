@@ -493,6 +493,51 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to created succefully.
+        /// </summary>
+        public static string Application_RespondeCreated {
+            get {
+                return ResourceManager.GetString("Application_RespondeCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to deleted succefully.
+        /// </summary>
+        public static string Application_RespondeDeleted {
+            get {
+                return ResourceManager.GetString("Application_RespondeDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to returned successfully.
+        /// </summary>
+        public static string Application_RespondeGet {
+            get {
+                return ResourceManager.GetString("Application_RespondeGet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to data returned succesfully.
+        /// </summary>
+        public static string Application_RespondeGetAll {
+            get {
+                return ResourceManager.GetString("Application_RespondeGetAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to upated succesfully.
+        /// </summary>
+        public static string Application_RespondeUpdated {
+            get {
+                return ResourceManager.GetString("Application_RespondeUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server not found.
         /// </summary>
         public static string Application_ServerNotFound {
@@ -633,6 +678,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Application_SynchronizationStatesResponseUpdated {
             get {
                 return ResourceManager.GetString("Application_SynchronizationStatesResponseUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to is required.
+        /// </summary>
+        public static string Application_Validator_Required {
+            get {
+                return ResourceManager.GetString("Application_Validator_Required", resourceCulture);
             }
         }
         

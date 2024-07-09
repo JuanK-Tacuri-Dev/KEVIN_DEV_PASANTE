@@ -3,7 +3,7 @@
     public class IntegrationUpdateResponse : ModelResponse<IntegrationUpdate>
     {
     }
-    public class IntegrationUpdate()
+    public class IntegrationUpdate : IntegrationRequest
     {
         public Guid Id { get; set; }
     }

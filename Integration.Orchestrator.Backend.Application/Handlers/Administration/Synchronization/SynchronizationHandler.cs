@@ -37,7 +37,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new SynchronizationCreateResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_SynchronizationResponseCreated,
+                        Messages = [AppMessages.Application_RespondeCreated],
                         Data = new SynchronizationCreate
                         {
                             Id = synchronizationEntity.id,
@@ -51,9 +51,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Id = i
                             }).ToList(),
                             UserId = synchronizationEntity.user_id
-
-
-
                         }
                     });
             }
@@ -76,16 +73,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 {
                     throw new ArgumentException(AppMessages.Application_SynchronizationNotFound);
                 }
-                ////obtener estado petición
-                //var stateIntegration = await _synchronizationService.GetStatusByIdAsync(request.Synchronization.SynchronizationRequest.Status);
-
-
-                ////obtener estado actual
-                //var stateIntegrationCurrent = GetStateIntegrating(await _synchronizationService.GetStatusByIdAsync(synchronizationById.status));
-                //if (stateIntegrationCurrent == StateIntegrating.Running) 
-                //{ 
-                //}
-
 
                 var synchronizationEntity = MapAynchronizer(request.Synchronization.SynchronizationRequest, request.Id);
                 await _synchronizationService.UpdateAsync(synchronizationEntity);
@@ -94,7 +81,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         new SynchronizationUpdateResponse
                         {
                             Code = HttpStatusCode.OK.GetHashCode(),
-                            Description = AppMessages.Application_SynchronizationResponseUpdated,
+                            Messages = [AppMessages.Application_RespondeUpdated],
                             Data = new SynchronizationUpdate()
                             {
                                 Id = synchronizationEntity.id,
@@ -137,7 +124,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new SynchronizationDeleteResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_SynchronizationResponseDeleted
+                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Data = new SynchronizationDelete 
+                        {
+                            Id = synchronizationById.id
+                        }
                     });
             }
             catch (ArgumentException ex)
@@ -164,7 +155,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new SynchronizationGetByIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_SynchronizationResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new SynchronizationGetById
                         {
                             Id = synchronizationById.id,
@@ -202,7 +193,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new SynchronizationGetByFranchiseIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_SynchronizationResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = synchronizationByFranchise
                         .Select(syn => new SynchronizationGetByFranchiseId
                         {
@@ -267,7 +258,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new SynchronizationGetAllPaginatedResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_SynchronizationResponse,
+                        Description = AppMessages.Application_RespondeGetAll,
                         Data = new SynchronizationGetAllRows
                         {
                             Total_rows = rows,

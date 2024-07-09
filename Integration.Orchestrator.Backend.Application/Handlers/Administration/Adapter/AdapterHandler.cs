@@ -34,10 +34,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new AdapterCreateResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_AdapterResponseCreated,
-                        Data = new AdapterCreate()
+                        Messages = [AppMessages.Application_RespondeCreated],
+                        Data = new AdapterCreate
                         {
-                            Id = adapterEntity.id
+                            Id = adapterEntity.id,
+                            Code = adapterEntity.adapter_code,
+                            Name = adapterEntity.name,
+                            Type = adapterEntity.adapter_type
                         }
                     });
             }
@@ -68,10 +71,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         new AdapterUpdateResponse
                         {
                             Code = HttpStatusCode.OK.GetHashCode(),
-                            Description = AppMessages.Application_AdapterResponseUpdated,
-                            Data = new AdapterUpdate()
+                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Data = new AdapterUpdate
                             {
-                                Id = adapterEntity.id
+                                Id = adapterEntity.id,
+                                Code = adapterEntity.adapter_code,
+                                Name = adapterEntity.name,
+                                Type = adapterEntity.adapter_type
                             }
                         });
             }
@@ -101,7 +107,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new AdapterDeleteResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_AdapterResponseDeleted
+                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Data = new AdapterDelete 
+                        {
+                            Id = adapterById.id
+                        }
                     });
             }
             catch (ArgumentException ex)
@@ -128,7 +138,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new AdapterGetByIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_AdapterResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new AdapterGetById
                         {
                             Id = adapterById.id,
@@ -162,7 +172,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new AdapterGetByCodeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_AdapterResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new AdapterGetByCode
                         {
                             Id = adapterByCode.id,
@@ -196,7 +206,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new AdapterGetByTypeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_AdapterResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = adapterByType.Select(c => new AdapterGetByType
                         {
                             Id = c.id,
@@ -233,8 +243,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new AdapterGetAllPaginatedResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_AdapterResponse,
-                       // TotalRows = rows,
+                        Description = AppMessages.Application_RespondeGetAll,
                         Data = new AdapterGetAllRows 
                         {
                             Total_rows = rows,

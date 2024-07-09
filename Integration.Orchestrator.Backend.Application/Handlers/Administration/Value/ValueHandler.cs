@@ -27,17 +27,20 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var entitiesEntity = MapValue(request.Value.ValueRequest, Guid.NewGuid());
-                await _valueService.InsertAsync(entitiesEntity);
+                var valueEntity = MapValue(request.Value.ValueRequest, Guid.NewGuid());
+                await _valueService.InsertAsync(valueEntity);
 
                 return new CreateValueCommandResponse(
                     new ValueCreateResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_ValueResponseCreated,
-                        Data = new ValueCreate()
+                        Messages = [AppMessages.Application_RespondeCreated],
+                        Data = new ValueCreate
                         {
-                            Id = entitiesEntity.id
+                            Id = valueEntity.id,
+                            Code = valueEntity.value_code,
+                            Name = valueEntity.name,
+                            Type = valueEntity.value_type
                         }
                     });
             }
@@ -68,10 +71,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         new ValueUpdateResponse
                         {
                             Code = HttpStatusCode.OK.GetHashCode(),
-                            Description = AppMessages.Application_ValueResponseUpdated,
-                            Data = new ValueUpdate()
+                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Data = new ValueUpdate
                             {
-                                Id = valueEntity.id
+                                Id = valueEntity.id,
+                                Code = valueEntity.value_code,
+                                Name = valueEntity.name,
+                                Type = valueEntity.value_type
                             }
                         });
             }
@@ -101,7 +107,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ValueDeleteResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_ValueResponseDeleted
+                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Data = new ValueDelete 
+                        {
+                            Id = valueById.id
+                        }
                     });
             }
             catch (ArgumentException ex)
@@ -128,7 +138,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ValueGetByIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ValueResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new ValueGetById
                         {
                             Id = valueById.id,
@@ -162,7 +172,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ValueGetByCodeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ValueResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new ValueGetByCode
                         {
                             Id = entitiesByCode.id,
@@ -196,7 +206,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ValueGetByTypeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ValueResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = entitiesByType.Select(c => new ValueGetByType
                         {
                             Id = c.id,
@@ -233,7 +243,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ValueGetAllPaginatedResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ValueResponse,
+                        Description = AppMessages.Application_RespondeGetAll,
                         Data = new ValueGetAllRows
                         {
                             Total_rows = rows,

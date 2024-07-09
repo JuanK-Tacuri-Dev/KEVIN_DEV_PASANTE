@@ -3,7 +3,8 @@
     public class ValueDeleteResponse : ModelResponse<ValueDelete>
     {
     }
-    public class ValueDelete()
+    public class ValueDelete
     {
+        public Guid Id { get; set; }
     }
 }

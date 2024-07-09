@@ -44,7 +44,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 new SynchronizationCreateResponse
                 {
                     Code = 200,
-                    Description = AppMessages.Application_SynchronizationResponseCreated,
+                    Messages = [AppMessages.Application_RespondeCreated],
                     Data = new SynchronizationCreate
                     {
                         Id = Guid.NewGuid()
@@ -61,7 +61,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnValue = Assert.IsType<CreateSynchronizationCommandResponse>(okResult.Value);
             Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_SynchronizationResponseCreated, returnValue.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeCreated, returnValue.Message.Messages[0]);
         }
 
         [Fact]
@@ -90,7 +90,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 new SynchronizationUpdateResponse
                 {
                     Code = 200,
-                    Description = AppMessages.Application_SynchronizationResponseUpdated,
+                    Messages = [AppMessages.Application_RespondeUpdated],
                     Data = new SynchronizationUpdate
                     {
                         Id = id
@@ -107,7 +107,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnValue = Assert.IsType<UpdateSynchronizationCommandResponse>(okResult.Value);
             Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_SynchronizationResponseUpdated, returnValue.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeUpdated, returnValue.Message.Messages[0]);
         }
 
         [Fact]
@@ -119,7 +119,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 new SynchronizationDeleteResponse
                 {
                     Code = 200,
-                    Description = AppMessages.Application_SynchronizationResponseDeleted
+                    Messages = [AppMessages.Application_RespondeDeleted]
                 });
 
             _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteSynchronizationCommandRequest>(), default))
@@ -132,7 +132,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnValue = Assert.IsType<DeleteSynchronizationCommandResponse>(okResult.Value);
             Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_SynchronizationResponseDeleted, returnValue.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeDeleted, returnValue.Message.Messages[0]);
         }
 
         [Fact]
@@ -144,7 +144,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 new SynchronizationGetByFranchiseIdResponse
                 {
                     Code = 200,
-                    Description = AppMessages.Api_SynchronizationResponse,
+                    Messages = [AppMessages.Application_RespondeGet],
                     Data = new List<SynchronizationGetByFranchiseId>
                     {
                         new SynchronizationGetByFranchiseId
@@ -171,7 +171,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnValue = Assert.IsType<GetByFranchiseIdSynchronizationCommandResponse>(okResult.Value);
             Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Api_SynchronizationResponse, returnValue.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeGet, returnValue.Message.Messages[0]);
         }
 
         [Fact]
@@ -183,7 +183,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 new SynchronizationGetByIdResponse
                 {
                     Code = 200,
-                    Description = AppMessages.Api_SynchronizationResponse,
+                    Messages = [AppMessages.Application_RespondeGet],
                     Data = new SynchronizationGetById
                     {
                         Id = Guid.NewGuid(),
@@ -207,7 +207,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnValue = Assert.IsType<GetByIdSynchronizationCommandResponse>(okResult.Value);
             Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Api_SynchronizationResponse, returnValue.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeGet, returnValue.Message.Messages[0]);
         }
 
         /*[Fact]

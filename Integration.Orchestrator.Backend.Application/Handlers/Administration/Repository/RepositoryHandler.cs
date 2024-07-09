@@ -33,10 +33,16 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new RepositoryCreateResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_RepositoryResponseCreated,
-                        Data = new RepositoryCreate()
+                        Messages = [AppMessages.Application_RespondeCreated],
+                        Data = new RepositoryCreate
                         {
-                            Id = repositoryEntity.id
+                            Id = repositoryEntity.id,
+                            Code = repositoryEntity.repository_code,
+                            Port = repositoryEntity.port,
+                            User = repositoryEntity.user,
+                            Password = repositoryEntity.password,
+                            ServerId = repositoryEntity.server_id,
+                            AdapterId = repositoryEntity.adapter_id
                         }
                     });
             }
@@ -67,10 +73,16 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         new RepositoryUpdateResponse
                         {
                             Code = HttpStatusCode.OK.GetHashCode(),
-                            Description = AppMessages.Application_RepositoryResponseUpdated,
-                            Data = new RepositoryUpdate()
+                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Data = new RepositoryUpdate
                             {
-                                Id = repositoryEntity.id
+                                Id = repositoryEntity.id,
+                                Code = repositoryEntity.repository_code,
+                                Port = repositoryEntity.port,
+                                User = repositoryEntity.user,
+                                Password = repositoryEntity.password,
+                                ServerId = repositoryEntity.server_id,
+                                AdapterId = repositoryEntity.adapter_id
                             }
                         });
             }
@@ -100,7 +112,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new RepositoryDeleteResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_RepositoryResponseDeleted
+                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Data = new RepositoryDelete 
+                        {
+                            Id = repositoryById.id
+                        }
                     });
             }
             catch (ArgumentException ex)
@@ -127,7 +143,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new RepositoryGetByIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_RepositoryResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new RepositoryGetById
                         {
                             Id = request.Repository.Id,
@@ -164,7 +180,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new RepositoryGetByCodeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_RepositoryResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new RepositoryGetByCode
                         {
                             Id = repositoryByCode.id,
@@ -204,7 +220,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new RepositoryGetAllPaginatedResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_RepositoryResponse,
+                        Description = AppMessages.Application_RespondeGetAll,
                         Data = new RepositoryGetAllRows
                         {
                             Total_rows = rows,

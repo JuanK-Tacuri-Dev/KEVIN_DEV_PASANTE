@@ -25,17 +25,20 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var SynchronizationStatesEntity = MapSynchronizerStates(request.SynchronizationStates.SynchronizationStatesRequest, Guid.NewGuid());
-                await _synchronizationStatesService.InsertAsync(SynchronizationStatesEntity);
+                var synchronizationStatesEntity = MapSynchronizerStates(request.SynchronizationStates.SynchronizationStatesRequest, Guid.NewGuid());
+                await _synchronizationStatesService.InsertAsync(synchronizationStatesEntity);
 
                 return new CreateSynchronizationStatesCommandResponse(
                     new SynchronizationStatesCreateResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_SynchronizationStatesResponseCreated,
-                        Data = new SynchronizationStatesCreate()
+                        Messages = [AppMessages.Application_RespondeCreated],
+                        Data = new SynchronizationStatesCreate
                         {
-                            Id = SynchronizationStatesEntity.id
+                            Id = synchronizationStatesEntity.id,
+                            Name = synchronizationStatesEntity.name,
+                            Code = synchronizationStatesEntity.code,
+                            Color = synchronizationStatesEntity.color
                         }
                     });
             }
@@ -53,23 +56,26 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var sinchronizationStatesById = await _synchronizationStatesService.GetByIdAsync(request.Id);
-                if (sinchronizationStatesById == null)
+                var synchronizationStatesById = await _synchronizationStatesService.GetByIdAsync(request.Id);
+                if (synchronizationStatesById == null)
                 {
                     throw new ArgumentException(AppMessages.Application_SynchronizationStatesNotFound);
                 }
 
-                var sinchronizationStatesEntity = MapSynchronizerStates(request.SynchronizationStates.SynchronizationStatesRequest, request.Id);
-                await _synchronizationStatesService.UpdateAsync(sinchronizationStatesEntity);
+                var synchronizationStatesEntity = MapSynchronizerStates(request.SynchronizationStates.SynchronizationStatesRequest, request.Id);
+                await _synchronizationStatesService.UpdateAsync(synchronizationStatesById);
 
                 return new UpdateSynchronizationStatesCommandResponse(
                         new SynchronizationStatesUpdateResponse
                         {
                             Code = HttpStatusCode.OK.GetHashCode(),
-                            Description = AppMessages.Application_SynchronizationStatesResponseUpdated,
-                            Data = new SynchronizationStatesUpdate()
+                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Data = new SynchronizationStatesUpdate
                             {
-                                Id = sinchronizationStatesEntity.id
+                                Id = synchronizationStatesEntity.id,
+                                Name = synchronizationStatesEntity.name,
+                                Code = synchronizationStatesEntity.code,
+                                Color = synchronizationStatesEntity.color
                             }
                         });
             }
@@ -99,7 +105,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new SynchronizationStatesDeleteResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_SynchronizationStatesResponseDeleted
+                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Data = new SynchronizationStatesDelete
+                        {
+                            Id = sinchronizationStatesById.id
+                        }
                     });
             }
             catch (ArgumentException ex)
@@ -126,7 +136,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new SynchronizationStatesGetByIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_SynchronizationStatesResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new SynchronizationStatesGetById
                         {
                             Id = synchronizationStatesById.id,
@@ -163,7 +173,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new SynchronizationStatesGetAllPaginatedResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_SynchronizationStatesResponse,
+                        Description = AppMessages.Application_RespondeGetAll,
                         Data = new SynchronizationStatesGetAllRows
                         {
                             Total_rows = rows,

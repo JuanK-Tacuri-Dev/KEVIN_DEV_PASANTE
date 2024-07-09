@@ -44,7 +44,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             // Assert
             _mockService.Verify(service => service.InsertAsync(It.IsAny<SynchronizationEntity>()), Times.Once);
             Assert.Equal(HttpStatusCode.OK.GetHashCode(), response.Message.Code);
-            Assert.Equal(AppMessages.Application_SynchronizationResponseCreated, response.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeCreated, response.Message.Messages[0]);
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             _mockService.Verify(service => service.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
             _mockService.Verify(service => service.UpdateAsync(It.IsAny<SynchronizationEntity>()), Times.Once);
             Assert.Equal(HttpStatusCode.OK.GetHashCode(), response.Message.Code);
-            Assert.Equal(AppMessages.Application_SynchronizationResponseUpdated, response.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeUpdated, response.Message.Messages[0]);
         }
 
         [Fact]
@@ -163,7 +163,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             _mockService.Verify(service => service.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
             _mockService.Verify(service => service.DeleteAsync(It.IsAny<SynchronizationEntity>()), Times.Once);
             Assert.Equal(HttpStatusCode.OK.GetHashCode(), response.Message.Code);
-            Assert.Equal(AppMessages.Application_SynchronizationResponseDeleted, response.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeDeleted, response.Message.Messages[0]);
         }
 
         [Fact]
@@ -221,7 +221,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             // Assert
             _mockService.Verify(service => service.GetByFranchiseIdAsync(franchiseId), Times.Once);
             Assert.Equal(HttpStatusCode.OK.GetHashCode(), response.Message.Code);
-            Assert.Equal(AppMessages.Api_SynchronizationResponse, response.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeGet, response.Message.Messages[0]);
             Assert.Equal(synchronizations.Count, response.Message.Data.Count());
         }
 

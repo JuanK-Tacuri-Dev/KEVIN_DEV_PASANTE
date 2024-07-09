@@ -3,7 +3,7 @@
     public class RepositoryCreateResponse : ModelResponse<RepositoryCreate>
     {
     }
-    public class RepositoryCreate()
+    public class RepositoryCreate : RepositoryRequest
     {
         public Guid Id { get; set; }
     }

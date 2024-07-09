@@ -16,46 +16,46 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
         [HttpPost]
         public async Task<IActionResult> Create(EntitiesCreateRequest request)
         {
-            return Ok(await _mediator.Send(
+            return Ok((await _mediator.Send(
                 new CreateEntitiesCommandRequest(
-                    new EntitiesBasicInfoRequest<EntitiesCreateRequest>(request))));
+                    new EntitiesBasicInfoRequest<EntitiesCreateRequest>(request)))).Message);
         }
 
         [HttpPut]
         public async Task<IActionResult> Update(EntitiesUpdateRequest request, Guid id)
         {
-            return Ok(await _mediator.Send(new UpdateEntitiesCommandRequest(
-                new EntitiesBasicInfoRequest<EntitiesUpdateRequest>(request), id)));
+            return Ok((await _mediator.Send(new UpdateEntitiesCommandRequest(
+                new EntitiesBasicInfoRequest<EntitiesUpdateRequest>(request), id))).Message);
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return Ok(await _mediator.Send(new DeleteEntitiesCommandRequest(
-                new EntitiesDeleteRequest { Id = id })));
+            return Ok((await _mediator.Send(new DeleteEntitiesCommandRequest(
+                new EntitiesDeleteRequest { Id = id }))).Message);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetById(Guid id)
         {
-            return Ok(await _mediator.Send(
+            return Ok((await _mediator.Send(
                 new GetByIdEntitiesCommandRequest(
-                    new EntitiesGetByIdRequest { Id = id })));
+                    new EntitiesGetByIdRequest { Id = id }))).Message);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetByCode(string code)
         {
-            return Ok(await _mediator.Send(
+            return Ok((await _mediator.Send(
                 new GetByCodeEntitiesCommandRequest(
-                    new EntitiesGetByCodeRequest { Code = code })));
+                    new EntitiesGetByCodeRequest { Code = code }))).Message);
         }
         [HttpGet]
         public async Task<IActionResult> GetByType(string type)
         {
-            return Ok(await _mediator.Send(
+            return Ok((await _mediator.Send(
                 new GetByTypeEntitiesCommandRequest(
-                    new EntitiesGetByTypeRequest { Type = type })));
+                    new EntitiesGetByTypeRequest { Type = type }))).Message);
         }
 
         [HttpPost]

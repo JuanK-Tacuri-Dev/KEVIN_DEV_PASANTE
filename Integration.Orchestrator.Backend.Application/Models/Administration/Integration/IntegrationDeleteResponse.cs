@@ -3,7 +3,8 @@
     public class IntegrationDeleteResponse : ModelResponse<IntegrationDelete>
     {
     }
-    public class IntegrationDelete()
+    public class IntegrationDelete 
     {
+        public Guid Id { get; set; }
     }
 }

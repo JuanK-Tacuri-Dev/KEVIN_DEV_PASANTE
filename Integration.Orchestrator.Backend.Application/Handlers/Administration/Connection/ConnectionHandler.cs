@@ -33,10 +33,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ConnectionCreateResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_ConnectionResponseCreated,
-                        Data = new ConnectionCreate()
+                        Messages = [AppMessages.Application_RespondeCreated],
+                        Data = new ConnectionCreate
                         {
-                            Id = connectionEntity.id
+                            Id = connectionEntity.id,
+                            Code = connectionEntity.connection_code,
+                            Server = connectionEntity.server,
+                            Port = connectionEntity.port,
+                            User = connectionEntity.user,
+                            Password = connectionEntity.password,
+                            AdapterId = connectionEntity.adapter_id,
+                            RepositoryId = connectionEntity.repository_id
                         }
                     });
             }
@@ -67,10 +74,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         new ConnectionUpdateResponse
                         {
                             Code = HttpStatusCode.OK.GetHashCode(),
-                            Description = AppMessages.Application_ConnectionResponseUpdated,
-                            Data = new ConnectionUpdate()
+                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Data = new ConnectionUpdate
                             {
-                                Id = connectionEntity.id
+                                Id = connectionEntity.id,
+                                Code = connectionEntity.connection_code,
+                                Server = connectionEntity.server,
+                                Port = connectionEntity.port,
+                                User = connectionEntity.user,
+                                Password = connectionEntity.password,
+                                AdapterId = connectionEntity.adapter_id,
+                                RepositoryId = connectionEntity.repository_id
                             }
                         });
             }
@@ -100,7 +114,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ConnectionDeleteResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_ConnectionResponseDeleted
+                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Data = new ConnectionDelete 
+                        {
+                            Id = connectionById.id
+                        }
                     });
             }
             catch (ArgumentException ex)
@@ -127,7 +145,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ConnectionGetByIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ConnectionResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new ConnectionGetById
                         {
                             Id = connectionById.id,
@@ -165,7 +183,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ConnectionGetByCodeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ConnectionResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new ConnectionGetByCode
                         {
                             Id = connectionByCode.id,
@@ -206,7 +224,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ConnectionGetAllPaginatedResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ConnectionResponse,
+                        Description = AppMessages.Application_RespondeGetAll,
                         Data = new ConnectionGetAllRows
                         {
                             Total_rows = rows,

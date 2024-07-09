@@ -16,47 +16,47 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
         [HttpPost]
         public async Task<IActionResult> Create(ConnectionCreateRequest request)
         {
-            return Ok(await _mediator.Send(
+            return Ok((await _mediator.Send(
                 new CreateConnectionCommandRequest(
-                    new ConnectionBasicInfoRequest<ConnectionCreateRequest>(request))));
+                    new ConnectionBasicInfoRequest<ConnectionCreateRequest>(request)))).Message);
         }
 
         [HttpPut]
         public async Task<IActionResult> Update(ConnectionUpdateRequest request, Guid id)
         {
-            return Ok(await _mediator.Send(new UpdateConnectionCommandRequest(
-                new ConnectionBasicInfoRequest<ConnectionUpdateRequest>(request), id)));
+            return Ok((await _mediator.Send(new UpdateConnectionCommandRequest(
+                new ConnectionBasicInfoRequest<ConnectionUpdateRequest>(request), id))).Message);
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return Ok(await _mediator.Send(
+            return Ok((await _mediator.Send(
                 new DeleteConnectionCommandRequest(
-                    new ConnectionDeleteRequest { Id = id })));
+                    new ConnectionDeleteRequest { Id = id }))).Message);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetById(Guid id)
         {
-            return Ok(await _mediator.Send(
+            return Ok((await _mediator.Send(
                 new GetByIdConnectionCommandRequest(
-                    new ConnectionGetByIdRequest { Id = id })));
+                    new ConnectionGetByIdRequest { Id = id }))).Message);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetByCode(string code)
         {
-            return Ok(await _mediator.Send(
+            return Ok((await _mediator.Send(
                 new GetByCodeConnectionCommandRequest(
-                    new ConnectionGetByCodeRequest { Code = code })));
+                    new ConnectionGetByCodeRequest { Code = code }))).Message);
         }
         [HttpGet]
         public async Task<IActionResult> GetByType(string type)
         {
-            return Ok(await _mediator.Send(
+            return Ok((await _mediator.Send(
                 new GetByTypeConnectionCommandRequest(
-                    new ConnectionGetByTypeRequest { Type = type })));
+                    new ConnectionGetByTypeRequest { Type = type }))).Message);
         }
 
         [HttpPost]

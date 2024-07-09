@@ -34,10 +34,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new OperatorCreateResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_OperatorResponseCreated,
-                        Data = new OperatorCreate()
+                        Messages = [AppMessages.Application_RespondeCreated],
+                        Data = new OperatorCreate
                         {
-                            Id = operatorEntity.id
+                            Id = operatorEntity.id,
+                            Code = operatorEntity.operator_code,
+                            Name = operatorEntity.name,
+                            Type = operatorEntity.operator_type
                         }
                     });
             }
@@ -68,10 +71,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         new OperatorUpdateResponse
                         {
                             Code = HttpStatusCode.OK.GetHashCode(),
-                            Description = AppMessages.Application_OperatorResponseUpdated,
-                            Data = new OperatorUpdate()
+                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Data = new OperatorUpdate
                             {
-                                Id = operatorEntity.id
+                                Id = operatorEntity.id,
+                                Code = operatorEntity.operator_code,
+                                Name = operatorEntity.name,
+                                Type = operatorEntity.operator_type
                             }
                         });
             }
@@ -101,7 +107,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new OperatorDeleteResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_OperatorResponseDeleted
+                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Data = new OperatorDelete 
+                        { 
+                            Id = operatorById.id,
+                        }
                     });
             }
             catch (ArgumentException ex)
@@ -128,7 +138,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new OperatorGetByIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_OperatorResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new OperatorGetById
                         {
                             Id = operatorById.id,
@@ -162,7 +172,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new OperatorGetByCodeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_OperatorResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new OperatorGetByCode
                         {
                             Id = operatorByCode.id,
@@ -196,7 +206,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new OperatorGetByTypeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_OperatorResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = operatorByType.Select(c => new OperatorGetByType
                         {
                             Id = c.id,
@@ -233,7 +243,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new OperatorGetAllPaginatedResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_OperatorResponse,
+                        Description = AppMessages.Application_RespondeGetAll,
                         Data = new OperatorGetAllRows
                         {
                             Total_rows = rows,

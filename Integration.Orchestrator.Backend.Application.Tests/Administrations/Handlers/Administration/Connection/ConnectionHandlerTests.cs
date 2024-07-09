@@ -46,7 +46,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, response.Message.Code);
-            Assert.Equal(AppMessages.Application_ConnectionResponseCreated, response.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeCreated, response.Message.Messages[0]);
             Assert.NotNull(response.Message.Data);
             _serviceMock.Verify(s => s.InsertAsync(It.IsAny<ConnectionEntity>()), Times.Once);
         }
@@ -75,7 +75,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, response.Message.Code);
-            Assert.Equal(AppMessages.Api_ConnectionResponse, response.Message.Description);
+            Assert.Equal(AppMessages.Api_ConnectionResponse, response.Message.Messages[0]);
             Assert.NotNull(response.Message.Data);
             _serviceMock.Verify(s => s.GetByCodeAsync(It.IsAny<string>()), Times.Once);
         }

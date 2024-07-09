@@ -34,10 +34,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new EntitiesCreateResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_EntitiesResponseCreated,
-                        Data = new EntitiesCreate()
+                        Messages = [AppMessages.Application_RespondeCreated],
+                        Data = new EntitiesCreate
                         {
-                            Id = entitiesEntity.id
+                            Id = entitiesEntity.id,
+                            Code = entitiesEntity.entity_code,
+                            Type = entitiesEntity.entity_type,
+                            ServerId = entitiesEntity.server_id
                         }
                     });
             }
@@ -68,10 +71,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         new EntitiesUpdateResponse
                         {
                             Code = HttpStatusCode.OK.GetHashCode(),
-                            Description = AppMessages.Application_EntitiesResponseUpdated,
-                            Data = new EntitiesUpdate()
+                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Data = new EntitiesUpdate
                             {
-                                Id = entitiesEntity.id
+                                Id = entitiesEntity.id,
+                                Code = entitiesEntity.entity_code,
+                                Type = entitiesEntity.entity_type,
+                                ServerId = entitiesEntity.server_id
                             }
                         });
             }
@@ -101,7 +107,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new EntitiesDeleteResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_EntitiesResponseDeleted
+                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Data = new EntitiesDelete 
+                        {
+                            Id = entitiesById.id
+                        }
                     });
             }
             catch (ArgumentException ex)
@@ -128,14 +138,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new EntitiesGetByIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_EntitiesResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new EntitiesGetById
                         {
                             Id = entitiesById.id,
                             Name = entitiesById.name,
                             Code = entitiesById.entity_code,
                             Type = entitiesById.entity_type,
-                            IdServer = entitiesById.server_id
+                            ServerId = entitiesById.server_id
                         }
                     });
             }
@@ -163,14 +173,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new EntitiesGetByCodeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_EntitiesResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new GetByCodeEntities
                         {
                             Id = entitiesByCode.id,
                             Name = entitiesByCode.name,
                             Code = entitiesByCode.entity_code,
                             Type = entitiesByCode.entity_type,
-                            IdServer = entitiesByCode.server_id
+                            ServerId = entitiesByCode.server_id
                         }
                     });
             }
@@ -198,14 +208,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new EntitiesGetByTypeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_EntitiesResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = entitiesByType.Select(c => new EntitiesGetByType
                         {
                             Id = c.id,
                             Name = c.name,
                             Code = c.entity_code,
                             Type = c.entity_type,
-                            IdServer = c.server_id
+                            ServerId = c.server_id
                         }).ToList()
                     });
             }
@@ -236,7 +246,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new EntitiesGetAllPaginatedResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_EntitiesResponse,
+                        Description = AppMessages.Application_RespondeGetAll,
                         Data = new EntitiesGetAllRows
                         {
                             Total_rows = rows,
@@ -269,7 +279,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 name = request.Name,
                 entity_code = request.Code,
                 entity_type = request.Type,
-                server_id = request.IdServer
+                server_id = request.ServerId
             };
             return entitiesEntity;
         }

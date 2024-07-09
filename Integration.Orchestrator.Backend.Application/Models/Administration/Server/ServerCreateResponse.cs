@@ -3,7 +3,7 @@
     public class ServerCreateResponse : ModelResponse<ServerCreate>
     {
     }
-    public class ServerCreate()
+    public class ServerCreate : ServerRequest
     {
         public Guid Id { get; set; }
     }

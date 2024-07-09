@@ -261,6 +261,21 @@
   <data name="Application_RepositoryResponseUpdated" xml:space="preserve">
     <value>Repository Updated Succesfully</value>
   </data>
+  <data name="Application_RespondeCreated" xml:space="preserve">
+    <value>created succefully</value>
+  </data>
+  <data name="Application_RespondeDeleted" xml:space="preserve">
+    <value>deleted succefully</value>
+  </data>
+  <data name="Application_RespondeGet" xml:space="preserve">
+    <value>returned successfully</value>
+  </data>
+  <data name="Application_RespondeGetAll" xml:space="preserve">
+    <value>data returned succesfully</value>
+  </data>
+  <data name="Application_RespondeUpdated" xml:space="preserve">
+    <value>upated succesfully</value>
+  </data>
   <data name="Application_ServerNotFound" xml:space="preserve">
     <value>Server not found</value>
   </data>
@@ -308,6 +323,9 @@
   </data>
   <data name="Application_SynchronizationStatesResponseUpdated" xml:space="preserve">
     <value>Synchronization States Updated Succesfully</value>
+  </data>
+  <data name="Application_Validator_Required" xml:space="preserve">
+    <value>is required</value>
   </data>
   <data name="Application_ValueNotFound" xml:space="preserve">
     <value>Value not found</value>

@@ -3,7 +3,7 @@
     public class AdapterUpdateResponse : ModelResponse<AdapterUpdate>
     {
     }
-    public class AdapterUpdate()
+    public class AdapterUpdate :AdapterRequest
     {
         public Guid Id { get; set; }
     }
