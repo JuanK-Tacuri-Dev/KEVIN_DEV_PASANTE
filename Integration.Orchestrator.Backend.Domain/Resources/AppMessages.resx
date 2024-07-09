@@ -276,6 +276,9 @@
   <data name="Application_RespondeUpdated" xml:space="preserve">
     <value>upated succesfully</value>
   </data>
+  <data name="Application_ResponseNotCreated" xml:space="preserve">
+    <value>not created succefully</value>
+  </data>
   <data name="Application_ServerNotFound" xml:space="preserve">
     <value>Server not found</value>
   </data>

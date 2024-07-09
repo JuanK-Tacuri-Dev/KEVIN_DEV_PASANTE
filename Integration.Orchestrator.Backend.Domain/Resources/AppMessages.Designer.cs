@@ -538,6 +538,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to not created succefully.
+        /// </summary>
+        public static string Application_ResponseNotCreated {
+            get {
+                return ResourceManager.GetString("Application_ResponseNotCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server not found.
         /// </summary>
         public static string Application_ServerNotFound {
