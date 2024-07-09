@@ -6,21 +6,27 @@
         public string process_code { get; set; }
         public string process_type { get; set; }
         public Guid connection_id { get; set; }
-        public List<ObjectEntity> objects { get; set; }
+        public List<ObjectEntity> entities { get; set; }
         public DateTime created_at { get; private set; } = DateTime.UtcNow;
         public DateTime updated_at { get; private set; } = DateTime.UtcNow;
-        
     }
 
     public class ObjectEntity
     {
-        public string name { get; set; }
-        public List<FilterEntity> filters { get; set; }
+        public Guid id { get; set; }
+        public List<PropertiesEntity> Properties { get; set; }
+        public List<FiltersEntity> filters { get; set; }
     }
 
-    public class FilterEntity
+    public class PropertiesEntity
     {
-        public string key { get; set; }
-        public string value { get; set; }
+        public Guid key_id { get; set; }
+    }
+
+    public class FiltersEntity
+    {
+        public Guid key_id { get; set; }
+        public Guid operator_id { get; set; }
+        public Guid value_id { get; set; }
     }
 }

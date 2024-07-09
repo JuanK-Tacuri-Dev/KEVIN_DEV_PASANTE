@@ -45,11 +45,11 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
         public async Task<ConnectionEntity> GetByCodeAsync(Expression<Func<ConnectionEntity, bool>> specification)
         {
-            var filter = Builders<ConnectionEntity>.Filter.Where(specification);
-            var connectionEntity = await _collection
-                .Find(filter)
-                .FirstOrDefaultAsync();
-            return connectionEntity;
+                var filter = Builders<ConnectionEntity>.Filter.Where(specification);
+                var connectionEntity = await _collection
+                    .Find(filter)
+                    .FirstOrDefaultAsync();
+                return connectionEntity;
         }
 
         public async Task<IEnumerable<ConnectionEntity>> GetByTypeAsync(Expression<Func<ConnectionEntity, bool>> specification)

@@ -131,6 +131,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure
             _ = builder.RegisterType<ServerRepository>()
                 .As<IServerRepository<ServerEntity>>()
                 .SingleInstance();
+
+            _ = builder.RegisterType<RepositoryRepository>()
+                .As<IRepositoryRepository<RepositoryEntity>>()
+                .SingleInstance();
         }
     }
 }
