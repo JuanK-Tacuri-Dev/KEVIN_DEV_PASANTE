@@ -61,7 +61,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
                 var processByCode = await GetByCodeAsync(status.key);
                 if (processByCode != null)
                 {
-                    throw new ArgumentException(AppMessages.Domain_StatusExists);
+                    throw new ArgumentException(AppMessages.Application_ResponseNotCreated);
                 }
             }
         }

@@ -3,7 +3,7 @@
     public class PropertyCreateResponse : ModelResponse<PropertyCreate>
     {
     }
-    public class PropertyCreate()
+    public class PropertyCreate : PropertyRequest
     {
         public Guid Id { get; set; }
     }

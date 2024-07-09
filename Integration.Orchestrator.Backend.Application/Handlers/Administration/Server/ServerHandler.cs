@@ -34,10 +34,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ServerCreateResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_ServerResponseCreated,
-                        Data = new ServerCreate()
+                        Messages = [AppMessages.Application_RespondeCreated],
+                        Data = new ServerCreate
                         {
-                            Id = serverEntity.id
+                            Id = serverEntity.id,
+                            Code = serverEntity.server_code,
+                            Name = serverEntity.name,
+                            Type = serverEntity.type,
+                            Url = serverEntity.url
                         }
                     });
             }
@@ -68,10 +72,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         new ServerUpdateResponse
                         {
                             Code = HttpStatusCode.OK.GetHashCode(),
-                            Description = AppMessages.Application_ServerResponseUpdated,
-                            Data = new ServerUpdate()
+                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Data = new ServerUpdate
                             {
-                                Id = serverEntity.id
+                                Id = serverEntity.id,
+                                Code = serverEntity.server_code,
+                                Name = serverEntity.name,
+                                Type = serverEntity.type,
+                                Url = serverEntity.url
                             }
                         });
             }
@@ -101,7 +109,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ServerDeleteResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_ServerResponseDeleted
+                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Data = new ServerDelete 
+                        {
+                            Id = serverById.id
+                        }
                     });
             }
             catch (ArgumentException ex)
@@ -128,7 +140,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ServerGetByIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ServerResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new ServerGetById
                         {
                             Id = serverById.id,
@@ -163,7 +175,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ServerGetByCodeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ServerResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new ServerGetByCode
                         {
                             Id = serverByCode.id,
@@ -198,7 +210,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ServerGetByTypeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ServerResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = serverByType.Select(c => new ServerGetByType
                         {
                             Id = c.id,
@@ -236,16 +248,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ServerGetAllPaginatedResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ServerResponse,
-                        TotalRows = rows,
-                        Data = result.Select(c => new ServerGetAllPaginated
+                        Description = AppMessages.Application_RespondeGetAll,
+                        Data = new ServerGetAllRows
                         {
-                            Id = c.id,
-                            Code = c.server_code,
-                            Name = c.name,
-                            Type = c.type,
-                            Url = c.url
-                        }).ToList()
+                            Total_rows = rows,
+                            Rows = result.Select(c => new ServerGetAllPaginated
+                            {
+                                Id = c.id,
+                                Code = c.server_code,
+                                Name = c.name,
+                                Type = c.type,
+                                Url = c.url
+                            }).ToList()
+                        }
                     });
             }
             catch (ArgumentException ex)

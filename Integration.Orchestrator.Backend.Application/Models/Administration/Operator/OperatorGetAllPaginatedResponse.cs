@@ -1,10 +1,15 @@
 ﻿namespace Integration.Orchestrator.Backend.Application.Models.Administration.Operator
 {
-    public class OperatorGetAllPaginatedResponse : ModelResponseGetAll<IEnumerable<OperatorGetAllPaginated>>
+    public class OperatorGetAllPaginatedResponse : ModelResponseGetAll<OperatorGetAllRows> { }
+
+    public class OperatorGetAllRows
     {
+        public long Total_rows { get; set; }
+
+        public IEnumerable<OperatorGetAllPaginated> Rows { get; set; }
     }
-    public class OperatorGetAllPaginated : OperatorRequest
+
+    public class OperatorGetAllPaginated : OperatorResponse
     {
-        public Guid Id { get; set; }
     }
 }

@@ -1,10 +1,15 @@
 ﻿namespace Integration.Orchestrator.Backend.Application.Models.Administration.Value
 {
-    public class ValueGetAllPaginatedResponse : ModelResponseGetAll<IEnumerable<ValueGetAllPaginated>>
+    public class ValueGetAllPaginatedResponse : ModelResponseGetAll<ValueGetAllRows> { }
+
+    public class ValueGetAllRows
     {
+        public long Total_rows { get; set; }
+
+        public IEnumerable<ValueGetAllPaginated> Rows { get; set; }
     }
-    public class ValueGetAllPaginated : ValueRequest
+
+    public class ValueGetAllPaginated : ValueResponse
     {
-        public Guid Id { get; set; }
     }
 }

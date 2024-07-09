@@ -1,10 +1,16 @@
 ﻿namespace Integration.Orchestrator.Backend.Application.Models.Administration.Status
 {
-    public class StatusGetAllPaginatedResponse : ModelResponseGetAll<IEnumerable<StatusGetAllPaginated>>
+    public class StatusGetAllPaginatedResponse : ModelResponseGetAll<StatusGetAllRows>
     {
     }
-    public class StatusGetAllPaginated : StatusRequest
+
+    public class StatusGetAllRows
     {
-        public Guid Id { get; set; }
+        public long Total_rows { get; set; }
+
+        public IEnumerable<StatusGetAllPaginated> Rows { get; set; }
+    }
+    public class StatusGetAllPaginated : StatusResponse
+    {
     }
 }

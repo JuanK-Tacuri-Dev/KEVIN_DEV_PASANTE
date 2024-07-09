@@ -18,7 +18,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         IRequestHandler<DeleteConnectionCommandRequest, DeleteConnectionCommandResponse>,
         IRequestHandler<GetByIdConnectionCommandRequest, GetByIdConnectionCommandResponse>,
         IRequestHandler<GetByCodeConnectionCommandRequest, GetByCodeConnectionCommandResponse>,
-        IRequestHandler<GetByTypeConnectionCommandRequest, GetByTypeConnectionCommandResponse>,
         IRequestHandler<GetAllPaginatedConnectionCommandRequest, GetAllPaginatedConnectionCommandResponse>
     {
         public readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
@@ -34,10 +33,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ConnectionCreateResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_ConnectionResponseCreated,
-                        Data = new ConnectionCreate()
+                        Messages = [AppMessages.Application_RespondeCreated],
+                        Data = new ConnectionCreate
                         {
-                            Id = connectionEntity.id
+                            Id = connectionEntity.id,
+                            Code = connectionEntity.connection_code,
+                            Server = connectionEntity.server,
+                            Port = connectionEntity.port,
+                            User = connectionEntity.user,
+                            Password = connectionEntity.password,
+                            AdapterId = connectionEntity.adapter_id,
+                            RepositoryId = connectionEntity.repository_id
                         }
                     });
             }
@@ -68,10 +74,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         new ConnectionUpdateResponse
                         {
                             Code = HttpStatusCode.OK.GetHashCode(),
-                            Description = AppMessages.Application_ConnectionResponseUpdated,
-                            Data = new ConnectionUpdate()
+                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Data = new ConnectionUpdate
                             {
-                                Id = connectionEntity.id
+                                Id = connectionEntity.id,
+                                Code = connectionEntity.connection_code,
+                                Server = connectionEntity.server,
+                                Port = connectionEntity.port,
+                                User = connectionEntity.user,
+                                Password = connectionEntity.password,
+                                AdapterId = connectionEntity.adapter_id,
+                                RepositoryId = connectionEntity.repository_id
                             }
                         });
             }
@@ -101,7 +114,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ConnectionDeleteResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_ConnectionResponseDeleted
+                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Data = new ConnectionDelete 
+                        {
+                            Id = connectionById.id
+                        }
                     });
             }
             catch (ArgumentException ex)
@@ -128,7 +145,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ConnectionGetByIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ConnectionResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new ConnectionGetById
                         {
                             Id = connectionById.id,
@@ -137,7 +154,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Port = connectionById.port,
                             User = connectionById.user,
                             Password = connectionById.password,
-                            Adapter = connectionById.adapter,
+                            AdapterId = connectionById.adapter_id,
                             RepositoryId = connectionById.repository_id
                         }
                     });
@@ -166,7 +183,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ConnectionGetByCodeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ConnectionResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new ConnectionGetByCode
                         {
                             Id = connectionByCode.id,
@@ -175,47 +192,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Port = connectionByCode.port,
                             User = connectionByCode.user,
                             Password = connectionByCode.password,
-                            Adapter = connectionByCode.adapter,
+                            AdapterId = connectionByCode.adapter_id,
                             RepositoryId = connectionByCode.repository_id,
                         }
-                    });
-            }
-            catch (ArgumentException ex)
-            {
-                throw new ArgumentException(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new OrchestratorException(ex.Message);
-            }
-        }
-
-        public async Task<GetByTypeConnectionCommandResponse> Handle(GetByTypeConnectionCommandRequest request, CancellationToken cancellationToken)
-        {
-            try
-            {
-                var connectionByType = await _connectionService.GetByTypeAsync(request.Connection.Type);
-                if (connectionByType == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_ConnectionNotFound);
-                }
-
-                return new GetByTypeConnectionCommandResponse(
-                    new ConnectionGetByTypeResponse
-                    {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ConnectionResponse,
-                        Data = connectionByType.Select(c => new ConnectionGetByType
-                        {
-                            Id = c.id,
-                            Code = c.connection_code,
-                            Server = c.server,
-                            Port = c.port,
-                            User = c.user,
-                            Password = c.password,
-                            Adapter = c.adapter,
-                            RepositoryId = c.repository_id
-                        }).ToList()
                     });
             }
             catch (ArgumentException ex)
@@ -245,20 +224,24 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ConnectionGetAllPaginatedResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ConnectionResponse,
-                        TotalRows = rows,
-                        Data = result.Select(c => new ConnectionGetAllPaginated
+                        Description = AppMessages.Application_RespondeGetAll,
+                        Data = new ConnectionGetAllRows
                         {
-                            Id = c.id,
-                            Code = c.connection_code,
-                            Server = c.server,
-                            Port = c.port,
-                            User = c.user,
-                            Password = c.password,
-                            Adapter = c.adapter,
-                            RepositoryId = c.repository_id,
+                            Total_rows = rows,
+                            Rows = result.Select(c => new ConnectionGetAllPaginated
+                            {
+                                Id = c.id,
+                                Code = c.connection_code,
+                                Server = c.server,
+                                Port = c.port,
+                                User = c.user,
+                                Password = c.password,
+                                AdapterId = c.adapter_id,
+                                RepositoryId = c.repository_id,
 
-                        }).ToList()
+                            }).ToList()
+                        }
+
                     });
             }
             catch (ArgumentException ex)
@@ -281,7 +264,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 port = request.Port,
                 user = request.User,
                 password = request.Password,
-                adapter = request.Adapter,
+                adapter_id = request.AdapterId,
                 repository_id = request.RepositoryId
             };
             return connectionEntity;

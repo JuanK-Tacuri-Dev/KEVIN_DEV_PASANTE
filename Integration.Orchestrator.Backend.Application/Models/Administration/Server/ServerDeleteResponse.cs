@@ -3,7 +3,8 @@
     public class ServerDeleteResponse : ModelResponse<ServerDelete>
     {
     }
-    public class ServerDelete()
+    public class ServerDelete
     {
+        public Guid Id { get; set; }
     }
 }

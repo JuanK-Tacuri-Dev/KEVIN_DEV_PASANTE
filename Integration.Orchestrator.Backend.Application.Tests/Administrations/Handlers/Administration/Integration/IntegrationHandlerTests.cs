@@ -52,7 +52,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, response.Message.Code);
-            Assert.Equal(AppMessages.Application_IntegrationResponseCreated, response.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeCreated, response.Message.Messages[0]);
             Assert.NotNull(response.Message.Data);
             _serviceMock.Verify(s => s.InsertAsync(It.IsAny<IntegrationEntity>()), Times.Once);
         }
@@ -123,7 +123,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, response.Message.Code);
-            Assert.Equal(AppMessages.Application_IntegrationResponseUpdated, response.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeUpdated, response.Message.Messages[0]);
             Assert.NotNull(response.Message.Data);
             _serviceMock.Verify(s => s.UpdateAsync(It.IsAny<IntegrationEntity>()), Times.Once);
             _serviceMock.Verify(s => s.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
@@ -184,7 +184,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, response.Message.Code);
-            Assert.Equal(AppMessages.Application_IntegrationResponseDeleted, response.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeDeleted, response.Message.Messages[0]);
             _serviceMock.Verify(s => s.DeleteAsync(It.IsAny<IntegrationEntity>()), Times.Once);
             _serviceMock.Verify(s => s.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
         }
@@ -266,8 +266,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             Assert.Equal((int)HttpStatusCode.OK, response.Message.Code);
             Assert.Equal(AppMessages.Api_IntegrationResponse, response.Message.Description);
             Assert.NotNull(response.Message.Data);
-            Assert.Equal(connectionEntities.Count(), response.Message.Data.Count());
-            Assert.Equal(connectionEntities.Count(), response.Message.TotalRows);
+            Assert.Equal(connectionEntities.Count(), response.Message.Data.Total_rows);
             _serviceMock.Verify(s => s.GetTotalRowsAsync(It.IsAny<PaginatedModel>()), Times.Once);
             _serviceMock.Verify(s => s.GetAllPaginatedAsync(It.IsAny<PaginatedModel>()), Times.Once);
         }

@@ -3,7 +3,7 @@
     public class EntitiesUpdateResponse : ModelResponse<EntitiesUpdate>
     {
     }
-    public class EntitiesUpdate()
+    public class EntitiesUpdate : EntitiesRequest
     {
         public Guid Id { get; set; }
     }

@@ -18,54 +18,55 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
         [HttpPost]
         public async Task<IActionResult> Create(ServerCreateRequest request)
         {
-            return Ok(await _mediator.Send(
+            return Ok((await _mediator.Send(
                 new CreateServerCommandRequest(
-                    new ServerBasicInfoRequest<ServerCreateRequest>(request))));
+                    new ServerBasicInfoRequest<ServerCreateRequest>(request)))).Message);
         }
 
         [HttpPut]
         public async Task<IActionResult> Update(ServerUpdateRequest request, Guid id)
         {
-            return Ok(await _mediator.Send(new UpdateServerCommandRequest(
-                new ServerBasicInfoRequest<ServerUpdateRequest>(request), id)));
+            return Ok((await _mediator.Send(
+                new UpdateServerCommandRequest(
+                    new ServerBasicInfoRequest<ServerUpdateRequest>(request), id))).Message);
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id)
         {
-            return Ok(await _mediator.Send(
+            return Ok((await _mediator.Send(
                 new DeleteServerCommandRequest(
-                    new ServerDeleteRequest { Id = id })));
+                    new ServerDeleteRequest { Id = id }))).Message);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetById(Guid id)
         {
-            return Ok(await _mediator.Send(
+            return Ok((await _mediator.Send(
                 new GetByIdServerCommandRequest(
-                    new ServerGetByIdRequest { Id = id })));
+                    new ServerGetByIdRequest { Id = id }))).Message);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetByCode(string code)
         {
-            return Ok(await _mediator.Send(
+            return Ok((await _mediator.Send(
                 new GetByCodeServerCommandRequest(
-                    new ServerGetByCodeRequest { Code = code })));
+                    new ServerGetByCodeRequest { Code = code }))).Message);
         }
         [HttpGet]
         public async Task<IActionResult> GetByType(string type)
         {
-            return Ok(await _mediator.Send(
+            return Ok((await _mediator.Send(
                 new GetByTypeServerCommandRequest(
-                    new ServerGetByTypeRequest { Type = type })));
+                    new ServerGetByTypeRequest { Type = type }))).Message);
         }
 
         [HttpPost]
         public async Task<IActionResult> GetAllPaginated(ServerGetAllPaginatedRequest request)
         {
-            return Ok(await _mediator.Send(
-                new GetAllPaginatedServerCommandRequest(request)));
+            return Ok((await _mediator.Send(
+                new GetAllPaginatedServerCommandRequest(request))).Message);
         }
     }
 }

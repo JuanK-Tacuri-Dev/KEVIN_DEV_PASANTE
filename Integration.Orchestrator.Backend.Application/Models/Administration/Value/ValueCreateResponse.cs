@@ -3,7 +3,7 @@
     public class ValueCreateResponse : ModelResponse<ValueCreate>
     {
     }
-    public class ValueCreate()
+    public class ValueCreate : ValueRequest
     {
         public Guid Id { get; set; }
     }

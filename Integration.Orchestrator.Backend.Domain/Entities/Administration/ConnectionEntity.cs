@@ -8,7 +8,7 @@
         public string port { get; set; }
         public string user { get; set; }
         public string password { get; set; }
-        public string adapter { get; set; }
+        public Guid adapter_id { get; set; }
         public Guid repository_id { get; set; }
 
         public DateTime created_at { get; private set; } = DateTime.UtcNow;

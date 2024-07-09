@@ -42,12 +42,6 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _connectionRepository.GetByCodeAsync(specification);
         }
 
-        public async Task<IEnumerable<ConnectionEntity>> GetByTypeAsync(string type)
-        {
-            var specification = ConnectionSpecification.GetByTypeExpression(type);
-            return await _connectionRepository.GetByTypeAsync(specification);
-        }
-
         public async Task<IEnumerable<ConnectionEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
         {
             var spec = new ConnectionSpecification(paginatedModel);

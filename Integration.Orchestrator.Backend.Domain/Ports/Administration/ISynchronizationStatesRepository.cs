@@ -6,9 +6,9 @@ namespace Integration.Orchestrator.Backend.Domain.Ports.Administration
 {
     public interface ISynchronizationStatesRepository<T>
     {
-        Task InsertAsync(T synchronizationStates);
-        Task UpdateAsync(T synchronizationStates);
-        Task DeleteAsync(T synchronizationStates);
+        Task InsertAsync(T entity);
+        Task UpdateAsync(T entity);
+        Task DeleteAsync(T entity);
         Task<T> GetByIdAsync(Expression<Func<T, bool>> specification);
         Task<T> GetByCodeAsync(Expression<Func<T, bool>> specification);
         Task<IEnumerable<T>> GetAllAsync(ISpecification<T> specification);

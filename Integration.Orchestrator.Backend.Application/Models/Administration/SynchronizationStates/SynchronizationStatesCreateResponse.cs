@@ -3,7 +3,7 @@
     public class SynchronizationStatesCreateResponse : ModelResponse<SynchronizationStatesCreate>
     {
     }
-    public class SynchronizationStatesCreate()
+    public class SynchronizationStatesCreate : SynchronizationStatesRequest
     {
         public Guid Id { get; set; }
     }

@@ -39,8 +39,8 @@ namespace Integration.Orchestrator.Backend.Api.Filter
                              typeError, httpCode, detail, exception.StackTrace, exception.Source);
 
             var result = exception is InvalidRequestException invalidRequestException
-                ? new ObjectResult(new { Code = httpCode, Message = typeError, invalidRequestException.Details })
-                : new ObjectResult(new ErrorResponse { Code = httpCode, Message = typeError, Details = detail });
+                ? new ObjectResult(new { Code = httpCode, Messages = invalidRequestException.Details.Select(m=> $"{m.Params} : {m.Message}").ToList() })
+                : new ObjectResult(new ErrorResponse { Code = httpCode, Messages = [detail] });
 
             context.Result = result;
             context.HttpContext.Response.StatusCode = httpCode;

@@ -3,7 +3,8 @@
     public class SynchronizationDeleteResponse : ModelResponse<SynchronizationDelete>
     {
     }
-    public class SynchronizationDelete()
+    public class SynchronizationDelete
     {
+        public Guid Id { get; set; }
     }
 }

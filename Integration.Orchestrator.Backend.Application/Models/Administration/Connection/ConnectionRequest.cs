@@ -7,7 +7,7 @@
         public string Port { get; set; }
         public string User { get; set; }
         public string Password { get; set; }
-        public string Adapter { get; set; }
+        public Guid AdapterId { get; set; }
         public Guid RepositoryId { get; set; }
         
     }

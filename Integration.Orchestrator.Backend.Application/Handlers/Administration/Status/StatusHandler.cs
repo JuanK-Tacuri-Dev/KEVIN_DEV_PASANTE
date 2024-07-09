@@ -32,10 +32,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new StatusCreateResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_StatusResponseCreated,
-                        Data = new StatusCreate()
+                        Messages = [AppMessages.Application_RespondeCreated],
+                        Data = new StatusCreate
                         {
-                            Id = statusEntity.id
+                            Id = statusEntity.id,
+                            Key = statusEntity.key,
+                            Text = statusEntity.text,
+                            Color = statusEntity.color
+                            
                         }
                     });
             }
@@ -66,10 +70,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         new StatusUpdateResponse
                         {
                             Code = HttpStatusCode.OK.GetHashCode(),
-                            Description = AppMessages.Application_StatusResponseUpdated,
-                            Data = new StatusUpdate()
+                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Data = new StatusUpdate
                             {
-                                Id = statusEntity.id
+                                Id = statusEntity.id,
+                                Key = statusEntity.key,
+                                Text = statusEntity.text,
+                                Color = statusEntity.color
                             }
                         });
             }
@@ -99,7 +106,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new StatusDeleteResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_StatusResponseDeleted
+                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Data = new StatusDelete 
+                        {
+                            Id = statusById.id
+                        }
                     });
             }
             catch (ArgumentException ex)
@@ -126,7 +137,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new StatusGetByIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_StatusResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new StatusGetById
                         {
                             Id = statusById.id,
@@ -163,15 +174,18 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new StatusGetAllPaginatedResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_StatusResponse,
-                        TotalRows = rows,
-                        Data = result.Select(c => new StatusGetAllPaginated
+                        Description = AppMessages.Application_RespondeGet,
+                        Data = new StatusGetAllRows
                         {
-                            Id = c.id,
-                            Key = c.key,
-                            Text = c.text,
-                            Color = c.color
-                        }).ToList()
+                            Total_rows = rows,
+                            Rows = result.Select(c => new StatusGetAllPaginated
+                            {
+                                Id = c.id,
+                                Key = c.key,
+                                Text = c.text,
+                                Color = c.color,
+                            }).ToList()
+                        }
                     });
             }
             catch (ArgumentException ex)
