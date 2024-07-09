@@ -1,10 +1,15 @@
 ﻿namespace Integration.Orchestrator.Backend.Application.Models.Administration.Integration
 {
-    public class IntegrationGetAllPaginatedResponse : ModelResponseGetAll<IEnumerable<IntegrationGetAllPaginated>>
+    public class IntegrationGetAllPaginatedResponse : ModelResponseGetAll<IntegrationGetAllRows> { }
+
+    public class IntegrationGetAllRows
     {
+        public long Total_rows { get; set; }
+
+        public IEnumerable<IntegrationGetAllPaginated> Rows { get; set; }
     }
-    public class IntegrationGetAllPaginated : IntegrationRequest
+
+    public class IntegrationGetAllPaginated : IntegrationResponse
     {
-        public Guid Id { get; set; }
     }
 }

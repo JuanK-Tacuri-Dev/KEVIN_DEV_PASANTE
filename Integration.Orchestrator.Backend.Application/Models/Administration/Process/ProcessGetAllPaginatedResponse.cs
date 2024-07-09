@@ -1,10 +1,14 @@
 ﻿namespace Integration.Orchestrator.Backend.Application.Models.Administration.Process
 {
-    public class ProcessGetAllPaginatedResponse : ModelResponseGetAll<IEnumerable<ProcessGetAllPaginated>>
+    public class ProcessGetAllPaginatedResponse : ModelResponseGetAll<ProcessGetAllRows> { }
+
+    public class ProcessGetAllRows
     {
+        public long Total_rows { get; set; }
+
+        public IEnumerable<ProcessGetAllPaginated> Rows { get; set; }
     }
-    public class ProcessGetAllPaginated : ProcessRequest
+    public class ProcessGetAllPaginated : ProcessResponse
     {
-        public Guid Id { get; set; }
     }
 }

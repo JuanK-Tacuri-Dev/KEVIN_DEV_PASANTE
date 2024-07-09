@@ -40,22 +40,13 @@ namespace Integration.Orchestrator.Backend.Api.SeedWork
             {
                 var errorDetails = errors.Select(error =>
                 {
+                    var obj = error.PropertyName.Split(".");
                     var errorDetail = new ErrorDetail
                     {
-                        Params = { error.PropertyName }
+
+                        Params = obj[obj.Length - 1],
+                        Message = error.ErrorMessage
                     };
-
-                    if (error.ErrorMessage.Contains('|'))
-                    {
-                        var messages = error.ErrorMessage.Split('|');
-                        errorDetail.Message = messages[0];
-                        errorDetail.Params.AddRange(messages.Skip(1));
-                    }
-                    else
-                    {
-                        errorDetail.Message = error.ErrorMessage;
-                    }
-
                     return errorDetail;
                 }).Distinct().ToList();
 

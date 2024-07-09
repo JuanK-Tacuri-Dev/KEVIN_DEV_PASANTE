@@ -43,7 +43,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 new IntegrationCreateResponse
                 {
                     Code = 200,
-                    Description = AppMessages.Application_IntegrationResponseCreated,
+                    Messages = [AppMessages.Application_RespondeCreated],
                     Data = new IntegrationCreate
                     {
                         Id = Guid.NewGuid()
@@ -59,7 +59,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnValue = Assert.IsType<CreateIntegrationCommandResponse>(okResult.Value);
             Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_IntegrationResponseCreated, returnValue.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeCreated, returnValue.Message.Messages[0]);
             _mediatorMock.Verify(m => m.Send(It.IsAny<CreateIntegrationCommandRequest>(), default), Times.Once);
         }
 
@@ -87,7 +87,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 new IntegrationUpdateResponse
                 {
                     Code = 200,
-                    Description = AppMessages.Application_IntegrationResponseUpdated,
+                    Messages = [AppMessages.Application_RespondeUpdated],
                     Data = new IntegrationUpdate
                     {
                         Id = id
@@ -104,7 +104,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnValue = Assert.IsType<UpdateIntegrationCommandResponse>(okResult.Value);
             Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_IntegrationResponseUpdated, returnValue.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeUpdated, returnValue.Message.Messages[0]);
         }
 
         [Fact]
@@ -116,7 +116,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 new IntegrationDeleteResponse
                 {
                     Code = 200,
-                    Description = AppMessages.Application_IntegrationResponseDeleted
+                    Messages = [AppMessages.Application_RespondeDeleted]
                 });
 
             _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteIntegrationCommandRequest>(), default))
@@ -129,9 +129,9 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnValue = Assert.IsType<DeleteIntegrationCommandResponse>(okResult.Value);
             Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_IntegrationResponseDeleted, returnValue.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeDeleted, returnValue.Message.Messages[0]);
         }
-        
+
         [Fact]
         public async Task GetAllPaginated_ReturnsOkResult()
         {
@@ -147,24 +147,28 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 {
                     Code = 200,
                     Description = AppMessages.Api_IntegrationResponse,
-                    TotalRows = 1,
-                    Data = [
-                        new IntegrationGetAllPaginated
+                    Data = new IntegrationGetAllRows
+                    {
+                        Total_rows = 1,
+                        Rows = [new IntegrationGetAllPaginated
                         {
                             Id = Guid.NewGuid(),
                             Name = "Test",
                             Status = Guid.NewGuid(),
                             Observations = "observation",
                             UserId = Guid.NewGuid(),
-                            Process = new List<ProcessRequest>
+                            Process = new List<ProcessResponse>
                             {
-                                new ProcessRequest
+                                new ProcessResponse
                                 {
                                     Id = Guid.NewGuid()
                             }
                                 }
                         }]
-                });
+
+                    }
+
+                }); ;
             var command = new GetAllPaginatedIntegrationCommandRequest(request);
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetAllPaginatedIntegrationCommandRequest>(), default))
                          .ReturnsAsync(response);

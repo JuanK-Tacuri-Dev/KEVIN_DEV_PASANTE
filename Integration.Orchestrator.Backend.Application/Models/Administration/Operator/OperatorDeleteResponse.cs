@@ -3,7 +3,8 @@
     public class OperatorDeleteResponse : ModelResponse<OperatorDelete>
     {
     }
-    public class OperatorDelete()
+    public class OperatorDelete
     {
+        public Guid Id { get; set; }
     }
 }

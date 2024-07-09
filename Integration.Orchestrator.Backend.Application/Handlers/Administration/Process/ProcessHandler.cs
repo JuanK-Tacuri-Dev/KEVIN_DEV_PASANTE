@@ -34,10 +34,28 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ProcessCreateResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_ProcessResponseCreated,
-                        Data = new ProcessCreate()
+                        Messages = [AppMessages.Application_RespondeCreated],
+                        Data = new ProcessCreate
                         {
-                            Id = processEntity.id
+                            Id = processEntity.id,
+                            ProcessCode = processEntity.process_code,
+                            Type = processEntity.process_type,
+                            ConnectionId = processEntity.connection_id,
+                            Entities = processEntity.entities.Select(e =>
+                            new EntitiesRequest
+                            {
+                                Id = e.id,
+                                Properties = e.Properties.Select(p => new PropertiesRequest
+                                {
+                                    KeyId = p.key_id
+                                }).ToList(),
+                                Filters = e.filters.Select(f => new FilterRequest
+                                {
+                                    KeyId = f.key_id,
+                                    OperatorId = f.operator_id,
+                                    ValueId = f.value_id
+                                }).ToList()
+                            }).ToList()
                         }
                     });
             }
@@ -68,10 +86,28 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         new ProcessUpdateResponse
                         {
                             Code = HttpStatusCode.OK.GetHashCode(),
-                            Description = AppMessages.Application_ProcessResponseUpdated,
-                            Data = new ProcessUpdate()
+                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Data = new ProcessUpdate
                             {
-                                Id = processEntity.id
+                                Id = processEntity.id,
+                                ProcessCode = processEntity.process_code,
+                                Type = processEntity.process_type,
+                                ConnectionId = processEntity.connection_id,
+                                Entities = processEntity.entities.Select(e =>
+                                new EntitiesRequest
+                                {
+                                    Id = e.id,
+                                    Properties = e.Properties.Select(p => new PropertiesRequest
+                                    {
+                                        KeyId = p.key_id
+                                    }).ToList(),
+                                    Filters = e.filters.Select(f => new FilterRequest
+                                    {
+                                        KeyId = f.key_id,
+                                        OperatorId = f.operator_id,
+                                        ValueId = f.value_id
+                                    }).ToList()
+                                }).ToList()
                             }
                         });
             }
@@ -101,7 +137,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ProcessDeleteResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_ProcessResponseDeleted
+                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Data = new ProcessDelete
+                        {
+                            Id = processById.id,
+                        }
                     });
             }
             catch (ArgumentException ex)
@@ -128,7 +168,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ProcessGetByIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ProcessResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new ProcessGetById
                         {
                             Id = processById.id,
@@ -138,7 +178,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Entities = processById.entities.Select(obj => new EntitiesRequest
                             {
                                 Id = obj.id,
-                                Properties = obj.Properties.Select(p => new PropertiesRequest 
+                                Properties = obj.Properties.Select(p => new PropertiesRequest
                                 {
                                     KeyId = p.key_id
                                 }).ToList(),
@@ -161,7 +201,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 throw new OrchestratorException(ex.Message);
             }
         }
-        
+
         public async Task<GetByCodeProcessCommandResponse> Handle(GetByCodeProcessCommandRequest request, CancellationToken cancellationToken)
         {
             try
@@ -176,7 +216,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ProcessGetByCodeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ProcessResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new ProcessGetByCode
                         {
                             Id = processByCode.id,
@@ -224,7 +264,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ProcessGetByTypeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ProcessResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = processByType.Select(p => new ProcessGetByType
                         {
                             Id = p.id,
@@ -275,29 +315,32 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new ProcessGetAllPaginatedResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_ProcessResponse,
-                        TotalRows = rows,
-                        Data = result.Select(p => new ProcessGetAllPaginated
+                        Description = AppMessages.Application_RespondeGetAll,
+                        Data = new ProcessGetAllRows
                         {
-                            Id = p.id,
-                            ProcessCode = p.process_code,
-                            Type = p.process_type,
-                            ConnectionId = p.connection_id,
-                            Entities = p.entities.Select(obj => new EntitiesRequest
+                            Total_rows = rows,
+                            Rows = result.Select(p => new ProcessGetAllPaginated
                             {
-                                Id = obj.id,
-                                Properties = obj.Properties.Select(p => new PropertiesRequest
+                                Id = p.id,
+                                ProcessCode = p.process_code,
+                                Type = p.process_type,
+                                ConnectionId = p.connection_id,
+                                Entities = p.entities.Select(obj => new EntitiesResponse
                                 {
-                                    KeyId = p.key_id
-                                }).ToList(),
-                                Filters = obj.filters.Select(f => new FilterRequest
-                                {
-                                    KeyId = f.key_id,
-                                    OperatorId = f.operator_id,
-                                    ValueId = f.value_id
+                                    Id = obj.id,
+                                    Properties = obj.Properties.Select(p => new PropertiesResponse
+                                    {
+                                        KeyId = p.key_id
+                                    }).ToList(),
+                                    Filters = obj.filters.Select(f => new FilterResponse
+                                    {
+                                        KeyId = f.key_id,
+                                        OperatorId = f.operator_id,
+                                        ValueId = f.value_id
+                                    }).ToList()
                                 }).ToList()
                             }).ToList()
-                        }).ToList()
+                        }
                     });
             }
             catch (ArgumentException ex)

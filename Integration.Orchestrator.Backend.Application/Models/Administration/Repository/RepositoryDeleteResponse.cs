@@ -3,7 +3,8 @@
     public class RepositoryDeleteResponse : ModelResponse<RepositoryDelete>
     {
     }
-    public class RepositoryDelete()
+    public class RepositoryDelete
     {
+        public Guid Id { get; set; }
     }
 }

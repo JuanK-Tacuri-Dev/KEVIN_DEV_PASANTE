@@ -3,7 +3,7 @@
     public class PropertyUpdateResponse : ModelResponse<PropertyUpdate>
     {
     }
-    public class PropertyUpdate()
+    public class PropertyUpdate : PropertyRequest
     {
         public Guid Id { get; set; }
     }

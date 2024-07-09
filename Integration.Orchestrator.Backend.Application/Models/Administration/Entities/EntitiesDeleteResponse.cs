@@ -3,7 +3,8 @@
     public class EntitiesDeleteResponse : ModelResponse<EntitiesDelete>
     {
     }
-    public class EntitiesDelete()
+    public class EntitiesDelete
     {
+        public Guid Id { get; set; }
     }
 }

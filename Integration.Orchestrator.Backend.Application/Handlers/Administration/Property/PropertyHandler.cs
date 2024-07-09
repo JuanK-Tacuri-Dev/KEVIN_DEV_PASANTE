@@ -34,10 +34,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new PropertyCreateResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_PropertyResponseCreated,
-                        Data = new PropertyCreate()
+                        Messages = [AppMessages.Application_RespondeCreated],
+                        Data = new PropertyCreate
                         {
-                            Id = propertyEntity.id
+                            Id = propertyEntity.id,
+                            Code = propertyEntity.property_code,
+                            Name = propertyEntity.name,
+                            Type = propertyEntity.property_type,
+                            EntityId = propertyEntity.entity_id
                         }
                     });
             }
@@ -68,10 +72,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         new PropertyUpdateResponse
                         {
                             Code = HttpStatusCode.OK.GetHashCode(),
-                            Description = AppMessages.Application_PropertyResponseUpdated,
-                            Data = new PropertyUpdate()
+                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Data = new PropertyUpdate
                             {
-                                Id = propertyEntity.id
+                                Id = propertyEntity.id,
+                                Code = propertyEntity.property_code,
+                                Name = propertyEntity.name,
+                                Type = propertyEntity.property_type,
+                                EntityId = propertyEntity.entity_id
                             }
                         });
             }
@@ -101,7 +109,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new PropertyDeleteResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_PropertyResponseDeleted
+                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Data = new PropertyDelete 
+                        {
+                            Id = propertyById.id
+                        }
                     });
             }
             catch (ArgumentException ex)
@@ -128,7 +140,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new PropertyGetByIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_PropertyResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new PropertyGetById
                         {
                             Id = propertyById.id,
@@ -163,7 +175,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new PropertyGetByCodeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_PropertyResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new PropertyGetByCode
                         {
                             Id = propertyByCode.id,
@@ -198,7 +210,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new PropertyGetByTypeResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_PropertyResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = propertyByType.Select(c => new PropertyGetByType
                         {
                             Id = c.id,
@@ -236,16 +248,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new PropertyGetAllPaginatedResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_PropertyResponse,
-                        TotalRows = rows,
-                        Data = result.Select(c => new PropertyGetAllPaginated
+                        Description = AppMessages.Application_RespondeGetAll,
+                        Data = new PropertyGetAllRows
                         {
-                            Id = c.id,
-                            Name = c.name,
-                            Code = c.property_code,
-                            Type = c.property_type,
-                            EntityId = c.entity_id,
-                        }).ToList()
+                            Total_rows = rows,
+                            Rows = result.Select(c => new PropertyGetAllPaginated
+                            {
+                                Id = c.id,
+                                Name = c.name,
+                                Code = c.property_code,
+                                Type = c.property_type,
+                                EntityId = c.entity_id,
+                            }).ToList()
+                        }
                     });
             }
             catch (ArgumentException ex)

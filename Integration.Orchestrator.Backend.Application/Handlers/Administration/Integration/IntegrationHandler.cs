@@ -32,10 +32,18 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new IntegrationCreateResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_IntegrationResponseCreated,
-                        Data = new IntegrationCreate()
+                        Messages = [AppMessages.Application_RespondeCreated],
+                        Data = new IntegrationCreate
                         {
-                            Id = integrationEntity.id
+                            Id = integrationEntity.id,
+                            Name = integrationEntity.name,
+                            Status = integrationEntity.status,
+                            Observations = integrationEntity.observations,
+                            UserId = integrationEntity.user_id,
+                            Process = integrationEntity.process.Select(p => new ProcessRequest
+                            {
+                                Id = p
+                            }).ToList()
                         }
                     });
             }
@@ -66,10 +74,18 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         new IntegrationUpdateResponse
                         {
                             Code = HttpStatusCode.OK.GetHashCode(),
-                            Description = AppMessages.Application_IntegrationResponseUpdated,
-                            Data = new IntegrationUpdate()
+                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Data = new IntegrationUpdate
                             {
-                                Id = integrationEntity.id
+                                Id = integrationEntity.id,
+                                Name = integrationEntity.name,
+                                Status = integrationEntity.status,
+                                Observations = integrationEntity.observations,
+                                UserId = integrationEntity.user_id,
+                                Process = integrationEntity.process.Select(p => new ProcessRequest
+                                {
+                                    Id = p
+                                }).ToList()
                             }
                         });
             }
@@ -99,7 +115,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new IntegrationDeleteResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_IntegrationResponseDeleted
+                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Data = new IntegrationDelete 
+                        {
+                            Id = request.Integration.Id
+                        }
                     });
             }
             catch (ArgumentException ex)
@@ -126,7 +146,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new IntegrationGetByIdResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_IntegrationResponse,
+                        Messages = [AppMessages.Application_RespondeGet],
                         Data = new IntegrationGetById
                         {
                             Id = integrationById.id,
@@ -165,20 +185,21 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     new IntegrationGetAllPaginatedResponse
                     {
                         Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Api_IntegrationResponse,
-                        TotalRows = rows,
-                        Data = result.Select(syn => new IntegrationGetAllPaginated
+                        Description = AppMessages.Application_RespondeGetAll,
+                        Data = new IntegrationGetAllRows
                         {
-                            Id = syn.id,
-                            Name = syn.name,
-                            Status = syn.status,
-                            Observations = syn.observations,
-                            Process = syn.process.Select(i => new ProcessRequest { Id = i }).ToList(),
-                            UserId = syn.user_id
-
-                        }).ToList()
-                    }
-                    );
+                            Total_rows = rows,
+                            Rows = result.Select(syn => new IntegrationGetAllPaginated
+                            {
+                                Id = syn.id,
+                                Name = syn.name,
+                                Status = syn.status,
+                                Observations = syn.observations,
+                                Process = syn.process.Select(i => new ProcessResponse { Id = i }).ToList(),
+                                UserId = syn.user_id
+                            }).ToList()
+                        }
+                    });
             }
             catch (ArgumentException ex)
             {

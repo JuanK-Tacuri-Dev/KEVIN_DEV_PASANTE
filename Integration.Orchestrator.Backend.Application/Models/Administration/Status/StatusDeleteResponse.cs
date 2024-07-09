@@ -3,7 +3,8 @@
     public class StatusDeleteResponse : ModelResponse<StatusDelete>
     {
     }
-    public class StatusDelete()
+    public class StatusDelete
     {
+        public Guid Id { get; set; }
     }
 }

@@ -9,13 +9,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         public CreateStatusCommandRequestValidator()
         {
             RuleFor(request => request.Status.StatusRequest.Key)
-            .NotEmpty().WithMessage(AppMessages.Status_Key_Required);
+            .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
 
             RuleFor(request => request.Status.StatusRequest.Text)
-            .NotEmpty().WithMessage(AppMessages.Status_Text_Required);
+            .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
 
             RuleFor(request => request.Status.StatusRequest.Color)
-            .NotEmpty().WithMessage(AppMessages.Status_Color_Required);
+            .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
         }
     }
 }

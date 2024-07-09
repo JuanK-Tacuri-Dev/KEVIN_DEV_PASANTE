@@ -3,7 +3,7 @@
     public class StatusCreateResponse : ModelResponse<StatusCreate>
     {
     }
-    public class StatusCreate()
+    public class StatusCreate : StatusRequest
     {
         public Guid Id { get; set; }
     }

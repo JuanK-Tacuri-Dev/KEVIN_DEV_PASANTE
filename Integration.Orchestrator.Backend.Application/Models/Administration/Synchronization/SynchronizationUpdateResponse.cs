@@ -3,7 +3,7 @@
     public class SynchronizationUpdateResponse : ModelResponse<SynchronizationUpdate>
     {
     }
-    public class SynchronizationUpdate()
+    public class SynchronizationUpdate: SynchronizationRequest
     {
         public Guid Id { get; set; }
     }

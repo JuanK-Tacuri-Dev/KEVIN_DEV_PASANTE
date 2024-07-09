@@ -35,7 +35,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                         Port = "1234", 
                         User = "TestUser", 
                         Password = "TestPassword", 
-                        Adapter = "TestAdapter" }));
+                        AdapterId = Guid.NewGuid() }));
             var cancellationToken = CancellationToken.None;
 
             _serviceMock.Setup(s => s.InsertAsync(It.IsAny<ConnectionEntity>()))
@@ -46,7 +46,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, response.Message.Code);
-            Assert.Equal(AppMessages.Application_ConnectionResponseCreated, response.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeCreated, response.Message.Messages[0]);
             Assert.NotNull(response.Message.Data);
             _serviceMock.Verify(s => s.InsertAsync(It.IsAny<ConnectionEntity>()), Times.Once);
         }
@@ -65,7 +65,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                 port = "1234", 
                 user = "TestUser", 
                 password = "TestPassword", 
-                adapter = "TestAdapter" };
+                adapter_id = Guid.NewGuid() };
 
             _serviceMock.Setup(s => s.GetByCodeAsync(It.IsAny<string>()))
                         .ReturnsAsync(connectionEntity);
@@ -75,35 +75,9 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, response.Message.Code);
-            Assert.Equal(AppMessages.Api_ConnectionResponse, response.Message.Description);
+            Assert.Equal(AppMessages.Api_ConnectionResponse, response.Message.Messages[0]);
             Assert.NotNull(response.Message.Data);
             _serviceMock.Verify(s => s.GetByCodeAsync(It.IsAny<string>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task Handle_GetByType_Success()
-        {
-            // Arrange
-            var request = new GetByTypeConnectionCommandRequest(new ConnectionGetByTypeRequest { Type = "TestType" });
-            var cancellationToken = CancellationToken.None;
-            var connectionEntities = new List<ConnectionEntity>
-        {
-            new ConnectionEntity { id = Guid.NewGuid(), connection_code = "TestCode1", server = "TestServer1", port = "1234", user = "TestUser1", password = "TestPassword1", adapter = "TestAdapter1" },
-            new ConnectionEntity { id = Guid.NewGuid(), connection_code = "TestCode2", server = "TestServer2", port = "1234", user = "TestUser2", password = "TestPassword2", adapter = "TestAdapter2" }
-        };
-
-            _serviceMock.Setup(s => s.GetByTypeAsync(It.IsAny<string>()))
-                        .ReturnsAsync(connectionEntities);
-
-            // Act
-            var response = await _handler.Handle(request, cancellationToken);
-
-            // Assert
-            Assert.Equal((int)HttpStatusCode.OK, response.Message.Code);
-            Assert.Equal(AppMessages.Api_ConnectionResponse, response.Message.Description);
-            Assert.NotNull(response.Message.Data);
-            Assert.Equal(connectionEntities.Count(), response.Message.Data.Count());
-            _serviceMock.Verify(s => s.GetByTypeAsync(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -122,8 +96,8 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             };
             var connectionEntities = new List<ConnectionEntity>
         {
-            new ConnectionEntity { id = Guid.NewGuid(), connection_code = "TestCode1", server = "TestServer1", port = "1234", user = "TestUser1", password = "TestPassword1", adapter = "TestAdapter1" },
-            new ConnectionEntity { id = Guid.NewGuid(), connection_code = "TestCode2", server = "TestServer2", port = "1234", user = "TestUser2", password = "TestPassword2", adapter = "TestAdapter2" }
+            new ConnectionEntity { id = Guid.NewGuid(), connection_code = "TestCode1", server = "TestServer1", port = "1234", user = "TestUser1", password = "TestPassword1", adapter_id = Guid.NewGuid() },
+            new ConnectionEntity { id = Guid.NewGuid(), connection_code = "TestCode2", server = "TestServer2", port = "1234", user = "TestUser2", password = "TestPassword2", adapter_id = Guid.NewGuid() }
         };
 
             _serviceMock.Setup(s => s.GetTotalRowsAsync(It.IsAny<PaginatedModel>()))
@@ -139,8 +113,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             Assert.Equal((int)HttpStatusCode.OK, response.Message.Code);
             Assert.Equal(AppMessages.Api_ConnectionResponse, response.Message.Description);
             Assert.NotNull(response.Message.Data);
-            Assert.Equal(connectionEntities.Count(), response.Message.Data.Count());
-            Assert.Equal(connectionEntities.Count(), response.Message.TotalRows);
+            Assert.Equal(connectionEntities.Count(), response.Message.Data.Total_rows);
             _serviceMock.Verify(s => s.GetTotalRowsAsync(It.IsAny<PaginatedModel>()), Times.Once);
             _serviceMock.Verify(s => s.GetAllPaginatedAsync(It.IsAny<PaginatedModel>()), Times.Once);
         }

@@ -43,7 +43,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             // Assert
             //Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK.GetHashCode(), response.Message.Code);
-            Assert.Equal(AppMessages.Application_SynchronizationStatesResponseCreated, response.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeCreated, response.Message.Messages[0]);
             _mockService.Verify(service => service.InsertAsync(It.IsAny<SynchronizationStatesEntity>()), Times.Once);
         }
 
@@ -112,8 +112,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             // Assert
             Assert.Equal(HttpStatusCode.OK.GetHashCode(), response.Message.Code);
             Assert.Equal(AppMessages.Api_SynchronizationStatesResponse, response.Message.Description);
-            Assert.Equal(synchronizationStates.Count, response.Message.TotalRows);
-            Assert.Equal(synchronizationStates.Count, response.Message.Data.Count());
+            Assert.Equal(synchronizationStates.Count, response.Message.Data.Total_rows);
             _mockService.Verify(service => service.GetTotalRowsAsync(It.IsAny<PaginatedModel>()), Times.Once);
             _mockService.Verify(service => service.GetAllPaginatedAsync(It.IsAny<PaginatedModel>()), Times.Once);
         }

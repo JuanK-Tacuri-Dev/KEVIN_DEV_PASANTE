@@ -3,7 +3,8 @@
     public class ProcessDeleteResponse : ModelResponse<ProcessDelete>
     {
     }
-    public class ProcessDelete()
+    public class ProcessDelete
     {
+        public Guid Id { get; set;}
     }
 }

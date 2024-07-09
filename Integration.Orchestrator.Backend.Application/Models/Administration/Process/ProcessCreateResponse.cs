@@ -3,7 +3,7 @@
     public class ProcessCreateResponse : ModelResponse<ProcessCreate>
     {
     }
-    public class ProcessCreate()
+    public class ProcessCreate : ProcessRequest
     {
         public Guid Id { get; set; }
     }
