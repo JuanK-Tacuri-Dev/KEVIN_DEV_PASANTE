@@ -4,9 +4,9 @@
     {
         public T ProcessRequest { get; set; }
 
-        public ProcessBasicInfoRequest(T connectionRequest) 
+        public ProcessBasicInfoRequest(T processRequest) 
         {
-            ProcessRequest = connectionRequest;
+            ProcessRequest = processRequest;
         }
      
     }

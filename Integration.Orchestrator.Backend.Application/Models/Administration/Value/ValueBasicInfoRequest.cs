@@ -4,9 +4,9 @@
     {
         public T ValueRequest { get; set; }
 
-        public ValueBasicInfoRequest(T connectionRequest) 
+        public ValueBasicInfoRequest(T valueRequest) 
         {
-            ValueRequest = connectionRequest;
+            ValueRequest = valueRequest;
         }
      
     }

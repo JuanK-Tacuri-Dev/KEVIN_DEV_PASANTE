@@ -80,6 +80,10 @@ namespace Integration.Orchestrator.Backend.Domain
             _ = builder.RegisterType<AdapterService>()
                 .As<IAdapterService<AdapterEntity>>()
                 .InstancePerLifetimeScope();
+
+            _ = builder.RegisterType<CatalogService>()
+                .As<ICatalogService<CatalogEntity>>()
+                .InstancePerLifetimeScope(); 
         }
     }
 }

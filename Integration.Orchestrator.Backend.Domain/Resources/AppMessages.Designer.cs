@@ -241,6 +241,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Catolog not found.
+        /// </summary>
+        public static string Application_CatalogNotFound {
+            get {
+                return ResourceManager.GetString("Application_CatalogNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connection not found.
         /// </summary>
         public static string Application_ConnectionNotFound {

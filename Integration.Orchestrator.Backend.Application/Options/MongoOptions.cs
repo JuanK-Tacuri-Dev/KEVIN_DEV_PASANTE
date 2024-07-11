@@ -47,6 +47,7 @@ namespace Integration.Orchestrator.Backend.Application.Options
         public string Server { get; set; }
         public string Repository { get; set; }
         public string Adapter { get; set; }
+        public string Catalog { get; set; }
 
     }
 }
