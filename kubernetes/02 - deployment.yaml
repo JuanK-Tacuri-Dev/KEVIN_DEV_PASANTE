@@ -1,0 +1,30 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: integration-orchestrator-backend
+  namespace: ns-arquitectura-integracion-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: group-integration-orchestrator-backend
+      tier: integration-orchestrator-backend
+      track: stable
+  template:
+    metadata:
+      labels:
+        app: group-integration-orchestrator-backend
+        tier: integration-orchestrator-backend
+        track: stable
+    spec:
+      containers:
+        - name: integration-orchestrator-backend
+          image: acrmxpv2uathub.azurecr.io/arquitectura-integracion/backend:1.0
+          imagePullPolicy: Always
+          volumeMounts:
+          - name: json-configmap
+            mountPath: /app/Config
+      volumes:
+        - name: json-configmap
+          configMap:
+            name: appsettings
