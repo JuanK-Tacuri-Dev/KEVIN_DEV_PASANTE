@@ -4,9 +4,9 @@
     {
         public T OperatorRequest { get; set; }
 
-        public OperatorBasicInfoRequest(T connectionRequest) 
+        public OperatorBasicInfoRequest(T operatorRequest) 
         {
-            OperatorRequest = connectionRequest;
+            OperatorRequest = operatorRequest;
         }
      
     }

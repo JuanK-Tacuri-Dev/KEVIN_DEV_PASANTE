@@ -4,9 +4,9 @@
     {
         public T EntitiesRequest { get; set; }
 
-        public EntitiesBasicInfoRequest(T connectionRequest) 
+        public EntitiesBasicInfoRequest(T entitiesRequest) 
         {
-            EntitiesRequest = connectionRequest;
+            EntitiesRequest = entitiesRequest;
         }
      
     }

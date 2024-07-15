@@ -139,6 +139,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure
             _ = builder.RegisterType<AdapterRepository>()
                .As<IAdapterRepository<AdapterEntity>>()
                .SingleInstance();
+
+            _ = builder.RegisterType<CatalogRepository>()
+               .As<ICatalogRepository<CatalogEntity>>()
+               .SingleInstance();
         }
     }
 }

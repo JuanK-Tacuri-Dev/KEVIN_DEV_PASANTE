@@ -4,9 +4,9 @@
     {
         public T StatusRequest { get; set; }
 
-        public StatusBasicInfoRequest(T connectionRequest) 
+        public StatusBasicInfoRequest(T statusRequest) 
         {
-            StatusRequest = connectionRequest;
+            StatusRequest = statusRequest;
         }
      
     }

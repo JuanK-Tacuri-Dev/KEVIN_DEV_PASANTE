@@ -4,9 +4,9 @@
     {
         public T PropertyRequest { get; set; }
 
-        public PropertyBasicInfoRequest(T connectionRequest) 
+        public PropertyBasicInfoRequest(T propertyRequest) 
         {
-            PropertyRequest = connectionRequest;
+            PropertyRequest = propertyRequest;
         }
      
     }
