@@ -6,6 +6,7 @@ using Integration.Orchestrator.Backend.Domain.Specifications;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
+    [DomainService]
     public class SynchronizationService(
         ISynchronizationRepository<SynchronizationEntity> synchronizationRepository) : 
         ISynchronizationService<SynchronizationEntity>

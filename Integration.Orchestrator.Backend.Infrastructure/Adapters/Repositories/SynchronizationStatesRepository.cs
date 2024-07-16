@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
+    [Repository]
     public class SynchronizationStatesRepository(IMongoCollection<SynchronizationStatesEntity> collection) : ISynchronizationStatesRepository<SynchronizationStatesEntity>
     {
         private readonly IMongoCollection<SynchronizationStatesEntity> _collection = collection;
