@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Services;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,12 +23,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Extensions
 
         private static void RegisterServices(IServiceCollection services)
         {
-            // generic repository
-            //services.AddTransient(typeof(IRepository<>), typeof(GenericRepository<>));
-
-            // unit of work
-           // services.AddTransient<IUnitOfWork, UnitOfWork>();
-
             // Registrar servicios y repositorios
             RegisterDomainServices(services);
             RegisterInfrastructureServices(services);
@@ -38,10 +31,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Extensions
 
         private static void RegisterServices(ContainerBuilder builder)
         {
-            // Registrar servicios en Autofac ContainerBuilder
-          //  builder.RegisterGeneric(typeof(GenericRepository<>)).As(typeof(IRepository<>)).InstancePerDependency();
-          //  builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerDependency();
-
             // Registrar servicios y repositorios
             RegisterDomainServices(builder);
             RegisterInfrastructureServices(builder);
