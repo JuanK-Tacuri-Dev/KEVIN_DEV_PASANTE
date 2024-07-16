@@ -59,10 +59,11 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<CreateSynchronizationCommandResponse>(okResult.Value);
-            Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_RespondeCreated, returnValue.Message.Messages[0]);
+            var returnValue = Assert.IsType<SynchronizationCreateResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Code);
+            Assert.Equal(AppMessages.Application_RespondeCreated, returnValue.Messages[0]);
         }
+
 
         [Fact]
         public async Task Update_ReturnsOkResult()
