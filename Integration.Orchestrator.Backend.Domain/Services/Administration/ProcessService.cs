@@ -7,6 +7,7 @@ using Integration.Orchestrator.Backend.Domain.Specifications;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
+    [DomainService]
     public class ProcessService(
         IProcessRepository<ProcessEntity> processRepository)
         : IProcessService<ProcessEntity>

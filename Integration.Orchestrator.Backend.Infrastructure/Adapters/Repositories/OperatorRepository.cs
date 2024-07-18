@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
+    [Repository]
     public class OperatorRepository(IMongoCollection<OperatorEntity> collection) : IOperatorRepository<OperatorEntity>
     {
         private readonly IMongoCollection<OperatorEntity> _collection = collection;

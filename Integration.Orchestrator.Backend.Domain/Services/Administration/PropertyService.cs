@@ -7,6 +7,7 @@ using Integration.Orchestrator.Backend.Domain.Specifications;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
+    [DomainService]
     public class PropertyService(
         IPropertyRepository<PropertyEntity> propertyRepository) 
         : IPropertyService<PropertyEntity>

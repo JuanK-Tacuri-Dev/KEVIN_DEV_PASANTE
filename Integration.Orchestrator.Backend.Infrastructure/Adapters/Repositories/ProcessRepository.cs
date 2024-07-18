@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
+    [Repository]
     public class ProcessRepository(IMongoCollection<ProcessEntity> collection) : IProcessRepository<ProcessEntity>
     {
         private readonly IMongoCollection<ProcessEntity> _collection = collection;

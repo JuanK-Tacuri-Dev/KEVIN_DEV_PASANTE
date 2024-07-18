@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
+    [Repository]
     public class CatalogRepository(IMongoCollection<CatalogEntity> collection) : ICatalogRepository<CatalogEntity>
     {
         private readonly IMongoCollection<CatalogEntity> _collection = collection;

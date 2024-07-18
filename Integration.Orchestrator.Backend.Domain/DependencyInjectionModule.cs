@@ -28,62 +28,6 @@ namespace Integration.Orchestrator.Backend.Domain
             _ = builder.RegisterType<IntregrationV2ToV1Service>()
                 .As<IIntregrationV2ToV1Service>()
                 .InstancePerLifetimeScope();
-
-            _ = builder.RegisterType<SynchronizationService>()
-                .As<ISynchronizationService<SynchronizationEntity>>()
-                .InstancePerLifetimeScope();
-
-            _ = builder.RegisterType<SynchronizationStatesService>()
-                .As<ISynchronizationStatesService<SynchronizationStatesEntity>>()
-                .InstancePerLifetimeScope();
-
-            _ = builder.RegisterType<ConnectionService>()
-                .As<IConnectionService<ConnectionEntity>>()
-                .InstancePerLifetimeScope();
-
-            _ = builder.RegisterType<IntegrationService>()
-                .As<IIntegrationService<IntegrationEntity>>()
-                .InstancePerLifetimeScope();
-
-            _ = builder.RegisterType<ProcessService>()
-                .As<IProcessService<ProcessEntity>>()
-                .InstancePerLifetimeScope();
-
-            _ = builder.RegisterType<StatusService>()
-                .As<IStatusService<StatusEntity>>()
-                .InstancePerLifetimeScope();
-
-            _ = builder.RegisterType<EntitiesService>()
-                .As<IEntitiesService<EntitiesEntity>>()
-                .InstancePerLifetimeScope();
-
-            _ = builder.RegisterType<PropertyService>()
-                .As<IPropertyService<PropertyEntity>>()
-                .InstancePerLifetimeScope();
-
-            _ = builder.RegisterType<ValueService>()
-                .As<IValueService<ValueEntity>>()
-                .InstancePerLifetimeScope();
-
-            _ = builder.RegisterType<OperatorService>()
-                .As<IOperatorService<OperatorEntity>>()
-                .InstancePerLifetimeScope();
-
-            _ = builder.RegisterType<ServerService>()
-                .As<IServerService<ServerEntity>>()
-                .InstancePerLifetimeScope();
-
-            _ = builder.RegisterType<RepositoryService>()
-                .As<IRepositoryService<RepositoryEntity>>()
-                .InstancePerLifetimeScope();
-
-            _ = builder.RegisterType<AdapterService>()
-                .As<IAdapterService<AdapterEntity>>()
-                .InstancePerLifetimeScope();
-
-            _ = builder.RegisterType<CatalogService>()
-                .As<ICatalogService<CatalogEntity>>()
-                .InstancePerLifetimeScope(); 
         }
     }
 }
