@@ -1,4 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Api.Controllers.v1.Administration;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Status;
 using Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using MediatR;
@@ -12,6 +13,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
     {
         private readonly Mock<IMediator> _mediatorMock;
         private readonly SynchronizationsController _controller;
+        private StatusResponse statusId;
 
         public SynchronizationControllerTests()
         {
@@ -106,9 +108,9 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<UpdateSynchronizationCommandResponse>(okResult.Value);
-            Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_RespondeUpdated, returnValue.Message.Messages[0]);
+            var returnValue = Assert.IsType<SynchronizationUpdateResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Code);
+            Assert.Equal(AppMessages.Application_RespondeUpdated, returnValue.Messages[0]);
         }
 
         [Fact]
@@ -131,9 +133,9 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<DeleteSynchronizationCommandResponse>(okResult.Value);
-            Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_RespondeDeleted, returnValue.Message.Messages[0]);
+            var returnValue = Assert.IsType<SynchronizationDeleteResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Code);
+            Assert.Equal(AppMessages.Application_RespondeDeleted, returnValue.Messages[0]);
         }
 
         [Fact]
@@ -170,9 +172,9 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<GetByFranchiseIdSynchronizationCommandResponse>(okResult.Value);
-            Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_RespondeGet, returnValue.Message.Messages[0]);
+            var returnValue = Assert.IsType<SynchronizationGetByFranchiseIdResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Code);
+            Assert.Equal(AppMessages.Application_RespondeGet, returnValue.Messages[0]);
         }
 
         [Fact]
@@ -206,12 +208,12 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<GetByIdSynchronizationCommandResponse>(okResult.Value);
-            Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_RespondeGet, returnValue.Message.Messages[0]);
+            var returnValue = Assert.IsType<SynchronizationGetByIdResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Code);
+            Assert.Equal(AppMessages.Application_RespondeGet, returnValue.Messages[0]);
         }
 
-        /*[Fact]
+        [Fact]
         public async Task GetAllPaginated_ReturnsOkResult()
         {
             // Arrange
@@ -222,30 +224,32 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 SortBy = ""
             };
 
-            var response = new GetAllPaginatedSynchronizationCommandResponse(
-                new SynchronizationGetAllPaginatedResponse
-                {
-                    Code = 200,
-                    Description = AppMessages.Api_SynchronizationResponse,
-                    TotalRows = 1,
-                    Data = new List<SynchronizationGetAllPaginated>
-                    {
-                new SynchronizationGetAllPaginated
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Test",
-                    FranchiseId = Guid.NewGuid(),
-                    Status = Guid.NewGuid(),
-                    Observations = "Observation",
-                    HourToExecute = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
-                    Integrations = new List<IntegrationRequest>(),
-                    UserId = Guid.NewGuid()
-                }
-                    }
-                });
 
-            _mediatorMock.Setup(m => m.Send(It.IsAny<GetAllPaginatedSynchronizationCommandRequest>(), default))
-                         .ReturnsAsync(response);
+            var response = new SynchronizationGetAllPaginatedResponse
+            {
+                Code = 200,
+                Description = AppMessages.Api_SynchronizationResponse,
+                Data = new SynchronizationGetAllRows
+                {
+                    Total_rows = 1,
+                    Rows = new List<SynchronizationGetAllPaginated>
+                    {
+                        new SynchronizationGetAllPaginated
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "Test",
+                        FranchiseId = Guid.NewGuid(),
+                        Status = statusId,
+                        Observations = "Observation",
+                        HourToExecute = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
+                        Integrations = new List<IntegrationRequest>(),
+                        UserId = Guid.NewGuid()
+                    }
+                }
+                }
+            };
+            _mediatorMock.Setup(m => m.Send(It.IsAny<SynchronizationGetAllPaginatedRequest>(), default))
+               .ReturnsAsync(response);
 
             // Act
             var result = await _controller.GetAllPaginated(request);
@@ -255,6 +259,6 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             var returnValue = Assert.IsType<GetAllPaginatedSynchronizationCommandResponse>(okResult.Value);
             Assert.Equal(200, returnValue.Message.Code);
             Assert.Equal(AppMessages.Api_SynchronizationResponse, returnValue.Message.Description);
-        }*/
+        }
     }
 }

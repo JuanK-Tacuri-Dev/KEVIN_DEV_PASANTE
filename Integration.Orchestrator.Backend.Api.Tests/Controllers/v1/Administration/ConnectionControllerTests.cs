@@ -44,9 +44,9 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<CreateConnectionCommandResponse>(okResult.Value);
-            Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_RespondeCreated, returnValue.Message.Messages[0]);
+            var returnValue = Assert.IsType<ConnectionCreateResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Code);
+            Assert.Equal(AppMessages.Application_RespondeCreated, returnValue.Messages[0]);
             _mediatorMock.Verify(m => m.Send(It.IsAny<CreateConnectionCommandRequest>(), default), Times.Once);
         }
 
@@ -80,9 +80,9 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<GetByCodeConnectionCommandResponse>(okResult.Value);
-            Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_RespondeGet, returnValue.Message.Messages[0]);
+            var returnValue = Assert.IsType<ConnectionGetByCodeResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Code);
+            Assert.Equal(AppMessages.Application_RespondeGet, returnValue.Messages[0]);
             _mediatorMock.Verify(m => m.Send(It.IsAny<GetByCodeConnectionCommandRequest>(), default), Times.Once);
         }
 
