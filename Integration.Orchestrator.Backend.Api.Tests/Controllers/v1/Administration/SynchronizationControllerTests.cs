@@ -221,7 +221,9 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             {
                 Page = 1,
                 Rows = 1,
-                SortBy = ""
+                SortBy = "",
+                Search ="",
+                SortOrder = 0
             };
 
 
@@ -238,7 +240,6 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                     {
                         Id = Guid.NewGuid(),
                         Name = "Test",
-                        FranchiseId = Guid.NewGuid(),
                         Status = statusId,
                         Observations = "Observation",
                         HourToExecute = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
@@ -248,17 +249,21 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 }
                 }
             };
-            _mediatorMock.Setup(m => m.Send(It.IsAny<SynchronizationGetAllPaginatedRequest>(), default))
-               .ReturnsAsync(response);
+            var commandRequest = new GetAllPaginatedSynchronizationCommandRequest(request);
+            var commandResponse = new GetAllPaginatedSynchronizationCommandResponse(response);
+
+            _mediatorMock
+                .Setup(m => m.Send(It.IsAny<GetAllPaginatedSynchronizationCommandRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(commandResponse);
 
             // Act
             var result = await _controller.GetAllPaginated(request);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<GetAllPaginatedSynchronizationCommandResponse>(okResult.Value);
-            Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Api_SynchronizationResponse, returnValue.Message.Description);
+            var returnValue = Assert.IsType<SynchronizationGetAllPaginatedResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Code);
+            Assert.Equal(AppMessages.Api_SynchronizationResponse, returnValue.Description);
         }
     }
 }
