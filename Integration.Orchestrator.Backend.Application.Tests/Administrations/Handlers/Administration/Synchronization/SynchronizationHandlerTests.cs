@@ -19,6 +19,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         public SynchronizationHandlerTests()
         {
             _mockService = new Mock<ISynchronizationService<SynchronizationEntity>>();
+            _mockStatusService = new Mock<IStatusService<StatusEntity>>();
             _handler = new SynchronizationHandler(_mockService.Object, _mockStatusService.Object);
         }
 
@@ -269,8 +270,8 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             _mockService.Verify(service => service.GetTotalRowsAsync(It.IsAny<PaginatedModel>()), Times.Once);
             _mockService.Verify(service => service.GetAllPaginatedAsync(It.IsAny<PaginatedModel>()), Times.Once);
             Assert.Equal(HttpStatusCode.OK.GetHashCode(), response.Message.Code);
-            Assert.Equal(AppMessages.Api_SynchronizationResponse, response.Message.Description);
-            //Assert.Equal(synchronizations.Count, response.Message.Data.Count());
+            Assert.Equal(AppMessages.Application_RespondeGetAll, response.Message.Description);
+            Assert.Equal(synchronizations.Count, response.Message.Data.Total_rows);
         }
 
         [Fact]
