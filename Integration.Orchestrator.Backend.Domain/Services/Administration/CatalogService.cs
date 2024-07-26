@@ -14,7 +14,6 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         public async Task InsertAsync(CatalogEntity process)
         {
-            await ValidateBussinesLogic(process, true);
             await _processRepository.InsertAsync(process);
         }
 
@@ -50,13 +49,6 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             var spec = new CatalogSpecification(paginatedModel);
             return await _processRepository.GetTotalRows(spec);
-        }
-
-        private async Task ValidateBussinesLogic(CatalogEntity process, bool create = false)
-        {
-            if (create)
-            {
-            }
         }
     }
 }

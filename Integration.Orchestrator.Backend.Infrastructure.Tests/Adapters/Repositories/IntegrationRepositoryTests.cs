@@ -1,5 +1,6 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Moq;
 
@@ -64,9 +65,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
                 .Set(m => m.process, entity.process)
                 .Set(m => m.updated_at, entity.updated_at);
 
-            _mockCollection.Setup(x => x.UpdateOneAsync(filter, update, null, default))
-                           .Returns(Task.FromResult((UpdateResult)null));
-
             // Act
             await _repository.UpdateAsync(entity);
 
@@ -84,9 +82,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
             };
 
             var filter = Builders<IntegrationEntity>.Filter.Eq("_id", entity.id);
-
-            _mockCollection.Setup(x => x.DeleteOneAsync(filter, default))
-                           .Returns(Task.FromResult((DeleteResult)null));
 
             // Act
             await _repository.DeleteAsync(entity);

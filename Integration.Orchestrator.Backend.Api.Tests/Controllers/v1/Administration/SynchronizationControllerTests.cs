@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Api.Controllers.v1.Administration;
+﻿using System.Globalization;
+using Integration.Orchestrator.Backend.Api.Controllers.v1.Administration;
 using Integration.Orchestrator.Backend.Application.Models.Administration.Status;
 using Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization;
 using Integration.Orchestrator.Backend.Domain.Resources;
@@ -13,7 +14,6 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
     {
         private readonly Mock<IMediator> _mediatorMock;
         private readonly SynchronizationsController _controller;
-        private StatusResponse statusId;
 
         public SynchronizationControllerTests()
         {
@@ -78,14 +78,14 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 Status = Guid.NewGuid(),
                 Observations = "observation",
                 UserId = Guid.NewGuid(),
-                HourToExecute = DateTime.Now.ToString(),
-                Integrations = new List<IntegrationRequest>
-                {
+                HourToExecute = DateTime.Now.ToString(CultureInfo.CurrentCulture),
+                Integrations =
+                [
                    new IntegrationRequest
                    {
                        Id = Guid.NewGuid(),
                    }
-                }
+                ]
             };
             var id = Guid.NewGuid();
 
@@ -148,8 +148,8 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 {
                     Code = 200,
                     Messages = [AppMessages.Application_RespondeGet],
-                    Data = new List<SynchronizationGetByFranchiseId>
-                    {
+                    Data =
+                    [
                         new SynchronizationGetByFranchiseId
                         {
                             Id = Guid.NewGuid(),
@@ -158,10 +158,10 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                             Status = Guid.NewGuid(),
                             Observations = "Observation",
                             HourToExecute = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
-                            Integrations = new List<IntegrationRequest>(){ new IntegrationRequest {Id = Guid.NewGuid() } },
+                            Integrations = [new IntegrationRequest {Id = Guid.NewGuid() }],
                             UserId = Guid.NewGuid()
                         }
-                    }
+                    ]
                 });
 
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetByFranchiseIdSynchronizationCommandRequest>(), default))
@@ -234,19 +234,26 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                 Data = new SynchronizationGetAllRows
                 {
                     Total_rows = 1,
-                    Rows = new List<SynchronizationGetAllPaginated>
-                    {
+                    Rows =
+                    [
                         new SynchronizationGetAllPaginated
                     {
                         Id = Guid.NewGuid(),
                         Name = "Test",
-                        Status = statusId,
+                        Status = new StatusResponse
+                        {
+                            Id = Guid.NewGuid(),
+                            Text = "Test",
+                            Color = "Color",
+                            Background = "Background",
+                            Key = "Test",
+                        },
                         Observations = "Observation",
                         HourToExecute = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
                         Integrations = new List<IntegrationRequest>(),
                         UserId = Guid.NewGuid()
                     }
-                }
+                ]
                 }
             };
             var commandRequest = new GetAllPaginatedSynchronizationCommandRequest(request);
