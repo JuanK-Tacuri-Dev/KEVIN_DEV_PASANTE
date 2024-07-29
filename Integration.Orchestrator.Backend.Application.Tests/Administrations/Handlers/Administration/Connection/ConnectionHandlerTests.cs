@@ -75,7 +75,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, response.Message.Code);
-            Assert.Equal(AppMessages.Api_ConnectionResponse, response.Message.Messages[0]);
+            Assert.Equal(AppMessages.Application_RespondeGet, response.Message.Messages[0]);
             Assert.NotNull(response.Message.Data);
             _serviceMock.Verify(s => s.GetByCodeAsync(It.IsAny<string>()), Times.Once);
         }
@@ -111,7 +111,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             Assert.Equal((int)HttpStatusCode.OK, response.Message.Code);
-            Assert.Equal(AppMessages.Api_ConnectionResponse, response.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeGetAll, response.Message.Description);
             Assert.NotNull(response.Message.Data);
             Assert.Equal(connectionEntities.Count(), response.Message.Data.Total_rows);
             _serviceMock.Verify(s => s.GetTotalRowsAsync(It.IsAny<PaginatedModel>()), Times.Once);

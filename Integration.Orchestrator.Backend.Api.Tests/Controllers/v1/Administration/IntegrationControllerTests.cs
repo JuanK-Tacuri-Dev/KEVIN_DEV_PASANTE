@@ -57,9 +57,9 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<CreateIntegrationCommandResponse>(okResult.Value);
-            Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_RespondeCreated, returnValue.Message.Messages[0]);
+            var returnValue = Assert.IsType<IntegrationCreateResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Code);
+            Assert.Equal(AppMessages.Application_RespondeCreated, returnValue.Messages[0]);
             _mediatorMock.Verify(m => m.Send(It.IsAny<CreateIntegrationCommandRequest>(), default), Times.Once);
         }
 
@@ -102,9 +102,9 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<UpdateIntegrationCommandResponse>(okResult.Value);
-            Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_RespondeUpdated, returnValue.Message.Messages[0]);
+            var returnValue = Assert.IsType<IntegrationUpdateResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Code);
+            Assert.Equal(AppMessages.Application_RespondeUpdated, returnValue.Messages[0]);
         }
 
         [Fact]
@@ -127,9 +127,9 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<DeleteIntegrationCommandResponse>(okResult.Value);
-            Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_RespondeDeleted, returnValue.Message.Messages[0]);
+            var returnValue = Assert.IsType<IntegrationDeleteResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Code);
+            Assert.Equal(AppMessages.Application_RespondeDeleted, returnValue.Messages[0]);
         }
 
         [Fact]
@@ -178,9 +178,9 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<GetAllPaginatedIntegrationCommandResponse>(okResult.Value);
-            Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Api_IntegrationResponse, returnValue.Message.Description);
+            var returnValue = Assert.IsType<IntegrationGetAllPaginatedResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Code);
+            Assert.Equal(AppMessages.Api_IntegrationResponse, returnValue.Description);
             _mediatorMock.Verify(m => m.Send(It.IsAny<GetAllPaginatedIntegrationCommandRequest>(), default), Times.Once);
         }
     }

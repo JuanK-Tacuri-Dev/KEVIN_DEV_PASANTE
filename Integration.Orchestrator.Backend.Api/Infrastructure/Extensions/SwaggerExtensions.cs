@@ -14,8 +14,18 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.Extensions
             OpenApiDocument doc = sw.GetSwagger("v1", null, "/");
             string swaggerFile = doc.SerializeAsJson(Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_0);
             string filePath = Path.Combine("..", "Deployment", "Swagger", "BackOffice_Swaggerfile.json");
-            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-            File.WriteAllText(filePath, swaggerFile);
+            if (filePath != null)
+            {
+                string? dir = Path.GetDirectoryName(filePath);
+                if (dir != null)
+                {
+                    Directory.CreateDirectory(dir);
+                    File.WriteAllText(filePath, swaggerFile);
+                }
+            }
+
+
+
         }
     }
 }

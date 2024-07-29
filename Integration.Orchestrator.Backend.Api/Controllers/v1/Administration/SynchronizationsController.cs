@@ -59,5 +59,6 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
             return Ok((await _mediator.Send(
                 new GetAllPaginatedSynchronizationCommandRequest(request))).Message);
         }
+
     }
 }
