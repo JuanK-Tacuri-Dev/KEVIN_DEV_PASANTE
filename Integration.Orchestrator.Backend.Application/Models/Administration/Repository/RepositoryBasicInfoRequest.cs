@@ -4,9 +4,9 @@
     {
         public T RepositoryRequest { get; set; }
 
-        public RepositoryBasicInfoRequest(T connectionRequest) 
+        public RepositoryBasicInfoRequest(T repositoryRequest) 
         {
-            RepositoryRequest = connectionRequest;
+            RepositoryRequest = repositoryRequest;
         }
      
     }

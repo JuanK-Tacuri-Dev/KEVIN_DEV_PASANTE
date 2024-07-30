@@ -177,6 +177,9 @@
   <data name="Application_AdapterResponseUpdated" xml:space="preserve">
     <value>Adapter Updated Succesfully</value>
   </data>
+  <data name="Application_CatalogNotFound" xml:space="preserve">
+    <value>Catolog not found</value>
+  </data>
   <data name="Application_ConnectionNotFound" xml:space="preserve">
     <value>Connection not found</value>
   </data>

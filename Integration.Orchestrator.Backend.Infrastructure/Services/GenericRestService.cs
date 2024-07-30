@@ -15,42 +15,51 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Services
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
-        public async Task<T> PostAsync<T>(string url, object body, bool camelCaseTransform = false, bool skipCert = false, Dictionary<string, string> header = null)
+        public async Task<T> PostAsync<T>(string url, object body, bool camelCaseTransform = false, bool skipCert = false, Dictionary<string, string>? header = null)
         {
             if (skipCert)
             {
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             }
 
-            AddHeaders(header);
+            if (header != null)
+            {
+                AddHeaders(header);
+            }
 
             HttpResponseMessage response = await _httpClient.PostAsync(url, new StringContent(JsonConvert.SerializeObject(body, new JsonSerializerSettings { ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver() }), Encoding.UTF8, "application/json"));
 
             return await HandleResponse<T>(response);
         }
 
-        public async Task<T> PutAsync<T>(string url, object body, bool skipCert = false, Dictionary<string, string> header = null)
+        public async Task<T> PutAsync<T>(string url, object body, bool skipCert = false, Dictionary<string, string>? header = null)
         {
             if (skipCert)
             {
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             }
 
-            AddHeaders(header);
+            if (header != null)
+            {
+                AddHeaders(header);
+            }
 
             HttpResponseMessage response = await _httpClient.PutAsync(url, new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json"));
 
             return await HandleResponse<T>(response);
         }
 
-        public async Task<T> GetAsync<T>(string url, bool skipCert = false, Dictionary<string, string> header = null, Dictionary<string, string> queryParams = null)
+        public async Task<T> GetAsync<T>(string url, bool skipCert = false, Dictionary<string, string>? header = null, Dictionary<string, string>? queryParams = null)
         {
             if (skipCert)
             {
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             }
 
-            AddHeaders(header);
+            if (header != null)
+            {
+                AddHeaders(header);
+            }
 
             if (queryParams != null && queryParams.Count > 0)
             {
@@ -78,7 +87,11 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Services
             if (response.IsSuccessStatusCode)
             {
                 string responseData = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<T>(responseData);
+                if (responseData != null)
+                {
+                    return JsonConvert.DeserializeObject<T>(responseData) ?? throw new HttpRequestException($"HTTP request failed with status code {response.StatusCode}");
+                }
+                throw new HttpRequestException($"HTTP request failed with status code {response.StatusCode}");
             }
             else
             {

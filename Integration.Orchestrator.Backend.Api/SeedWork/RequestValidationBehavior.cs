@@ -11,6 +11,7 @@ namespace Integration.Orchestrator.Backend.Api.SeedWork
     /// </summary>    
     [ExcludeFromCodeCoverage]
     public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : notnull
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
 

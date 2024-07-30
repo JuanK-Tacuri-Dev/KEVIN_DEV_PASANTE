@@ -111,7 +111,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             // Assert
             Assert.Equal(HttpStatusCode.OK.GetHashCode(), response.Message.Code);
-            Assert.Equal(AppMessages.Api_SynchronizationStatesResponse, response.Message.Description);
+            Assert.Equal(AppMessages.Application_RespondeGetAll, response.Message.Description);
             Assert.Equal(synchronizationStates.Count, response.Message.Data.Total_rows);
             _mockService.Verify(service => service.GetTotalRowsAsync(It.IsAny<PaginatedModel>()), Times.Once);
             _mockService.Verify(service => service.GetAllPaginatedAsync(It.IsAny<PaginatedModel>()), Times.Once);

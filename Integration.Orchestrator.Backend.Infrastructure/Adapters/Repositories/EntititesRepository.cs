@@ -6,7 +6,9 @@ using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
-    public class EntitiesRepository(IMongoCollection<EntitiesEntity> collection) : IEntitiesRepository<EntitiesEntity>
+    [Repository]
+    public class EntitiesRepository(IMongoCollection<EntitiesEntity> collection) 
+        : IEntitiesRepository<EntitiesEntity>
     {
         private readonly IMongoCollection<EntitiesEntity> _collection = collection;
         

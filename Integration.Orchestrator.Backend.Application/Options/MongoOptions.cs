@@ -16,17 +16,17 @@ namespace Integration.Orchestrator.Backend.Application.Options
         /// <summary>
         ///     Connection string for connect to mongoDB
         /// </summary>
-        public string? ConnectionString { get; set; }
+        public string ConnectionString { get; set; }
 
         /// <summary>
         ///     Name of database on mongoDB
         /// </summary>
-        public string? DatabaseName { get; set; }
+        public string DatabaseName { get; set; }
 
         /// <summary>
         ///     Name of collections
         /// </summary>
-        public Collection? Collections { get; set; }
+        public Collection Collections { get; set; }
     }
 
     /// <summary>
@@ -47,6 +47,7 @@ namespace Integration.Orchestrator.Backend.Application.Options
         public string Server { get; set; }
         public string Repository { get; set; }
         public string Adapter { get; set; }
+        public string Catalog { get; set; }
 
     }
 }

@@ -27,11 +27,11 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             var command = new CreateConnectionCommandRequest(new ConnectionBasicInfoRequest<ConnectionCreateRequest>(request));
 
             var response = new CreateConnectionCommandResponse(
-                new ConnectionCreateResponse 
-                { 
+                new ConnectionCreateResponse
+                {
                     Code = 200,
                     Messages = [AppMessages.Application_RespondeCreated],
-                    Data = new ConnectionCreate 
+                    Data = new ConnectionCreate
                     {
                         Id = Guid.NewGuid()
                     }
@@ -44,9 +44,9 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<CreateConnectionCommandResponse>(okResult.Value);
-            Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_RespondeCreated, returnValue.Message.Messages[0]);
+            var returnValue = Assert.IsType<ConnectionCreateResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Code);
+            Assert.Equal(AppMessages.Application_RespondeCreated, returnValue.Messages[0]);
             _mediatorMock.Verify(m => m.Send(It.IsAny<CreateConnectionCommandRequest>(), default), Times.Once);
         }
 
@@ -80,13 +80,13 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<GetByCodeConnectionCommandResponse>(okResult.Value);
-            Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Application_RespondeGet, returnValue.Message.Messages[0]);
+            var returnValue = Assert.IsType<ConnectionGetByCodeResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Code);
+            Assert.Equal(AppMessages.Application_RespondeGet, returnValue.Messages[0]);
             _mediatorMock.Verify(m => m.Send(It.IsAny<GetByCodeConnectionCommandRequest>(), default), Times.Once);
         }
 
-       /* [Fact]
+        [Fact]
         public async Task GetAllPaginated_ReturnsOkResult()
         {
             // Arrange
@@ -94,39 +94,46 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             {
                 Page = 1,
                 Rows = 1,
-                SortBy = ""
+                SortBy = "",
+                Search = "",
+                SortOrder = 0
             };
             var response = new GetAllPaginatedConnectionCommandResponse(
-                new ConnectionGetAllPaginatedResponse 
+                new ConnectionGetAllPaginatedResponse
                 {
                     Code = 200,
                     Description = AppMessages.Api_ConnectionResponse,
-                    TotalRows = 1,
-                    Data = [
-                        new ConnectionGetAllPaginated
-                        {
-                            Id = Guid.NewGuid(),
-                            Code = "testCode",
-                            Server = "localhost",
-                            Port = "8080",
-                            User = "user",
-                            Password = "password",
-                            AdapterId = Guid.NewGuid()
-                        }]
+
+                    Data = new ConnectionGetAllRows
+                    {
+                        Total_rows = 1,
+                        Rows = [
+                            new ConnectionGetAllPaginated
+                            {
+                                Id = Guid.NewGuid(),
+                                Code = "testCode",
+                                Server = "localhost",
+                                Port = "8080",
+                                User = "user",
+                                Password = "password",
+                                AdapterId = Guid.NewGuid()
+                            }]
+                    }
                 });
+
             var command = new GetAllPaginatedConnectionCommandRequest(request);
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetAllPaginatedConnectionCommandRequest>(), default))
-                         .ReturnsAsync(response); 
+                         .ReturnsAsync(response);
 
             // Act
             var result = await _controller.GetAllPaginated(request);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<GetAllPaginatedConnectionCommandResponse>(okResult.Value);
-            Assert.Equal(200, returnValue.Message.Code);
-            Assert.Equal(AppMessages.Api_ConnectionResponse, returnValue.Message.Description);
+            var returnValue = Assert.IsType<ConnectionGetAllPaginatedResponse>(okResult.Value);
+            Assert.Equal(200, returnValue.Code);
+            Assert.Equal(AppMessages.Api_ConnectionResponse, returnValue.Description);
             _mediatorMock.Verify(m => m.Send(It.IsAny<GetAllPaginatedConnectionCommandRequest>(), default), Times.Once);
-        }*/
+        }
     }
 }

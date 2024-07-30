@@ -1,12 +1,9 @@
 ﻿using Autofac;
 using Integration.Orchestrator.Backend.Application.Options;
-using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.V2ToV1;
 using Integration.Orchestrator.Backend.Domain.Ports;
-using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Extractors.ExtractorSql.Contexts;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Loader;
-using Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Rest;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Transformators;
 using Integration.Orchestrator.Backend.Infrastructure.DataAccess.Rest;
@@ -86,59 +83,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure
             _ = builder.RegisterType<TransformatorFromV2toV1Rest>()
                 .As<ITransformator<TestEntityLegacy, TestEntity>>()
                 .InstancePerLifetimeScope();
-
-            //
-            _ = builder.RegisterType<SynchronizationRepository>()
-                .As<ISynchronizationRepository<SynchronizationEntity>>()
-                .SingleInstance();
-
-            _ = builder.RegisterType<SynchronizationStatesRepository>()
-                .As<ISynchronizationStatesRepository<SynchronizationStatesEntity>>()
-                .SingleInstance();
-
-            _ = builder.RegisterType<ConnectionRepository>()
-                .As<IConnectionRepository<ConnectionEntity>>()
-                .SingleInstance();
-
-            _ = builder.RegisterType<IntegrationRepository>()
-                .As<IIntegrationRepository<IntegrationEntity>>()
-                .SingleInstance();
-
-            _ = builder.RegisterType<ProcessRepository>()
-                .As<IProcessRepository<ProcessEntity>>()
-                .SingleInstance();
-
-            _ = builder.RegisterType<StatusRepository>()
-                .As<IStatusRepository<StatusEntity>>()
-                .SingleInstance();
-
-            _ = builder.RegisterType<PropertyRepository>()
-                .As<IPropertyRepository<PropertyEntity>>()
-                .SingleInstance();
-
-            _ = builder.RegisterType<EntitiesRepository>()
-                .As<IEntitiesRepository<EntitiesEntity>>()
-                .SingleInstance();
-
-            _ = builder.RegisterType<ValueRepository>()
-                .As<IValueRepository<ValueEntity>>()
-                .SingleInstance();
-
-            _ = builder.RegisterType<OperatorRepository>()
-                .As<IOperatorRepository<OperatorEntity>>()
-                .SingleInstance();
-
-            _ = builder.RegisterType<ServerRepository>()
-                .As<IServerRepository<ServerEntity>>()
-                .SingleInstance();
-
-            _ = builder.RegisterType<RepositoryRepository>()
-                .As<IRepositoryRepository<RepositoryEntity>>()
-                .SingleInstance();
-
-            _ = builder.RegisterType<AdapterRepository>()
-               .As<IAdapterRepository<AdapterEntity>>()
-               .SingleInstance();
         }
     }
 }
