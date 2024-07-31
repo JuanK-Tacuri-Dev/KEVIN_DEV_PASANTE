@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure appsettings.json location
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("Config/appsettings.json", optional: false, reloadOnChange: true);
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 // Add services to the container.
 builder.Services.AddControllers();
