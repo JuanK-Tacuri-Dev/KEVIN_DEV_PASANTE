@@ -6,14 +6,22 @@ namespace Integration.Orchestrator.Backend.Application.Exceptions
     [ExcludeFromCodeCoverage]
     public sealed class InvalidRequestException : Exception
     {
-        private List<ErrorDetail> DetailsError { get; set; }
+        
+        private DetailsErrors DetailsError { get; set; }
 
-        public List<ErrorDetail> Details => DetailsError;
+        public DetailsErrors Details => DetailsError;
 
-        public InvalidRequestException(string message, List<ErrorDetail> details)
+        public InvalidRequestException(string message, DetailsErrors details)
             : base(message)
         {
             DetailsError = details;
         }
     }
+
+    public class DetailsErrors
+    {
+        public List<Dictionary<string, string>> Messages { get; set; }
+        public object Data { get; set; }
+    }
+
 }

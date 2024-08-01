@@ -1168,7 +1168,7 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The user is required.
+        ///   Looks up a localized string similar to The username is required.
         /// </summary>
         public static string Repository_User_Required {
             get {

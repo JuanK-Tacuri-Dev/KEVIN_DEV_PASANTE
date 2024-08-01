@@ -59,7 +59,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             if (create)
             {
-                var repositoryByCode = await GetByCodeAsync(repository.repository_code);
+                var repositoryByCode = await GetByCodeAsync(repository.code);
                 if (repositoryByCode != null) 
                 {
                     throw new ArgumentException(AppMessages.Domain_RepositoryExists);

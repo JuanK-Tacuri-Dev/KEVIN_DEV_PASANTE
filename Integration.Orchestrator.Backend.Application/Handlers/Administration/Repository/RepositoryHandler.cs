@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Repository;
+﻿using System.Net;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Repository;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
@@ -6,10 +7,9 @@ using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
-using System.Net;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Repository.RepositoryCommands;
 
-namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Repository
+namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Repository
 {
     public class RepositoryHandler(IRepositoryService<RepositoryEntity> repositoryService)
         :
@@ -37,12 +37,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new RepositoryCreate
                         {
                             Id = repositoryEntity.id,
-                            Code = repositoryEntity.repository_code,
+                            Code = repositoryEntity.code,
                             Port = repositoryEntity.port,
-                            User = repositoryEntity.user,
+                            UserName = repositoryEntity.user,
                             Password = repositoryEntity.password,
-                            ServerId = repositoryEntity.server_id,
-                            AdapterId = repositoryEntity.adapter_id
+                            DataBaseName = repositoryEntity.data_base_name,
+                            AuthTypeId = repositoryEntity.auth_type_id,
+                            StatusId = repositoryEntity.status_id
                         }
                     });
             }
@@ -77,12 +78,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Data = new RepositoryUpdate
                             {
                                 Id = repositoryEntity.id,
-                                Code = repositoryEntity.repository_code,
+                                Code = repositoryEntity.code,
                                 Port = repositoryEntity.port,
-                                User = repositoryEntity.user,
+                                UserName = repositoryEntity.user,
                                 Password = repositoryEntity.password,
-                                ServerId = repositoryEntity.server_id,
-                                AdapterId = repositoryEntity.adapter_id
+                                DataBaseName = repositoryEntity.data_base_name,
+                                AuthTypeId = repositoryEntity.auth_type_id,
+                                StatusId = repositoryEntity.status_id
                             }
                         });
             }
@@ -147,12 +149,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new RepositoryGetById
                         {
                             Id = request.Repository.Id,
-                            Code = repositoryById.repository_code,
+                            Code = repositoryById.code,
                             Port = repositoryById.port,
-                            User = repositoryById.user,
+                            UserName = repositoryById.user,
                             Password = repositoryById.password,
-                            ServerId = repositoryById.server_id,
-                            AdapterId = repositoryById.adapter_id
+                            DataBaseName = repositoryById.data_base_name,
+                            AuthTypeId = repositoryById.auth_type_id,
+                            StatusId = repositoryById.status_id
                         }
                     });
             }
@@ -184,12 +187,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new RepositoryGetByCode
                         {
                             Id = repositoryByCode.id,
-                            Code = repositoryByCode.repository_code,
+                            Code = repositoryByCode.code,
                             Port = repositoryByCode.port,
-                            User = repositoryByCode.user,
+                            UserName = repositoryByCode.user,
                             Password = repositoryByCode.password,
-                            ServerId = repositoryByCode.server_id,
-                            AdapterId = repositoryByCode.adapter_id
+                            DataBaseName = repositoryByCode.data_base_name,
+                            AuthTypeId = repositoryByCode.auth_type_id,
+                            StatusId = repositoryByCode.status_id
                         }
                     });
             }
@@ -227,12 +231,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Rows = result.Select(c => new RepositoryGetAllPaginated
                             {
                                 Id = c.id,
-                                Code = c.repository_code,
+                                Code = c.code,
                                 Port = c.port,
-                                User = c.user,
+                                UserName = c.user,
                                 Password = c.password,
-                                ServerId = c.server_id,
-                                AdapterId = c.adapter_id
+                                DataBaseName = c.data_base_name,
+                                AuthTypeId = c.auth_type_id,
+                                StatusId = c.status_id
                             }).ToList()
                         }
                     });
@@ -252,12 +257,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             var repositoryEntity = new RepositoryEntity()
             {
                 id = id,
-                repository_code = request.Code,
+                code = request.Code,
                 port = request.Port,
-                user = request.User,
+                user = request.UserName,
                 password = request.Password,
-                server_id = request.ServerId,
-                adapter_id = request.AdapterId
+                data_base_name = request.DataBaseName,
+                auth_type_id = request.AuthTypeId,
+                status_id = request.StatusId
             };
             return repositoryEntity;
         }

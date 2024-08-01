@@ -14,17 +14,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
             RuleFor(request => request.Repository.RepositoryRequest.Port)
             .NotEmpty().WithMessage(AppMessages.Repository_Port_Required);
 
-            RuleFor(request => request.Repository.RepositoryRequest.User)
-            .NotEmpty().WithMessage(AppMessages.Repository_User_Required);
+            //RuleFor(request => request.Repository.RepositoryRequest.User)
+            //.NotEmpty().WithMessage(AppMessages.Repository_User_Required);
 
             RuleFor(request => request.Repository.RepositoryRequest.Password)
             .NotEmpty().WithMessage(AppMessages.Repository_Password_Required);
 
-            RuleFor(request => request.Repository.RepositoryRequest.ServerId)
-            .NotEmpty().WithMessage(AppMessages.Repository_ServerId_Required);
+            //RuleFor(request => request.Repository.RepositoryRequest.ServerId)
+            //.NotEmpty().WithMessage(AppMessages.Repository_ServerId_Required);
 
-            RuleFor(request => request.Repository.RepositoryRequest.AdapterId)
-            .NotEmpty().WithMessage(AppMessages.Repository_AdapterId_Required);
+            //RuleFor(request => request.Repository.RepositoryRequest.AdapterId)
+            //.NotEmpty().WithMessage(AppMessages.Repository_AdapterId_Required);
 
 
         }

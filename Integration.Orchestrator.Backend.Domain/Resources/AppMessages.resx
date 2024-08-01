@@ -487,7 +487,7 @@
     <value>The serverId is required</value>
   </data>
   <data name="Repository_User_Required" xml:space="preserve">
-    <value>The user is required</value>
+    <value>The username is required</value>
   </data>
   <data name="Server_Code_Required" xml:space="preserve">
     <value>The  code is required</value>

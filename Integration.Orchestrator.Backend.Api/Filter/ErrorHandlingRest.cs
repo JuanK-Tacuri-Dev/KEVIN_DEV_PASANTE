@@ -1,5 +1,6 @@
 ﻿using Integration.Orchestrator.Backend.Application.Exceptions;
 using Integration.Orchestrator.Backend.Application.Models;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Microsoft.AspNetCore.Mvc;
@@ -37,9 +38,15 @@ namespace Integration.Orchestrator.Backend.Api.Filter
             // Log the exception details
             _logger.LogError(exception, "An exception occurred: {TypeError}, HTTP Code: {HttpCode}, Detail: {Detail}, StackTrace: {StackTrace}, Source: {Source}",
                              typeError, httpCode, detail, exception.StackTrace, exception.Source);
-
+           
             var result = exception is InvalidRequestException invalidRequestException
-                ? new ObjectResult(new { Code = httpCode, Messages = invalidRequestException.Details.Select(m=> $"{m.Params} : {m.Message}").ToList() })
+            ? new ObjectResult(new
+            {
+                    
+            Code = ResponseCode.NotCreatedSuccessfully, 
+                    Messages = invalidRequestException.Details.Messages.Select(m=> m ).ToList(),
+                    Data = invalidRequestException.Details.Data
+                })
                 : new ObjectResult(new ErrorResponse { Code = httpCode, Messages = [detail] });
 
             context.Result = result;
