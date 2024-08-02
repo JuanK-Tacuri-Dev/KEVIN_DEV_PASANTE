@@ -10,6 +10,6 @@
         NotFoundSuccessfully = 21,
         DeletedSuccessfully = 40,
         NotDeletedSuccessfully = 42,
-        NotCreatedSuccessfullyByValidation = 50 
+        NotValidationSuccessfully = 50 
     }
 }

@@ -42,7 +42,7 @@ namespace Integration.Orchestrator.Backend.Api.SeedWork
             {
                 var errorMessages = new  List<Dictionary<string, string>>()
                 {
-                    new Dictionary<string, string>(){{ "object", ResponseMessageValues.GetResponseMessage(ResponseCode.NotCreatedSuccessfullyByValidation) } }
+                    new Dictionary<string, string>(){{ "object", ResponseMessageValues.GetResponseMessage(ResponseCode.NotValidationSuccessfully) } }
                 };
                 errorMessages.AddRange( errors.Select(error =>
                 {

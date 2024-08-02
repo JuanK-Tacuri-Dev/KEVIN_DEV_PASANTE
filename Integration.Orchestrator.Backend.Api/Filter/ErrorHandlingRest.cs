@@ -31,7 +31,7 @@ namespace Integration.Orchestrator.Backend.Api.Filter
             {
                 InvalidRequestException invalidRequestException => new ObjectResult(new
                 {
-                    Code = ResponseCode.NotCreatedSuccessfullyByValidation,
+                    Code = ResponseCode.NotValidationSuccessfully,
                     Messages = invalidRequestException.Details.Messages.Select(m => m).ToList(),
                     invalidRequestException.Details.Data
                 }),
