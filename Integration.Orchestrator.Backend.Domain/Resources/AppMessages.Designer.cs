@@ -871,6 +871,96 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creado Correctamente.
+        /// </summary>
+        public static string Domain_ResponseCode_CreatedSuccessfully {
+            get {
+                return ResourceManager.GetString("Domain_ResponseCode_CreatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eliminado Correctamente.
+        /// </summary>
+        public static string Domain_ResponseCode_DeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("Domain_ResponseCode_DeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encontrado Correctamente.
+        /// </summary>
+        public static string Domain_ResponseCode_FoundSuccessfully {
+            get {
+                return ResourceManager.GetString("Domain_ResponseCode_FoundSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Creado Correctamente.
+        /// </summary>
+        public static string Domain_ResponseCode_NotCreatedSuccessfully {
+            get {
+                return ResourceManager.GetString("Domain_ResponseCode_NotCreatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Eliminado Correctamente.
+        /// </summary>
+        public static string Domain_ResponseCode_NotDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("Domain_ResponseCode_NotDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Codigo no encontrado.
+        /// </summary>
+        public static string Domain_ResponseCode_NotFoundCodeSuccessfully {
+            get {
+                return ResourceManager.GetString("Domain_ResponseCode_NotFoundCodeSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Encontrado Correctamente.
+        /// </summary>
+        public static string Domain_ResponseCode_NotFoundSuccessfully {
+            get {
+                return ResourceManager.GetString("Domain_ResponseCode_NotFoundSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Actualizado Correctamente.
+        /// </summary>
+        public static string Domain_ResponseCode_NotUpdatedSuccessfully {
+            get {
+                return ResourceManager.GetString("Domain_ResponseCode_NotUpdatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Validado Correctamente.
+        /// </summary>
+        public static string Domain_ResponseCode_NotValidationSuccessfully {
+            get {
+                return ResourceManager.GetString("Domain_ResponseCode_NotValidationSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actualizado Correctamente.
+        /// </summary>
+        public static string Domain_ResponseCode_UpdatedSuccessfully {
+            get {
+                return ResourceManager.GetString("Domain_ResponseCode_UpdatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The server exists.
         /// </summary>
         public static string Domain_ServerExists {
@@ -1168,7 +1258,7 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The user is required.
+        ///   Looks up a localized string similar to The username is required.
         /// </summary>
         public static string Repository_User_Required {
             get {

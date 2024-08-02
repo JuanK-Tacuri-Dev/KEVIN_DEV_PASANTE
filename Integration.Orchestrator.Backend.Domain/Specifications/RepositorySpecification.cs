@@ -28,7 +28,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             = new Dictionary<string, Expression<Func<RepositoryEntity, object>>>
         {
             { nameof(RepositoryEntity.port), x => x.port },
-            { nameof(RepositoryEntity.repository_code), x => x.repository_code }
+            { nameof(RepositoryEntity.code), x => x.code },
+            { nameof(RepositoryEntity.user), x => x.user }
         };
         private void SetupPagination(PaginatedModel model)
         {
@@ -71,7 +72,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.repository_code.ToUpper().Contains(search.ToUpper()));
+                x.code.ToUpper().Contains(search.ToUpper()) ||
+                x.data_base_name.ToUpper().Contains(search.ToUpper()));
             }
 
             return criteria;
@@ -84,7 +86,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
         public static Expression<Func<RepositoryEntity, bool>> GetByCodeExpression(string code)
         {
-            return x => true && x.repository_code == code;
+            return x => true && x.code == code;
         }
     }
 }

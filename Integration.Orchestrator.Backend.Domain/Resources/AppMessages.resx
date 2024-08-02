@@ -387,6 +387,36 @@
   <data name="Domain_RepositoryExists" xml:space="preserve">
     <value>The repository exists</value>
   </data>
+  <data name="Domain_ResponseCode_CreatedSuccessfully" xml:space="preserve">
+    <value>Creado Correctamente</value>
+  </data>
+  <data name="Domain_ResponseCode_DeletedSuccessfully" xml:space="preserve">
+    <value>Eliminado Correctamente</value>
+  </data>
+  <data name="Domain_ResponseCode_FoundSuccessfully" xml:space="preserve">
+    <value>Encontrado Correctamente</value>
+  </data>
+  <data name="Domain_ResponseCode_NotCreatedSuccessfully" xml:space="preserve">
+    <value>No Creado Correctamente</value>
+  </data>
+  <data name="Domain_ResponseCode_NotDeletedSuccessfully" xml:space="preserve">
+    <value>No Eliminado Correctamente</value>
+  </data>
+  <data name="Domain_ResponseCode_NotFoundCodeSuccessfully" xml:space="preserve">
+    <value>Codigo no encontrado</value>
+  </data>
+  <data name="Domain_ResponseCode_NotFoundSuccessfully" xml:space="preserve">
+    <value>No Encontrado Correctamente</value>
+  </data>
+  <data name="Domain_ResponseCode_NotUpdatedSuccessfully" xml:space="preserve">
+    <value>No Actualizado Correctamente</value>
+  </data>
+  <data name="Domain_ResponseCode_NotValidationSuccessfully" xml:space="preserve">
+    <value>No Validado Correctamente</value>
+  </data>
+  <data name="Domain_ResponseCode_UpdatedSuccessfully" xml:space="preserve">
+    <value>Actualizado Correctamente</value>
+  </data>
   <data name="Domain_ServerExists" xml:space="preserve">
     <value>The server exists</value>
   </data>
@@ -487,7 +517,7 @@
     <value>The serverId is required</value>
   </data>
   <data name="Repository_User_Required" xml:space="preserve">
-    <value>The user is required</value>
+    <value>The username is required</value>
   </data>
   <data name="Server_Code_Required" xml:space="preserve">
     <value>The  code is required</value>
