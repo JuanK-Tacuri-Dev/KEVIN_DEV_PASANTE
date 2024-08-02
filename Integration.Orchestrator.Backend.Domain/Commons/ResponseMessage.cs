@@ -19,7 +19,8 @@
             new ResponseMessage { Key = ResponseCode.FoundSuccessfully, Value = "Encontrado Correctamente" },
             new ResponseMessage { Key = ResponseCode.NotFoundSuccessfully, Value = "No Encontrado Correctamente" },
             new ResponseMessage { Key = ResponseCode.DeletedSuccessfully, Value = "Eliminado Correctamente" },
-            new ResponseMessage { Key = ResponseCode.NotDeletedSuccessfully, Value = "No Eliminado Correctamente" }
+            new ResponseMessage { Key = ResponseCode.NotDeletedSuccessfully, Value = "No Eliminado Correctamente" },
+            new ResponseMessage { Key = ResponseCode.NotCreatedSuccessfullyByValidation, Value = "No Creado Correctamente"}
         };
 
         // Método que devuelve el mensaje correspondiente a un código

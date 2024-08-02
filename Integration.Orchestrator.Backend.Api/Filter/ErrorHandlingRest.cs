@@ -2,7 +2,6 @@
 using Integration.Orchestrator.Backend.Application.Models;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
-using Integration.Orchestrator.Backend.Domain.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Diagnostics.CodeAnalysis;
@@ -16,13 +15,6 @@ namespace Integration.Orchestrator.Backend.Api.Filter
     [ExcludeFromCodeCoverage]
     public sealed class ErrorHandlingRest : ExceptionFilterAttribute
     {
-        private readonly ILogger<ErrorHandlingRest> _logger;
-
-        public ErrorHandlingRest(ILogger<ErrorHandlingRest> logger)
-        {
-            _logger = logger;
-        }
-
         /// <summary>
         /// Method that is called when the API produces an Exception
         /// </summary>    
@@ -31,54 +23,52 @@ namespace Integration.Orchestrator.Backend.Api.Filter
             var exception = context.Exception;
             context.ExceptionHandled = true;
 
-            ExceptionType(exception, out string typeError, out int httpCode);
+            ExceptionType(exception, out int httpCode);
 
             var detail = exception.InnerException?.Message ?? exception.Message;
 
-            // Log the exception details
-            _logger.LogError(exception, "An exception occurred: {TypeError}, HTTP Code: {HttpCode}, Detail: {Detail}, StackTrace: {StackTrace}, Source: {Source}",
-                             typeError, httpCode, detail, exception.StackTrace, exception.Source);
-           
-            var result = exception is InvalidRequestException invalidRequestException
-            ? new ObjectResult(new
+            ObjectResult? result = exception switch
             {
-                    
-            Code = ResponseCode.NotCreatedSuccessfully, 
-                    Messages = invalidRequestException.Details.Messages.Select(m=> m ).ToList(),
-                    Data = invalidRequestException.Details.Data
-                })
-                : new ObjectResult(new ErrorResponse { Code = httpCode, Messages = [detail] });
+                InvalidRequestException invalidRequestException => new ObjectResult(new
+                {
+                    Code = ResponseCode.NotCreatedSuccessfullyByValidation,
+                    Messages = invalidRequestException.Details.Messages.Select(m => m).ToList(),
+                    invalidRequestException.Details.Data
+                }),
+                OrchestratorArgumentException orchestratorArgumentException => new ObjectResult(new
+                {
+                    Code = orchestratorArgumentException?.Details?.Code,
+                    Messages = new string?[] { orchestratorArgumentException?.Details?.Description },
+                    orchestratorArgumentException?.Details?.Data
+                }),
+                _ => new ObjectResult(new ErrorResponse { Code = httpCode, Messages = [detail] })
+            };
 
             context.Result = result;
             context.HttpContext.Response.StatusCode = httpCode;
         }
 
-        private static void ExceptionType(Exception exception, out string typeError, out int code)
+        private static void ExceptionType(Exception exception, out int code)
         {
             switch (exception)
             {
                 case InvalidRequestException:
-                    typeError = AppMessages.Exception_InvalidRequestException;
                     code = (int)HttpStatusCode.BadRequest;
                     break;
 
-                case ArgumentException:
-                    typeError = AppMessages.Exception_ArgumentException;
+                case OrchestratorArgumentException:
                     code = (int)HttpStatusCode.NotFound;
                     break;
 
                 case OrchestratorException:
-                    typeError = AppMessages.Exception_IntegrationException;
                     code = (int)HttpStatusCode.BadRequest;
                     break;
 
                 case FrontEndException:
-                    typeError = AppMessages.Exception_IntegrationException;
                     code = (int)HttpStatusCode.Conflict;
                     break;
 
                 default:
-                    typeError = AppMessages.Exception_UnexpectedException;
                     code = (int)HttpStatusCode.InternalServerError;
                     break;
             }

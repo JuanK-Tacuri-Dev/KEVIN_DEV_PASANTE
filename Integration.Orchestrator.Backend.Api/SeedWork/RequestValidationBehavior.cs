@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Integration.Orchestrator.Backend.Application.Exceptions;
 using Integration.Orchestrator.Backend.Application.Models;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using MediatR;
 using System.Diagnostics.CodeAnalysis;
 
@@ -39,15 +40,19 @@ namespace Integration.Orchestrator.Backend.Api.SeedWork
 
             if (errors.Any())
             {
-                var errorMessages = errors.Select(error =>
+                var errorMessages = new  List<Dictionary<string, string>>()
+                {
+                    new Dictionary<string, string>(){{ "object", ResponseMessageValues.GetResponseMessage(ResponseCode.NotCreatedSuccessfullyByValidation) } }
+                };
+                errorMessages.AddRange( errors.Select(error =>
                 {
                     var obj = error.PropertyName.Split(".");
                     var errorDetail = new Dictionary<string, string>
                     {
-                        { obj[obj.Length - 1], error.ErrorMessage }
+                        { obj[obj.Length - 1], error.ErrorMessage}
                     };
                     return errorDetail;
-                }).ToList();
+                }).ToList());
 
                 throw new InvalidRequestException(string.Empty, new DetailsErrors()
                 {

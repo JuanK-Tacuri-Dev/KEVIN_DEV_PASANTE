@@ -1,21 +1,14 @@
-﻿using Integration.Orchestrator.Backend.Application.Models;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Application.Exceptions
 {
     [ExcludeFromCodeCoverage]
-    public sealed class InvalidRequestException : Exception
+    public sealed class InvalidRequestException(string message, DetailsErrors details) : Exception(message)
     {
-        
-        private DetailsErrors DetailsError { get; set; }
+
+        private DetailsErrors DetailsError { get; } = details;
 
         public DetailsErrors Details => DetailsError;
-
-        public InvalidRequestException(string message, DetailsErrors details)
-            : base(message)
-        {
-            DetailsError = details;
-        }
     }
 
     public class DetailsErrors

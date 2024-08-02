@@ -1,9 +1,12 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+﻿using Integration.Orchestrator.Backend.Domain.Commons;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Specifications;
+using System.Text.Json;
+using Integration.Orchestrator.Backend.Domain.Exceptions;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
@@ -60,9 +63,15 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             if (create)
             {
                 var repositoryByCode = await GetByCodeAsync(repository.code);
-                if (repositoryByCode != null) 
+                if (repositoryByCode != null)
                 {
-                    throw new ArgumentException(AppMessages.Domain_RepositoryExists);
+                    throw new OrchestratorArgumentException(
+                        string.Empty, new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotCreatedSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotCreatedSuccessfully),
+                            Data = repository
+                        });
                 }
             }
         }

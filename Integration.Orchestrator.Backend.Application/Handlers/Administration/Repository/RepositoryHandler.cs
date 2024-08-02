@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Integration.Orchestrator.Backend.Application.Models.Administration.Repository;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
@@ -26,14 +27,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
         {
             try
             {
-                var repositoryEntity = MapAynchronizer(request.Repository.RepositoryRequest, Guid.NewGuid());
+                var repositoryEntity = MapRepository(request.Repository.RepositoryRequest, Guid.NewGuid());
                 await _repositoryService.InsertAsync(repositoryEntity);
 
                 return new CreateRepositoryCommandResponse(
                     new RepositoryCreateResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeCreated],
+                        Code = (int)ResponseCode.CreatedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new RepositoryCreate
                         {
                             Id = repositoryEntity.id,
@@ -47,9 +48,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -63,34 +64,39 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
             {
                 var repositoryById = await _repositoryService.GetByIdAsync(request.Id);
                 if (repositoryById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_RepositoryNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Repository.RepositoryRequest
+                        });
 
-                var repositoryEntity = MapAynchronizer(request.Repository.RepositoryRequest, request.Id);
+                var repositoryEntity = MapRepository(request.Repository.RepositoryRequest, request.Id);
                 await _repositoryService.UpdateAsync(repositoryEntity);
 
                 return new UpdateRepositoryCommandResponse(
-                        new RepositoryUpdateResponse
+                    new RepositoryUpdateResponse
+                    {
+                        Code = (int)ResponseCode.UpdatedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
+                        Data = new RepositoryUpdate
                         {
-                            Code = HttpStatusCode.OK.GetHashCode(),
-                            Messages = [AppMessages.Application_RespondeUpdated],
-                            Data = new RepositoryUpdate
-                            {
-                                Id = repositoryEntity.id,
-                                Code = repositoryEntity.code,
-                                Port = repositoryEntity.port,
-                                UserName = repositoryEntity.user,
-                                Password = repositoryEntity.password,
-                                DataBaseName = repositoryEntity.data_base_name,
-                                AuthTypeId = repositoryEntity.auth_type_id,
-                                StatusId = repositoryEntity.status_id
-                            }
-                        });
+                            Id = repositoryEntity.id,
+                            Code = repositoryEntity.code,
+                            Port = repositoryEntity.port,
+                            UserName = repositoryEntity.user,
+                            Password = repositoryEntity.password,
+                            DataBaseName = repositoryEntity.data_base_name,
+                            AuthTypeId = repositoryEntity.auth_type_id,
+                            StatusId = repositoryEntity.status_id
+                        }
+                    });
+
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -104,26 +110,30 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
             {
                 var repositoryById = await _repositoryService.GetByIdAsync(request.Repository.Id);
                 if (repositoryById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_RepositoryNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Repository
+                        });
 
                 await _repositoryService.DeleteAsync(repositoryById);
 
                 return new DeleteRepositoryCommandResponse(
                     new RepositoryDeleteResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Code = (int)ResponseCode.DeletedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
                         Data = new RepositoryDelete 
                         {
                             Id = repositoryById.id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -137,15 +147,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
             {
                 var repositoryById = await _repositoryService.GetByIdAsync(request.Repository.Id);
                 if (repositoryById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_RepositoryNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Repository
+                        });
 
                 return new GetByIdRepositoryCommandResponse(
                     new RepositoryGetByIdResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new RepositoryGetById
                         {
                             Id = request.Repository.Id,
@@ -159,9 +173,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -175,15 +189,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
             {
                 var repositoryByCode = await _repositoryService.GetByCodeAsync(request.Repository.Code);
                 if (repositoryByCode == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_RepositoryNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Repository
+                        });
 
                 return new GetByCodeRepositoryCommandResponse(
                     new RepositoryGetByCodeResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new RepositoryGetByCode
                         {
                             Id = repositoryByCode.id,
@@ -197,9 +215,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -215,7 +233,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                 var rows = await _repositoryService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new ArgumentException(AppMessages.Application_RepositoryNotFound);
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
+                        });
                 }
                 var result = await _repositoryService.GetAllPaginatedAsync(model);
 
@@ -223,8 +246,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                 return new GetAllPaginatedRepositoryCommandResponse(
                     new RepositoryGetAllPaginatedResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_RespondeGetAll,
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully),
                         Data = new RepositoryGetAllRows
                         {
                             Total_rows = rows,
@@ -242,9 +265,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -252,7 +275,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
             }
         }
 
-        private RepositoryEntity MapAynchronizer(RepositoryCreateRequest request, Guid id)
+        private RepositoryEntity MapRepository(RepositoryCreateRequest request, Guid id)
         {
             var repositoryEntity = new RepositoryEntity()
             {

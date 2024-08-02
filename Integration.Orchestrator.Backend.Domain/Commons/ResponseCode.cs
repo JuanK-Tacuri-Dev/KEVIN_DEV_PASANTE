@@ -9,6 +9,7 @@
         FoundSuccessfully = 20,
         NotFoundSuccessfully = 21,
         DeletedSuccessfully = 40,
-        NotDeletedSuccessfully = 42
+        NotDeletedSuccessfully = 42,
+        NotCreatedSuccessfullyByValidation = 50 
     }
 }
