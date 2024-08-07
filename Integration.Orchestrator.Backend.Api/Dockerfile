@@ -5,10 +5,12 @@ USER app
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS publish
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY . ./
 WORKDIR "/src"
+
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Integration.Orchestrator.Backend.Api/Integration.Orchestrator.Backend.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 
 FROM base AS final
