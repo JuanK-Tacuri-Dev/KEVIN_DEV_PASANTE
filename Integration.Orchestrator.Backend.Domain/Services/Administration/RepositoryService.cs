@@ -65,12 +65,11 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
                 var repositoryByCode = await GetByCodeAsync(repository.code);
                 if (repositoryByCode != null)
                 {
-                    throw new OrchestratorArgumentException(
-                        string.Empty, new DetailsArgumentErrors()
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
                         {
-                            Code = (int)ResponseCode.NotCreatedSuccessfully,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotCreatedSuccessfully),
-                            Data = repository
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Domain_Response_CodeInUse
                         });
                 }
             }

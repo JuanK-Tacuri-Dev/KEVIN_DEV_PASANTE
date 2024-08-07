@@ -1,5 +1,4 @@
-﻿using Integration.Orchestrator.Backend.Application.Handlers.Administrations.Connection;
-using Integration.Orchestrator.Backend.Application.Models.Administration.Connection;
+﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Connection;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
@@ -7,6 +6,7 @@ using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Moq;
 using System.Net;
+using Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection.ConnectionCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Handlers.Administration.Connection

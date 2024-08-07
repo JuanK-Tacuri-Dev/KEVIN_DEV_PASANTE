@@ -1,15 +1,14 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Connection;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
-using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
-using System.Net;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection.ConnectionCommands;
 
-namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Connection
+namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection
 {
     public class ConnectionHandler(IConnectionService<ConnectionEntity> connectionService)
         :
@@ -32,8 +31,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new CreateConnectionCommandResponse(
                     new ConnectionCreateResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeCreated],
+                        Code = (int)ResponseCode.CreatedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new ConnectionCreate
                         {
                             Id = connectionEntity.id,
@@ -47,9 +46,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -63,9 +62,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var connectionById = await _connectionService.GetByIdAsync(request.Id);
                 if (connectionById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_ConnectionNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Connection.ConnectionRequest
+                        });
 
                 var connectionEntity = MapConnection(request.Connection.ConnectionRequest, request.Id);
                 await _connectionService.UpdateAsync(connectionEntity);
@@ -73,8 +76,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new UpdateConnectionCommandResponse(
                         new ConnectionUpdateResponse
                         {
-                            Code = HttpStatusCode.OK.GetHashCode(),
-                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Code = (int)ResponseCode.UpdatedSuccessfully,
+                            Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new ConnectionUpdate
                             {
                                 Id = connectionEntity.id,
@@ -88,9 +91,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             }
                         });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -104,26 +107,30 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var connectionById = await _connectionService.GetByIdAsync(request.Connection.Id);
                 if (connectionById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_ConnectionNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Connection
+                        });
 
                 await _connectionService.DeleteAsync(connectionById);
 
                 return new DeleteConnectionCommandResponse(
                     new ConnectionDeleteResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Code = (int)ResponseCode.DeletedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
                         Data = new ConnectionDelete 
                         {
                             Id = connectionById.id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -137,15 +144,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var connectionById = await _connectionService.GetByIdAsync(request.Connection.Id);
                 if (connectionById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_ConnectionNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Connection
+                        });
 
                 return new GetByIdConnectionCommandResponse(
                     new ConnectionGetByIdResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new ConnectionGetById
                         {
                             Id = connectionById.id,
@@ -159,9 +170,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -175,15 +186,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var connectionByCode = await _connectionService.GetByCodeAsync(request.Connection.Code);
                 if (connectionByCode == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_ConnectionNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Connection
+                        });
 
                 return new GetByCodeConnectionCommandResponse(
                     new ConnectionGetByCodeResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new ConnectionGetByCode
                         {
                             Id = connectionByCode.id,
@@ -197,9 +212,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -215,7 +230,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var rows = await _connectionService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new ArgumentException(AppMessages.Application_ConnectionNotFound);
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
+                        });
                 }
                 var result = await _connectionService.GetAllPaginatedAsync(model);
 
@@ -223,8 +243,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new GetAllPaginatedConnectionCommandResponse(
                     new ConnectionGetAllPaginatedResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_RespondeGetAll,
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully),
                         Data = new ConnectionGetAllRows
                         {
                             Total_rows = rows,
@@ -244,9 +264,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {

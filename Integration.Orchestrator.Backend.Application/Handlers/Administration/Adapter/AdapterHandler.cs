@@ -1,15 +1,14 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Adapter;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
-using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
-using System.Net;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Adapter.AdapterCommands;
 
-namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Adapter
+namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Adapter
 {
     public class AdapterHandler(IAdapterService<AdapterEntity> adapterService)
         :
@@ -33,8 +32,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new CreateAdapterCommandResponse(
                     new AdapterCreateResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeCreated],
+                        Code = (int)ResponseCode.CreatedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new AdapterCreate
                         {
                             Id = adapterEntity.id,
@@ -44,9 +43,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -60,9 +59,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var adapterById = await _adapterService.GetByIdAsync(request.Id);
                 if (adapterById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_AdapterNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Adapter.AdapterRequest
+                        });
 
                 var adapterEntity = MapAdapter(request.Adapter.AdapterRequest, request.Id);
                 await _adapterService.UpdateAsync(adapterEntity);
@@ -70,8 +73,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new UpdateAdapterCommandResponse(
                         new AdapterUpdateResponse
                         {
-                            Code = HttpStatusCode.OK.GetHashCode(),
-                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Code = (int)ResponseCode.UpdatedSuccessfully,
+                            Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new AdapterUpdate
                             {
                                 Id = adapterEntity.id,
@@ -81,9 +84,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             }
                         });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -97,26 +100,30 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var adapterById = await _adapterService.GetByIdAsync(request.Adapter.Id);
                 if (adapterById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_AdapterNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Adapter
+                        });
 
                 await _adapterService.DeleteAsync(adapterById);
 
                 return new DeleteAdapterCommandResponse(
                     new AdapterDeleteResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Code = (int)ResponseCode.DeletedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
                         Data = new AdapterDelete 
                         {
                             Id = adapterById.id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -130,15 +137,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var adapterById = await _adapterService.GetByIdAsync(request.Adapter.Id);
                 if (adapterById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_AdapterNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Adapter
+                        });
 
                 return new GetByIdAdapterCommandResponse(
                     new AdapterGetByIdResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new AdapterGetById
                         {
                             Id = adapterById.id,
@@ -148,9 +159,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -164,15 +175,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var adapterByCode = await _adapterService.GetByCodeAsync(request.Adapter.Code);
                 if (adapterByCode == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_AdapterNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Adapter
+                        });
 
                 return new GetByCodeAdapterCommandResponse(
                     new AdapterGetByCodeResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new AdapterGetByCode
                         {
                             Id = adapterByCode.id,
@@ -182,9 +197,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -198,15 +213,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var adapterByType = await _adapterService.GetByTypeAsync(request.Adapter.Type);
                 if (adapterByType == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_AdapterNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Adapter
+                        });
 
                 return new GetByTypeAdapterCommandResponse(
                     new AdapterGetByTypeResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = adapterByType.Select(c => new AdapterGetByType
                         {
                             Id = c.id,
@@ -216,9 +235,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         }).ToList()
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -234,7 +253,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var rows = await _adapterService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new ArgumentException(AppMessages.Application_AdapterNotFound);
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
+                        });
                 }
                 var result = await _adapterService.GetAllPaginatedAsync(model);
 
@@ -242,8 +266,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new GetAllPaginatedAdapterCommandResponse(
                     new AdapterGetAllPaginatedResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_RespondeGetAll,
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully),
                         Data = new AdapterGetAllRows 
                         {
                             Total_rows = rows,
@@ -258,9 +282,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {

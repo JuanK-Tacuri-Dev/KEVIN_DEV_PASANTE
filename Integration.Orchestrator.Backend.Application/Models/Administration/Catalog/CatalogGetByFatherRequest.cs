@@ -1,7 +1,7 @@
 ﻿namespace Integration.Orchestrator.Backend.Application.Models.Administration.Catalog
 {
-    public class CatalogGetByTypeRequest
+    public class CatalogGetByFatherRequest
     {
-        public string Type { get; set; }
+        public Guid FatherId { get; set; }
     }
 }
