@@ -417,6 +417,9 @@
   <data name="Domain_ResponseCode_UpdatedSuccessfully" xml:space="preserve">
     <value>Actualizado Correctamente</value>
   </data>
+  <data name="Domain_Response_CodeInUse" xml:space="preserve">
+    <value>Codigo en uso</value>
+  </data>
   <data name="Domain_ServerExists" xml:space="preserve">
     <value>The server exists</value>
   </data>

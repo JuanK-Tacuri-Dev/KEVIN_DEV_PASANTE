@@ -871,6 +871,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Codigo en uso.
+        /// </summary>
+        public static string Domain_Response_CodeInUse {
+            get {
+                return ResourceManager.GetString("Domain_Response_CodeInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creado Correctamente.
         /// </summary>
         public static string Domain_ResponseCode_CreatedSuccessfully {

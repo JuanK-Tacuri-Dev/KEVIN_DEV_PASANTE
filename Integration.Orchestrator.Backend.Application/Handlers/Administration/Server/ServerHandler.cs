@@ -1,15 +1,14 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Server;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
-using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
-using System.Net;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Server.ServerCommands;
 
-namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Server
+namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Server
 {
     public class ServerHandler(IServerService<ServerEntity> serverService)
         :
@@ -33,8 +32,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new CreateServerCommandResponse(
                     new ServerCreateResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeCreated],
+                        Code = (int)ResponseCode.CreatedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new ServerCreate
                         {
                             Id = serverEntity.id,
@@ -45,9 +44,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -61,9 +60,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var serverById = await _serverService.GetByIdAsync(request.Id);
                 if (serverById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_ServerNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Server.ServerRequest
+                        });
 
                 var serverEntity = MapServer(request.Server.ServerRequest, request.Id);
                 await _serverService.UpdateAsync(serverEntity);
@@ -71,8 +74,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new UpdateServerCommandResponse(
                         new ServerUpdateResponse
                         {
-                            Code = HttpStatusCode.OK.GetHashCode(),
-                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Code = (int)ResponseCode.UpdatedSuccessfully,
+                            Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new ServerUpdate
                             {
                                 Id = serverEntity.id,
@@ -83,9 +86,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             }
                         });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -99,26 +102,30 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var serverById = await _serverService.GetByIdAsync(request.Server.Id);
                 if (serverById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_ServerNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Server
+                        });
 
                 await _serverService.DeleteAsync(serverById);
 
                 return new DeleteServerCommandResponse(
                     new ServerDeleteResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeDeleted],
-                        Data = new ServerDelete 
+                        Code = (int)ResponseCode.DeletedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
+                        Data = new ServerDelete
                         {
                             Id = serverById.id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -132,15 +139,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var serverById = await _serverService.GetByIdAsync(request.Server.Id);
                 if (serverById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_ServerNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Server
+                        });
 
                 return new GetByIdServerCommandResponse(
                     new ServerGetByIdResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new ServerGetById
                         {
                             Id = serverById.id,
@@ -151,9 +162,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -167,15 +178,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var serverByCode = await _serverService.GetByCodeAsync(request.Server.Code);
                 if (serverByCode == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_ServerNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Server
+                        });
 
                 return new GetByCodeServerCommandResponse(
                     new ServerGetByCodeResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new ServerGetByCode
                         {
                             Id = serverByCode.id,
@@ -186,9 +201,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -202,28 +217,33 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var serverByType = await _serverService.GetByTypeAsync(request.Server.Type);
                 if (serverByType == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_ServerNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Server
+                        });
 
                 return new GetByTypeServerCommandResponse(
                     new ServerGetByTypeResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
-                        Data = serverByType.Select(c => new ServerGetByType
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
+                        Data = serverByType.Select(s => new ServerGetByType
                         {
-                            Id = c.id,
-                            Code = c.server_code,
-                            Name = c.name,
-                            Type = c.type,
-                            Url = c.url
-                        }).ToList()
+                            Id = s.id,
+                            Code = s.server_code,
+                            Name = s.name,
+                            Type = s.type,
+                            Url = s.url
+
+                        } ).ToList()
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -239,7 +259,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var rows = await _serverService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new ArgumentException(AppMessages.Application_ServerNotFound);
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
+                        });
                 }
                 var result = await _serverService.GetAllPaginatedAsync(model);
 
@@ -247,8 +272,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new GetAllPaginatedServerCommandResponse(
                     new ServerGetAllPaginatedResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_RespondeGetAll,
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully),
                         Data = new ServerGetAllRows
                         {
                             Total_rows = rows,
@@ -259,13 +284,15 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Name = c.name,
                                 Type = c.type,
                                 Url = c.url
+
                             }).ToList()
                         }
+
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -279,7 +306,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 id = id,
                 server_code = request.Code,
-                name = request.Name,
+                 name = request.Name,
                 type = request.Type,
                 url = request.Url
             };

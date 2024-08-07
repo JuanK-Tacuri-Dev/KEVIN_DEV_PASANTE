@@ -22,8 +22,8 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             var update = Builders<CatalogEntity>.Update
                 .Set(m => m.name, entity.name)
                 .Set(m => m.value, entity.value)
-                .Set(m => m.catalog_Type, entity.catalog_Type)
                 .Set(m => m.father_id, entity.father_id)
+                .Set(m => m.detail, entity.detail)
                 .Set(m => m.status_id, entity.status_id)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);
@@ -44,7 +44,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return catalogEntity;
         }
 
-        public async Task<IEnumerable<CatalogEntity>> GetByTypeAsync(Expression<Func<CatalogEntity, bool>> specification)
+        public async Task<IEnumerable<CatalogEntity>> GetByFatherAsync(Expression<Func<CatalogEntity, bool>> specification)
         {
             var filter = Builders<CatalogEntity>.Filter.Where(specification);
             var catalogEntity = await _collection
