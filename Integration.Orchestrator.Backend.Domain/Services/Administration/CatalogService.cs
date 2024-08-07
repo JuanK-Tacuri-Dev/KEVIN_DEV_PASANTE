@@ -34,10 +34,10 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _processRepository.GetByIdAsync(specification);
         }
 
-        public async Task<IEnumerable<CatalogEntity>> GetByTypeAsync(string type)
+        public async Task<IEnumerable<CatalogEntity>> GetByFatherAsync(Guid fatherId)
         {
-            var specification = CatalogSpecification.GetByTypeExpression(type);
-            return await _processRepository.GetByTypeAsync(specification);
+            var specification = CatalogSpecification.GetByFatherExpression(fatherId);
+            return await _processRepository.GetByFatherAsync(specification);
         }
 
         public async Task<IEnumerable<CatalogEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)

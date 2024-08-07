@@ -1,15 +1,14 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Catalog;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
-using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
-using System.Net;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Catalog.CatalogCommands;
 
-namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Catalog
+namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Catalog
 {
     public class CatalogHandler(ICatalogService<CatalogEntity> catalogService)
         :
@@ -17,7 +16,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         IRequestHandler<UpdateCatalogCommandRequest, UpdateCatalogCommandResponse>,
         IRequestHandler<DeleteCatalogCommandRequest, DeleteCatalogCommandResponse>,
         IRequestHandler<GetByIdCatalogCommandRequest, GetByIdCatalogCommandResponse>,
-        IRequestHandler<GetByTypeCatalogCommandRequest, GetByTypeCatalogCommandResponse>,
+        IRequestHandler<GetByFatherCatalogCommandRequest, GetByFatherCatalogCommandResponse>,
         IRequestHandler<GetAllPaginatedCatalogCommandRequest, GetAllPaginatedCatalogCommandResponse>
     {
         public readonly ICatalogService<CatalogEntity> _catalogService = catalogService;
@@ -32,22 +31,22 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new CreateCatalogCommandResponse(
                     new CatalogCreateResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeCreated],
+                        Code = (int)ResponseCode.CreatedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new CatalogCreate
                         {
                             Id = catalogEntity.id,
                             Name = catalogEntity.name,
                             Value = catalogEntity.value,
-                            Type = catalogEntity.catalog_Type,
-                            FatherId = catalogEntity.id,
+                            FatherId = catalogEntity.father_id,
+                            Detail = catalogEntity.detail,
                             StatusId = catalogEntity.status_id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -61,9 +60,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var catalogById = await _catalogService.GetByIdAsync(request.Id);
                 if (catalogById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_CatalogNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Catalog.CatalogRequest
+                        });
 
                 var catalogEntity = MapCatalog(request.Catalog.CatalogRequest, request.Id);
                 await _catalogService.UpdateAsync(catalogEntity);
@@ -71,22 +74,22 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new UpdateCatalogCommandResponse(
                         new CatalogUpdateResponse
                         {
-                            Code = HttpStatusCode.OK.GetHashCode(),
-                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Code = (int)ResponseCode.UpdatedSuccessfully,
+                            Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new CatalogUpdate
                             {
                                 Id = catalogEntity.id,
                                 Name = catalogEntity.name,
                                 Value = catalogEntity.value,
-                                Type = catalogEntity.catalog_Type,
-                                FatherId = catalogEntity.id,
+                                FatherId = catalogEntity.father_id,
+                                Detail = catalogEntity.detail,
                                 StatusId = catalogEntity.status_id
                             }
                         });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -100,26 +103,30 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var catalogById = await _catalogService.GetByIdAsync(request.Catalog.Id);
                 if (catalogById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_CatalogNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Catalog
+                        });
 
                 await _catalogService.DeleteAsync(catalogById);
 
                 return new DeleteCatalogCommandResponse(
                     new CatalogDeleteResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Code = (int)ResponseCode.DeletedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
                         Data = new CatalogDelete
                         {
                             Id = catalogById.id,
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -133,29 +140,33 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var catalogById = await _catalogService.GetByIdAsync(request.Catalog.Id);
                 if (catalogById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_CatalogNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Catalog
+                        });
 
                 return new GetByIdCatalogCommandResponse(
                     new CatalogGetByIdResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new CatalogGetById
                         {
                             Id = catalogById.id,
                             Name = catalogById.name,
                             Value = catalogById.value,
-                            Type = catalogById.catalog_Type,
-                            FatherId = catalogById.id,
+                            FatherId = catalogById.father_id,
+                            Detail = catalogById.detail,
                             StatusId = catalogById.status_id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -163,35 +174,39 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             }
         }
 
-        public async Task<GetByTypeCatalogCommandResponse> Handle(GetByTypeCatalogCommandRequest request, CancellationToken cancellationToken)
+        public async Task<GetByFatherCatalogCommandResponse> Handle(GetByFatherCatalogCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var catalogByType = await _catalogService.GetByTypeAsync(request.Catalog.Type);
+                var catalogByType = await _catalogService.GetByFatherAsync(request.Catalog.FatherId);
                 if (catalogByType == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_CatalogNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Catalog
+                        });
 
-                return new GetByTypeCatalogCommandResponse(
-                    new CatalogGetByTypeResponse
+                return new GetByFatherCatalogCommandResponse(
+                    new CatalogGetByFatherResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = catalogByType.Select(p => new CatalogGetByType
                         {
                             Id = p.id,
                             Name = p.name,
                             Value = p.value,
-                            Type = p.catalog_Type,
-                            FatherId = p.id,
+                            FatherId = p.father_id,
+                            Detail = p.detail,
                             StatusId = p.status_id
                         }).ToList()
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -207,7 +222,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var rows = await _catalogService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new ArgumentException(AppMessages.Application_CatalogNotFound);
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
+                        });
                 }
                 var result = await _catalogService.GetAllPaginatedAsync(model);
 
@@ -215,8 +235,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new GetAllPaginatedCatalogCommandResponse(
                     new CatalogGetAllPaginatedResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_RespondeGetAll,
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully),
                         Data = new CatalogGetAllRows
                         {
                             Total_rows = rows,
@@ -225,16 +245,16 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Id = p.id,
                                 Name = p.name,
                                 Value = p.value,
-                                Type = p.catalog_Type,
-                                FatherId = p.id,
+                                FatherId = p.father_id,
+                                Detail = p.detail,
                                 StatusId = p.status_id
                             }).ToList()
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -249,7 +269,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 id = id,
                 name = request.Name,
                 value = request.Value,
-                catalog_Type = request.Type,
+                detail = request.Detail,
                 father_id = request.FatherId,
                 status_id = request.StatusId
             };
