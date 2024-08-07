@@ -1,11 +1,12 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
-using Integration.Orchestrator.Backend.Domain.Ports.Administrations.Synchronization;
+﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Driver;
 using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
+    [Repository]
     public class SynchronizationRepository(IMongoCollection<SynchronizationEntity> collection) : ISynchronizationRepository<SynchronizationEntity>
     {
         private readonly IMongoCollection<SynchronizationEntity> _collection = collection;

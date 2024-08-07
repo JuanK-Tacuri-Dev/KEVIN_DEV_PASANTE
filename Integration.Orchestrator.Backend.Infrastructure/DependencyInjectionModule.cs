@@ -1,12 +1,9 @@
 ﻿using Autofac;
 using Integration.Orchestrator.Backend.Application.Options;
-using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
 using Integration.Orchestrator.Backend.Domain.Entities.V2ToV1;
 using Integration.Orchestrator.Backend.Domain.Ports;
-using Integration.Orchestrator.Backend.Domain.Ports.Administrations.Synchronization;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Extractors.ExtractorSql.Contexts;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Loader;
-using Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Rest;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Transformators;
 using Integration.Orchestrator.Backend.Infrastructure.DataAccess.Rest;
@@ -86,15 +83,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure
             _ = builder.RegisterType<TransformatorFromV2toV1Rest>()
                 .As<ITransformator<TestEntityLegacy, TestEntity>>()
                 .InstancePerLifetimeScope();
-
-            //
-            _ = builder.RegisterType<SynchronizationRepository>()
-                .As<ISynchronizationRepository<SynchronizationEntity>>()
-                .SingleInstance();
-
-            _ = builder.RegisterType<SynchronizationStatesRepository>()
-                .As<ISynchronizationStatesRepository<SynchronizationStatesEntity>>()
-                .SingleInstance();
         }
     }
 }

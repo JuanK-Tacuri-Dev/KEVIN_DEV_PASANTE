@@ -1,0 +1,26 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: integration-orchestrator-backend
+  namespace: ns-arquitectura-integracion-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: group-integration-orchestrator-backend
+      tier: integration-orchestrator-backend
+      track: stable
+  template:
+    metadata:
+      labels:
+        app: group-integration-orchestrator-backend
+        tier: integration-orchestrator-backend
+        track: stable
+    spec:
+      containers:
+        - name: integration-orchestrator-backend
+          image: kfcregistry.azurecr.io/arquitectura-integracion/backend:1.0
+          imagePullPolicy: Never
+          envFrom:
+            - secretRef:
+                name: arquitectura-integracion-backend-database-config

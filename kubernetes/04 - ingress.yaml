@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: integration-orchestrator-backend-ingress
+  namespace: ns-arquitectura-integracion-backend
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+status:
+  loadBalancer:
+    ingress:
+      - ip: 10.64.10.100
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /backend(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-integration-orchestrator-backend
+                port:
+                  number: 8080
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: default
+                port:
+                  number: 80

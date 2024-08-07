@@ -1,7 +1,7 @@
 ﻿using Integration.Orchestrator.Backend.Api.Infrastructure.Extensions;
 using Integration.Orchestrator.Backend.Application.Options;
 using Integration.Orchestrator.Backend.Domain.Entities;
-using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -44,13 +44,36 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             services.AddSingleton(mongoClient);
             var database = mongoClient.GetDatabase(mongoSetting.DatabaseName);
 
-             var synchronizationCollection = mongoSetting.Collections!.Synchronization;
+            var synchronizationCollection = mongoSetting.Collections!.Synchronization;
             var synchronizationStatesCollection = mongoSetting.Collections!.SynchronizationStates;
+            var connectionCollection = mongoSetting.Collections!.Connection;
+            var integrationCollection = mongoSetting.Collections!?.Integration;
+            var processCollection = mongoSetting.Collections!?.Process;
+            var statusCollection = mongoSetting.Collections!?.Status;
+            var entityCollection = mongoSetting.Collections!?.Entity;
+            var propertyCollection = mongoSetting.Collections!?.Property;
+            var valueCollection = mongoSetting.Collections!?.Value;
+            var operatorCollection = mongoSetting.Collections!?.Operator;
+            var serverCollection = mongoSetting.Collections!?.Server;
+            var repositoryCollection = mongoSetting.Collections!?.Repository;
+            var adapterCollection = mongoSetting.Collections!?.Adapter;
+            var catalogCollection = mongoSetting.Collections!?.Catalog;
 
-             services.AddSingleton(s => database.GetCollection<SynchronizationEntity>(synchronizationCollection));
+            services.AddSingleton(s => database.GetCollection<SynchronizationEntity>(synchronizationCollection));
             services.AddSingleton(s => database.GetCollection<SynchronizationStatesEntity>(synchronizationStatesCollection));
+            services.AddSingleton(s => database.GetCollection<ConnectionEntity>(connectionCollection));
+            services.AddSingleton(s => database.GetCollection<IntegrationEntity>(integrationCollection));
+            services.AddSingleton(s => database.GetCollection<ProcessEntity>(processCollection));
+            services.AddSingleton(s => database.GetCollection<StatusEntity>(statusCollection));
+            services.AddSingleton(s => database.GetCollection<EntitiesEntity>(entityCollection));
+            services.AddSingleton(s => database.GetCollection<PropertyEntity>(propertyCollection));
+            services.AddSingleton(s => database.GetCollection<ValueEntity>(valueCollection));
+            services.AddSingleton(s => database.GetCollection<OperatorEntity>(operatorCollection));
+            services.AddSingleton(s => database.GetCollection<ServerEntity>(serverCollection));
+            services.AddSingleton(s => database.GetCollection<RepositoryEntity>(repositoryCollection));
+            services.AddSingleton(s => database.GetCollection<AdapterEntity>(adapterCollection));
+            services.AddSingleton(s => database.GetCollection<CatalogEntity>(catalogCollection));
 
-            //BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.Binary));
             BsonClassMap.RegisterClassMap<Entity<Guid>>(
                 map =>
                 {

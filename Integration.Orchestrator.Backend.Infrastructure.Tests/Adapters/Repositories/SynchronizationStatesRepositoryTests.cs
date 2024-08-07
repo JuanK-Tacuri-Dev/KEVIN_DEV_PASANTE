@@ -1,5 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities;
-using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories;
 using MongoDB.Driver;
@@ -65,8 +65,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
                            .ReturnsAsync(_mockCursor.Object);
 
 
+
+
             // Act
-            var result = await _repository.GetByIdAsync(id);
+            var result = await _repository.GetByIdAsync(e => e.id == entity.id);
 
             // Assert
             Assert.Equal(entity, result);

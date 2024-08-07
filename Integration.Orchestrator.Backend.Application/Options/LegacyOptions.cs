@@ -3,6 +3,6 @@
     public class LegacyOptions
     {
         public static readonly string Section = "LegacyDB";
-        public string? ConnectionString { get; set; }
+        public string ConnectionString { get; set; }
     }
 }

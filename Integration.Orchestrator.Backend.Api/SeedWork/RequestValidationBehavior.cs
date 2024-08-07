@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Integration.Orchestrator.Backend.Application.Exceptions;
 using Integration.Orchestrator.Backend.Application.Models;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using MediatR;
 using System.Diagnostics.CodeAnalysis;
 
@@ -11,6 +12,7 @@ namespace Integration.Orchestrator.Backend.Api.SeedWork
     /// </summary>    
     [ExcludeFromCodeCoverage]
     public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : notnull
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -38,31 +40,47 @@ namespace Integration.Orchestrator.Backend.Api.SeedWork
 
             if (errors.Any())
             {
-                var errorDetails = errors.Select(error =>
+                var errorMessages = new  List<Dictionary<string, string>>()
                 {
-                    var errorDetail = new ErrorDetail
+                    new Dictionary<string, string>(){{ "object", ResponseMessageValues.GetResponseMessage(ResponseCode.NotValidationSuccessfully) } }
+                };
+                errorMessages.AddRange( errors.Select(error =>
+                {
+                    var obj = error.PropertyName.Split(".");
+                    var errorDetail = new Dictionary<string, string>
                     {
-                        Params = { error.PropertyName }
+                        { obj[obj.Length - 1], error.ErrorMessage}
                     };
-
-                    if (error.ErrorMessage.Contains('|'))
-                    {
-                        var messages = error.ErrorMessage.Split('|');
-                        errorDetail.Message = messages[0];
-                        errorDetail.Params.AddRange(messages.Skip(1));
-                    }
-                    else
-                    {
-                        errorDetail.Message = error.ErrorMessage;
-                    }
-
                     return errorDetail;
-                }).Distinct().ToList();
+                }).ToList());
 
-                throw new InvalidRequestException(string.Empty, errorDetails);
+                throw new InvalidRequestException(string.Empty, new DetailsErrors()
+                {
+                    Messages = errorMessages,
+                    Data = GetThirdLevelProperties(request)
+                });
             }
 
             return await next();
+        }
+
+        private static object GetThirdLevelProperties(object obj)
+        {
+            var firstLevelProperties = obj.GetType().GetProperties();
+            var thirdLevelProperties = firstLevelProperties.SelectMany(prop =>
+            {
+                var subObj = prop.GetValue(obj);
+                if (subObj == null) return Enumerable.Empty<dynamic>();
+
+                var secondLevelProperties = subObj.GetType().GetProperties();
+                return secondLevelProperties.SelectMany(subProp =>
+                {
+                    var thirdObj = subProp.GetValue(subObj);
+                    return thirdObj?.GetType().GetProperties().Select(thirdProp => new { Name = thirdProp.Name, Value = thirdProp.GetValue(thirdObj) }) ?? Enumerable.Empty<dynamic>();
+                });
+            }).ToDictionary(x => x.Name, x => x.Value);
+
+            return thirdLevelProperties;
         }
     }
 }

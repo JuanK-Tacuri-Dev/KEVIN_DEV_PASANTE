@@ -1,5 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Commons;
-using Integration.Orchestrator.Backend.Domain.Entities.Administrations.Synchronization;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Models;
 using System.Linq.Expressions;
 
@@ -83,6 +83,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         public static Expression<Func<SynchronizationStatesEntity, bool>> GetByIdExpression(Guid id)
         {
             return BaseSpecification<SynchronizationStatesEntity>.GetByUuid(x => x.id, id);
+        }
+
+        public static Expression<Func<SynchronizationStatesEntity, bool>> GetByCodeExpression(string code)
+        {
+            return x => true && x.code == code;
         }
 
     }
