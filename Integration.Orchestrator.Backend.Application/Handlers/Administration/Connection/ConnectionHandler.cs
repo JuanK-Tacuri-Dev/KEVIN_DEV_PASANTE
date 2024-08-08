@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
@@ -10,7 +11,9 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Administratio
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection
 {
-    public class ConnectionHandler(IConnectionService<ConnectionEntity> connectionService)
+    public class ConnectionHandler(
+        IConnectionService<ConnectionEntity> connectionService,
+        IModuleSequenceService moduleSequenceService)
         :
         IRequestHandler<CreateConnectionCommandRequest, CreateConnectionCommandResponse>,
         IRequestHandler<UpdateConnectionCommandRequest, UpdateConnectionCommandResponse>,
@@ -19,13 +22,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         IRequestHandler<GetByCodeConnectionCommandRequest, GetByCodeConnectionCommandResponse>,
         IRequestHandler<GetAllPaginatedConnectionCommandRequest, GetAllPaginatedConnectionCommandResponse>
     {
-        public readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
+        private readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
+        private readonly IModuleSequenceService _moduleSequenceService = moduleSequenceService;
 
         public async Task<CreateConnectionCommandResponse> Handle(CreateConnectionCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var connectionEntity = MapConnection(request.Connection.ConnectionRequest, Guid.NewGuid());
+                var connectionEntity = await MapConnection(request.Connection.ConnectionRequest, Guid.NewGuid());
                 await _connectionService.InsertAsync(connectionEntity);
 
                 return new CreateConnectionCommandResponse(
@@ -36,13 +40,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Data = new ConnectionCreate
                         {
                             Id = connectionEntity.id,
-                            Code = connectionEntity.connection_code,
-                            Server = connectionEntity.server,
-                            Port = connectionEntity.port,
-                            User = connectionEntity.user,
-                            Password = connectionEntity.password,
+                            Code = connectionEntity.code,
+                            ServerId = connectionEntity.server_id,
                             AdapterId = connectionEntity.adapter_id,
-                            RepositoryId = connectionEntity.repository_id
+                            RepositoryId = connectionEntity.repository_id,
+                            Description = connectionEntity.description,
+                            StatusId = connectionEntity.status_id
                         }
                     });
             }
@@ -70,7 +73,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Data = request.Connection.ConnectionRequest
                         });
 
-                var connectionEntity = MapConnection(request.Connection.ConnectionRequest, request.Id);
+                var connectionEntity = await MapConnection(request.Connection.ConnectionRequest, request.Id);
                 await _connectionService.UpdateAsync(connectionEntity);
 
                 return new UpdateConnectionCommandResponse(
@@ -81,13 +84,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Data = new ConnectionUpdate
                             {
                                 Id = connectionEntity.id,
-                                Code = connectionEntity.connection_code,
-                                Server = connectionEntity.server,
-                                Port = connectionEntity.port,
-                                User = connectionEntity.user,
-                                Password = connectionEntity.password,
+                                Code = connectionEntity.code,
+                                ServerId = connectionEntity.server_id,
                                 AdapterId = connectionEntity.adapter_id,
-                                RepositoryId = connectionEntity.repository_id
+                                RepositoryId = connectionEntity.repository_id,
+                                Description = connectionEntity.description,
+                                StatusId = connectionEntity.status_id
                             }
                         });
             }
@@ -160,13 +162,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Data = new ConnectionGetById
                         {
                             Id = connectionById.id,
-                            Code = connectionById.connection_code,
-                            Server = connectionById.server,
-                            Port = connectionById.port,
-                            User = connectionById.user,
-                            Password = connectionById.password,
+                            Code = connectionById.code,
+                            ServerId = connectionById.server_id,
                             AdapterId = connectionById.adapter_id,
-                            RepositoryId = connectionById.repository_id
+                            RepositoryId = connectionById.repository_id,
+                            Description = connectionById.description,
+                            StatusId = connectionById.status_id
                         }
                     });
             }
@@ -202,13 +203,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Data = new ConnectionGetByCode
                         {
                             Id = connectionByCode.id,
-                            Code = connectionByCode.connection_code,
-                            Server = connectionByCode.server,
-                            Port = connectionByCode.port,
-                            User = connectionByCode.user,
-                            Password = connectionByCode.password,
+                            Code = connectionByCode.code,
+                            ServerId = connectionByCode.server_id,
                             AdapterId = connectionByCode.adapter_id,
                             RepositoryId = connectionByCode.repository_id,
+                            Description = connectionByCode.description,
+                            StatusId = connectionByCode.status_id
                         }
                     });
             }
@@ -251,17 +251,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Rows = result.Select(c => new ConnectionGetAllPaginated
                             {
                                 Id = c.id,
-                                Code = c.connection_code,
-                                Server = c.server,
-                                Port = c.port,
-                                User = c.user,
-                                Password = c.password,
+                                Code = c.code,
+                                ServerId = c.server_id,
                                 AdapterId = c.adapter_id,
                                 RepositoryId = c.repository_id,
-
+                                Description = c.description,
+                                StatusId = c.status_id
                             }).ToList()
                         }
-
                     });
             }
             catch (OrchestratorArgumentException ex)
@@ -274,18 +271,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
             }
         }
 
-        private ConnectionEntity MapConnection(ConnectionCreateRequest request, Guid id)
+        private async Task<ConnectionEntity> MapConnection(ConnectionCreateRequest request, Guid id)
         {
             var connectionEntity = new ConnectionEntity()
             {
                 id = id,
-                connection_code = request.Code,
-                server = request.Server,
-                port = request.Port,
-                user = request.User,
-                password = request.Password,
+                code = await _moduleSequenceService.GenerateCodeAsync(Modules.Connection.ToString()),
+                server_id = request.ServerId,
                 adapter_id = request.AdapterId,
-                repository_id = request.RepositoryId
+                repository_id = request.RepositoryId,
+                description = request.Description,
+                status_id = request.StatusId
             };
             return connectionEntity;
         }

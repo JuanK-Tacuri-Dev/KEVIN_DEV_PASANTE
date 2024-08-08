@@ -28,7 +28,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             = new Dictionary<string, Expression<Func<ServerEntity, object>>>
         {
             { nameof(ServerEntity.name), x => x.name },
-            { nameof(ServerEntity.type), x => x.type }
+            { nameof(ServerEntity.code), x => x.code }
         };
         private void SetupPagination(PaginatedModel model)
         {
@@ -84,12 +84,12 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
         public static Expression<Func<ServerEntity, bool>> GetByCodeExpression(string code)
         {
-            return x => true && x.server_code == code;
+            return x => true && x.code == code;
         }
 
-        public static Expression<Func<ServerEntity, bool>> GetByTypeExpression(string type)
+        public static Expression<Func<ServerEntity, bool>> GetByTypeExpression(Guid typeId)
         {
-            return x => true && x.type == type;
+            return x => true && x.type_server_id == typeId;
         }
 
 

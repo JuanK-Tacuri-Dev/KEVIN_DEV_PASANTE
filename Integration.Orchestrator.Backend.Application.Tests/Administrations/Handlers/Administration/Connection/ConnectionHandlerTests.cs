@@ -7,6 +7,7 @@ using Integration.Orchestrator.Backend.Domain.Resources;
 using Moq;
 using System.Net;
 using Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection.ConnectionCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Handlers.Administration.Connection
@@ -14,12 +15,15 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
     public class ConnectionHandlerTests
     {
         private readonly Mock<IConnectionService<ConnectionEntity>> _serviceMock;
+        private readonly Mock<IModuleSequenceService> _moduleSequenceServiceMock;
         private readonly ConnectionHandler _handler;
 
         public ConnectionHandlerTests()
         {
             _serviceMock = new Mock<IConnectionService<ConnectionEntity>>();
-            _handler = new ConnectionHandler(_serviceMock.Object);
+            _moduleSequenceServiceMock = new Mock<IModuleSequenceService>();
+
+            _handler = new ConnectionHandler(_serviceMock.Object, _moduleSequenceServiceMock.Object);
         }
 
         [Fact]
@@ -30,12 +34,12 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                 new ConnectionBasicInfoRequest<ConnectionCreateRequest>(
                     new ConnectionCreateRequest
                     {
-                        Code = "TestCode", 
-                        Server = "TestServer", 
-                        Port = "1234", 
-                        User = "TestUser", 
-                        Password = "TestPassword", 
-                        AdapterId = Guid.NewGuid() }));
+                        ServerId = Guid.NewGuid(),
+                        AdapterId = Guid.NewGuid(),
+                        RepositoryId = Guid.NewGuid(),
+                        Description = "description",
+                        StatusId = Guid.NewGuid()
+                    }));
             var cancellationToken = CancellationToken.None;
 
             _serviceMock.Setup(s => s.InsertAsync(It.IsAny<ConnectionEntity>()))
@@ -57,15 +61,15 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             // Arrange
             var request = new GetByCodeConnectionCommandRequest(new ConnectionGetByCodeRequest { Code = "TestCode" });
             var cancellationToken = CancellationToken.None;
-            var connectionEntity = new ConnectionEntity 
-            { 
-                id = Guid.NewGuid(), 
-                connection_code = "TestCode", 
-                server = "TestServer", 
-                port = "1234", 
-                user = "TestUser", 
-                password = "TestPassword", 
-                adapter_id = Guid.NewGuid() };
+            var connectionEntity = new ConnectionEntity
+            {
+                id = Guid.NewGuid(),
+                server_id = Guid.NewGuid(),
+                adapter_id = Guid.NewGuid(),
+                repository_id = Guid.NewGuid(),
+                description = "description",
+                status_id = Guid.NewGuid()
+            };
 
             _serviceMock.Setup(s => s.GetByCodeAsync(It.IsAny<string>()))
                         .ReturnsAsync(connectionEntity);
@@ -86,8 +90,8 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             // Arrange
             var request = new GetAllPaginatedConnectionCommandRequest(new ConnectionGetAllPaginatedRequest());
             var cancellationToken = CancellationToken.None;
-            var paginatedModel = new PaginatedModel() 
-            { 
+            var paginatedModel = new PaginatedModel()
+            {
                 Page = 1,
                 Rows = 2,
                 Search = "",
@@ -95,10 +99,25 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                 SortOrder = SortOrdering.Ascending
             };
             var connectionEntities = new List<ConnectionEntity>
-        {
-            new ConnectionEntity { id = Guid.NewGuid(), connection_code = "TestCode1", server = "TestServer1", port = "1234", user = "TestUser1", password = "TestPassword1", adapter_id = Guid.NewGuid() },
-            new ConnectionEntity { id = Guid.NewGuid(), connection_code = "TestCode2", server = "TestServer2", port = "1234", user = "TestUser2", password = "TestPassword2", adapter_id = Guid.NewGuid() }
-        };
+            {
+                new ConnectionEntity
+                {
+                    id = Guid.NewGuid(),
+                    server_id = Guid.NewGuid(),
+                    adapter_id = Guid.NewGuid(),
+                    repository_id = Guid.NewGuid(),
+                    description = "description1",
+                    status_id = Guid.NewGuid()
+                },
+                new ConnectionEntity
+                {
+                    id = Guid.NewGuid(),
+                    server_id = Guid.NewGuid(),
+                    adapter_id = Guid.NewGuid(),
+                    repository_id = Guid.NewGuid(),
+                    description = "description2",
+                    status_id = Guid.NewGuid()  }
+            };
 
             _serviceMock.Setup(s => s.GetTotalRowsAsync(It.IsAny<PaginatedModel>()))
                         .ReturnsAsync(connectionEntities.Count());

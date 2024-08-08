@@ -9,6 +9,7 @@
         public IEnumerable<AdapterGetAllPaginated> Rows { get; set; }
     }
 
-    public class AdapterGetAllPaginated : AdapterResponse { }
+    public class AdapterGetAllPaginated : AdapterResponse 
+    { }
     
 }

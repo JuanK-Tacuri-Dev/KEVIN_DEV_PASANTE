@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Application.Options;
 using Integration.Orchestrator.Backend.Domain.Entities;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -57,7 +58,8 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             var serverCollection = mongoSetting.Collections!?.Server;
             var repositoryCollection = mongoSetting.Collections!?.Repository;
             var adapterCollection = mongoSetting.Collections!?.Adapter;
-            var catalogCollection = mongoSetting.Collections!?.Catalog;
+            var catalogCollection = mongoSetting.Collections!?.Catalog; 
+            var moduleSequenceCollection = mongoSetting.Collections!?.ModuleSequence;
 
             services.AddSingleton(s => database.GetCollection<SynchronizationEntity>(synchronizationCollection));
             services.AddSingleton(s => database.GetCollection<SynchronizationStatesEntity>(synchronizationStatesCollection));
@@ -73,6 +75,7 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             services.AddSingleton(s => database.GetCollection<RepositoryEntity>(repositoryCollection));
             services.AddSingleton(s => database.GetCollection<AdapterEntity>(adapterCollection));
             services.AddSingleton(s => database.GetCollection<CatalogEntity>(catalogCollection));
+            services.AddSingleton(s => database.GetCollection<ModuleSequenceEntity>(moduleSequenceCollection)); 
 
             BsonClassMap.RegisterClassMap<Entity<Guid>>(
                 map =>

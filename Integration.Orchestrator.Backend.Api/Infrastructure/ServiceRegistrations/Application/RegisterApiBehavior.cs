@@ -7,9 +7,6 @@ using System.Text.RegularExpressions;
 namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistrations.Application
 {
     [ExcludeFromCodeCoverage]
-    /// <summary>
-    /// Configure the Api Flient Validations when Exposes the Errors.
-    /// </summary>    
     public partial class RegisterApiBehavior : IServiceRegistration
     {
         /// <summary>

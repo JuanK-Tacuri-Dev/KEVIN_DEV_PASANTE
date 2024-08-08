@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
@@ -10,7 +11,9 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Administratio
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Repository
 {
-    public class RepositoryHandler(IRepositoryService<RepositoryEntity> repositoryService)
+    public class RepositoryHandler(
+        IRepositoryService<RepositoryEntity> repositoryService,
+        IModuleSequenceService moduleSequenceService)
         :
         IRequestHandler<CreateRepositoryCommandRequest, CreateRepositoryCommandResponse>,
         IRequestHandler<UpdateRepositoryCommandRequest, UpdateRepositoryCommandResponse>,
@@ -19,13 +22,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
         IRequestHandler<GetByCodeRepositoryCommandRequest, GetByCodeRepositoryCommandResponse>,
         IRequestHandler<GetAllPaginatedRepositoryCommandRequest, GetAllPaginatedRepositoryCommandResponse>
     {
-        public readonly IRepositoryService<RepositoryEntity> _repositoryService = repositoryService;
+        private readonly IRepositoryService<RepositoryEntity> _repositoryService = repositoryService;
+        private readonly IModuleSequenceService _moduleSequenceService = moduleSequenceService;
 
         public async Task<CreateRepositoryCommandResponse> Handle(CreateRepositoryCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var repositoryEntity = MapRepository(request.Repository.RepositoryRequest, Guid.NewGuid());
+                var repositoryEntity = await MapRepository(request.Repository.RepositoryRequest, Guid.NewGuid());
                 await _repositoryService.InsertAsync(repositoryEntity);
 
                 return new CreateRepositoryCommandResponse(
@@ -70,7 +74,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                             Data = request.Repository.RepositoryRequest
                         });
 
-                var repositoryEntity = MapRepository(request.Repository.RepositoryRequest, request.Id);
+                var repositoryEntity = await MapRepository(request.Repository.RepositoryRequest, request.Id);
                 await _repositoryService.UpdateAsync(repositoryEntity);
 
                 return new UpdateRepositoryCommandResponse(
@@ -273,12 +277,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
             }
         }
 
-        private RepositoryEntity MapRepository(RepositoryCreateRequest request, Guid id)
+        private async Task<RepositoryEntity> MapRepository(RepositoryCreateRequest request, Guid id)
         {
             var repositoryEntity = new RepositoryEntity()
             {
                 id = id,
-                code = request.Code,
+                code = await _moduleSequenceService.GenerateCodeAsync(Modules.Repository.ToString()),
                 port = request.Port,
                 user = request.UserName,
                 password = request.Password,

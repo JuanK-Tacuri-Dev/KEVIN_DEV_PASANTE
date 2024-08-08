@@ -20,11 +20,12 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             var filter = Builders<ConnectionEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<ConnectionEntity>.Update
-                .Set(m => m.connection_code, entity.connection_code)
-                .Set(m => m.server, entity.server)
-                .Set(m => m.port, entity.port)
-                .Set(m => m.user, entity.user)
-                .Set(m => m.password, entity.password)
+               // .Set(m => m.code, entity.code)
+                .Set(m => m.server_id, entity.server_id)
+                .Set(m => m.adapter_id, entity.adapter_id)
+                .Set(m => m.repository_id, entity.repository_id)
+                .Set(m => m.description, entity.description)
+                .Set(m => m.status_id, entity.status_id)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);
         }

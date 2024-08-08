@@ -54,11 +54,11 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
                     new ServerGetByCodeRequest { Code = code }))).Message);
         }
         [HttpGet]
-        public async Task<IActionResult> GetByType(string type)
+        public async Task<IActionResult> GetByType(Guid id)
         {
             return Ok((await _mediator.Send(
                 new GetByTypeServerCommandRequest(
-                    new ServerGetByTypeRequest { Type = type }))).Message);
+                    new ServerGetByTypeRequest { Type = id }))).Message);
         }
 
         [HttpPost]

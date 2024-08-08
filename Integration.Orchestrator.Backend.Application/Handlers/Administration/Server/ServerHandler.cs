@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
@@ -10,7 +11,9 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Administratio
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Server
 {
-    public class ServerHandler(IServerService<ServerEntity> serverService)
+    public class ServerHandler(
+        IServerService<ServerEntity> serverService,
+        IModuleSequenceService moduleSequenceService)
         :
         IRequestHandler<CreateServerCommandRequest, CreateServerCommandResponse>,
         IRequestHandler<UpdateServerCommandRequest, UpdateServerCommandResponse>,
@@ -20,13 +23,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         IRequestHandler<GetByTypeServerCommandRequest, GetByTypeServerCommandResponse>,
         IRequestHandler<GetAllPaginatedServerCommandRequest, GetAllPaginatedServerCommandResponse>
     {
-        public readonly IServerService<ServerEntity> _serverService = serverService;
+        private readonly IServerService<ServerEntity> _serverService = serverService;
+        private readonly IModuleSequenceService _moduleSequenceService = moduleSequenceService;
 
         public async Task<CreateServerCommandResponse> Handle(CreateServerCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var serverEntity = MapServer(request.Server.ServerRequest, Guid.NewGuid());
+                var serverEntity = await MapServer(request.Server.ServerRequest, Guid.NewGuid());
                 await _serverService.InsertAsync(serverEntity);
 
                 return new CreateServerCommandResponse(
@@ -37,10 +41,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = new ServerCreate
                         {
                             Id = serverEntity.id,
-                            Code = serverEntity.server_code,
+                            Code = serverEntity.code,
                             Name = serverEntity.name,
-                            Type = serverEntity.type,
-                            Url = serverEntity.url
+                            TypeServerId = serverEntity.type_server_id,
+                            Url = serverEntity.url,
+                            StatusId = serverEntity.status_id
                         }
                     });
             }
@@ -68,7 +73,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Data = request.Server.ServerRequest
                         });
 
-                var serverEntity = MapServer(request.Server.ServerRequest, request.Id);
+                var serverEntity = await MapServer(request.Server.ServerRequest, request.Id);
                 await _serverService.UpdateAsync(serverEntity);
 
                 return new UpdateServerCommandResponse(
@@ -79,10 +84,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Data = new ServerUpdate
                             {
                                 Id = serverEntity.id,
-                                Code = serverEntity.server_code,
+                                Code = serverEntity.code,
                                 Name = serverEntity.name,
-                                Type = serverEntity.type,
-                                Url = serverEntity.url
+                                TypeServerId = serverEntity.type_server_id,
+                                Url = serverEntity.url,
+                                StatusId = serverEntity.status_id
                             }
                         });
             }
@@ -155,10 +161,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = new ServerGetById
                         {
                             Id = serverById.id,
-                            Code = serverById.server_code,
+                            Code = serverById.code,
                             Name = serverById.name,
-                            Type = serverById.type,
-                            Url = serverById.url
+                            TypeServerId = serverById.type_server_id,
+                            Url = serverById.url,
+                            StatusId = serverById.status_id
                         }
                     });
             }
@@ -194,10 +201,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = new ServerGetByCode
                         {
                             Id = serverByCode.id,
-                            Code = serverByCode.server_code,
+                            Code = serverByCode.code,
                             Name = serverByCode.name,
-                            Type = serverByCode.type,
-                            Url = serverByCode.url
+                            TypeServerId = serverByCode.type_server_id,
+                            Url = serverByCode.url,
+                            StatusId = serverByCode.status_id
                         }
                     });
             }
@@ -233,10 +241,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = serverByType.Select(s => new ServerGetByType
                         {
                             Id = s.id,
-                            Code = s.server_code,
+                            Code = s.code,
                             Name = s.name,
-                            Type = s.type,
-                            Url = s.url
+                            TypeServerId = s.type_server_id,
+                            Url = s.url,
+                            StatusId = s.status_id
 
                         } ).ToList()
                     });
@@ -277,13 +286,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = new ServerGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = result.Select(c => new ServerGetAllPaginated
+                            Rows = result.Select(s => new ServerGetAllPaginated
                             {
-                                Id = c.id,
-                                Code = c.server_code,
-                                Name = c.name,
-                                Type = c.type,
-                                Url = c.url
+                                Id = s.id,
+                                Code = s.code,
+                                Name = s.name,
+                                TypeServerId = s.type_server_id,
+                                Url = s.url,
+                                StatusId = s.status_id
 
                             }).ToList()
                         }
@@ -300,15 +310,16 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
             }
         }
 
-        private ServerEntity MapServer(ServerCreateRequest request, Guid id)
+        private async Task<ServerEntity> MapServer(ServerCreateRequest request, Guid id)
         {
             var serverEntity = new ServerEntity()
             {
                 id = id,
-                server_code = request.Code,
-                 name = request.Name,
-                type = request.Type,
-                url = request.Url
+                code = await _moduleSequenceService.GenerateCodeAsync(Modules.Server.ToString()),
+                name = request.Name,
+                type_server_id = request.TypeServerId,
+                url = request.Url,
+                status_id = request.StatusId
             };
             return serverEntity;
         }

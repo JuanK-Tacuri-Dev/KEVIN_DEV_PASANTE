@@ -21,8 +21,8 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             var filter = Builders<AdapterEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<AdapterEntity>.Update
                 .Set(m => m.name, entity.name)
-                .Set(m => m.adapter_code, entity.adapter_code)
-                .Set(m => m.adapter_type, entity.adapter_type)
+                //.Set(m => m.adapter_code, entity.adapter_code)
+                .Set(m => m.adapter_type_id, entity.adapter_type_id)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);
         }

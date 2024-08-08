@@ -64,10 +64,10 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                     {
                         Id = Guid.NewGuid(),
                         Code = code,
-                        Server = "localhost",
+                        /*ServerId = "localhost",
                         Port = "8080",
                         User = "user",
-                        Password = "password",
+                        Password = "password",*/
                         AdapterId = Guid.NewGuid()
                     }
                 });
@@ -112,10 +112,10 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                             {
                                 Id = Guid.NewGuid(),
                                 Code = "testCode",
-                                Server = "localhost",
-                                Port = "8080",
-                                User = "user",
-                                Password = "password",
+                                //Server = "localhost",
+                                //Port = "8080",
+                                //User = "user",
+                                //Password = "password",
                                 AdapterId = Guid.NewGuid()
                             }]
                     }

@@ -8,9 +8,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
     {
         public UpdateRepositoryCommandRequestValidator()
         {
-            RuleFor(request => request.Repository.RepositoryRequest.Code)
-            .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
-
             RuleFor(request => request.Repository.RepositoryRequest.Port)
             .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
 

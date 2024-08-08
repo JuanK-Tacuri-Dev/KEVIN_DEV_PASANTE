@@ -3,8 +3,7 @@
     public class ConnectionUpdateResponse : ModelResponse<ConnectionUpdate>
     {
     }
-    public class ConnectionUpdate : ConnectionRequest
+    public class ConnectionUpdate : ConnectionResponse
     {
-        public Guid Id { get; set; }
     }
 }

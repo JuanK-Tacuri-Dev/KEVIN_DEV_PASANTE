@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
@@ -10,7 +11,9 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Administratio
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Adapter
 {
-    public class AdapterHandler(IAdapterService<AdapterEntity> adapterService)
+    public class AdapterHandler(
+        IAdapterService<AdapterEntity> adapterService,
+        IModuleSequenceService moduleSequenceService)
         :
         IRequestHandler<CreateAdapterCommandRequest, CreateAdapterCommandResponse>,
         IRequestHandler<UpdateAdapterCommandRequest, UpdateAdapterCommandResponse>,
@@ -20,13 +23,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
         IRequestHandler<GetByTypeAdapterCommandRequest, GetByTypeAdapterCommandResponse>,
         IRequestHandler<GetAllPaginatedAdapterCommandRequest, GetAllPaginatedAdapterCommandResponse>
     {
-        public readonly IAdapterService<AdapterEntity> _adapterService = adapterService;
+        private readonly IAdapterService<AdapterEntity> _adapterService = adapterService;
+        private readonly IModuleSequenceService _moduleSequenceService = moduleSequenceService;
 
         public async Task<CreateAdapterCommandResponse> Handle(CreateAdapterCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var adapterEntity = MapAdapter(request.Adapter.AdapterRequest, Guid.NewGuid());
+                var adapterEntity = await MapAdapter(request.Adapter.AdapterRequest, Guid.NewGuid());
                 await _adapterService.InsertAsync(adapterEntity);
 
                 return new CreateAdapterCommandResponse(
@@ -39,7 +43,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                             Id = adapterEntity.id,
                             Code = adapterEntity.adapter_code,
                             Name = adapterEntity.name,
-                            Type = adapterEntity.adapter_type
+                            TypeAdapterId = adapterEntity.adapter_type_id,
+                            Version = adapterEntity.version,
+                            StatusId = adapterEntity.status_id
                         }
                     });
             }
@@ -67,7 +73,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                             Data = request.Adapter.AdapterRequest
                         });
 
-                var adapterEntity = MapAdapter(request.Adapter.AdapterRequest, request.Id);
+                var adapterEntity = await MapAdapter(request.Adapter.AdapterRequest, request.Id);
                 await _adapterService.UpdateAsync(adapterEntity);
 
                 return new UpdateAdapterCommandResponse(
@@ -80,7 +86,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                                 Id = adapterEntity.id,
                                 Code = adapterEntity.adapter_code,
                                 Name = adapterEntity.name,
-                                Type = adapterEntity.adapter_type
+                                TypeAdapterId = adapterEntity.adapter_type_id,
+                                Version = adapterEntity.version,
+                                StatusId = adapterEntity.status_id
                             }
                         });
             }
@@ -153,9 +161,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                         Data = new AdapterGetById
                         {
                             Id = adapterById.id,
-                            Name = adapterById.name,
                             Code = adapterById.adapter_code,
-                            Type = adapterById.adapter_type
+                            Name = adapterById.name,
+                            TypeAdapterId = adapterById.adapter_type_id,
+                            Version = adapterById.version,
+                            StatusId = adapterById.status_id
                         }
                     });
             }
@@ -193,7 +203,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                             Id = adapterByCode.id,
                             Name = adapterByCode.name,
                             Code = adapterByCode.adapter_code,
-                            Type = adapterByCode.adapter_type
+                            TypeAdapterId = adapterByCode.adapter_type_id,
+                            Version = adapterByCode.version,
+                            StatusId = adapterByCode.status_id
                         }
                     });
             }
@@ -211,7 +223,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
         {
             try
             {
-                var adapterByType = await _adapterService.GetByTypeAsync(request.Adapter.Type);
+                var adapterByType = await _adapterService.GetByTypeAsync(request.Adapter.TypeAdapterId);
                 if (adapterByType == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
@@ -231,7 +243,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                             Id = c.id,
                             Name = c.name,
                             Code = c.adapter_code,
-                            Type = c.adapter_type
+                            TypeAdapterId = c.adapter_type_id,
+                            Version = c.version,
+                            StatusId = c.status_id
                         }).ToList()
                     });
             }
@@ -276,7 +290,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                                 Id = c.id,
                                 Name = c.name,
                                 Code = c.adapter_code,
-                                Type = c.adapter_type
+                                TypeAdapterId = c.adapter_type_id,
+                                Version = c.version,
+                                StatusId = c.status_id
                             }).ToList()
                         } 
                         
@@ -292,14 +308,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
             }
         }
 
-        private AdapterEntity MapAdapter(AdapterCreateRequest request, Guid id)
+        private async Task<AdapterEntity> MapAdapter(AdapterCreateRequest request, Guid id)
         {
             var adapterEntity = new AdapterEntity()
             {
                 id = id,
+                adapter_code = await _moduleSequenceService.GenerateCodeAsync(Modules.Adapter.ToString()),
                 name = request.Name,
-                adapter_code = request.Code,
-                adapter_type = request.Type
+                adapter_type_id = request.TypeAdapterId,
+                status_id = request.StatusId,
+                version = request.Version
+                
             };
             return adapterEntity;
         }

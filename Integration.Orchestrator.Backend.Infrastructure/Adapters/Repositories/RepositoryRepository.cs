@@ -20,7 +20,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             var filter = Builders<RepositoryEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<RepositoryEntity>.Update
-                .Set(m => m.code, entity.code)
+                //.Set(m => m.code, entity.code)
                 .Set(m => m.port, entity.port)
                 .Set(m => m.user, entity.user)
                 .Set(m => m.password, entity.password)

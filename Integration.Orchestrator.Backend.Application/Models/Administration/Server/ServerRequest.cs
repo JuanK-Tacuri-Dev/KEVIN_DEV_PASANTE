@@ -2,10 +2,10 @@
 {
     public class ServerRequest
     {
-        public string Code { get; set; }
         public string Name { get; set; }
-        public string Type { get; set; }
+        public Guid TypeServerId { get; set; }
         public string Url { get; set; }
+        public Guid StatusId { get; set; }
 
     }
 }

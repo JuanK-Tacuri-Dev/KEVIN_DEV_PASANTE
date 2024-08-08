@@ -14,90 +14,22 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         {
             _validator = new CreateConnectionCommandRequestValidator();
         }
-
-        [Fact]
-        public void Should_Have_Error_When_Code_Is_Null_Or_Empty()
-        {
-            // Arrange
-            var request = new CreateConnectionCommandRequest(new ConnectionBasicInfoRequest<ConnectionCreateRequest>(new ConnectionCreateRequest 
-            { 
-                Code = string.Empty 
-            }));
-
-            // Act
-            var result = _validator.TestValidate(request);
-
-            // Assert
-            result.ShouldHaveValidationErrorFor(r => r.Connection.ConnectionRequest.Code)
-                  .WithErrorMessage(AppMessages.Connection_Code_Required);
-        }
-
+        
         [Fact]
         public void Should_Have_Error_When_Server_Is_Null_Or_Empty()
         {
             // Arrange
             var request = new CreateConnectionCommandRequest(new ConnectionBasicInfoRequest<ConnectionCreateRequest>(new ConnectionCreateRequest 
             { 
-                Server = string.Empty 
+                ServerId = Guid.Empty 
             }));
 
             // Act
             var result = _validator.TestValidate(request);
 
             // Assert
-            result.ShouldHaveValidationErrorFor(r => r.Connection.ConnectionRequest.Server)
+            result.ShouldHaveValidationErrorFor(r => r.Connection.ConnectionRequest.ServerId)
                   .WithErrorMessage(AppMessages.Connection_Server_Required);
-        }
-
-        [Fact]
-        public void Should_Have_Error_When_Port_Is_Null_Or_Empty()
-        {
-            // Arrange
-            var request = new CreateConnectionCommandRequest(new ConnectionBasicInfoRequest<ConnectionCreateRequest>(new ConnectionCreateRequest 
-            { 
-                Port = string.Empty 
-            }));
-
-            // Act
-            var result = _validator.TestValidate(request);
-
-            // Assert
-            result.ShouldHaveValidationErrorFor(r => r.Connection.ConnectionRequest.Port)
-                  .WithErrorMessage(AppMessages.Connection_Port_Required);
-        }
-
-        [Fact]
-        public void Should_Have_Error_When_User_Is_Null_Or_Empty()
-        {
-            // Arrange
-            var request = new CreateConnectionCommandRequest(new ConnectionBasicInfoRequest<ConnectionCreateRequest>(new ConnectionCreateRequest 
-            { 
-                User = string.Empty 
-            }));
-
-            // Act
-            var result = _validator.TestValidate(request);
-
-            // Assert
-            result.ShouldHaveValidationErrorFor(r => r.Connection.ConnectionRequest.User)
-                  .WithErrorMessage(AppMessages.Connection_User_Required);
-        }
-
-        [Fact]
-        public void Should_Have_Error_When_Password_Is_Null_Or_Empty()
-        {
-            // Arrange
-            var request = new CreateConnectionCommandRequest(new ConnectionBasicInfoRequest<ConnectionCreateRequest>(new ConnectionCreateRequest 
-            { 
-                Password = string.Empty 
-            }));
-            
-            // Act
-            var result = _validator.TestValidate(request);
-
-            // Assert
-            result.ShouldHaveValidationErrorFor(r => r.Connection.ConnectionRequest.Password)
-                  .WithErrorMessage(AppMessages.Connection_Password_Required);
         }
 
         [Fact]
