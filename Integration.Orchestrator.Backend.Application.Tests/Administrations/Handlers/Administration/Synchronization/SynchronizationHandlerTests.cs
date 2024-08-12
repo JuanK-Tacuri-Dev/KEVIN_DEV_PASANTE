@@ -54,7 +54,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             // Arrange
             var synchronizationId = Guid.NewGuid();
             var integrationId = Guid.NewGuid();
-            var name = "name";
+            var name = "key";
             var franchiseId = Guid.NewGuid();
             var status = Guid.NewGuid();
             var observation = "Test Observations";
@@ -103,7 +103,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             // Arrange
             var synchronizationId = Guid.NewGuid();
             var integrationId = Guid.NewGuid();
-            var name = "name";
+            var name = "key";
             var franchiseId = Guid.NewGuid();
             var status = Guid.NewGuid();
             var observation = "Test Observations";
@@ -134,7 +134,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             // Arrange
             var synchronizationId = Guid.NewGuid();
             var integrationId = Guid.NewGuid();
-            var name = "name";
+            var name = "key";
             var franchiseId = Guid.NewGuid();
             var status = Guid.NewGuid();
             var observation = "Test Observations";
@@ -173,7 +173,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             // Arrange
             var synchronizationId = Guid.NewGuid();
             var integrationId = Guid.NewGuid();
-            var name = "name";
+            var name = "key";
             var franchiseId = Guid.NewGuid();
             var status = Guid.NewGuid();
             var observation = "Test Observations";

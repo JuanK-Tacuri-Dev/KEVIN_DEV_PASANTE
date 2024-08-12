@@ -1,15 +1,14 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Status;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
-using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
-using System.Net;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Status.StatusCommands;
 
-namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Status
+namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Status
 {
     public class StatusHandler(IStatusService<StatusEntity> statusService)
         :
@@ -31,21 +30,21 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new CreateStatusCommandResponse(
                     new StatusCreateResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeCreated],
+                        Code = (int)ResponseCode.CreatedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new StatusCreate
                         {
                             Id = statusEntity.id,
                             Key = statusEntity.key,
                             Text = statusEntity.text,
-                            Color = statusEntity.color
-                            
+                            Color = statusEntity.color,
+                            Background = statusEntity.background
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -59,9 +58,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var statusById = await _statusService.GetByIdAsync(request.Id);
                 if (statusById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_StatusNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Status.StatusRequest
+                        });
 
                 var statusEntity = MapStatus(request.Status.StatusRequest, request.Id);
                 await _statusService.UpdateAsync(statusEntity);
@@ -69,20 +72,21 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new UpdateStatusCommandResponse(
                         new StatusUpdateResponse
                         {
-                            Code = HttpStatusCode.OK.GetHashCode(),
-                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Code = (int)ResponseCode.UpdatedSuccessfully,
+                            Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new StatusUpdate
                             {
                                 Id = statusEntity.id,
                                 Key = statusEntity.key,
                                 Text = statusEntity.text,
-                                Color = statusEntity.color
+                                Color = statusEntity.color,
+                                Background = statusEntity.background
                             }
                         });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -96,26 +100,30 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var statusById = await _statusService.GetByIdAsync(request.Status.Id);
                 if (statusById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_StatusNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Status
+                        });
 
                 await _statusService.DeleteAsync(statusById);
 
                 return new DeleteStatusCommandResponse(
                     new StatusDeleteResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Code = (int)ResponseCode.DeletedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
                         Data = new StatusDelete 
                         {
                             Id = statusById.id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -129,27 +137,32 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var statusById = await _statusService.GetByIdAsync(request.Status.Id);
                 if (statusById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_StatusNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Status
+                        });
 
                 return new GetByIdStatusCommandResponse(
                     new StatusGetByIdResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new StatusGetById
                         {
                             Id = statusById.id,
                             Key = statusById.key,
                             Text = statusById.text,
-                            Color = statusById.color
+                            Color = statusById.color,
+                            Background = statusById.background
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -165,7 +178,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var rows = await _statusService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new ArgumentException(AppMessages.Application_StatusNotFound);
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
+                        });
                 }
                 var result = await _statusService.GetAllPaginatedAsync(model);
 
@@ -173,8 +191,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new GetAllPaginatedStatusCommandResponse(
                     new StatusGetAllPaginatedResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_RespondeGet,
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully),
                         Data = new StatusGetAllRows
                         {
                             Total_rows = rows,
@@ -184,13 +202,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Key = c.key,
                                 Text = c.text,
                                 Color = c.color,
+                                Background = c.background
                             }).ToList()
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -205,7 +224,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 id = id,
                 key = request.Key,
                 text = request.Text,
-                color = request.Color
+                color = request.Color,
+                background = request.Background
             };
             return statusEntity;
         }

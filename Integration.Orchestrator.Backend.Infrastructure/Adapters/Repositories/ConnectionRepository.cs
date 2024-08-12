@@ -10,7 +10,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
     public class ConnectionRepository(IMongoCollection<ConnectionEntity> collection) : IConnectionRepository<ConnectionEntity>
     {
         private readonly IMongoCollection<ConnectionEntity> _collection = collection;
-        
+
         public Task InsertAsync(ConnectionEntity entity)
         {
             return _collection.InsertOneAsync(entity);
@@ -20,7 +20,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             var filter = Builders<ConnectionEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<ConnectionEntity>.Update
-               // .Set(m => m.code, entity.code)
                 .Set(m => m.server_id, entity.server_id)
                 .Set(m => m.adapter_id, entity.adapter_id)
                 .Set(m => m.repository_id, entity.repository_id)
@@ -47,11 +46,11 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
         public async Task<ConnectionEntity> GetByCodeAsync(Expression<Func<ConnectionEntity, bool>> specification)
         {
-                var filter = Builders<ConnectionEntity>.Filter.Where(specification);
-                var connectionEntity = await _collection
-                    .Find(filter)
-                    .FirstOrDefaultAsync();
-                return connectionEntity;
+            var filter = Builders<ConnectionEntity>.Filter.Where(specification);
+            var connectionEntity = await _collection
+                .Find(filter)
+                .FirstOrDefaultAsync();
+            return connectionEntity;
         }
 
         public async Task<IEnumerable<ConnectionEntity>> GetByTypeAsync(Expression<Func<ConnectionEntity, bool>> specification)
@@ -66,23 +65,27 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<IEnumerable<ConnectionEntity>> GetAllAsync(ISpecification<ConnectionEntity> specification)
         {
             var filter = Builders<ConnectionEntity>.Filter.Where(specification.Criteria);
-            var connectionEntity = await _collection
+
+            var query = _collection
                 .Find(filter)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip)
                 .Sort(specification.OrderBy != null
-                                               ? Builders<ConnectionEntity>.Sort.Ascending(specification.OrderBy)
-                                               : Builders<ConnectionEntity>.Sort.Descending(specification.OrderByDescending))
-                .ToListAsync();
-            return connectionEntity;
+                    ? Builders<ConnectionEntity>.Sort.Ascending(specification.OrderBy)
+                    : Builders<ConnectionEntity>.Sort.Descending(specification.OrderByDescending));
+
+            if (specification.Skip >= 0)
+            {
+                query = query
+                    .Limit(specification.Limit)
+                    .Skip(specification.Skip);
+            }
+            return await query.ToListAsync();
         }
 
         public async Task<long> GetTotalRows(ISpecification<ConnectionEntity> specification)
         {
             return await _collection
                 .Find(specification.Criteria)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip).CountDocumentsAsync();
+                .CountDocumentsAsync();
         }
 
     }

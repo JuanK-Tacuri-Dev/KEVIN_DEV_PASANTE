@@ -13,7 +13,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
 {
     public class ServerHandler(
         IServerService<ServerEntity> serverService,
-        IModuleSequenceService moduleSequenceService)
+        ICodeConfiguratorService codeConfiguratorService)
         :
         IRequestHandler<CreateServerCommandRequest, CreateServerCommandResponse>,
         IRequestHandler<UpdateServerCommandRequest, UpdateServerCommandResponse>,
@@ -24,7 +24,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         IRequestHandler<GetAllPaginatedServerCommandRequest, GetAllPaginatedServerCommandResponse>
     {
         private readonly IServerService<ServerEntity> _serverService = serverService;
-        private readonly IModuleSequenceService _moduleSequenceService = moduleSequenceService;
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateServerCommandResponse> Handle(CreateServerCommandRequest request, CancellationToken cancellationToken)
         {
@@ -315,7 +315,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
             var serverEntity = new ServerEntity()
             {
                 id = id,
-                code = await _moduleSequenceService.GenerateCodeAsync(Modules.Server.ToString()),
+                code = await _codeConfiguratorService.GenerateCodeAsync(Modules.Server),
                 name = request.Name,
                 type_server_id = request.TypeServerId,
                 url = request.Url,

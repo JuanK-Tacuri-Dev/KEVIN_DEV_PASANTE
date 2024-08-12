@@ -13,7 +13,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
 {
     public class RepositoryHandler(
         IRepositoryService<RepositoryEntity> repositoryService,
-        IModuleSequenceService moduleSequenceService)
+        ICodeConfiguratorService codeConfiguratorService)
         :
         IRequestHandler<CreateRepositoryCommandRequest, CreateRepositoryCommandResponse>,
         IRequestHandler<UpdateRepositoryCommandRequest, UpdateRepositoryCommandResponse>,
@@ -23,7 +23,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
         IRequestHandler<GetAllPaginatedRepositoryCommandRequest, GetAllPaginatedRepositoryCommandResponse>
     {
         private readonly IRepositoryService<RepositoryEntity> _repositoryService = repositoryService;
-        private readonly IModuleSequenceService _moduleSequenceService = moduleSequenceService;
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateRepositoryCommandResponse> Handle(CreateRepositoryCommandRequest request, CancellationToken cancellationToken)
         {
@@ -282,7 +282,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
             var repositoryEntity = new RepositoryEntity()
             {
                 id = id,
-                code = await _moduleSequenceService.GenerateCodeAsync(Modules.Repository.ToString()),
+                code = await _codeConfiguratorService.GenerateCodeAsync(Modules.Repository),
                 port = request.Port,
                 user = request.UserName,
                 password = request.Password,

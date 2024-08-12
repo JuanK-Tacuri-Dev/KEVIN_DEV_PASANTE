@@ -22,8 +22,8 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="services"></param>  
-        /// <param name="configuration"></param>  
+        /// <param key="services"></param>  
+        /// <param key="configuration"></param>  
         /// 
         public void RegisterAppServices(IServiceCollection services, IConfiguration configuration
         )
@@ -59,10 +59,10 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             var repositoryCollection = mongoSetting.Collections!?.Repository;
             var adapterCollection = mongoSetting.Collections!?.Adapter;
             var catalogCollection = mongoSetting.Collections!?.Catalog; 
-            var moduleSequenceCollection = mongoSetting.Collections!?.ModuleSequence;
+            var codeConfiguratorCollection = mongoSetting.Collections!?.CodeConfigurator;
 
             services.AddSingleton(s => database.GetCollection<SynchronizationEntity>(synchronizationCollection));
-            services.AddSingleton(s => database.GetCollection<SynchronizationStatesEntity>(synchronizationStatesCollection));
+            services.AddSingleton(s => database.GetCollection<SynchronizationStatusEntity>(synchronizationStatesCollection));
             services.AddSingleton(s => database.GetCollection<ConnectionEntity>(connectionCollection));
             services.AddSingleton(s => database.GetCollection<IntegrationEntity>(integrationCollection));
             services.AddSingleton(s => database.GetCollection<ProcessEntity>(processCollection));
@@ -75,7 +75,7 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             services.AddSingleton(s => database.GetCollection<RepositoryEntity>(repositoryCollection));
             services.AddSingleton(s => database.GetCollection<AdapterEntity>(adapterCollection));
             services.AddSingleton(s => database.GetCollection<CatalogEntity>(catalogCollection));
-            services.AddSingleton(s => database.GetCollection<ModuleSequenceEntity>(moduleSequenceCollection)); 
+            services.AddSingleton(s => database.GetCollection<CodeConfiguratorEntity>(codeConfiguratorCollection)); 
 
             BsonClassMap.RegisterClassMap<Entity<Guid>>(
                 map =>

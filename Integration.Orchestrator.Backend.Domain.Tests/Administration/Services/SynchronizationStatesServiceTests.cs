@@ -10,12 +10,12 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
 {
     public class SynchronizationStatesServiceTests
     {
-        private readonly Mock<ISynchronizationStatesRepository<SynchronizationStatesEntity>> _mockRepo;
+        private readonly Mock<ISynchronizationStatesRepository<SynchronizationStatusEntity>> _mockRepo;
         private readonly SynchronizationStatesService _service;
 
         public SynchronizationStatesServiceTests()
         {
-            _mockRepo = new Mock<ISynchronizationStatesRepository<SynchronizationStatesEntity>>();
+            _mockRepo = new Mock<ISynchronizationStatesRepository<SynchronizationStatusEntity>>();
             _service = new SynchronizationStatesService(_mockRepo.Object);
         }
 
@@ -23,7 +23,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
         public async Task InsertAsync_ShouldCallRepositoryInsertAsync()
         {
             // Arrange
-            var entity = new SynchronizationStatesEntity();
+            var entity = new SynchronizationStatusEntity();
 
             // Act
             await _service.InsertAsync(entity);
@@ -37,15 +37,15 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
         {
             // Arrange
             var id = Guid.NewGuid();
-            var expectedEntity = new SynchronizationStatesEntity { id = id };
-            _mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<SynchronizationStatesEntity,bool>>>())).ReturnsAsync(expectedEntity);
+            var expectedEntity = new SynchronizationStatusEntity { id = id };
+            _mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<SynchronizationStatusEntity,bool>>>())).ReturnsAsync(expectedEntity);
 
             // Act
             var result = await _service.GetByIdAsync(id);
 
             // Assert
             Assert.Equal(expectedEntity, result);
-            _mockRepo.Verify(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<SynchronizationStatesEntity, bool>>>()), Times.Once);
+            _mockRepo.Verify(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<SynchronizationStatusEntity, bool>>>()), Times.Once);
         }
 
         [Fact]
@@ -53,7 +53,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
         {
             // Arrange
             var paginatedModel = new PaginatedModel { Page = 1, Rows = 10, SortBy ="" };
-            var expectedEntities = new List<SynchronizationStatesEntity> { new SynchronizationStatesEntity() };
+            var expectedEntities = new List<SynchronizationStatusEntity> { new SynchronizationStatusEntity() };
             _mockRepo.Setup(repo => repo.GetAllAsync(It.IsAny<SynchronizationStatesSpecification>())).ReturnsAsync(expectedEntities);
 
             // Act

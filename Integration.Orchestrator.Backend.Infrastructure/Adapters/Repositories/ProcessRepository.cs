@@ -10,7 +10,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
     public class ProcessRepository(IMongoCollection<ProcessEntity> collection) : IProcessRepository<ProcessEntity>
     {
         private readonly IMongoCollection<ProcessEntity> _collection = collection;
-        
+
         public Task InsertAsync(ProcessEntity entity)
         {
             return _collection.InsertOneAsync(entity);
@@ -20,7 +20,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             var filter = Builders<ProcessEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<ProcessEntity>.Update
-                .Set(m => m.process_code, entity.process_code)
                 .Set(m => m.process_type, entity.process_type)
                 .Set(m => m.connection_id, entity.connection_id)
                 .Set(m => m.entities, entity.entities)
@@ -64,23 +63,27 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<IEnumerable<ProcessEntity>> GetAllAsync(ISpecification<ProcessEntity> specification)
         {
             var filter = Builders<ProcessEntity>.Filter.Where(specification.Criteria);
-            var processEntity = await _collection
+
+            var query = _collection
                 .Find(filter)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip)
                 .Sort(specification.OrderBy != null
-                                               ? Builders<ProcessEntity>.Sort.Ascending(specification.OrderBy)
-                                               : Builders<ProcessEntity>.Sort.Descending(specification.OrderByDescending))
-                .ToListAsync();
-            return processEntity;
+                    ? Builders<ProcessEntity>.Sort.Ascending(specification.OrderBy)
+                    : Builders<ProcessEntity>.Sort.Descending(specification.OrderByDescending));
+
+            if (specification.Skip >= 0)
+            {
+                query = query
+                    .Limit(specification.Limit)
+                    .Skip(specification.Skip);
+            }
+            return await query.ToListAsync();
         }
 
         public async Task<long> GetTotalRows(ISpecification<ProcessEntity> specification)
         {
             return await _collection
                 .Find(specification.Criteria)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip).CountDocumentsAsync();
+                .CountDocumentsAsync();
         }
 
     }

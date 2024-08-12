@@ -16,8 +16,8 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
         /// <summary>
         /// Loading the lifetime of the services's MediaTr Components.
         /// </summary>
-        /// <param name="services"></param>  
-        /// <param name="configuration"></param>  
+        /// <param key="services"></param>  
+        /// <param key="configuration"></param>  
         public void RegisterAppServices(IServiceCollection services, IConfiguration configuration)
         {
 

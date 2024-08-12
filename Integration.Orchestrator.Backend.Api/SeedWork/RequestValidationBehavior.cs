@@ -19,7 +19,7 @@ namespace Integration.Orchestrator.Backend.Api.SeedWork
         /// <summary>
         /// Handle to validate request input and check errors
         /// </summary>
-        /// <param name="validators">Request to validate</param>      
+        /// <param key="validators">Request to validate</param>      
         public RequestValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
         {
             _validators = validators;
@@ -28,9 +28,9 @@ namespace Integration.Orchestrator.Backend.Api.SeedWork
         /// <summary>
         /// Handle to validate request input and check errors
         /// </summary>
-        /// <param name="request"> Request to validate</param>
-        /// <param name="cancellationToken">MediatR Cancelation Token</param>
-        /// <param name="next">Delegate response</param>
+        /// <param key="request"> Request to validate</param>
+        /// <param key="cancellationToken">MediatR Cancelation Token</param>
+        /// <param key="next">Delegate response</param>
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             var errors = _validators

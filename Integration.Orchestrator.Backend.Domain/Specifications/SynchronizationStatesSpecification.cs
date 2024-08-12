@@ -5,13 +5,13 @@ using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Domain.Specifications
 {
-    public class SynchronizationStatesSpecification : ISpecification<SynchronizationStatesEntity>
+    public class SynchronizationStatesSpecification : ISpecification<SynchronizationStatusEntity>
     {
-        public Expression<Func<SynchronizationStatesEntity, bool>> Criteria { get; private set; }
+        public Expression<Func<SynchronizationStatusEntity, bool>> Criteria { get; private set; }
 
-        public Expression<Func<SynchronizationStatesEntity, object>> OrderBy { get; private set; }
+        public Expression<Func<SynchronizationStatusEntity, object>> OrderBy { get; private set; }
         
-        public Expression<Func<SynchronizationStatesEntity, object>> OrderByDescending { get; private set; }
+        public Expression<Func<SynchronizationStatusEntity, object>> OrderByDescending { get; private set; }
 
         public int Skip { get; private set; }
 
@@ -24,13 +24,14 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             SetupOrdering(paginatedModel);
         }
 
-        private static readonly Dictionary<string, Expression<Func<SynchronizationStatesEntity, object>>> sortExpressions 
-            = new Dictionary<string, Expression<Func<SynchronizationStatesEntity, object>>>
+        private static readonly Dictionary<string, Expression<Func<SynchronizationStatusEntity, object>>> sortExpressions 
+            = new Dictionary<string, Expression<Func<SynchronizationStatusEntity, object>>>
         {
-            { nameof(SynchronizationStatesEntity.name), x => x.name },
-            { nameof(SynchronizationStatesEntity.code), x => x.code },
-            { nameof(SynchronizationStatesEntity.color), x => x.color },
-            { nameof(SynchronizationStatesEntity.updated_at), x => x.updated_at },
+            { nameof(SynchronizationStatusEntity.key), x => x.key },
+            { nameof(SynchronizationStatusEntity.text), x => x.text },
+            { nameof(SynchronizationStatusEntity.color), x => x.color },
+            { nameof(SynchronizationStatusEntity.background), x => x.background },
+            { nameof(SynchronizationStatusEntity.updated_at), x => x.updated_at },
         };
         private void SetupPagination(PaginatedModel model)
         {
@@ -56,9 +57,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
                 OrderBy = (x => x.id);
             }
         }
-        private Expression<Func<SynchronizationStatesEntity, bool>> BuildCriteria(PaginatedModel paginatedModel)
+        private Expression<Func<SynchronizationStatusEntity, bool>> BuildCriteria(PaginatedModel paginatedModel)
         {
-            var criteria = (Expression<Func<SynchronizationStatesEntity, bool>>)(x => true);
+            var criteria = (Expression<Func<SynchronizationStatusEntity, bool>>)(x => true);
 
             // Apply base criteria
 
@@ -68,26 +69,26 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return criteria;
         }
 
-        private Expression<Func<SynchronizationStatesEntity, bool>> AddSearchCriteria(Expression<Func<SynchronizationStatesEntity, bool>> criteria, string search)
+        private Expression<Func<SynchronizationStatusEntity, bool>> AddSearchCriteria(Expression<Func<SynchronizationStatusEntity, bool>> criteria, string search)
         {
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.name.ToUpper().Contains(search.ToUpper()) ||
-                x.code.ToUpper().Contains(search.ToUpper()));
+                x.key.ToUpper().Contains(search.ToUpper()) ||
+                x.text.ToUpper().Contains(search.ToUpper()));
             }
 
             return criteria;
         }
 
-        public static Expression<Func<SynchronizationStatesEntity, bool>> GetByIdExpression(Guid id)
+        public static Expression<Func<SynchronizationStatusEntity, bool>> GetByIdExpression(Guid id)
         {
-            return BaseSpecification<SynchronizationStatesEntity>.GetByUuid(x => x.id, id);
+            return BaseSpecification<SynchronizationStatusEntity>.GetByUuid(x => x.id, id);
         }
 
-        public static Expression<Func<SynchronizationStatesEntity, bool>> GetByCodeExpression(string code)
+        public static Expression<Func<SynchronizationStatusEntity, bool>> GetByCodeExpression(string code)
         {
-            return x => true && x.code == code;
+            return x => true && x.key == code;
         }
 
     }

@@ -8,8 +8,8 @@
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="services"></param> 
-        /// <param name="configuration"></param> 
+        /// <param key="services"></param> 
+        /// <param key="configuration"></param> 
         void RegisterAppServices(IServiceCollection services, IConfiguration configuration);
     }
 }

@@ -25,7 +25,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure
         /// <summary>
         /// 
         /// </summary>        
-        /// <param name="configuration"></param> 
+        /// <param key="configuration"></param> 
         public AddInfrastructureModule(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -33,7 +33,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure
         /// <summary>
         /// Loading the lifetime Autofact of the services's Infrastructure.
         /// </summary>
-        /// <param name="builder"></param>         
+        /// <param key="builder"></param>         
         protected override void Load(ContainerBuilder builder)
         {
             LegacyOptions sqlOptions = new LegacyOptions();

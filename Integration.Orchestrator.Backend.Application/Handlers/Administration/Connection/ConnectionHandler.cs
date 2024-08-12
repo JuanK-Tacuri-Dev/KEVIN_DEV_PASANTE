@@ -13,7 +13,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
 {
     public class ConnectionHandler(
         IConnectionService<ConnectionEntity> connectionService,
-        IModuleSequenceService moduleSequenceService)
+        ICodeConfiguratorService codeConfiguratorService)
         :
         IRequestHandler<CreateConnectionCommandRequest, CreateConnectionCommandResponse>,
         IRequestHandler<UpdateConnectionCommandRequest, UpdateConnectionCommandResponse>,
@@ -23,7 +23,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         IRequestHandler<GetAllPaginatedConnectionCommandRequest, GetAllPaginatedConnectionCommandResponse>
     {
         private readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
-        private readonly IModuleSequenceService _moduleSequenceService = moduleSequenceService;
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateConnectionCommandResponse> Handle(CreateConnectionCommandRequest request, CancellationToken cancellationToken)
         {
@@ -276,7 +276,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
             var connectionEntity = new ConnectionEntity()
             {
                 id = id,
-                code = await _moduleSequenceService.GenerateCodeAsync(Modules.Connection.ToString()),
+                code = await _codeConfiguratorService.GenerateCodeAsync(Modules.Connection),
                 server_id = request.ServerId,
                 adapter_id = request.AdapterId,
                 repository_id = request.RepositoryId,

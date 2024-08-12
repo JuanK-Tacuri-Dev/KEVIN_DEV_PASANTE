@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Integration.Orchestrator.Ba
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Integration.Orchestrator.Backend.Api.Tests", "Integration.Orchestrator.Backend.Api.Tests\Integration.Orchestrator.Backend.Api.Tests.csproj", "{38079AF1-22D0-416E-90AE-4263D33B2828}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration.Orchestrator.Backend.Infrastructure.Tests", "Integration.Orchestrator.Backend.Infrastructure.Tests\Integration.Orchestrator.Backend.Infrastructure.Tests.csproj", "{8E532155-DD3D-4676-99F8-B734BC44F33A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Integration.Orchestrator.Backend.Infrastructure.Tests", "Integration.Orchestrator.Backend.Infrastructure.Tests\Integration.Orchestrator.Backend.Infrastructure.Tests.csproj", "{8E532155-DD3D-4676-99F8-B734BC44F33A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

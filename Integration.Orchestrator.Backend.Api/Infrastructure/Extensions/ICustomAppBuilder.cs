@@ -8,8 +8,8 @@
         /// <summary>
         /// Loading the lifetime Autofact of the services's API.
         /// </summary>
-        /// <param name="app"></param>    
-        /// <param name="configuration"></param>    
+        /// <param key="app"></param>    
+        /// <param key="configuration"></param>    
         void ConfigureApp(IApplicationBuilder app, IConfiguration configuration);
     }
 }

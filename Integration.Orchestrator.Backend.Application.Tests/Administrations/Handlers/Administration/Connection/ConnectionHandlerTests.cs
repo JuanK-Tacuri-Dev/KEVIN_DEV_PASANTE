@@ -15,13 +15,13 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
     public class ConnectionHandlerTests
     {
         private readonly Mock<IConnectionService<ConnectionEntity>> _serviceMock;
-        private readonly Mock<IModuleSequenceService> _moduleSequenceServiceMock;
+        private readonly Mock<ICodeConfiguratorService> _moduleSequenceServiceMock;
         private readonly ConnectionHandler _handler;
 
         public ConnectionHandlerTests()
         {
             _serviceMock = new Mock<IConnectionService<ConnectionEntity>>();
-            _moduleSequenceServiceMock = new Mock<IModuleSequenceService>();
+            _moduleSequenceServiceMock = new Mock<ICodeConfiguratorService>();
 
             _handler = new ConnectionHandler(_serviceMock.Object, _moduleSequenceServiceMock.Object);
         }

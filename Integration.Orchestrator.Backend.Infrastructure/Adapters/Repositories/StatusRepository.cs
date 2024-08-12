@@ -23,6 +23,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .Set(m => m.key, entity.key)
                 .Set(m => m.text, entity.text)
                 .Set(m => m.color, entity.color)
+                .Set(m => m.background, entity.background)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);
         }
@@ -42,7 +43,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return statusEntity;
         }
 
-        public async Task<StatusEntity> GetByCodeAsync(Expression<Func<StatusEntity, bool>> specification)
+        public async Task<StatusEntity> GetByKeyAsync(Expression<Func<StatusEntity, bool>> specification)
         {
             var filter = Builders<StatusEntity>.Filter.Where(specification);
             var statusEntity = await _collection
@@ -54,23 +55,27 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<IEnumerable<StatusEntity>> GetAllAsync(ISpecification<StatusEntity> specification)
         {
             var filter = Builders<StatusEntity>.Filter.Where(specification.Criteria);
-            var statusEntity = await _collection
+
+            var query = _collection
                 .Find(filter)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip)
                 .Sort(specification.OrderBy != null
-                                               ? Builders<StatusEntity>.Sort.Ascending(specification.OrderBy)
-                                               : Builders<StatusEntity>.Sort.Descending(specification.OrderByDescending))
-                .ToListAsync();
-            return statusEntity;
+                    ? Builders<StatusEntity>.Sort.Ascending(specification.OrderBy)
+                    : Builders<StatusEntity>.Sort.Descending(specification.OrderByDescending));
+
+            if (specification.Skip >= 0)
+            {
+                query = query
+                    .Limit(specification.Limit)
+                    .Skip(specification.Skip);
+            }
+            return await query.ToListAsync();
         }
 
         public async Task<long> GetTotalRows(ISpecification<StatusEntity> specification)
         {
             return await _collection
                 .Find(specification.Criteria)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip).CountDocumentsAsync();
+                .CountDocumentsAsync();
         }
 
     }

@@ -13,7 +13,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
 {
     public class AdapterHandler(
         IAdapterService<AdapterEntity> adapterService,
-        IModuleSequenceService moduleSequenceService)
+        ICodeConfiguratorService codeConfiguratorService)
         :
         IRequestHandler<CreateAdapterCommandRequest, CreateAdapterCommandResponse>,
         IRequestHandler<UpdateAdapterCommandRequest, UpdateAdapterCommandResponse>,
@@ -24,7 +24,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
         IRequestHandler<GetAllPaginatedAdapterCommandRequest, GetAllPaginatedAdapterCommandResponse>
     {
         private readonly IAdapterService<AdapterEntity> _adapterService = adapterService;
-        private readonly IModuleSequenceService _moduleSequenceService = moduleSequenceService;
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateAdapterCommandResponse> Handle(CreateAdapterCommandRequest request, CancellationToken cancellationToken)
         {
@@ -313,7 +313,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
             var adapterEntity = new AdapterEntity()
             {
                 id = id,
-                adapter_code = await _moduleSequenceService.GenerateCodeAsync(Modules.Adapter.ToString()),
+                adapter_code = await _codeConfiguratorService.GenerateCodeAsync(Modules.Adapter),
                 name = request.Name,
                 adapter_type_id = request.TypeAdapterId,
                 status_id = request.StatusId,
