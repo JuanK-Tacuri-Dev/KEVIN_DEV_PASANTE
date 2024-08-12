@@ -29,6 +29,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             { nameof(CatalogEntity.name), x => x.name },
             { nameof(CatalogEntity.value), x => x.value },
+            { nameof(CatalogEntity.detail), x => x.detail }
         };
         private void SetupPagination(PaginatedModel model)
         {
