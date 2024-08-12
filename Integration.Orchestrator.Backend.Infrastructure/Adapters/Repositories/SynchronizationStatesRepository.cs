@@ -7,67 +7,75 @@ using System.Linq.Expressions;
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
     [Repository]
-    public class SynchronizationStatesRepository(IMongoCollection<SynchronizationStatesEntity> collection) : ISynchronizationStatesRepository<SynchronizationStatesEntity>
+    public class SynchronizationStatesRepository(IMongoCollection<SynchronizationStatusEntity> collection) : ISynchronizationStatesRepository<SynchronizationStatusEntity>
     {
-        private readonly IMongoCollection<SynchronizationStatesEntity> _collection = collection;
+        private readonly IMongoCollection<SynchronizationStatusEntity> _collection = collection;
 
-        public Task InsertAsync(SynchronizationStatesEntity entity)
+        public Task InsertAsync(SynchronizationStatusEntity entity)
         {
             return _collection.InsertOneAsync(entity);
         }
 
-        public Task UpdateAsync(SynchronizationStatesEntity entity)
+        public Task UpdateAsync(SynchronizationStatusEntity entity)
         {
-            var filter = Builders<SynchronizationStatesEntity>.Filter.Eq("_id", entity.id);
-            var update = Builders<SynchronizationStatesEntity>.Update
-                .Set(m => m.name, entity.name)
-                .Set(m => m.code, entity.code)
+            var filter = Builders<SynchronizationStatusEntity>.Filter.Eq("_id", entity.id);
+            var update = Builders<SynchronizationStatusEntity>.Update
+                .Set(m => m.key, entity.key)
+                .Set(m => m.text, entity.text)
                 .Set(m => m.color, entity.color)
+                .Set(m => m.background, entity.background)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);
         }
 
-        public async Task DeleteAsync(SynchronizationStatesEntity entity)
+        public async Task DeleteAsync(SynchronizationStatusEntity entity)
         {
-            var filter = Builders<SynchronizationStatesEntity>.Filter.Eq("_id", entity.id);
+            var filter = Builders<SynchronizationStatusEntity>.Filter.Eq("_id", entity.id);
             await _collection.DeleteOneAsync(filter);
         }
 
-        public async Task<SynchronizationStatesEntity> GetByIdAsync(Expression<Func<SynchronizationStatesEntity, bool>> specification)
+        public async Task<SynchronizationStatusEntity> GetByIdAsync(Expression<Func<SynchronizationStatusEntity, bool>> specification)
         {
-            var filter = Builders<SynchronizationStatesEntity>.Filter.Where(specification);
+            var filter = Builders<SynchronizationStatusEntity>.Filter.Where(specification);
             var synchronizationStatesEntity = await _collection
                 .Find(filter)
                 .FirstOrDefaultAsync();
             return synchronizationStatesEntity;
         }
 
-        public async Task<SynchronizationStatesEntity> GetByCodeAsync(Expression<Func<SynchronizationStatesEntity, bool>> specification)
+        public async Task<SynchronizationStatusEntity> GetByCodeAsync(Expression<Func<SynchronizationStatusEntity, bool>> specification)
         {
-            var filter = Builders<SynchronizationStatesEntity>.Filter.Where(specification);
+            var filter = Builders<SynchronizationStatusEntity>.Filter.Where(specification);
             var synchronizationStatesEntity = await _collection
                 .Find(filter)
                 .FirstOrDefaultAsync();
             return synchronizationStatesEntity;
         }
 
-        public async Task<IEnumerable<SynchronizationStatesEntity>> GetAllAsync(ISpecification<SynchronizationStatesEntity> specification)
+        public async Task<IEnumerable<SynchronizationStatusEntity>> GetAllAsync(ISpecification<SynchronizationStatusEntity> specification)
         {
-            var filter = Builders<SynchronizationStatesEntity>.Filter.Where(specification.Criteria);
-            var synchronizationStatesEntity = await _collection
+            var filter = Builders<SynchronizationStatusEntity>.Filter.Where(specification.Criteria);
+
+            var query = _collection
                 .Find(filter)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip)
                 .Sort(specification.OrderBy != null
-                                               ? Builders<SynchronizationStatesEntity>.Sort.Ascending(specification.OrderBy)
-                                               : Builders<SynchronizationStatesEntity>.Sort.Descending(specification.OrderByDescending))
-                .ToListAsync();
-            return synchronizationStatesEntity;
+                    ? Builders<SynchronizationStatusEntity>.Sort.Ascending(specification.OrderBy)
+                    : Builders<SynchronizationStatusEntity>.Sort.Descending(specification.OrderByDescending));
+
+            if (specification.Skip >= 0)
+            {
+                query = query
+                    .Limit(specification.Limit)
+                    .Skip(specification.Skip);
+            }
+            return await query.ToListAsync();
         }
 
-        public async Task<long> GetTotalRows(ISpecification<SynchronizationStatesEntity> specification)
+        public async Task<long> GetTotalRows(ISpecification<SynchronizationStatusEntity> specification)
         {
-            return await _collection.Find(specification.Criteria).CountDocumentsAsync();
+            return await _collection
+                .Find(specification.Criteria)
+                .CountDocumentsAsync();
         }
     }
 }

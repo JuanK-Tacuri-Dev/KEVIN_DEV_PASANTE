@@ -3,13 +3,14 @@
     [Serializable]
     public class ConnectionEntity : Entity<Guid>
     {
-        public string connection_code { get; set; }
-        public string server { get; set; }
-        public string port { get; set; }
-        public string user { get; set; }
-        public string password { get; set; }
+        public string code { get; set; }
+        public Guid server_id { get; set; }
         public Guid adapter_id { get; set; }
         public Guid repository_id { get; set; }
+        public string description { get; set; }
+        public Guid status_id { get; set; }
+        
+        
 
         public DateTime created_at { get; private set; } = DateTime.UtcNow;
         public DateTime updated_at { get; private set; } = DateTime.UtcNow;

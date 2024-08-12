@@ -14,8 +14,8 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="services"></param>    
-        /// <param name="configuration"></param>  
+        /// <param key="services"></param>    
+        /// <param key="configuration"></param>  
         public void RegisterAppServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddSwaggerGen(c =>

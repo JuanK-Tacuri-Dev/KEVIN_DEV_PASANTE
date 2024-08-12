@@ -6,5 +6,6 @@
     public class RepositoryCreate : RepositoryRequest
     {
         public Guid Id { get; set; }
+        public string Code { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Administration.Interf
         Task UpdateAsync(T status);
         Task DeleteAsync(T status);
         Task<T> GetByIdAsync(Guid id);
-        Task<T> GetByCodeAsync(string code);
+        Task<T> GetByKeyAsync(string key);
         Task<IEnumerable<T>> GetAllPaginatedAsync(PaginatedModel paginatedModel);
         Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel);
     }

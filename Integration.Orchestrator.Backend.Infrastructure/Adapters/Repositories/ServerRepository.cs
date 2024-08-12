@@ -10,7 +10,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
     public class ServerRepository(IMongoCollection<ServerEntity> collection) : IServerRepository<ServerEntity>
     {
         private readonly IMongoCollection<ServerEntity> _collection = collection;
-        
+
         public Task InsertAsync(ServerEntity entity)
         {
             return _collection.InsertOneAsync(entity);
@@ -20,10 +20,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             var filter = Builders<ServerEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<ServerEntity>.Update
-                .Set(m => m.server_code, entity.server_code)
                 .Set(m => m.name, entity.name)
-                .Set(m => m.type, entity.type)
+                .Set(m => m.type_server_id, entity.type_server_id)
                 .Set(m => m.url, entity.url)
+                .Set(m => m.status_id, entity.status_id)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);
         }
@@ -64,23 +64,27 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<IEnumerable<ServerEntity>> GetAllAsync(ISpecification<ServerEntity> specification)
         {
             var filter = Builders<ServerEntity>.Filter.Where(specification.Criteria);
-            var serverEntity = await _collection
+
+            var query = _collection
                 .Find(filter)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip)
                 .Sort(specification.OrderBy != null
-                                               ? Builders<ServerEntity>.Sort.Ascending(specification.OrderBy)
-                                               : Builders<ServerEntity>.Sort.Descending(specification.OrderByDescending))
-                .ToListAsync();
-            return serverEntity;
+                    ? Builders<ServerEntity>.Sort.Ascending(specification.OrderBy)
+                    : Builders<ServerEntity>.Sort.Descending(specification.OrderByDescending));
+
+            if (specification.Skip >= 0)
+            {
+                query = query
+                    .Limit(specification.Limit)
+                    .Skip(specification.Skip);
+            }
+            return await query.ToListAsync();
         }
 
         public async Task<long> GetTotalRows(ISpecification<ServerEntity> specification)
         {
             return await _collection
                 .Find(specification.Criteria)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip).CountDocumentsAsync();
+                .CountDocumentsAsync();
         }
 
     }

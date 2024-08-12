@@ -3,8 +3,7 @@
     public class StatusUpdateResponse : ModelResponse<StatusUpdate>
     {
     }
-    public class StatusUpdate : StatusRequest
+    public class StatusUpdate : StatusResponse
     {
-        public Guid Id { get; set; }
     }
 }

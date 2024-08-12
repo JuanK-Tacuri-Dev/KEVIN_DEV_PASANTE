@@ -45,9 +45,9 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _serverRepository.GetByCodeAsync(specification);
         }
 
-        public async Task<IEnumerable<ServerEntity>> GetByTypeAsync(string type)
+        public async Task<IEnumerable<ServerEntity>> GetByTypeAsync(Guid typeId)
         {
-            var specification = ServerSpecification.GetByTypeExpression(type);
+            var specification = ServerSpecification.GetByTypeExpression(typeId);
             return await _serverRepository.GetByTypeAsync(specification);
         }
 
@@ -67,7 +67,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             if (create) 
             {
-                var serverByCode = await GetByCodeAsync(server.server_code);
+                var serverByCode = await GetByCodeAsync(server.code);
                 if (serverByCode != null) 
                 {
                     throw new OrchestratorArgumentException(string.Empty,

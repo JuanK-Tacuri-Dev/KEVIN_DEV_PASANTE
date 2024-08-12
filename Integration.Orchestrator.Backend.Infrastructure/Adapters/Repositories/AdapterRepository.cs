@@ -10,7 +10,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
     public class AdapterRepository(IMongoCollection<AdapterEntity> collection) : IAdapterRepository<AdapterEntity>
     {
         private readonly IMongoCollection<AdapterEntity> _collection = collection;
-        
+
         public Task InsertAsync(AdapterEntity entity)
         {
             return _collection.InsertOneAsync(entity);
@@ -21,8 +21,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             var filter = Builders<AdapterEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<AdapterEntity>.Update
                 .Set(m => m.name, entity.name)
-                .Set(m => m.adapter_code, entity.adapter_code)
-                .Set(m => m.adapter_type, entity.adapter_type)
+                .Set(m => m.adapter_type_id, entity.adapter_type_id)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);
         }
@@ -63,23 +62,27 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<IEnumerable<AdapterEntity>> GetAllAsync(ISpecification<AdapterEntity> specification)
         {
             var filter = Builders<AdapterEntity>.Filter.Where(specification.Criteria);
-            var operatorEntity = await _collection
+
+            var query = _collection
                 .Find(filter)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip)
                 .Sort(specification.OrderBy != null
-                                               ? Builders<AdapterEntity>.Sort.Ascending(specification.OrderBy)
-                                               : Builders<AdapterEntity>.Sort.Descending(specification.OrderByDescending))
-                .ToListAsync();
-            return operatorEntity;
+                    ? Builders<AdapterEntity>.Sort.Ascending(specification.OrderBy)
+                    : Builders<AdapterEntity>.Sort.Descending(specification.OrderByDescending));
+
+            if (specification.Skip >= 0)
+            {
+                query = query
+                    .Limit(specification.Limit)
+                    .Skip(specification.Skip);
+            }
+            return await query.ToListAsync();
         }
 
         public async Task<long> GetTotalRows(ISpecification<AdapterEntity> specification)
         {
             return await _collection
                 .Find(specification.Criteria)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip).CountDocumentsAsync();
+                .CountDocumentsAsync();
         }
 
     }

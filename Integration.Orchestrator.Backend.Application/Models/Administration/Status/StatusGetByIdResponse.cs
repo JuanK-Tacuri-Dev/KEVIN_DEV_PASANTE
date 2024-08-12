@@ -3,8 +3,7 @@
     public class StatusGetByIdResponse : ModelResponse<StatusGetById>
     {
     }
-    public class StatusGetById : StatusRequest
+    public class StatusGetById : StatusResponse
     {
-        public Guid Id { get; set; }
     }
 }

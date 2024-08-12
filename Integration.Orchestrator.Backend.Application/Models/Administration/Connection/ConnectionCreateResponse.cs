@@ -3,8 +3,7 @@
     public class ConnectionCreateResponse : ModelResponse<ConnectionCreate>
     {
     }
-    public class ConnectionCreate: ConnectionRequest
+    public class ConnectionCreate: ConnectionResponse
     {
-        public Guid Id { get; set; }
     }
 }

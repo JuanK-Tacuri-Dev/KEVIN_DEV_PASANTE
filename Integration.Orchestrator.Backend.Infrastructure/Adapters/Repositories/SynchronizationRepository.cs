@@ -56,20 +56,27 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<IEnumerable<SynchronizationEntity>> GetAllAsync(ISpecification<SynchronizationEntity> specification)
         {
             var filter = Builders<SynchronizationEntity>.Filter.Where(specification.Criteria);
-            var synchronizationEntity = await _collection
+
+            var query = _collection
                 .Find(filter)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip)
                 .Sort(specification.OrderBy != null
-                                               ? Builders<SynchronizationEntity>.Sort.Ascending(specification.OrderBy)
-                                               : Builders<SynchronizationEntity>.Sort.Descending(specification.OrderByDescending))
-                .ToListAsync();
-            return synchronizationEntity;
+                    ? Builders<SynchronizationEntity>.Sort.Ascending(specification.OrderBy)
+                    : Builders<SynchronizationEntity>.Sort.Descending(specification.OrderByDescending));
+
+            if (specification.Skip >= 0)
+            {
+                query = query
+                    .Limit(specification.Limit)
+                    .Skip(specification.Skip);
+            }
+            return await query.ToListAsync();
         }
 
         public async Task<long> GetTotalRows(ISpecification<SynchronizationEntity> specification)
         {
-            return await _collection.Find(specification.Criteria).CountDocumentsAsync();
+            return await _collection
+                .Find(specification.Criteria)
+                .CountDocumentsAsync();
         }
 
     }

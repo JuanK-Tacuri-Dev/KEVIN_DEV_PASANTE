@@ -47,23 +47,27 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<IEnumerable<IntegrationEntity>> GetAllAsync(ISpecification<IntegrationEntity> specification)
         {
             var filter = Builders<IntegrationEntity>.Filter.Where(specification.Criteria);
-            var integrationEntity = await _collection
+
+            var query = _collection
                 .Find(filter)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip)
                 .Sort(specification.OrderBy != null
-                                               ? Builders<IntegrationEntity>.Sort.Ascending(specification.OrderBy)
-                                               : Builders<IntegrationEntity>.Sort.Descending(specification.OrderByDescending))
-                .ToListAsync();
-            return integrationEntity;
+                    ? Builders<IntegrationEntity>.Sort.Ascending(specification.OrderBy)
+                    : Builders<IntegrationEntity>.Sort.Descending(specification.OrderByDescending));
+
+            if (specification.Skip >= 0)
+            {
+                query = query
+                    .Limit(specification.Limit)
+                    .Skip(specification.Skip);
+            }
+            return await query.ToListAsync();
         }
 
         public async Task<long> GetTotalRows(ISpecification<IntegrationEntity> specification)
         {
             return await _collection
                 .Find(specification.Criteria)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip).CountDocumentsAsync();
+                .CountDocumentsAsync();
         }
 
     }

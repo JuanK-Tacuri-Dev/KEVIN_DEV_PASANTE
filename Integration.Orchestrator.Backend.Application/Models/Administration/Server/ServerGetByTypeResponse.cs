@@ -3,8 +3,7 @@
     public class ServerGetByTypeResponse : ModelResponse<IEnumerable<ServerGetByType>>
     {
     }
-    public class ServerGetByType : ServerRequest
+    public class ServerGetByType : ServerResponse
     {
-        public Guid Id { get; set; }
     }
 }
