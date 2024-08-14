@@ -27,8 +27,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<CatalogEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<CatalogEntity, object>>>
         {
-            { nameof(CatalogEntity.detail), x => x.detail },
             { nameof(CatalogEntity.name), x => x.name },
+            { nameof(CatalogEntity.detail), x => x.detail },
             { nameof(CatalogEntity.value), x => x.value }
         };
         private void SetupPagination(PaginatedModel model)
