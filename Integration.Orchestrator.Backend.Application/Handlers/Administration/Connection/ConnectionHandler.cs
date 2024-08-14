@@ -29,7 +29,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         {
             try
             {
-                var connectionEntity = await MapConnection(request.Connection.ConnectionRequest, Guid.NewGuid());
+                var connectionEntity = await MapConnection(request.Connection.ConnectionRequest, Guid.NewGuid(), true);
                 await _connectionService.InsertAsync(connectionEntity);
 
                 return new CreateConnectionCommandResponse(
@@ -271,12 +271,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
             }
         }
 
-        private async Task<ConnectionEntity> MapConnection(ConnectionCreateRequest request, Guid id)
+        private async Task<ConnectionEntity> MapConnection(ConnectionCreateRequest request, Guid id, bool? create = null)
         {
             var connectionEntity = new ConnectionEntity()
             {
                 id = id,
-                code = await _codeConfiguratorService.GenerateCodeAsync(Modules.Connection),
+                code = create == true
+                    ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Connection)
+                    : null,
                 server_id = request.ServerId,
                 adapter_id = request.AdapterId,
                 repository_id = request.RepositoryId,

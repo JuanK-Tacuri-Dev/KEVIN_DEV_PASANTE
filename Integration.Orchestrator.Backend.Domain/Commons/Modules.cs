@@ -8,6 +8,7 @@
         Server,
         Repository,
         Adapter,
-        Connection
+        Connection,
+        Entity
     }
 }

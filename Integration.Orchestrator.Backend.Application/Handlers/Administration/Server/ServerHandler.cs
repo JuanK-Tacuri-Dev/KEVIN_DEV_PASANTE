@@ -30,7 +30,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         {
             try
             {
-                var serverEntity = await MapServer(request.Server.ServerRequest, Guid.NewGuid());
+                var serverEntity = await MapServer(request.Server.ServerRequest, Guid.NewGuid(), true);
                 await _serverService.InsertAsync(serverEntity);
 
                 return new CreateServerCommandResponse(
@@ -247,7 +247,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Url = s.url,
                             StatusId = s.status_id
 
-                        } ).ToList()
+                        }).ToList()
                     });
             }
             catch (OrchestratorArgumentException ex)
@@ -310,12 +310,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
             }
         }
 
-        private async Task<ServerEntity> MapServer(ServerCreateRequest request, Guid id)
+        private async Task<ServerEntity> MapServer(ServerCreateRequest request, Guid id, bool? create = null)
         {
             var serverEntity = new ServerEntity()
             {
                 id = id,
-                code = await _codeConfiguratorService.GenerateCodeAsync(Modules.Server),
+                code = create == true
+                    ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Server)
+                    : null,
                 name = request.Name,
                 type_server_id = request.TypeServerId,
                 url = request.Url,

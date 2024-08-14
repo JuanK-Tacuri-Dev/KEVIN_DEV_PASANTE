@@ -22,8 +22,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             var filter = Builders<EntitiesEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<EntitiesEntity>.Update
                 .Set(m => m.name, entity.name)
-                .Set(m => m.entity_code, entity.entity_code)
-                .Set(m => m.entity_type, entity.entity_type)
+                .Set(m => m.entity_type_id, entity.entity_type_id)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);
         }
@@ -52,7 +51,16 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return entitiesEntity;
         }
 
-        public async Task<IEnumerable<EntitiesEntity>> GetByTypeAsync(Expression<Func<EntitiesEntity, bool>> specification)
+        public async Task<IEnumerable<EntitiesEntity>> GetByTypeIdAsync(Expression<Func<EntitiesEntity, bool>> specification)
+        {
+            var filter = Builders<EntitiesEntity>.Filter.Where(specification);
+            var entitiesEntity = await _collection
+                .Find(filter)
+                .ToListAsync();
+            return entitiesEntity;
+        }
+
+        public async Task<IEnumerable<EntitiesEntity>> GetByRepositoryIdAsync(Expression<Func<EntitiesEntity, bool>> specification)
         {
             var filter = Builders<EntitiesEntity>.Filter.Where(specification);
             var entitiesEntity = await _collection

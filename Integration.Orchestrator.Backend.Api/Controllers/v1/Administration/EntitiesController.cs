@@ -51,11 +51,19 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
                     new EntitiesGetByCodeRequest { Code = code }))).Message);
         }
         [HttpGet]
-        public async Task<IActionResult> GetByType(string type)
+        public async Task<IActionResult> GetByTypeId(Guid typeId)
         {
             return Ok((await _mediator.Send(
                 new GetByTypeEntitiesCommandRequest(
-                    new EntitiesGetByTypeRequest { Type = type }))).Message);
+                    new EntitiesGetByTypeRequest { TypeId = typeId }))).Message);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetByRepositoryId(Guid repositoryId)
+        {
+            return Ok((await _mediator.Send(
+                new GetByRepositoryIdEntitiesCommandRequest(
+                    new EntitiesGetByRepositoryIdRequest { RepositoryId = repositoryId }))).Message);
         }
 
         [HttpPost]

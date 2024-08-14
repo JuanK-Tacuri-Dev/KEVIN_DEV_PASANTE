@@ -30,7 +30,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
         {
             try
             {
-                var adapterEntity = await MapAdapter(request.Adapter.AdapterRequest, Guid.NewGuid());
+                var adapterEntity = await MapAdapter(request.Adapter.AdapterRequest, Guid.NewGuid(), true);
                 await _adapterService.InsertAsync(adapterEntity);
 
                 return new CreateAdapterCommandResponse(
@@ -308,12 +308,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
             }
         }
 
-        private async Task<AdapterEntity> MapAdapter(AdapterCreateRequest request, Guid id)
+        private async Task<AdapterEntity> MapAdapter(AdapterCreateRequest request, Guid id, bool? create = null)
         {
             var adapterEntity = new AdapterEntity()
             {
                 id = id,
-                adapter_code = await _codeConfiguratorService.GenerateCodeAsync(Modules.Adapter),
+                adapter_code = create == true
+                ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Repository)
+                : null,
                 name = request.Name,
                 adapter_type_id = request.TypeAdapterId,
                 status_id = request.StatusId,

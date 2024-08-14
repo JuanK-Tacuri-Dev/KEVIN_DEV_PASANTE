@@ -3,8 +3,7 @@
     public class EntitiesGetByCodeResponse : ModelResponse<GetByCodeEntities>
     {
     }
-    public class GetByCodeEntities : EntitiesRequest
+    public class GetByCodeEntities : EntitiesResponse
     {
-        public Guid Id { get; set; }
     }
 }

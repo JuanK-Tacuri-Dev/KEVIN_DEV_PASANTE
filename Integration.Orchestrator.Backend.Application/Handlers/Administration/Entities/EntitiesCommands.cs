@@ -23,6 +23,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
         public readonly record struct GetByTypeEntitiesCommandRequest(EntitiesGetByTypeRequest Entities) : IRequest<GetByTypeEntitiesCommandResponse>;
         public readonly record struct GetByTypeEntitiesCommandResponse(EntitiesGetByTypeResponse Message);
 
+        public readonly record struct GetByRepositoryIdEntitiesCommandRequest(EntitiesGetByRepositoryIdRequest Entities) : IRequest<GetByRepositoryIdEntitiesCommandResponse>;
+        public readonly record struct GetByRepositoryIdEntitiesCommandResponse(EntitiesGetByRepositoryIdResponse Message);
+
         public readonly record struct GetAllPaginatedEntitiesCommandRequest(EntitiesGetAllPaginatedRequest Entities) : IRequest<GetAllPaginatedEntitiesCommandResponse>;
         public readonly record struct GetAllPaginatedEntitiesCommandResponse(EntitiesGetAllPaginatedResponse Message);
     }
