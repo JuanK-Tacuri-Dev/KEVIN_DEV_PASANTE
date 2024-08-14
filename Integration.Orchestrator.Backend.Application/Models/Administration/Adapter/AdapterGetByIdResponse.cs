@@ -3,8 +3,7 @@
     public class AdapterGetByIdResponse : ModelResponse<AdapterGetById>
     {
     }
-    public class AdapterGetById : AdapterRequest
+    public class AdapterGetById : AdapterResponse
     {
-        public Guid Id { get; set; }
     }
 }

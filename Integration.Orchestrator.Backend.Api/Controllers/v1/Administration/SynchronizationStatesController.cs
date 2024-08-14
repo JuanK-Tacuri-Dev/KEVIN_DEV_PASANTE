@@ -1,8 +1,8 @@
 ﻿using Integration.Orchestrator.Backend.Api.Filter;
-using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStates;
+using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStatus;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static Integration.Orchestrator.Backend.Application.Handlers.Administration.SynchronizationStates.SynchronizationStatesStatesCommands;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization.SynchronizationStatusCommands;
 
 namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
 {
@@ -14,42 +14,42 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
         private readonly IMediator _mediator = mediator;
 
         [HttpPost]
-        public async Task<IActionResult> Create(SynchronizationStatesCreateRequest request)
+        public async Task<IActionResult> Create(SynchronizationStatusCreateRequest request)
         {
             return Ok((await _mediator.Send(
-                new CreateSynchronizationStatesCommandRequest(
-                    new SynchronizationStatesBasicInfoRequest<SynchronizationStatesCreateRequest>(request)))).Message);
+                new CreateSynchronizationStatusCommandRequest(
+                    new SynchronizationStatusBasicInfoRequest<SynchronizationStatusCreateRequest>(request)))).Message);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(SynchronizationStatesUpdateRequest request, Guid id)
+        public async Task<IActionResult> Update(SynchronizationStatusUpdateRequest request, Guid id)
         {
             return Ok((await _mediator.Send(
-                new UpdateSynchronizationStatesCommandRequest(
-                    new SynchronizationStatesBasicInfoRequest<SynchronizationStatesUpdateRequest>(request), id))).Message);
+                new UpdateSynchronizationStatusCommandRequest(
+                    new SynchronizationStatusBasicInfoRequest<SynchronizationStatusUpdateRequest>(request), id))).Message);
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id)
         {
             return Ok((await _mediator.Send(
-                new DeleteSynchronizationStatesCommandRequest(
-                    new SynchronizationStatesDeleteRequest { Id = id }))).Message);
+                new DeleteSynchronizationStatusCommandRequest(
+                    new SynchronizationStatusDeleteRequest { Id = id }))).Message);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetById(Guid id)
         {
             return Ok((await _mediator.Send(
-                new GetByIdSynchronizationStatesCommandRequest(
-                    new SynchronizationStatesGetByIdRequest { Id = id }))).Message);
+                new GetByIdSynchronizationStatusCommandRequest(
+                    new SynchronizationStatusGetByIdRequest { Id = id }))).Message);
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetAllPaginated(SynchronizationStatesGetAllPaginatedRequest request)
+        public async Task<IActionResult> GetAllPaginated(SynchronizationStatusGetAllPaginatedRequest request)
         {
             return Ok((await _mediator.Send(
-                new GetAllPaginatedSynchronizationStatesCommandRequest(request))).Message);
+                new GetAllPaginatedSynchronizationStatusCommandRequest(request))).Message);
         }
     }
 }

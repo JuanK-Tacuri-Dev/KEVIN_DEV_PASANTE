@@ -2,6 +2,6 @@
 {
     public class AdapterGetByTypeRequest
     {
-        public string Type { get; set; }
+        public Guid TypeAdapterId { get; set; }
     }
 }

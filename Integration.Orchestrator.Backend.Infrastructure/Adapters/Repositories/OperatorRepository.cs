@@ -10,7 +10,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
     public class OperatorRepository(IMongoCollection<OperatorEntity> collection) : IOperatorRepository<OperatorEntity>
     {
         private readonly IMongoCollection<OperatorEntity> _collection = collection;
-        
+
         public Task InsertAsync(OperatorEntity entity)
         {
             return _collection.InsertOneAsync(entity);
@@ -21,7 +21,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             var filter = Builders<OperatorEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<OperatorEntity>.Update
                 .Set(m => m.name, entity.name)
-                .Set(m => m.operator_code, entity.operator_code)
                 .Set(m => m.operator_type, entity.operator_type)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);
@@ -63,23 +62,27 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<IEnumerable<OperatorEntity>> GetAllAsync(ISpecification<OperatorEntity> specification)
         {
             var filter = Builders<OperatorEntity>.Filter.Where(specification.Criteria);
-            var operatorEntity = await _collection
+
+            var query = _collection
                 .Find(filter)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip)
                 .Sort(specification.OrderBy != null
-                                               ? Builders<OperatorEntity>.Sort.Ascending(specification.OrderBy)
-                                               : Builders<OperatorEntity>.Sort.Descending(specification.OrderByDescending))
-                .ToListAsync();
-            return operatorEntity;
+                    ? Builders<OperatorEntity>.Sort.Ascending(specification.OrderBy)
+                    : Builders<OperatorEntity>.Sort.Descending(specification.OrderByDescending));
+
+            if (specification.Skip >= 0)
+            {
+                query = query
+                    .Limit(specification.Limit)
+                    .Skip(specification.Skip);
+            }
+            return await query.ToListAsync();
         }
 
         public async Task<long> GetTotalRows(ISpecification<OperatorEntity> specification)
         {
             return await _collection
                 .Find(specification.Criteria)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip).CountDocumentsAsync();
+                .CountDocumentsAsync();
         }
 
     }

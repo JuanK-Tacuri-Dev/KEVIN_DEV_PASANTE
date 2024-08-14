@@ -26,7 +26,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);
         }
-        
+
         public async Task DeleteAsync(ValueEntity entity)
         {
             var filter = Builders<ValueEntity>.Filter.Eq("_id", entity.id);
@@ -63,23 +63,27 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<IEnumerable<ValueEntity>> GetAllAsync(ISpecification<ValueEntity> specification)
         {
             var filter = Builders<ValueEntity>.Filter.Where(specification.Criteria);
-            var valueEntity = await _collection
+
+            var query = _collection
                 .Find(filter)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip)
                 .Sort(specification.OrderBy != null
-                                               ? Builders<ValueEntity>.Sort.Ascending(specification.OrderBy)
-                                               : Builders<ValueEntity>.Sort.Descending(specification.OrderByDescending))
-                .ToListAsync();
-            return valueEntity;
+                    ? Builders<ValueEntity>.Sort.Ascending(specification.OrderBy)
+                    : Builders<ValueEntity>.Sort.Descending(specification.OrderByDescending));
+
+            if (specification.Skip >= 0)
+            {
+                query = query
+                    .Limit(specification.Limit)
+                    .Skip(specification.Skip);
+            }
+            return await query.ToListAsync();
         }
 
         public async Task<long> GetTotalRows(ISpecification<ValueEntity> specification)
         {
             return await _collection
                 .Find(specification.Criteria)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip).CountDocumentsAsync();
+                .CountDocumentsAsync();
         }
 
     }

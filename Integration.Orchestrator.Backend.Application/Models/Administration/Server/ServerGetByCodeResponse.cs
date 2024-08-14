@@ -3,8 +3,7 @@
     public class ServerGetByCodeResponse : ModelResponse<ServerGetByCode>
     {
     }
-    public class ServerGetByCode : ServerRequest
+    public class ServerGetByCode : ServerResponse
     {
-        public Guid Id { get; set; }
     }
 }

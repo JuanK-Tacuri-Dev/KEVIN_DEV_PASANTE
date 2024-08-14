@@ -9,7 +9,7 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
     [Route("api/v1/[controller]/[action]")]
     [ApiController]
     [ServiceFilter(typeof(ErrorHandlingRest))]
-    public class StateController(IMediator mediator) : Controller
+    public class StatesController(IMediator mediator) : Controller
     {
         private readonly IMediator _mediator = mediator;
 

@@ -22,12 +22,13 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
 
             var criteria = specification.Criteria;
             var compiledCriteria = criteria.Compile();
-            var testEntity = new SynchronizationStatesEntity
+            var testEntity = new SynchronizationStatusEntity
             {
                 id = Guid.NewGuid(),
-                name = "Cancelado",
-                code = "canceled",
-                color = "F77D7D"
+                key = "Cancelado",
+                text = "canceled",
+                color = "F77D7D",
+                background = "#E2F7E2"
             };
 
             Assert.True(compiledCriteria(testEntity));
@@ -47,12 +48,13 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
 
             var criteria = specification.Criteria;
             var compiledCriteria = criteria.Compile();
-            var testEntity = new SynchronizationStatesEntity
+            var testEntity = new SynchronizationStatusEntity
             {
                 id = Guid.NewGuid(),
-                name = "Cancelado",
-                code = "canceled",
-                color = "F77D7D"
+                key = "Cancelado",
+                text = "canceled",
+                color = "F77D7D",
+                background = "#E2F7E2"
             };
 
             Assert.True(compiledCriteria(testEntity));
@@ -79,7 +81,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
         {
             var paginatedModel = new PaginatedModel
             {
-                SortBy = nameof(SynchronizationStatesEntity.name),
+                SortBy = nameof(SynchronizationStatusEntity.key),
                 SortOrder = SortOrdering.Ascending,
                 Page = 1,
                 Rows = 10
@@ -96,7 +98,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
         {
             var paginatedModel = new PaginatedModel
             {
-                SortBy = nameof(SynchronizationStatesEntity.name),
+                SortBy = nameof(SynchronizationStatusEntity.key),
                 SortOrder = SortOrdering.Descending,
                 Page = 1,
                 Rows = 10

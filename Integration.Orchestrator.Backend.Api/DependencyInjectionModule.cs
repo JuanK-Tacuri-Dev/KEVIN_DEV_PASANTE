@@ -16,7 +16,7 @@ namespace Integration.Orchestrator.Backend.Api
         /// <summary>
         /// 
         /// </summary>        
-        /// <param name="configuration"></param> 
+        /// <param key="configuration"></param> 
         public AddApiModule(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -25,7 +25,7 @@ namespace Integration.Orchestrator.Backend.Api
         /// <summary>
         /// Loading the lifetime Autofact of the services's API.
         /// </summary>
-        /// <param name="builder"></param>         
+        /// <param key="builder"></param>         
         protected override void Load(ContainerBuilder builder)
         {
             _ = builder.RegisterInstance(_configuration).As<IConfiguration>();

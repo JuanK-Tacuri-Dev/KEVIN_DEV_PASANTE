@@ -10,11 +10,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
         {
             RuleFor(request => request.Adapter.AdapterRequest.Name)
             .NotEmpty().WithMessage(AppMessages.Adapter_Name_Required);
-
-            RuleFor(request => request.Adapter.AdapterRequest.Code)
-            .NotEmpty().WithMessage(AppMessages.Adapter_Code_Required);
-
-            RuleFor(request => request.Adapter.AdapterRequest.Type)
+            
+            RuleFor(request => request.Adapter.AdapterRequest.TypeAdapterId)
             .NotEmpty().WithMessage(AppMessages.Adapter_Type_Required);
 
             

@@ -3,8 +3,7 @@
     public class ServerUpdateResponse : ModelResponse<ServerUpdate>
     {
     }
-    public class ServerUpdate : ServerRequest
+    public class ServerUpdate : ServerResponse
     {
-        public Guid Id { get; set; }
     }
 }

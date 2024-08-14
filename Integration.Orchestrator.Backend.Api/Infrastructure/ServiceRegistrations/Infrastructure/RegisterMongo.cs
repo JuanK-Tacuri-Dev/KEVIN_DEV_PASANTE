@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Application.Options;
 using Integration.Orchestrator.Backend.Domain.Entities;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -21,8 +22,8 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="services"></param>  
-        /// <param name="configuration"></param>  
+        /// <param key="services"></param>  
+        /// <param key="configuration"></param>  
         /// 
         public void RegisterAppServices(IServiceCollection services, IConfiguration configuration
         )
@@ -57,10 +58,11 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             var serverCollection = mongoSetting.Collections!?.Server;
             var repositoryCollection = mongoSetting.Collections!?.Repository;
             var adapterCollection = mongoSetting.Collections!?.Adapter;
-            var catalogCollection = mongoSetting.Collections!?.Catalog;
+            var catalogCollection = mongoSetting.Collections!?.Catalog; 
+            var codeConfiguratorCollection = mongoSetting.Collections!?.CodeConfigurator;
 
             services.AddSingleton(s => database.GetCollection<SynchronizationEntity>(synchronizationCollection));
-            services.AddSingleton(s => database.GetCollection<SynchronizationStatesEntity>(synchronizationStatesCollection));
+            services.AddSingleton(s => database.GetCollection<SynchronizationStatusEntity>(synchronizationStatesCollection));
             services.AddSingleton(s => database.GetCollection<ConnectionEntity>(connectionCollection));
             services.AddSingleton(s => database.GetCollection<IntegrationEntity>(integrationCollection));
             services.AddSingleton(s => database.GetCollection<ProcessEntity>(processCollection));
@@ -73,6 +75,7 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             services.AddSingleton(s => database.GetCollection<RepositoryEntity>(repositoryCollection));
             services.AddSingleton(s => database.GetCollection<AdapterEntity>(adapterCollection));
             services.AddSingleton(s => database.GetCollection<CatalogEntity>(catalogCollection));
+            services.AddSingleton(s => database.GetCollection<CodeConfiguratorEntity>(codeConfiguratorCollection)); 
 
             BsonClassMap.RegisterClassMap<Entity<Guid>>(
                 map =>

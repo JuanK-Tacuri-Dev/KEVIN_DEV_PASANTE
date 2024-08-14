@@ -1,40 +1,41 @@
-﻿using Integration.Orchestrator.Backend.Application.Handlers.Administrations.SynchronizationStates;
-using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStates;
+﻿using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStatus;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Moq;
 using System.Net;
-using static Integration.Orchestrator.Backend.Application.Handlers.Administration.SynchronizationStates.SynchronizationStatesStatesCommands;
+using Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization.SynchronizationStatusCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Handlers.Administration.Synchronization
 {
-    public class SynchronizationStatesHandlerTests
+    public class SynchronizationStatusHandlerTests
     {
-        private readonly Mock<ISynchronizationStatesService<SynchronizationStatesEntity>> _mockService;
-        private readonly SynchronizationStatesHandler _handler;
+        private readonly Mock<ISynchronizationStatesService<SynchronizationStatusEntity>> _mockService;
+        private readonly SynchronizationStatusHandler _handler;
 
-        public SynchronizationStatesHandlerTests()
+        public SynchronizationStatusHandlerTests()
         {
-            _mockService = new Mock<ISynchronizationStatesService<SynchronizationStatesEntity>>();
-            _handler = new SynchronizationStatesHandler(_mockService.Object);
+            _mockService = new Mock<ISynchronizationStatesService<SynchronizationStatusEntity>>();
+            _handler = new SynchronizationStatusHandler(_mockService.Object);
         }
 
         [Fact]
         public async Task Handle_CreateSynchronizationStatesCommandRequest_ShouldReturnSuccess()
         {
             // Arrange
-            var request = new CreateSynchronizationStatesCommandRequest(
-                new SynchronizationStatesBasicInfoRequest<SynchronizationStatesCreateRequest>(
-                    new SynchronizationStatesCreateRequest
+            var request = new CreateSynchronizationStatusCommandRequest(
+                new SynchronizationStatusBasicInfoRequest<SynchronizationStatusCreateRequest>(
+                    new SynchronizationStatusCreateRequest
                     {
-                        Name = "Test State",
-                        Code = "Active",
-                        Color = "Green"
+                        Key = string.Empty,
+                        Text = "Active",
+                        Color = "Green",
+                        Background = "#E2F7E2"
                     }));
 
-            _mockService.Setup(service => service.InsertAsync(It.IsAny<SynchronizationStatesEntity>()))
+            _mockService.Setup(service => service.InsertAsync(It.IsAny<SynchronizationStatusEntity>()))
                         .Returns(Task.CompletedTask);
 
             // Act
@@ -44,23 +45,24 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             //Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK.GetHashCode(), response.Message.Code);
             Assert.Equal(AppMessages.Application_RespondeCreated, response.Message.Messages[0]);
-            _mockService.Verify(service => service.InsertAsync(It.IsAny<SynchronizationStatesEntity>()), Times.Once);
+            _mockService.Verify(service => service.InsertAsync(It.IsAny<SynchronizationStatusEntity>()), Times.Once);
         }
 
         [Fact]
         public async Task Handle_CreateSynchronizationStatesCommandRequest_ShouldThrowArgumentException()
         {
             // Arrange
-            var request = new CreateSynchronizationStatesCommandRequest(
-                new SynchronizationStatesBasicInfoRequest<SynchronizationStatesCreateRequest>(
-                    new SynchronizationStatesCreateRequest
+            var request = new CreateSynchronizationStatusCommandRequest(
+                new SynchronizationStatusBasicInfoRequest<SynchronizationStatusCreateRequest>(
+                    new SynchronizationStatusCreateRequest
                     {
-                        Name = "Test State",
-                        Code = "Active",
-                        Color = "Green"
+                        Key = string.Empty,
+                        Text = "Active",
+                        Color = "Green",
+                        Background = "#E2F7E2"
                     }));
 
-            _mockService.Setup(service => service.InsertAsync(It.IsAny<SynchronizationStatesEntity>()))
+            _mockService.Setup(service => service.InsertAsync(It.IsAny<SynchronizationStatusEntity>()))
                         .ThrowsAsync(new ArgumentException("Invalid data"));
 
             // Act & Assert
@@ -72,9 +74,9 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         public async Task Handle_GetAllPaginatedSynchronizationStatesCommandRequest_ShouldReturnSuccess()
         {
             // Arrange
-            var request = new GetAllPaginatedSynchronizationStatesCommandRequest
+            var request = new GetAllPaginatedSynchronizationStatusCommandRequest
             {
-                Synchronization = new SynchronizationStatesGetAllPaginatedRequest
+                Synchronization = new SynchronizationStatusGetAllPaginatedRequest
                 {
                     Page = 1,
                     Rows = 10,
@@ -82,21 +84,23 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                 }
             };
 
-            var synchronizationStates = new List<SynchronizationStatesEntity>
+            var synchronizationStates = new List<SynchronizationStatusEntity>
             {
-                new SynchronizationStatesEntity
+                new SynchronizationStatusEntity
                 {
                     id = Guid.NewGuid(),
-                    name = "State 1",
-                    code = "Active",
-                    color = "Green"
+                    key = string.Empty,
+                    text = "Active",
+                    color = "Green",
+                    background = "#E2F7E2"
                 },
-                new SynchronizationStatesEntity
+                new SynchronizationStatusEntity
                 {
                     id = Guid.NewGuid(),
-                    name = "State 2",
-                    code = "Inactive",
-                    color = "Red"
+                    key = "Cancelado",
+                    text = "canceled",
+                    color = "F77D7D",
+                    background = "#E2F7E2"
                 }
              };
 
@@ -121,9 +125,9 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         public async Task Handle_GetAllPaginatedSynchronizationStatesCommandRequest_ShouldThrowArgumentException_WhenNoRowsFound()
         {
             // Arrange
-            var request = new GetAllPaginatedSynchronizationStatesCommandRequest
+            var request = new GetAllPaginatedSynchronizationStatusCommandRequest
             {
-                Synchronization = new SynchronizationStatesGetAllPaginatedRequest
+                Synchronization = new SynchronizationStatusGetAllPaginatedRequest
                 {
                     Page = 1,
                     Rows = 1,

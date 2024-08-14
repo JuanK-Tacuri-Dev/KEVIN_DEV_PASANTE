@@ -2,6 +2,6 @@
 {
     public class ServerGetByTypeRequest
     {
-        public string Type { get; set; }
+        public Guid Type { get; set; }
     }
 }

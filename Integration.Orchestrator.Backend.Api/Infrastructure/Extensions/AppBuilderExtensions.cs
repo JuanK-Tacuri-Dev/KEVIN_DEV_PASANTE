@@ -11,8 +11,8 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.Extensions
         /// <summary>
         /// Loading the lifetime Autofact of the services's API.
         /// </summary>
-        /// <param name="app"></param>         
-        /// <param name="configuration"></param>        
+        /// <param key="app"></param>         
+        /// <param key="configuration"></param>        
         public static void AddAppConfigurationsInAssembly(this IApplicationBuilder app, IConfiguration configuration)
         {
             var customBuilders = typeof(Program).Assembly.DefinedTypes

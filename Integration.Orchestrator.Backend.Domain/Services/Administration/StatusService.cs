@@ -37,10 +37,10 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _statusRepository.GetByIdAsync(specification);
         }
 
-        public async Task<StatusEntity> GetByCodeAsync(string code)
+        public async Task<StatusEntity> GetByKeyAsync(string key)
         {
-            var specification = StatusSpecification.GetByCodeExpression(code);
-            return await _statusRepository.GetByCodeAsync(specification);
+            var specification = StatusSpecification.GetByCodeExpression(key);
+            return await _statusRepository.GetByKeyAsync(specification);
         }
 
         public async Task<IEnumerable<StatusEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
@@ -59,8 +59,8 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             if (create) 
             {
-                var processByCode = await GetByCodeAsync(status.key);
-                if (processByCode != null)
+                var processByType = await GetByKeyAsync(status.key);
+                if (processByType != null)
                 {
                     throw new ArgumentException(AppMessages.Application_ResponseNotCreated);
                 }

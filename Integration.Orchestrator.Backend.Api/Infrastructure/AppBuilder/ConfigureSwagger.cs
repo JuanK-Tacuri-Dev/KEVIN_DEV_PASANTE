@@ -12,8 +12,8 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.AppBuilder
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="app"></param>
-        /// <param name="configuration"></param>
+        /// <param key="app"></param>
+        /// <param key="configuration"></param>
         public void ConfigureApp(IApplicationBuilder app, IConfiguration configuration)
         {
             // Use swagger Doc

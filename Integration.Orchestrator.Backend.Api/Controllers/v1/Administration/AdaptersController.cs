@@ -51,11 +51,11 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
                     new AdapterGetByCodeRequest { Code = code }))).Message);
         }
         [HttpGet]
-        public async Task<IActionResult> GetByType(string type)
+        public async Task<IActionResult> GetByType(Guid id)
         {
             return Ok((await _mediator.Send(
                 new GetByTypeAdapterCommandRequest(
-                    new AdapterGetByTypeRequest { Type = type }))).Message);
+                    new AdapterGetByTypeRequest { TypeAdapterId = id }))).Message);
         }
 
         [HttpPost]

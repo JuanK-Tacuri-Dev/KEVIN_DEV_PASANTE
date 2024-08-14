@@ -13,7 +13,7 @@ namespace Integration.Orchestrator.Backend.Application
         /// <summary>
         /// Loading the lifetime Autofact of the services's Application.
         /// </summary>
-        /// <param name="builder"></param>         
+        /// <param key="builder"></param>         
         protected override void Load(ContainerBuilder builder)
         {
             

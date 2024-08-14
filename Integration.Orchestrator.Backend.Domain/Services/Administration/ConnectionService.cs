@@ -61,7 +61,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             if (create) 
             {
-                var connectionByCode = await GetByCodeAsync(connection.connection_code);
+                var connectionByCode = await GetByCodeAsync(connection.code);
                 if (connectionByCode != null) 
                 {
                     throw new OrchestratorArgumentException(string.Empty,

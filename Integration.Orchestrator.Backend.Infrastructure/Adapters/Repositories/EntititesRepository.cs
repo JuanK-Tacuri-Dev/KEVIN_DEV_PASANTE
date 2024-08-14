@@ -7,11 +7,11 @@ using System.Linq.Expressions;
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
     [Repository]
-    public class EntitiesRepository(IMongoCollection<EntitiesEntity> collection) 
+    public class EntitiesRepository(IMongoCollection<EntitiesEntity> collection)
         : IEntitiesRepository<EntitiesEntity>
     {
         private readonly IMongoCollection<EntitiesEntity> _collection = collection;
-        
+
         public Task InsertAsync(EntitiesEntity entity)
         {
             return _collection.InsertOneAsync(entity);
@@ -64,23 +64,27 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         public async Task<IEnumerable<EntitiesEntity>> GetAllAsync(ISpecification<EntitiesEntity> specification)
         {
             var filter = Builders<EntitiesEntity>.Filter.Where(specification.Criteria);
-            var entitiesEntity = await _collection
+
+            var query = _collection
                 .Find(filter)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip)
                 .Sort(specification.OrderBy != null
-                                               ? Builders<EntitiesEntity>.Sort.Ascending(specification.OrderBy)
-                                               : Builders<EntitiesEntity>.Sort.Descending(specification.OrderByDescending))
-                .ToListAsync();
-            return entitiesEntity;
+                    ? Builders<EntitiesEntity>.Sort.Ascending(specification.OrderBy)
+                    : Builders<EntitiesEntity>.Sort.Descending(specification.OrderByDescending));
+
+            if (specification.Skip >= 0)
+            {
+                query = query
+                    .Limit(specification.Limit)
+                    .Skip(specification.Skip);
+            }
+            return await query.ToListAsync();
         }
 
         public async Task<long> GetTotalRows(ISpecification<EntitiesEntity> specification)
         {
             return await _collection
                 .Find(specification.Criteria)
-                .Limit(specification.Limit)
-                .Skip(specification.Skip).CountDocumentsAsync();
+                .CountDocumentsAsync();
         }
 
     }

@@ -1,10 +1,10 @@
 ﻿using Integration.Orchestrator.Backend.Api.Controllers.v1.Administration;
-using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStates;
+using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStatus;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using static Integration.Orchestrator.Backend.Application.Handlers.Administration.SynchronizationStates.SynchronizationStatesStatesCommands;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization.SynchronizationStatusCommands;
 
 namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administration
 {
@@ -23,25 +23,26 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
         public async Task Create_ReturnsOkResult()
         {
             // Arrange
-            var request = new SynchronizationStatesCreateRequest
+            var request = new SynchronizationStatusCreateRequest
             {
-                Name = "Cancelado",
-                Code = "canceled",
-                Color = "F77D7D"
+                Key = "Key",
+                Text = "Text",
+                Color = "F77D7D",
+                Background = "#E2F7E2"
             };
 
-            var response = new CreateSynchronizationStatesCommandResponse(
-                new SynchronizationStatesCreateResponse
+            var response = new CreateSynchronizationStatusCommandResponse(
+                new SynchronizationStatusCreateResponse
                 {
                     Code = 200,
                     Messages = [AppMessages.Application_RespondeCreated],
-                    Data = new SynchronizationStatesCreate
+                    Data = new SynchronizationStatusCreate
                     {
                         Id = Guid.NewGuid()
                     }
                 });
 
-            _mediatorMock.Setup(m => m.Send(It.IsAny<CreateSynchronizationStatesCommandRequest>(), default))
+            _mediatorMock.Setup(m => m.Send(It.IsAny<CreateSynchronizationStatusCommandRequest>(), default))
                          .ReturnsAsync(response);
 
             // Act
@@ -49,7 +50,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<SynchronizationStatesCreateResponse>(okResult.Value);
+            var returnValue = Assert.IsType<SynchronizationStatusCreateResponse>(okResult.Value);
             Assert.Equal(200, returnValue.Code);
             Assert.Equal(AppMessages.Application_RespondeCreated, returnValue.Messages[0]);
         }
@@ -58,22 +59,22 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
         public async Task GetAllPaginated_ReturnsOkResult()
         {
             // Arrange
-            var request = new SynchronizationStatesGetAllPaginatedRequest
+            var request = new SynchronizationStatusGetAllPaginatedRequest
             {
                 Page = 1,
                 Rows = 1,
                 SortBy = ""
             };
 
-            var response = new GetAllPaginatedSynchronizationStatesCommandResponse(
-                new SynchronizationStatesGetAllPaginatedResponse
+            var response = new GetAllPaginatedSynchronizationStatusCommandResponse(
+                new SynchronizationStatusGetAllPaginatedResponse
                 {
                     Code = 200,
                     Description = AppMessages.Api_SynchronizationStatesResponse,
                     TotalRows = 1,
-                    Data = new List<SynchronizationStatesGetAllPaginated>
+                    Data = new List<SynchronizationStatusGetAllPaginated>
                     {
-                new SynchronizationStatesGetAllPaginated
+                new SynchronizationStatusGetAllPaginated
                 {
                     Id = Guid.NewGuid(),
                     Name = "Test",
@@ -83,7 +84,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                     }
                 });
 
-            _mediatorMock.Setup(m => m.Send(It.IsAny<GetAllPaginatedSynchronizationStatesCommandRequest>(), default))
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetAllPaginatedSynchronizationStatusCommandRequest>(), default))
                          .ReturnsAsync(response);
 
             // Act
@@ -91,7 +92,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<GetAllPaginatedSynchronizationStatesCommandResponse>(okResult.Value);
+            var returnValue = Assert.IsType<GetAllPaginatedSynchronizationStatusCommandResponse>(okResult.Value);
             Assert.Equal(200, returnValue.Message.Code);
             Assert.Equal(AppMessages.Api_SynchronizationStatesResponse, returnValue.Message.Description);
         }*/

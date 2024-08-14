@@ -3,8 +3,7 @@
     public class ConnectionGetByTypeResponse : ModelResponse<IEnumerable<ConnectionGetByType>>
     {
     }
-    public class ConnectionGetByType : ConnectionRequest
+    public class ConnectionGetByType : ConnectionResponse
     {
-        public Guid Id { get; set; }
     }
 }

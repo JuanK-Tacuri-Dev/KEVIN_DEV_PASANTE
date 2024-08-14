@@ -10,14 +10,14 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
 {
     public class SynchronizationStatesRepositoryTests
     {
-        private readonly Mock<IMongoCollection<SynchronizationStatesEntity>> _mockCollection;
-        private readonly Mock<IAsyncCursor<SynchronizationStatesEntity>> _mockCursor;
+        private readonly Mock<IMongoCollection<SynchronizationStatusEntity>> _mockCollection;
+        private readonly Mock<IAsyncCursor<SynchronizationStatusEntity>> _mockCursor;
         private readonly SynchronizationStatesRepository _repository;
 
         public SynchronizationStatesRepositoryTests()
         {
-            _mockCollection = new Mock<IMongoCollection<SynchronizationStatesEntity>>();
-            _mockCursor = new Mock<IAsyncCursor<SynchronizationStatesEntity>>();
+            _mockCollection = new Mock<IMongoCollection<SynchronizationStatusEntity>>();
+            _mockCursor = new Mock<IAsyncCursor<SynchronizationStatusEntity>>();
             _repository = new SynchronizationStatesRepository(_mockCollection.Object);
         }
 
@@ -25,12 +25,13 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
         public async Task InsertAsync_ShouldCallInsertOneAsync()
         {
             // Arrange
-            var entity = new SynchronizationStatesEntity
+            var entity = new SynchronizationStatusEntity
             {
                 id = Guid.NewGuid(),
-                name = "StateName",
-                code = "Code",
-                color = "Color"
+                key = "Cancelado",
+                text = "canceled",
+                color = "F77D7D",
+                background = "#E2F7E2"
             };
 
             // Act
@@ -45,12 +46,13 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
         {
             // Arrange
             var id = Guid.NewGuid();
-            var entity = new SynchronizationStatesEntity
+            var entity = new SynchronizationStatusEntity
             {
                 id = id,
-                name = "StateName",
-                code = "Code",
-                color = "Color"
+                key = "Cancelado",
+                text = "canceled",
+                color = "F77D7D",
+                background = "#E2F7E2"
             };
 
 
@@ -59,8 +61,8 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
                        .Returns(Task.FromResult(true))
                        .Returns(Task.FromResult(false));
 
-            _mockCollection.Setup(x => x.FindAsync(It.IsAny<FilterDefinition<SynchronizationStatesEntity>>(),
-                                                  It.IsAny<FindOptions<SynchronizationStatesEntity, SynchronizationStatesEntity>>(),
+            _mockCollection.Setup(x => x.FindAsync(It.IsAny<FilterDefinition<SynchronizationStatusEntity>>(),
+                                                  It.IsAny<FindOptions<SynchronizationStatusEntity, SynchronizationStatusEntity>>(),
                                                   It.IsAny<CancellationToken>()))
                            .ReturnsAsync(_mockCursor.Object);
 
@@ -78,20 +80,21 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
         public async Task GetAllAsync_ShouldReturnEntities()
         {
             // Arrange
-            var specification = new Mock<ISpecification<SynchronizationStatesEntity>>();
+            var specification = new Mock<ISpecification<SynchronizationStatusEntity>>();
             specification.Setup(s => s.Criteria).Returns(x => true);
             specification.Setup(s => s.Limit).Returns(10);
             specification.Setup(s => s.Skip).Returns(0);
-            specification.Setup(s => s.OrderBy).Returns(x=> x.name);
+            specification.Setup(s => s.OrderBy).Returns(x=> x.key);
 
-            var entities = new List<SynchronizationStatesEntity>
+            var entities = new List<SynchronizationStatusEntity>
     {
-        new SynchronizationStatesEntity
+        new SynchronizationStatusEntity
         {
             id = Guid.NewGuid(),
-            name = "StateName",
-            code = "Code",
-            color = "Color"
+            key = "Cancelado",
+            text = "canceled",
+            color = "F77D7D",
+            background = "#E2F7E2"
         }
             };
 
@@ -100,8 +103,8 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
                        .Returns(Task.FromResult(true))
                        .Returns(Task.FromResult(false));
 
-            _mockCollection.Setup(x => x.FindAsync(It.IsAny<FilterDefinition<SynchronizationStatesEntity>>(),
-                                                  It.IsAny<FindOptions<SynchronizationStatesEntity, SynchronizationStatesEntity>>(),
+            _mockCollection.Setup(x => x.FindAsync(It.IsAny<FilterDefinition<SynchronizationStatusEntity>>(),
+                                                  It.IsAny<FindOptions<SynchronizationStatusEntity, SynchronizationStatusEntity>>(),
                                                   It.IsAny<CancellationToken>()))
                            .ReturnsAsync(_mockCursor.Object);
 

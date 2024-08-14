@@ -7,16 +7,13 @@ using System.Text.RegularExpressions;
 namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistrations.Application
 {
     [ExcludeFromCodeCoverage]
-    /// <summary>
-    /// Configure the Api Flient Validations when Exposes the Errors.
-    /// </summary>    
     public partial class RegisterApiBehavior : IServiceRegistration
     {
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="services"></param>    
-        /// <param name="configuration"></param>  
+        /// <param key="services"></param>    
+        /// <param key="configuration"></param>  
         public void RegisterAppServices(IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<ApiBehaviorOptions>(options =>

@@ -8,17 +8,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
     {
         public CreateServerCommandRequestValidator()
         {
-            RuleFor(request => request.Server.ServerRequest.Code)
-            .NotEmpty().WithMessage(AppMessages.Server_Code_Required);
-
             RuleFor(request => request.Server.ServerRequest.Name)
-            .NotEmpty().WithMessage(AppMessages.Server_Name_Required);
+            .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
 
-            RuleFor(request => request.Server.ServerRequest.Type)
-            .NotEmpty().WithMessage(AppMessages.Server_Type_Required);
+            RuleFor(request => request.Server.ServerRequest.TypeServerId)
+            .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
 
             RuleFor(request => request.Server.ServerRequest.Url)
-            .NotEmpty().WithMessage(AppMessages.Server_Url_Required);
+            .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
         }
     }
 }
