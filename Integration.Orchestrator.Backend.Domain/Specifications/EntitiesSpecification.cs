@@ -28,7 +28,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             = new Dictionary<string, Expression<Func<EntitiesEntity, object>>>
         {
             { nameof(EntitiesEntity.entity_type_id), x => x.entity_type_id },
-            { nameof(EntitiesEntity.entity_code), x => x.entity_code }
+            { nameof(EntitiesEntity.entity_code), x => x.entity_code },
+            { nameof(EntitiesEntity.name), x => x.name }
         };
         private void SetupPagination(PaginatedModel model)
         {
