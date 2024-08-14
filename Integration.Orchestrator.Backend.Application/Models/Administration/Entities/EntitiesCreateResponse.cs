@@ -3,8 +3,7 @@
     public class EntitiesCreateResponse : ModelResponse<EntitiesCreate>
     {
     }
-    public class EntitiesCreate: EntitiesRequest
+    public class EntitiesCreate: EntitiesResponse
     {
-        public Guid Id { get; set; }
     }
 }

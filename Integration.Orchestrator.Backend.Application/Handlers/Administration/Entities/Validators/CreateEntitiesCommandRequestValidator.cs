@@ -10,11 +10,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
         {
             RuleFor(request => request.Entities.EntitiesRequest.Name)
             .NotEmpty().WithMessage(AppMessages.Entities_Name_Required);
-
-            RuleFor(request => request.Entities.EntitiesRequest.Code)
-            .NotEmpty().WithMessage(AppMessages.Entities_Code_Required);
-
-            RuleFor(request => request.Entities.EntitiesRequest.Type)
+            
+            RuleFor(request => request.Entities.EntitiesRequest.TypeId)
             .NotEmpty().WithMessage(AppMessages.Entities_Type_Required);
 
             

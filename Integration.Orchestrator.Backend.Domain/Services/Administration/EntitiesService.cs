@@ -43,10 +43,16 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _entitiesRepository.GetByCodeAsync(specification);
         }
 
-        public async Task<IEnumerable<EntitiesEntity>> GetByTypeAsync(string type)
+        public async Task<IEnumerable<EntitiesEntity>> GetByTypeIdAsync(Guid typeId)
         {
-            var specification = EntitiesSpecification.GetByTypeExpression(type);
-            return await _entitiesRepository.GetByTypeAsync(specification);
+            var specification = EntitiesSpecification.GetByTypeExpression(typeId);
+            return await _entitiesRepository.GetByTypeIdAsync(specification);
+        }
+
+        public async Task<IEnumerable<EntitiesEntity>> GetByRepositoryIdAsync(Guid repositoryId)
+        {
+            var specification = EntitiesSpecification.GetByRepositoryIdExpression(repositoryId);
+            return await _entitiesRepository.GetByRepositoryIdAsync(specification);
         }
 
         public async Task<IEnumerable<EntitiesEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)

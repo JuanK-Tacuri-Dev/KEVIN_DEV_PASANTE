@@ -64,7 +64,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                     {
                         Id = Guid.NewGuid(),
                         Code = code,
-                        /*ServerId = "localhost",
+                        /*RepositoryId = "localhost",
                         Port = "8080",
                         User = "user",
                         Password = "password",*/

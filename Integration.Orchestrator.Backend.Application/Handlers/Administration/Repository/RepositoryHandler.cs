@@ -29,7 +29,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
         {
             try
             {
-                var repositoryEntity = await MapRepository(request.Repository.RepositoryRequest, Guid.NewGuid());
+                var repositoryEntity = await MapRepository(request.Repository.RepositoryRequest, Guid.NewGuid(), true);
                 await _repositoryService.InsertAsync(repositoryEntity);
 
                 return new CreateRepositoryCommandResponse(
@@ -127,7 +127,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                     {
                         Code = (int)ResponseCode.DeletedSuccessfully,
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
-                        Data = new RepositoryDelete 
+                        Data = new RepositoryDelete
                         {
                             Id = repositoryById.id
                         }
@@ -277,12 +277,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
             }
         }
 
-        private async Task<RepositoryEntity> MapRepository(RepositoryCreateRequest request, Guid id)
+        private async Task<RepositoryEntity> MapRepository(RepositoryCreateRequest request, Guid id, bool? create = null)
         {
             var repositoryEntity = new RepositoryEntity()
             {
                 id = id,
-                code = await _codeConfiguratorService.GenerateCodeAsync(Modules.Repository),
+                code = create == true
+                    ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Repository)
+                    : null,
                 port = request.Port,
                 user = request.UserName,
                 password = request.Password,

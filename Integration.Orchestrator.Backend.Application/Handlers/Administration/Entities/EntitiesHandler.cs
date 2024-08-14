@@ -1,17 +1,21 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
+﻿using System.Net;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
-using System.Net;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities.EntitiesCommands;
 
-namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Entities
+namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities
 {
-    public class EntitiesHandler(IEntitiesService<EntitiesEntity> entitiesService)
+    public class EntitiesHandler(
+        IEntitiesService<EntitiesEntity> entitiesService,
+        ICodeConfiguratorService codeConfiguratorService)
         :
         IRequestHandler<CreateEntitiesCommandRequest, CreateEntitiesCommandResponse>,
         IRequestHandler<UpdateEntitiesCommandRequest, UpdateEntitiesCommandResponse>,
@@ -19,34 +23,37 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         IRequestHandler<GetByIdEntitiesCommandRequest, GetByIdEntitiesCommandResponse>,
         IRequestHandler<GetByCodeEntitiesCommandRequest, GetByCodeEntitiesCommandResponse>,
         IRequestHandler<GetByTypeEntitiesCommandRequest, GetByTypeEntitiesCommandResponse>,
+        IRequestHandler<GetByRepositoryIdEntitiesCommandRequest, GetByRepositoryIdEntitiesCommandResponse>,
         IRequestHandler<GetAllPaginatedEntitiesCommandRequest, GetAllPaginatedEntitiesCommandResponse>
     {
         public readonly IEntitiesService<EntitiesEntity> _entitiesService = entitiesService;
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateEntitiesCommandResponse> Handle(CreateEntitiesCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var entitiesEntity = MapEntities(request.Entities.EntitiesRequest, Guid.NewGuid());
+                var entitiesEntity = await MapEntities(request.Entities.EntitiesRequest, Guid.NewGuid(), true);
                 await _entitiesService.InsertAsync(entitiesEntity);
 
                 return new CreateEntitiesCommandResponse(
                     new EntitiesCreateResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeCreated],
+                        Code = (int)ResponseCode.CreatedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new EntitiesCreate
                         {
                             Id = entitiesEntity.id,
+                            Name = entitiesEntity.name,
                             Code = entitiesEntity.entity_code,
-                            Type = entitiesEntity.entity_type,
-                            ServerId = entitiesEntity.server_id
+                            TypeId = entitiesEntity.entity_type_id,
+                            RepositoryId = entitiesEntity.repository_id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -60,30 +67,35 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var entitiesById = await _entitiesService.GetByIdAsync(request.Id);
                 if (entitiesById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_EntitiesNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Entities.EntitiesRequest
+                        });
 
-                var entitiesEntity = MapEntities(request.Entities.EntitiesRequest, request.Id);
+                var entitiesEntity = await MapEntities(request.Entities.EntitiesRequest, request.Id);
                 await _entitiesService.UpdateAsync(entitiesEntity);
 
                 return new UpdateEntitiesCommandResponse(
                         new EntitiesUpdateResponse
                         {
-                            Code = HttpStatusCode.OK.GetHashCode(),
-                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Code = (int)ResponseCode.UpdatedSuccessfully,
+                            Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new EntitiesUpdate
                             {
                                 Id = entitiesEntity.id,
+                                Name = entitiesEntity.name,
                                 Code = entitiesEntity.entity_code,
-                                Type = entitiesEntity.entity_type,
-                                ServerId = entitiesEntity.server_id
+                                TypeId = entitiesEntity.entity_type_id,
+                                RepositoryId = entitiesEntity.repository_id
                             }
                         });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -97,26 +109,30 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var entitiesById = await _entitiesService.GetByIdAsync(request.Entities.Id);
                 if (entitiesById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_EntitiesNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Entities
+                        });
 
                 await _entitiesService.DeleteAsync(entitiesById);
 
                 return new DeleteEntitiesCommandResponse(
                     new EntitiesDeleteResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Code = (int)ResponseCode.DeletedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
                         Data = new EntitiesDelete 
                         {
                             Id = entitiesById.id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -130,28 +146,32 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var entitiesById = await _entitiesService.GetByIdAsync(request.Entities.Id);
                 if (entitiesById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_EntitiesNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Entities
+                        });
 
                 return new GetByIdEntitiesCommandResponse(
                     new EntitiesGetByIdResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new EntitiesGetById
                         {
                             Id = entitiesById.id,
                             Name = entitiesById.name,
                             Code = entitiesById.entity_code,
-                            Type = entitiesById.entity_type,
-                            ServerId = entitiesById.server_id
+                            TypeId = entitiesById.entity_type_id,
+                            RepositoryId = entitiesById.repository_id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -165,28 +185,32 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var entitiesByCode = await _entitiesService.GetByCodeAsync(request.Entities.Code);
                 if (entitiesByCode == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_EntitiesNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Entities
+                        });
 
                 return new GetByCodeEntitiesCommandResponse(
                     new EntitiesGetByCodeResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new GetByCodeEntities
                         {
                             Id = entitiesByCode.id,
                             Name = entitiesByCode.name,
                             Code = entitiesByCode.entity_code,
-                            Type = entitiesByCode.entity_type,
-                            ServerId = entitiesByCode.server_id
+                            TypeId = entitiesByCode.entity_type_id,
+                            RepositoryId = entitiesByCode.repository_id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -198,30 +222,73 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var entitiesByType = await _entitiesService.GetByTypeAsync(request.Entities.Type);
+                var entitiesByType = await _entitiesService.GetByTypeIdAsync(request.Entities.TypeId);
                 if (entitiesByType == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_EntitiesNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Entities
+                        });
 
                 return new GetByTypeEntitiesCommandResponse(
                     new EntitiesGetByTypeResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = entitiesByType.Select(c => new EntitiesGetByType
                         {
                             Id = c.id,
                             Name = c.name,
                             Code = c.entity_code,
-                            Type = c.entity_type,
-                            ServerId = c.server_id
+                            TypeId = c.entity_type_id,
+                            RepositoryId = c.repository_id
                         }).ToList()
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<GetByRepositoryIdEntitiesCommandResponse> Handle(GetByRepositoryIdEntitiesCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var entities = await _entitiesService.GetByRepositoryIdAsync(request.Entities.RepositoryId);
+                if (entities == null)
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Entities
+                        });
+
+                return new GetByRepositoryIdEntitiesCommandResponse(
+                    new EntitiesGetByRepositoryIdResponse
+                    {
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
+                        Data = entities.Select(c => new EntitiesGetByRepositoryId
+                        {
+                            Id = c.id,
+                            Name = c.name,
+                            Code = c.entity_code,
+                            TypeId = c.entity_type_id,
+                            RepositoryId = c.repository_id
+                        }).ToList()
+                    });
+            }
+            catch (OrchestratorArgumentException ex)
+            {
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -236,17 +303,21 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var model = request.Entities.Adapt<PaginatedModel>();
                 var rows = await _entitiesService.GetTotalRowsAsync(model);
                 if (rows == 0)
-                {
-                    throw new ArgumentException(AppMessages.Application_EntitiesNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
+                        });
+
                 var result = await _entitiesService.GetAllPaginatedAsync(model);
 
 
                 return new GetAllPaginatedEntitiesCommandResponse(
                     new EntitiesGetAllPaginatedResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_RespondeGetAll,
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully),
                         Data = new EntitiesGetAllRows
                         {
                             Total_rows = rows,
@@ -255,15 +326,15 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Id = c.id,
                                 Name = c.name,
                                 Code = c.entity_code,
-                                Type = c.entity_type,
-                                IdServer = c.server_id
+                                TypeId = c.entity_type_id,
+                                RepositoryId = c.repository_id
                             }).ToList()
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -271,15 +342,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             }
         }
 
-        private EntitiesEntity MapEntities(EntitiesCreateRequest request, Guid id)
+        private async Task<EntitiesEntity> MapEntities(EntitiesCreateRequest request, Guid id, bool? create = null)
         {
             var entitiesEntity = new EntitiesEntity()
             {
                 id = id,
                 name = request.Name,
-                entity_code = request.Code,
-                entity_type = request.Type,
-                server_id = request.ServerId
+                entity_code = create == true
+                    ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Entity)
+                    : null,
+                entity_type_id = request.TypeId,
+                repository_id = request.RepositoryId
             };
             return entitiesEntity;
         }
