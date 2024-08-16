@@ -24,7 +24,7 @@ stages:
       displayName: Build an image
       inputs:
         command: buildAndPush
-        containerRegistry: ACR-kfc-mxpv2-integration
+        containerRegistry: SC_ACR_GRUPOKFC_DEV
         repository: mxpv2-orchestrator
         buildContext: '$(Build.SourcesDirectory)/'
         dockerfile: '$(Build.SourcesDirectory)/Integration.Orchestrator.Backend.Api/Dockerfile'
