@@ -30,3 +30,8 @@ stages:
         dockerfile: '$(Build.SourcesDirectory)/Integration.Orchestrator.Backend.Api/Dockerfile'
         tags: |
           $(tag)
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Pipeline.Workspace)'
+        artifact: 'publisAksMxpv2Orchestrator'
+        publishLocation: 'pipeline'
