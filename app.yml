@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mxpv2-orchestrator
-        image: kfcregistry.azurecr.io/mxpv2-orchestrator
+        image: kfcregistry.azurecr.io/mxpv2-orchestrator:latest
         resources:
           limits:
             memory: "128Mi"
