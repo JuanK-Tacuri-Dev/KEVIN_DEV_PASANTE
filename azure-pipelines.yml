@@ -9,11 +9,11 @@ resources:
 - repo: self
 
 variables:
-  tag: '$(Build.BuildId)'
+  tag: 'dev'
 
 stages:
-- stage: Build
-  displayName: Build image
+- stage: buildAndPush
+  displayName: Build image and Push in ACR
   jobs:
   - job: Build
     displayName: Build
@@ -21,7 +21,7 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - task: Docker@2
-      displayName: Build an image
+      displayName: Build and push an image to container registry
       inputs:
         command: buildAndPush
         containerRegistry: SC_ACR_GRUPOKFC_DEV
@@ -30,6 +30,7 @@ stages:
         dockerfile: '$(Build.SourcesDirectory)/Integration.Orchestrator.Backend.Api/Dockerfile'
         tags: |
           $(tag)
+
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: '$(Pipeline.Workspace)'
