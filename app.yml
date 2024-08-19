@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mxpv2-orchestrator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mxpv2-orchestrator
+  template:
+    metadata:
+      labels:
+        app: mxpv2-orchestrator
+    spec:
+      containers:
+      - name: mxpv2-orchestrator
+        image: kfcregistry.azurecr.io/mxpv2-orchestrator
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
