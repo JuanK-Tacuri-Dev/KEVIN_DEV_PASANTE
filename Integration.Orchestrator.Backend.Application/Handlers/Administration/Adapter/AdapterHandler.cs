@@ -314,7 +314,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
             {
                 id = id,
                 adapter_code = create == true
-                ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Repository)
+                ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Adapter)
                 : null,
                 name = request.Name,
                 adapter_type_id = request.TypeAdapterId,
