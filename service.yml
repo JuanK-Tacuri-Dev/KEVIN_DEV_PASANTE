@@ -3,8 +3,11 @@ kind: Service
 metadata:
   name: mxpv2-orchestrator
 spec:
-  type: LoadBalancer
   ports:
-  - port: 8080
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
   selector:
     app: mxpv2-orchestrator
