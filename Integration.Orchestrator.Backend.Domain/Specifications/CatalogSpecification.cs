@@ -89,6 +89,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return x => true && x.father_id == fatherId;
         }
 
-
+        public static Expression<Func<CatalogEntity, bool>> GetByCodeExpression(string code)
+        {
+            return x => true && x.code == code;
+        }
     }
 }

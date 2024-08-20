@@ -53,6 +53,15 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return catalogEntity;
         }
 
+        public async Task<CatalogEntity> GetByCodeAsync(Expression<Func<CatalogEntity, bool>> specification)
+        {
+            var filter = Builders<CatalogEntity>.Filter.Where(specification);
+            var catalogEntity = await _collection
+                .Find(filter)
+                .FirstOrDefaultAsync();
+            return catalogEntity;
+        }
+
         public async Task<IEnumerable<CatalogEntity>> GetAllAsync(ISpecification<CatalogEntity> specification)
         {
             var filter = Builders<CatalogEntity>.Filter.Where(specification.Criteria);

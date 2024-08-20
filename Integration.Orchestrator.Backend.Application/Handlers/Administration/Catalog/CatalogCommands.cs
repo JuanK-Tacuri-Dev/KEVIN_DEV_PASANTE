@@ -20,6 +20,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         public readonly record struct GetByFatherCatalogCommandRequest(CatalogGetByFatherRequest Catalog) : IRequest<GetByFatherCatalogCommandResponse>;
         public readonly record struct GetByFatherCatalogCommandResponse(CatalogGetByFatherResponse Message);
 
+        public readonly record struct GetByCodeCatalogCommandRequest(CatalogGetByCodeRequest Catalog) : IRequest<GetByCodeCatalogCommandResponse>;
+        public readonly record struct GetByCodeCatalogCommandResponse(CatalogGetByCodeResponse Message);
+
         public readonly record struct GetAllPaginatedCatalogCommandRequest(CatalogGetAllPaginatedRequest Catalog) : IRequest<GetAllPaginatedCatalogCommandResponse>;
         public readonly record struct GetAllPaginatedCatalogCommandResponse(CatalogGetAllPaginatedResponse Message);
     }

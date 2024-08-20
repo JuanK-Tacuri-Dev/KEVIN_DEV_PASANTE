@@ -3,7 +3,7 @@
     public class CatalogUpdateResponse : ModelResponse<CatalogUpdate>
     {
     }
-    public class CatalogUpdate : CatalogRequest
+    public class CatalogUpdate : CatalogResponse
     {
         public Guid Id { get; set; }
     }
