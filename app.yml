@@ -15,9 +15,5 @@ spec:
       containers:
       - name: mxpv2-orchestrator
         image: kfcregistry.azurecr.io/mxpv2-orchestrator:dev
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
         ports:
-        - containerPort: 80
+        - containerPort: 8080
