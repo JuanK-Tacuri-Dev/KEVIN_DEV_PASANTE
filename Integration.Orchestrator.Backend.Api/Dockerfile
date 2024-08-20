@@ -16,7 +16,4 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 
 EXPOSE 8080
-EXPOSE 8081
-EXPOSE 5052
-EXPOSE 9171
 ENTRYPOINT ["dotnet", "Integration.Orchestrator.Backend.Api.dll"]
