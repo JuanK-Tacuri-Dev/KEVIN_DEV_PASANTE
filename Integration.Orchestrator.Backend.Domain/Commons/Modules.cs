@@ -2,13 +2,14 @@
 {
     public enum Modules
     {
-        Extract,
-        Transform,
-        Load,
-        Server,
-        Repository,
-        Adapter,
-        Connection,
-        Entity
+        Extract = 1,
+        Transform = 2,
+        Load = 3,
+        Server = 4,
+        Repository = 5,
+        Adapter = 6,
+        Connection = 7,
+        Entity = 8,
+        Catalog = 9
     }
 }

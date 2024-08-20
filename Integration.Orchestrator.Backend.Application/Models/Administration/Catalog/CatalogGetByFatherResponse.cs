@@ -3,7 +3,7 @@
     public class CatalogGetByFatherResponse : ModelResponse<IEnumerable<CatalogGetByType>>
     {
     }
-    public class CatalogGetByType : CatalogRequest
+    public class CatalogGetByType : CatalogResponse
     {
         public Guid Id { get; set; }
     }

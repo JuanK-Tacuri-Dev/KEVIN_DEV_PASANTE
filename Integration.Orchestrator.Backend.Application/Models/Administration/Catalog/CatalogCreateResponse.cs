@@ -3,8 +3,7 @@
     public class CatalogCreateResponse : ModelResponse<CatalogCreate>
     {
     }
-    public class CatalogCreate : CatalogRequest
+    public class CatalogCreate : CatalogResponse
     {
-        public Guid Id { get; set; }
     }
 }

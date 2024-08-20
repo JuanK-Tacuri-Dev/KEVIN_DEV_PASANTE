@@ -53,6 +53,14 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
                     new CatalogGetByFatherRequest { FatherId = id }))).Message);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetByCode(string code)
+        {
+            return Ok((await _mediator.Send(
+                new GetByCodeCatalogCommandRequest(
+                    new CatalogGetByCodeRequest { Code = code }))).Message);
+        }
+
         [HttpPost]
         public async Task<IActionResult> GetAllPaginated(CatalogGetAllPaginatedRequest request)
         {

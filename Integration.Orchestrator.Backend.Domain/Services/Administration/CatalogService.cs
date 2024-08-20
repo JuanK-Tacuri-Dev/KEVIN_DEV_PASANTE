@@ -34,6 +34,12 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _processRepository.GetByIdAsync(specification);
         }
 
+        public async Task<CatalogEntity> GetByCodeAsync(string code)
+        {
+            var specification = CatalogSpecification.GetByCodeExpression(code);
+            return await _processRepository.GetByCodeAsync(specification);
+        }
+
         public async Task<IEnumerable<CatalogEntity>> GetByFatherAsync(Guid fatherId)
         {
             var specification = CatalogSpecification.GetByFatherExpression(fatherId);

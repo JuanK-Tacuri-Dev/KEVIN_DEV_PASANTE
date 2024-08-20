@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
@@ -10,22 +11,25 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Administratio
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Catalog
 {
-    public class CatalogHandler(ICatalogService<CatalogEntity> catalogService)
+    public class CatalogHandler(ICatalogService<CatalogEntity> catalogService,
+        ICodeConfiguratorService codeConfiguratorService)
         :
         IRequestHandler<CreateCatalogCommandRequest, CreateCatalogCommandResponse>,
         IRequestHandler<UpdateCatalogCommandRequest, UpdateCatalogCommandResponse>,
         IRequestHandler<DeleteCatalogCommandRequest, DeleteCatalogCommandResponse>,
         IRequestHandler<GetByIdCatalogCommandRequest, GetByIdCatalogCommandResponse>,
         IRequestHandler<GetByFatherCatalogCommandRequest, GetByFatherCatalogCommandResponse>,
+        IRequestHandler<GetByCodeCatalogCommandRequest, GetByCodeCatalogCommandResponse>,
         IRequestHandler<GetAllPaginatedCatalogCommandRequest, GetAllPaginatedCatalogCommandResponse>
     {
         public readonly ICatalogService<CatalogEntity> _catalogService = catalogService;
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateCatalogCommandResponse> Handle(CreateCatalogCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var catalogEntity = MapCatalog(request.Catalog.CatalogRequest, Guid.NewGuid());
+                var catalogEntity = await MapCatalog(request.Catalog.CatalogRequest, Guid.NewGuid(), true);
                 await _catalogService.InsertAsync(catalogEntity);
 
                 return new CreateCatalogCommandResponse(
@@ -36,6 +40,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Data = new CatalogCreate
                         {
                             Id = catalogEntity.id,
+                            Code = catalogEntity.code,
                             Name = catalogEntity.name,
                             Value = catalogEntity.value,
                             FatherId = catalogEntity.father_id,
@@ -68,7 +73,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Data = request.Catalog.CatalogRequest
                         });
 
-                var catalogEntity = MapCatalog(request.Catalog.CatalogRequest, request.Id);
+                var catalogEntity = await MapCatalog(request.Catalog.CatalogRequest, request.Id);
                 await _catalogService.UpdateAsync(catalogEntity);
 
                 return new UpdateCatalogCommandResponse(
@@ -79,6 +84,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Data = new CatalogUpdate
                             {
                                 Id = catalogEntity.id,
+                                Code = catalogEntity.code,
                                 Name = catalogEntity.name,
                                 Value = catalogEntity.value,
                                 FatherId = catalogEntity.father_id,
@@ -156,6 +162,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Data = new CatalogGetById
                         {
                             Id = catalogById.id,
+                            Code = catalogById.code,
                             Name = catalogById.name,
                             Value = catalogById.value,
                             FatherId = catalogById.father_id,
@@ -196,12 +203,54 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Data = catalogByType.Select(p => new CatalogGetByType
                         {
                             Id = p.id,
+                            Code = p.code,
                             Name = p.name,
                             Value = p.value,
                             FatherId = p.father_id,
                             Detail = p.detail,
                             StatusId = p.status_id
                         }).ToList()
+                    });
+            }
+            catch (OrchestratorArgumentException ex)
+            {
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
+        public async Task<GetByCodeCatalogCommandResponse> Handle(GetByCodeCatalogCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var catalogByCode = await _catalogService.GetByCodeAsync(request.Catalog.Code);
+                if (catalogByCode == null)
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Catalog
+                        });
+
+                return new GetByCodeCatalogCommandResponse(
+                    new CatalogGetByCodeResponse
+                    {
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
+                        Data = new CatalogGetByCode
+                        {
+                            Id = catalogByCode.id,
+                            Code = catalogByCode.code,
+                            Name = catalogByCode.name,
+                            Value = catalogByCode.value,
+                            FatherId = catalogByCode.father_id,
+                            Detail = catalogByCode.detail,
+                            StatusId = catalogByCode.status_id
+                        }
                     });
             }
             catch (OrchestratorArgumentException ex)
@@ -243,6 +292,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Rows = result.Select(p => new CatalogGetAllPaginated
                             {
                                 Id = p.id,
+                                Code = p.code,
                                 Name = p.name,
                                 Value = p.value,
                                 FatherId = p.father_id,
@@ -262,11 +312,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
             }
         }
 
-        private CatalogEntity MapCatalog(CatalogCreateRequest request, Guid id)
+        private async Task<CatalogEntity> MapCatalog(CatalogCreateRequest request, Guid id, bool? create = null)
         {
             var catalogEntity = new CatalogEntity()
             {
                 id = id,
+                code = create == true
+                    ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Catalog)
+                    : null,
                 name = request.Name,
                 value = request.Value,
                 detail = request.Detail,
