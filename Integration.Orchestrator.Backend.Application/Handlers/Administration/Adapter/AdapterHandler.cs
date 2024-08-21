@@ -41,10 +41,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                         Data = new AdapterCreate
                         {
                             Id = adapterEntity.id,
-                            Code = adapterEntity.code,
-                            Name = adapterEntity.name,
-                            TypeAdapterId = adapterEntity.adapter_type_id,
-                            Version = adapterEntity.version,
+                            Code = adapterEntity.adapter_code,
+                            Name = adapterEntity.adapter_name,
+                            TypeAdapterId = adapterEntity.type_id,
+                            Version = adapterEntity.adapter_version,
                             StatusId = adapterEntity.status_id
                         }
                     });
@@ -84,10 +84,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                             Data = new AdapterUpdate
                             {
                                 Id = adapterEntity.id,
-                                Code = adapterEntity.code,
-                                Name = adapterEntity.name,
-                                TypeAdapterId = adapterEntity.adapter_type_id,
-                                Version = adapterEntity.version,
+                                Code = adapterEntity.adapter_code,
+                                Name = adapterEntity.adapter_name,
+                                TypeAdapterId = adapterEntity.type_id,
+                                Version = adapterEntity.adapter_version,
                                 StatusId = adapterEntity.status_id
                             }
                         });
@@ -161,10 +161,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                         Data = new AdapterGetById
                         {
                             Id = adapterById.id,
-                            Code = adapterById.code,
-                            Name = adapterById.name,
-                            TypeAdapterId = adapterById.adapter_type_id,
-                            Version = adapterById.version,
+                            Code = adapterById.adapter_code,
+                            Name = adapterById.adapter_name,
+                            TypeAdapterId = adapterById.type_id,
+                            Version = adapterById.adapter_version,
                             StatusId = adapterById.status_id
                         }
                     });
@@ -201,10 +201,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                         Data = new AdapterGetByCode
                         {
                             Id = adapterByCode.id,
-                            Name = adapterByCode.name,
-                            Code = adapterByCode.code,
-                            TypeAdapterId = adapterByCode.adapter_type_id,
-                            Version = adapterByCode.version,
+                            Name = adapterByCode.adapter_name,
+                            Code = adapterByCode.adapter_code,
+                            TypeAdapterId = adapterByCode.type_id,
+                            Version = adapterByCode.adapter_version,
                             StatusId = adapterByCode.status_id
                         }
                     });
@@ -241,10 +241,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                         Data = adapterByType.Select(c => new AdapterGetByType
                         {
                             Id = c.id,
-                            Name = c.name,
-                            Code = c.code,
-                            TypeAdapterId = c.adapter_type_id,
-                            Version = c.version,
+                            Name = c.adapter_name,
+                            Code = c.adapter_code,
+                            TypeAdapterId = c.type_id,
+                            Version = c.adapter_version,
                             StatusId = c.status_id
                         }).ToList()
                     });
@@ -288,10 +288,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                             Rows = result.Select(c => new AdapterGetAllPaginated
                             {
                                 Id = c.id,
-                                Name = c.name,
-                                Code = c.code,
-                                TypeAdapterId = c.adapter_type_id,
-                                Version = c.version,
+                                Name = c.adapter_name,
+                                Code = c.adapter_code,
+                                TypeAdapterId = c.type_id,
+                                Version = c.adapter_version,
                                 StatusId = c.status_id
                             }).ToList()
                         } 
@@ -313,13 +313,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
             var adapterEntity = new AdapterEntity()
             {
                 id = id,
-                code = create == true
+                adapter_code = create == true
                 ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Adapter)
                 : null,
-                name = request.Name,
-                adapter_type_id = request.TypeAdapterId,
+                adapter_name = request.Name,
+                type_id = request.TypeAdapterId,
                 status_id = request.StatusId,
-                version = request.Version
+                adapter_version = request.Version
                 
             };
             return adapterEntity;

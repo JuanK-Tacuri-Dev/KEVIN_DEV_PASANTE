@@ -42,9 +42,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                         Data = new EntitiesCreate
                         {
                             Id = entitiesEntity.id,
-                            Name = entitiesEntity.name,
+                            Name = entitiesEntity.entity_name,
                             Code = entitiesEntity.entity_code,
-                            TypeId = entitiesEntity.entity_type_id,
+                            TypeId = entitiesEntity.type_id,
                             RepositoryId = entitiesEntity.repository_id
                         }
                     });
@@ -84,9 +84,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Data = new EntitiesUpdate
                             {
                                 Id = entitiesEntity.id,
-                                Name = entitiesEntity.name,
+                                Name = entitiesEntity.entity_name,
                                 Code = entitiesEntity.entity_code,
-                                TypeId = entitiesEntity.entity_type_id,
+                                TypeId = entitiesEntity.type_id,
                                 RepositoryId = entitiesEntity.repository_id
                             }
                         });
@@ -160,9 +160,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                         Data = new EntitiesGetById
                         {
                             Id = entitiesById.id,
-                            Name = entitiesById.name,
+                            Name = entitiesById.entity_name,
                             Code = entitiesById.entity_code,
-                            TypeId = entitiesById.entity_type_id,
+                            TypeId = entitiesById.type_id,
                             RepositoryId = entitiesById.repository_id
                         }
                     });
@@ -199,9 +199,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                         Data = new GetByCodeEntities
                         {
                             Id = entitiesByCode.id,
-                            Name = entitiesByCode.name,
+                            Name = entitiesByCode.entity_name,
                             Code = entitiesByCode.entity_code,
-                            TypeId = entitiesByCode.entity_type_id,
+                            TypeId = entitiesByCode.type_id,
                             RepositoryId = entitiesByCode.repository_id
                         }
                     });
@@ -238,9 +238,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                         Data = entitiesByType.Select(c => new EntitiesGetByType
                         {
                             Id = c.id,
-                            Name = c.name,
+                            Name = c.entity_name,
                             Code = c.entity_code,
-                            TypeId = c.entity_type_id,
+                            TypeId = c.type_id,
                             RepositoryId = c.repository_id
                         }).ToList()
                     });
@@ -277,9 +277,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                         Data = entities.Select(c => new EntitiesGetByRepositoryId
                         {
                             Id = c.id,
-                            Name = c.name,
+                            Name = c.entity_name,
                             Code = c.entity_code,
-                            TypeId = c.entity_type_id,
+                            TypeId = c.type_id,
                             RepositoryId = c.repository_id
                         }).ToList()
                     });
@@ -322,9 +322,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Rows = result.Select(c => new EntitiesGetAllPaginated
                             {
                                 Id = c.id,
-                                Name = c.name,
+                                Name = c.entity_name,
                                 Code = c.entity_code,
-                                TypeId = c.entity_type_id,
+                                TypeId = c.type_id,
                                 RepositoryId = c.repository_id
                             }).ToList()
                         }
@@ -345,11 +345,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
             var entitiesEntity = new EntitiesEntity()
             {
                 id = id,
-                name = request.Name,
+                entity_name = request.Name,
                 entity_code = create == true
                     ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Entity)
                     : null,
-                entity_type_id = request.TypeId,
+                type_id = request.TypeId,
                 repository_id = request.RepositoryId
             };
             return entitiesEntity;

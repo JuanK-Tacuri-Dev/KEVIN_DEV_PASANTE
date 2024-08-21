@@ -64,11 +64,11 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             var existingEntity = new SynchronizationEntity
             {
                 id = synchronizationId,
-                name = name,
+                synchronization_name = name,
                 franchise_id = franchiseId,
-                status = status,
-                observations = observation,
-                hour_to_execute = hour_to_execute,
+                status_id = status,
+                synchronization_observations = observation,
+                synchronization_hour_to_execute = hour_to_execute,
                 integrations = new List<Guid> { integrationId },
                 user_id = user_id
             };
@@ -143,11 +143,11 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             var existingEntity = new SynchronizationEntity
             {
                 id = synchronizationId,
-                name = name,
+                synchronization_name = name,
                 franchise_id = franchiseId,
-                status = status,
-                observations = observation,
-                hour_to_execute = hour_to_execute,
+                status_id = status,
+                synchronization_observations = observation,
+                synchronization_hour_to_execute = hour_to_execute,
                 user_id = user_id
             };
             _mockService.Setup(service => service.GetByIdAsync(synchronizationId)).ReturnsAsync(existingEntity);
@@ -182,11 +182,11 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             var existingEntity = new SynchronizationEntity
             {
                 id = synchronizationId,
-                name = name,
+                synchronization_name = name,
                 franchise_id = franchiseId,
-                status = status,
-                observations = observation,
-                hour_to_execute = hour_to_execute,
+                status_id = status,
+                synchronization_observations = observation,
+                synchronization_hour_to_execute = hour_to_execute,
                 user_id = user_id
             };
 
@@ -207,7 +207,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             var franchiseId = Guid.NewGuid();
             var synchronizations = new List<SynchronizationEntity>
         {
-            new SynchronizationEntity { id = Guid.NewGuid(), franchise_id = franchiseId, name = "Test Name", integrations = new List<Guid> { Guid.NewGuid() } }
+            new SynchronizationEntity { id = Guid.NewGuid(), franchise_id = franchiseId, synchronization_name = "Test Name", integrations = new List<Guid> { Guid.NewGuid() } }
         };
             _mockService.Setup(service => service.GetByFranchiseIdAsync(franchiseId)).ReturnsAsync(synchronizations);
 
@@ -233,7 +233,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             var franchiseId = Guid.NewGuid();
             var synchronizations = new List<SynchronizationEntity>
         {
-            new SynchronizationEntity { id = Guid.NewGuid(), franchise_id = franchiseId, name = "Test Name", integrations = new List<Guid> { Guid.NewGuid() } }
+            new SynchronizationEntity { id = Guid.NewGuid(), franchise_id = franchiseId, synchronization_name = "Test Name", integrations = new List<Guid> { Guid.NewGuid() } }
         };
 
             var request = new GetByFranchiseIdSynchronizationCommandRequest
@@ -253,7 +253,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             var paginatedModel = new PaginatedModel { Page = 1, Rows = 10, SortBy = "" };
             var synchronizations = new List<SynchronizationEntity>
         {
-            new SynchronizationEntity { id = Guid.NewGuid(), name = "Test Name", integrations = new List<Guid> { Guid.NewGuid()} }
+            new SynchronizationEntity { id = Guid.NewGuid(), synchronization_name = "Test Name", integrations = new List<Guid> { Guid.NewGuid()} }
         };
             _mockService.Setup(service => service.GetTotalRowsAsync(It.IsAny<PaginatedModel>())).ReturnsAsync(1);
             _mockService.Setup(service => service.GetAllPaginatedAsync(It.IsAny<PaginatedModel>())).ReturnsAsync(synchronizations);
@@ -281,7 +281,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             var paginatedModel = new PaginatedModel { Page = 1, Rows = 10, SortBy = "" };
             var synchronizations = new List<SynchronizationEntity>
         {
-            new SynchronizationEntity { id = Guid.NewGuid(), name = "Test Name", integrations = new List<Guid> { Guid.NewGuid()} }
+            new SynchronizationEntity { id = Guid.NewGuid(), synchronization_name = "Test Name", integrations = new List<Guid> { Guid.NewGuid()} }
         };
             var request = new GetAllPaginatedSynchronizationCommandRequest
             {

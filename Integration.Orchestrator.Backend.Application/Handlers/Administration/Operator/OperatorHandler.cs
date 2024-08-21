@@ -39,8 +39,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         {
                             Id = operatorEntity.id,
                             Code = operatorEntity.operator_code,
-                            Name = operatorEntity.name,
-                            Type = operatorEntity.operator_type
+                            Name = operatorEntity.operator_name,
+                            TypeId = operatorEntity.type_id
                         }
                     });
             }
@@ -76,8 +76,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             {
                                 Id = operatorEntity.id,
                                 Code = operatorEntity.operator_code,
-                                Name = operatorEntity.name,
-                                Type = operatorEntity.operator_type
+                                Name = operatorEntity.operator_name,
+                                TypeId = operatorEntity.type_id
                             }
                         });
             }
@@ -142,9 +142,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new OperatorGetById
                         {
                             Id = operatorById.id,
-                            Name = operatorById.name,
+                            Name = operatorById.operator_name,
                             Code = operatorById.operator_code,
-                            Type = operatorById.operator_type
+                            TypeId = operatorById.type_id
                         }
                     });
             }
@@ -176,9 +176,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new OperatorGetByCode
                         {
                             Id = operatorByCode.id,
-                            Name = operatorByCode.name,
+                            Name = operatorByCode.operator_name,
                             Code = operatorByCode.operator_code,
-                            Type = operatorByCode.operator_type
+                            TypeId = operatorByCode.type_id
                         }
                     });
             }
@@ -196,7 +196,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var operatorByType = await _operatorService.GetByTypeAsync(request.Operator.Type);
+                var operatorByType = await _operatorService.GetByTypeIdAsync(request.Operator.TypeId);
                 if (operatorByType == null)
                 {
                     throw new ArgumentException(AppMessages.Application_OperatorNotFound);
@@ -210,9 +210,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = operatorByType.Select(c => new OperatorGetByType
                         {
                             Id = c.id,
-                            Name = c.name,
+                            Name = c.operator_name,
                             Code = c.operator_code,
-                            Type = c.operator_type
+                            TypeId = c.type_id
                         }).ToList()
                     });
             }
@@ -250,9 +250,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Rows = result.Select(c => new OperatorGetAllPaginated
                             {
                                 Id = c.id,
-                                Name = c.name,
+                                Name = c.operator_name,
                                 Code = c.operator_code,
-                                Type = c.operator_type
+                                TypeId = c.type_id
                             }).ToList()
                         }
                     });
@@ -272,9 +272,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             var operatorEntity = new OperatorEntity()
             {
                 id = id,
-                name = request.Name,
+                operator_name = request.Name,
                 operator_code = request.Code,
-                operator_type = request.Type
+                type_id = request.TypeId
             };
             return operatorEntity;
         }

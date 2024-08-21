@@ -35,10 +35,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = new StatusCreate
                         {
                             Id = statusEntity.id,
-                            Key = statusEntity.key,
-                            Text = statusEntity.text,
-                            Color = statusEntity.color,
-                            Background = statusEntity.background
+                            Key = statusEntity.status_key,
+                            Text = statusEntity.status_text,
+                            Color = statusEntity.status_color,
+                            Background = statusEntity.status_background
                         }
                     });
             }
@@ -77,10 +77,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Data = new StatusUpdate
                             {
                                 Id = statusEntity.id,
-                                Key = statusEntity.key,
-                                Text = statusEntity.text,
-                                Color = statusEntity.color,
-                                Background = statusEntity.background
+                                Key = statusEntity.status_key,
+                                Text = statusEntity.status_text,
+                                Color = statusEntity.status_color,
+                                Background = statusEntity.status_background
                             }
                         });
             }
@@ -153,10 +153,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = new StatusGetById
                         {
                             Id = statusById.id,
-                            Key = statusById.key,
-                            Text = statusById.text,
-                            Color = statusById.color,
-                            Background = statusById.background
+                            Key = statusById.status_key,
+                            Text = statusById.status_text,
+                            Color = statusById.status_color,
+                            Background = statusById.status_background
                         }
                     });
             }
@@ -199,10 +199,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Rows = result.Select(c => new StatusGetAllPaginated
                             {
                                 Id = c.id,
-                                Key = c.key,
-                                Text = c.text,
-                                Color = c.color,
-                                Background = c.background
+                                Key = c.status_key,
+                                Text = c.status_text,
+                                Color = c.status_color,
+                                Background = c.status_background
                             }).ToList()
                         }
                     });
@@ -222,10 +222,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
             var statusEntity = new StatusEntity()
             {
                 id = id,
-                key = request.Key,
-                text = request.Text,
-                color = request.Color,
-                background = request.Background
+                status_key = request.Key,
+                status_text = request.Text,
+                status_color = request.Color,
+                status_background = request.Background
             };
             return statusEntity;
         }

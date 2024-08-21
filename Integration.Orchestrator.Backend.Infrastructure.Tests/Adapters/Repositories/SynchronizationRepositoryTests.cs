@@ -25,12 +25,12 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
             var entity = new SynchronizationEntity
             {
                 id = Guid.NewGuid(),
-                name = "Test",
+                synchronization_name = "Test",
                 franchise_id = Guid.NewGuid(),
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                status_id = Guid.NewGuid(),
+                synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                hour_to_execute = DateTime.Now
+                synchronization_hour_to_execute = DateTime.Now
             };
 
             // Act
@@ -47,22 +47,22 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
             var entity = new SynchronizationEntity
             {
                 id = Guid.NewGuid(),
-                name = "Test",
+                synchronization_name = "Test",
                 franchise_id = Guid.NewGuid(),
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                status_id = Guid.NewGuid(),
+                synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                hour_to_execute = DateTime.Now
+                synchronization_hour_to_execute = DateTime.Now
             };
 
             var filter = Builders<SynchronizationEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<SynchronizationEntity>.Update
-                .Set(m => m.name, entity.name)
+                .Set(m => m.synchronization_name, entity.synchronization_name)
                 .Set(m => m.franchise_id, entity.franchise_id)
-                .Set(m => m.status, entity.status)
-                .Set(m => m.observations, entity.observations)
+                .Set(m => m.status_id, entity.status_id)
+                .Set(m => m.synchronization_observations, entity.synchronization_observations)
                 .Set(m => m.user_id, entity.user_id)
-                .Set(m => m.hour_to_execute, entity.hour_to_execute)
+                .Set(m => m.synchronization_hour_to_execute, entity.synchronization_hour_to_execute)
                 .Set(m => m.updated_at, entity.updated_at);
 
             // Act
@@ -127,10 +127,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
             {
                 id = Guid.NewGuid(),
                 franchise_id = franchiseId,
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                status_id = Guid.NewGuid(),
+                synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                hour_to_execute = DateTime.Now
+                synchronization_hour_to_execute = DateTime.Now
             };
 
             var entities = new List<SynchronizationEntity> { synchronization };

@@ -41,11 +41,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new SynchronizationCreate
                         {
                             Id = synchronizationEntity.id,
-                            Name = synchronizationEntity.name,
+                            Name = synchronizationEntity.synchronization_name,
                             FranchiseId = synchronizationEntity.franchise_id,
-                            Status = synchronizationEntity.status,
-                            Observations = synchronizationEntity.observations,
-                            HourToExecute = synchronizationEntity.hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
+                            Status = synchronizationEntity.status_id,
+                            Observations = synchronizationEntity.synchronization_observations,
+                            HourToExecute = synchronizationEntity.synchronization_hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
                             Integrations = synchronizationEntity.integrations.Select(i => new IntegrationRequest
                             {
                                 Id = i
@@ -85,11 +85,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Data = new SynchronizationUpdate()
                             {
                                 Id = synchronizationEntity.id,
-                                Name = synchronizationEntity.name,
+                                Name = synchronizationEntity.synchronization_name,
                                 FranchiseId = synchronizationEntity.franchise_id,
-                                Status = synchronizationEntity.status,
-                                Observations = synchronizationEntity.observations,
-                                HourToExecute = synchronizationEntity.hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
+                                Status = synchronizationEntity.status_id,
+                                Observations = synchronizationEntity.synchronization_observations,
+                                HourToExecute = synchronizationEntity.synchronization_hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
                                 Integrations = synchronizationEntity.integrations.Select(i => new IntegrationRequest
                                 {
                                     Id = i
@@ -159,11 +159,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new SynchronizationGetById
                         {
                             Id = synchronizationById.id,
-                            Name = synchronizationById.name,
+                            Name = synchronizationById.synchronization_name,
                             FranchiseId = synchronizationById.franchise_id,
-                            Status = synchronizationById.status,
-                            Observations = synchronizationById.observations,
-                            HourToExecute = synchronizationById.hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
+                            Status = synchronizationById.status_id,
+                            Observations = synchronizationById.synchronization_observations,
+                            HourToExecute = synchronizationById.synchronization_hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
                             Integrations = synchronizationById.integrations.Select(i => new IntegrationRequest { Id = i }).ToList(),
                             UserId = synchronizationById.user_id
                         }
@@ -198,11 +198,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         .Select(syn => new SynchronizationGetByFranchiseId
                         {
                             Id = syn.id,
-                            Name = syn.name,
+                            Name = syn.synchronization_name,
                             FranchiseId = syn.franchise_id,
-                            Status = syn.status,
-                            Observations = syn.observations,
-                            HourToExecute = syn.hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
+                            Status = syn.status_id,
+                            Observations = syn.synchronization_observations,
+                            HourToExecute = syn.synchronization_hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
                             Integrations = syn.integrations.Select(i => new IntegrationRequest { Id = i }).ToList(),
                             UserId = syn.user_id
                         }).ToList()
@@ -230,7 +230,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 }
 
                 var result = await _synchronizationService.GetAllPaginatedAsync(model);
-                var statusIds = result.Select(r => r.status).Distinct().ToList();
+                var statusIds = result.Select(r => r.status_id).Distinct().ToList();
                 var statusTasks = statusIds.Select(id => _statusService.GetByIdAsync(id));
                 var statuses = await Task.WhenAll(statusTasks);
 
@@ -239,18 +239,18 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     .ToDictionary(status => status.id, status => new StatusResponse
                     {
                         Id = status.id,
-                        Key = status.key,
-                        Text = status.text,
-                        Color = status.color
+                        Key = status.status_key,
+                        Text = status.status_text,
+                        Color = status.status_color
                     });
 
                 var dataRows = result.Select(item => new SynchronizationGetAllPaginated
                 {
                     Id = item.id,
-                    Name = item.name,
-                    Status = statusDictionary.ContainsKey(item.status) ? statusDictionary[item.status] : null,
-                    Observations = item.observations,
-                    HourToExecute = item.hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
+                    Name = item.synchronization_name,
+                    Status = statusDictionary.ContainsKey(item.status_id) ? statusDictionary[item.status_id] : null,
+                    Observations = item.synchronization_observations,
+                    HourToExecute = item.synchronization_hour_to_execute.ToString("yyyy-MM-ddTHH:mm:ss"),
                     UserId = item.user_id
                 }).ToList();
 
@@ -281,11 +281,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             var synchronizationEntity = new SynchronizationEntity()
             {
                 id = id,
-                name = request.Name,
+                synchronization_name = request.Name,
                 franchise_id = request.FranchiseId,
-                status = request.Status,
-                observations = request.Observations,
-                hour_to_execute = Convert.ToDateTime(request.HourToExecute),
+                status_id = request.Status,
+                synchronization_observations = request.Observations,
+                synchronization_hour_to_execute = Convert.ToDateTime(request.HourToExecute),
                 integrations = request.Integrations.Select(i => i.Id).ToList(),
                 user_id = request.UserId
             };

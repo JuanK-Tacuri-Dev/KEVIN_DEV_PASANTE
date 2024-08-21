@@ -62,7 +62,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             if (create)
             {
-                var repositoryByCode = await GetByCodeAsync(repository.code);
+                var repositoryByCode = await GetByCodeAsync(repository.repository_code);
                 if (repositoryByCode != null)
                 {
                     throw new OrchestratorArgumentException(string.Empty,

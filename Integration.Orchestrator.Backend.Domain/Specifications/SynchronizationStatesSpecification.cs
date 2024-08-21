@@ -27,10 +27,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<SynchronizationStatusEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<SynchronizationStatusEntity, object>>>
         {
-            { nameof(SynchronizationStatusEntity.key), x => x.key },
-            { nameof(SynchronizationStatusEntity.text), x => x.text },
-            { nameof(SynchronizationStatusEntity.color), x => x.color },
-            { nameof(SynchronizationStatusEntity.background), x => x.background },
+            { nameof(SynchronizationStatusEntity.synchronization_status_key), x => x.synchronization_status_key },
+            { nameof(SynchronizationStatusEntity.synchronization_status_text), x => x.synchronization_status_text },
+            { nameof(SynchronizationStatusEntity.synchronization_status_color), x => x.synchronization_status_color },
+            { nameof(SynchronizationStatusEntity.synchronization_status_background), x => x.synchronization_status_background },
             { nameof(SynchronizationStatusEntity.updated_at), x => x.updated_at },
         };
         private void SetupPagination(PaginatedModel model)
@@ -74,8 +74,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.key.ToUpper().Contains(search.ToUpper()) ||
-                x.text.ToUpper().Contains(search.ToUpper()));
+                x.synchronization_status_key.ToUpper().Contains(search.ToUpper()) ||
+                x.synchronization_status_text.ToUpper().Contains(search.ToUpper()));
             }
 
             return criteria;
@@ -88,7 +88,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
         public static Expression<Func<SynchronizationStatusEntity, bool>> GetByCodeExpression(string code)
         {
-            return x => true && x.key == code;
+            return x => true && x.synchronization_status_key == code;
         }
 
     }

@@ -27,9 +27,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<IntegrationEntity, object>>> sortExpressions
             = new Dictionary<string, Expression<Func<IntegrationEntity, object>>>
         {
-            { nameof(IntegrationEntity.name), x => x.name },
-            { nameof(IntegrationEntity.status), x => x.status },
-            { nameof(IntegrationEntity.observations), x => x.observations },
+            { nameof(IntegrationEntity.integration_name), x => x.integration_name },
+            { nameof(IntegrationEntity.status_id), x => x.status_id },
+            { nameof(IntegrationEntity.integration_observations), x => x.integration_observations },
             { nameof(IntegrationEntity.user_id), x => x.user_id },
             { nameof(IntegrationEntity.updated_at), x => x.updated_at },
         };
@@ -74,8 +74,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.name.ToUpper().Contains(search.ToUpper()) ||
-                x.observations.ToUpper().Contains(search.ToUpper()));
+                x.integration_name.ToUpper().Contains(search.ToUpper()) ||
+                x.integration_observations.ToUpper().Contains(search.ToUpper()));
             }
 
             return criteria;

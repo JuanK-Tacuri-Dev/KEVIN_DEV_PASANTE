@@ -27,9 +27,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<StatusEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<StatusEntity, object>>>
         {
-            { nameof(StatusEntity.key), x => x.key },
-            { nameof(StatusEntity.text), x => x.text },
-            { nameof(StatusEntity.color), x => x.color },
+            { nameof(StatusEntity.status_key), x => x.status_key },
+            { nameof(StatusEntity.status_text), x => x.status_text },
+            { nameof(StatusEntity.status_color), x => x.status_color },
         };
         private void SetupPagination(PaginatedModel model)
         {
@@ -72,8 +72,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.key.ToUpper().Contains(search.ToUpper()) ||
-                x.text.ToUpper().Contains(search.ToUpper()));
+                x.status_key.ToUpper().Contains(search.ToUpper()) ||
+                x.status_text.ToUpper().Contains(search.ToUpper()));
             }
 
             return criteria;
@@ -86,7 +86,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
         public static Expression<Func<StatusEntity, bool>> GetByCodeExpression(string code)
         {
-            return x => true && x.key == code;
+            return x => true && x.status_key == code;
         }
     }
 }

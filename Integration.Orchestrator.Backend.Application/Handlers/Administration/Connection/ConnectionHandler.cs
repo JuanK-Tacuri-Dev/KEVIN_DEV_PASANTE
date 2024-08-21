@@ -40,11 +40,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Data = new ConnectionCreate
                         {
                             Id = connectionEntity.id,
-                            Code = connectionEntity.code,
+                            Code = connectionEntity.connection_code,
                             ServerId = connectionEntity.server_id,
                             AdapterId = connectionEntity.adapter_id,
                             RepositoryId = connectionEntity.repository_id,
-                            Description = connectionEntity.description,
+                            Description = connectionEntity.connection_description,
                             StatusId = connectionEntity.status_id
                         }
                     });
@@ -84,11 +84,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Data = new ConnectionUpdate
                             {
                                 Id = connectionEntity.id,
-                                Code = connectionEntity.code,
+                                Code = connectionEntity.connection_code,
                                 ServerId = connectionEntity.server_id,
                                 AdapterId = connectionEntity.adapter_id,
                                 RepositoryId = connectionEntity.repository_id,
-                                Description = connectionEntity.description,
+                                Description = connectionEntity.connection_description,
                                 StatusId = connectionEntity.status_id
                             }
                         });
@@ -162,11 +162,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Data = new ConnectionGetById
                         {
                             Id = connectionById.id,
-                            Code = connectionById.code,
+                            Code = connectionById.connection_code,
                             ServerId = connectionById.server_id,
                             AdapterId = connectionById.adapter_id,
                             RepositoryId = connectionById.repository_id,
-                            Description = connectionById.description,
+                            Description = connectionById.connection_description,
                             StatusId = connectionById.status_id
                         }
                     });
@@ -203,11 +203,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Data = new ConnectionGetByCode
                         {
                             Id = connectionByCode.id,
-                            Code = connectionByCode.code,
+                            Code = connectionByCode.connection_code,
                             ServerId = connectionByCode.server_id,
                             AdapterId = connectionByCode.adapter_id,
                             RepositoryId = connectionByCode.repository_id,
-                            Description = connectionByCode.description,
+                            Description = connectionByCode.connection_description,
                             StatusId = connectionByCode.status_id
                         }
                     });
@@ -251,11 +251,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Rows = result.Select(c => new ConnectionGetAllPaginated
                             {
                                 Id = c.id,
-                                Code = c.code,
+                                Code = c.connection_code,
                                 ServerId = c.server_id,
                                 AdapterId = c.adapter_id,
                                 RepositoryId = c.repository_id,
-                                Description = c.description,
+                                Description = c.connection_description,
                                 StatusId = c.status_id
                             }).ToList()
                         }
@@ -276,13 +276,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
             var connectionEntity = new ConnectionEntity()
             {
                 id = id,
-                code = create == true
+                connection_code = create == true
                     ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Connection)
                     : null,
                 server_id = request.ServerId,
                 adapter_id = request.AdapterId,
                 repository_id = request.RepositoryId,
-                description = request.Description,
+                connection_description = request.Description,
                 status_id = request.StatusId
             };
             return connectionEntity;

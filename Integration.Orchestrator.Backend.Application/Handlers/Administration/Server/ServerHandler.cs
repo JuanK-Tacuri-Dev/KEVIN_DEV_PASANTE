@@ -41,10 +41,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = new ServerCreate
                         {
                             Id = serverEntity.id,
-                            Code = serverEntity.code,
-                            Name = serverEntity.name,
-                            TypeServerId = serverEntity.type_server_id,
-                            Url = serverEntity.url,
+                            Code = serverEntity.server_code,
+                            Name = serverEntity.server_name,
+                            TypeServerId = serverEntity.type_id,
+                            Url = serverEntity.server_url,
                             StatusId = serverEntity.status_id
                         }
                     });
@@ -84,10 +84,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Data = new ServerUpdate
                             {
                                 Id = serverEntity.id,
-                                Code = serverEntity.code,
-                                Name = serverEntity.name,
-                                TypeServerId = serverEntity.type_server_id,
-                                Url = serverEntity.url,
+                                Code = serverEntity.server_code,
+                                Name = serverEntity.server_name,
+                                TypeServerId = serverEntity.type_id,
+                                Url = serverEntity.server_url,
                                 StatusId = serverEntity.status_id
                             }
                         });
@@ -161,10 +161,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = new ServerGetById
                         {
                             Id = serverById.id,
-                            Code = serverById.code,
-                            Name = serverById.name,
-                            TypeServerId = serverById.type_server_id,
-                            Url = serverById.url,
+                            Code = serverById.server_code,
+                            Name = serverById.server_name,
+                            TypeServerId = serverById.type_id,
+                            Url = serverById.server_url,
                             StatusId = serverById.status_id
                         }
                     });
@@ -201,10 +201,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = new ServerGetByCode
                         {
                             Id = serverByCode.id,
-                            Code = serverByCode.code,
-                            Name = serverByCode.name,
-                            TypeServerId = serverByCode.type_server_id,
-                            Url = serverByCode.url,
+                            Code = serverByCode.server_code,
+                            Name = serverByCode.server_name,
+                            TypeServerId = serverByCode.type_id,
+                            Url = serverByCode.server_url,
                             StatusId = serverByCode.status_id
                         }
                     });
@@ -241,10 +241,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = serverByType.Select(s => new ServerGetByType
                         {
                             Id = s.id,
-                            Code = s.code,
-                            Name = s.name,
-                            TypeServerId = s.type_server_id,
-                            Url = s.url,
+                            Code = s.server_code,
+                            Name = s.server_name,
+                            TypeServerId = s.type_id,
+                            Url = s.server_url,
                             StatusId = s.status_id
 
                         }).ToList()
@@ -289,10 +289,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Rows = result.Select(s => new ServerGetAllPaginated
                             {
                                 Id = s.id,
-                                Code = s.code,
-                                Name = s.name,
-                                TypeServerId = s.type_server_id,
-                                Url = s.url,
+                                Code = s.server_code,
+                                Name = s.server_name,
+                                TypeServerId = s.type_id,
+                                Url = s.server_url,
                                 StatusId = s.status_id
 
                             }).ToList()
@@ -315,12 +315,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
             var serverEntity = new ServerEntity()
             {
                 id = id,
-                code = create == true
+                server_code = create == true
                     ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Server)
                     : null,
-                name = request.Name,
-                type_server_id = request.TypeServerId,
-                url = request.Url,
+                server_name = request.Name,
+                type_id = request.TypeServerId,
+                server_url = request.Url,
                 status_id = request.StatusId
             };
             return serverEntity;

@@ -59,7 +59,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             if (create)
             {
-                var processByCode = await GetByCodeAsync(synchronizationStatesEntity.key);
+                var processByCode = await GetByCodeAsync(synchronizationStatesEntity.synchronization_status_key);
                 if (processByCode != null)
                 {
                     throw new ArgumentException(AppMessages.Domain_SynchronizationStatesExists);

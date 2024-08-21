@@ -25,10 +25,10 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
             var testEntity = new SynchronizationStatusEntity
             {
                 id = Guid.NewGuid(),
-                key = "Cancelado",
-                text = "canceled",
-                color = "F77D7D",
-                background = "#E2F7E2"
+                synchronization_status_key = "Cancelado",
+                synchronization_status_text = "canceled",
+                synchronization_status_color = "F77D7D",
+                synchronization_status_background = "#E2F7E2"
             };
 
             Assert.True(compiledCriteria(testEntity));
@@ -51,10 +51,10 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
             var testEntity = new SynchronizationStatusEntity
             {
                 id = Guid.NewGuid(),
-                key = "Cancelado",
-                text = "canceled",
-                color = "F77D7D",
-                background = "#E2F7E2"
+                synchronization_status_key = "Cancelado",
+                synchronization_status_text = "canceled",
+                synchronization_status_color = "F77D7D",
+                synchronization_status_background = "#E2F7E2"
             };
 
             Assert.True(compiledCriteria(testEntity));
@@ -81,7 +81,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
         {
             var paginatedModel = new PaginatedModel
             {
-                SortBy = nameof(SynchronizationStatusEntity.key),
+                SortBy = nameof(SynchronizationStatusEntity.synchronization_status_key),
                 SortOrder = SortOrdering.Ascending,
                 Page = 1,
                 Rows = 10
@@ -98,7 +98,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
         {
             var paginatedModel = new PaginatedModel
             {
-                SortBy = nameof(SynchronizationStatusEntity.key),
+                SortBy = nameof(SynchronizationStatusEntity.synchronization_status_key),
                 SortOrder = SortOrdering.Descending,
                 Page = 1,
                 Rows = 10

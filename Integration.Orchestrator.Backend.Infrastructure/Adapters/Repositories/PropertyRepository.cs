@@ -20,9 +20,9 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             var filter = Builders<PropertyEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<PropertyEntity>.Update
-                .Set(m => m.name, entity.name)
+                .Set(m => m.property_name, entity.property_name)
                 .Set(m => m.property_code, entity.property_code)
-                .Set(m => m.property_type_id, entity.property_type_id)
+                .Set(m => m.type_id, entity.type_id)
                 .Set(m => m.entity_id, entity.entity_id)
                 .Set(m => m.status_id, entity.status_id)
                 .Set(m => m.updated_at, entity.updated_at);

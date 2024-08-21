@@ -23,7 +23,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .Set(m => m.server_id, entity.server_id)
                 .Set(m => m.adapter_id, entity.adapter_id)
                 .Set(m => m.repository_id, entity.repository_id)
-                .Set(m => m.description, entity.description)
+                .Set(m => m.connection_description, entity.connection_description)
                 .Set(m => m.status_id, entity.status_id)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);

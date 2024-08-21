@@ -20,10 +20,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             var filter = Builders<SynchronizationStatusEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<SynchronizationStatusEntity>.Update
-                .Set(m => m.key, entity.key)
-                .Set(m => m.text, entity.text)
-                .Set(m => m.color, entity.color)
-                .Set(m => m.background, entity.background)
+                .Set(m => m.synchronization_status_key, entity.synchronization_status_key)
+                .Set(m => m.synchronization_status_text, entity.synchronization_status_text)
+                .Set(m => m.synchronization_status_color, entity.synchronization_status_color)
+                .Set(m => m.synchronization_status_background, entity.synchronization_status_background)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);
         }

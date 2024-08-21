@@ -67,7 +67,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             if (create) 
             {
-                var serverByCode = await GetByCodeAsync(server.code);
+                var serverByCode = await GetByCodeAsync(server.server_code);
                 if (serverByCode != null) 
                 {
                     throw new OrchestratorArgumentException(string.Empty,

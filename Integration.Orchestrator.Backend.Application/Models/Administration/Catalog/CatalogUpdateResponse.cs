@@ -5,6 +5,5 @@
     }
     public class CatalogUpdate : CatalogResponse
     {
-        public Guid Id { get; set; }
     }
 }

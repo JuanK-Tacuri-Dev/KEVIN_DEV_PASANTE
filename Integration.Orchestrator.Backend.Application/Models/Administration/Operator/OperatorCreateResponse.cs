@@ -3,8 +3,7 @@
     public class OperatorCreateResponse : ModelResponse<OperatorCreate>
     {
     }
-    public class OperatorCreate : OperatorRequest
+    public class OperatorCreate : OperatorResponse
     {
-        public Guid Id { get; set; }
     }
 }

@@ -89,18 +89,18 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                 new SynchronizationStatusEntity
                 {
                     id = Guid.NewGuid(),
-                    key = string.Empty,
-                    text = "Active",
-                    color = "Green",
-                    background = "#E2F7E2"
+                    synchronization_status_key = string.Empty,
+                    synchronization_status_text = "Active",
+                    synchronization_status_color = "Green",
+                    synchronization_status_background = "#E2F7E2"
                 },
                 new SynchronizationStatusEntity
                 {
                     id = Guid.NewGuid(),
-                    key = "Cancelado",
-                    text = "canceled",
-                    color = "F77D7D",
-                    background = "#E2F7E2"
+                    synchronization_status_key = "Cancelado",
+                    synchronization_status_text = "canceled",
+                    synchronization_status_color = "F77D7D",
+                    synchronization_status_background = "#E2F7E2"
                 }
              };
 

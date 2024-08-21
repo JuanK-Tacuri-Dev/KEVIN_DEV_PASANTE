@@ -43,8 +43,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                         {
                             Id = propertyEntity.id,
                             Code = propertyEntity.property_code,
-                            Name = propertyEntity.name,
-                            TypeId = propertyEntity.property_type_id,
+                            Name = propertyEntity.property_name,
+                            TypeId = propertyEntity.type_id,
                             EntityId = propertyEntity.entity_id,
                             StatusId = propertyEntity.status_id
                         }
@@ -82,8 +82,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                             {
                                 Id = propertyEntity.id,
                                 Code = propertyEntity.property_code,
-                                Name = propertyEntity.name,
-                                TypeId = propertyEntity.property_type_id,
+                                Name = propertyEntity.property_name,
+                                TypeId = propertyEntity.type_id,
                                 EntityId = propertyEntity.entity_id,
                                 StatusId = propertyEntity.status_id
                             }
@@ -150,9 +150,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                         Data = new PropertyGetById
                         {
                             Id = propertyById.id,
-                            Name = propertyById.name,
+                            Name = propertyById.property_name,
                             Code = propertyById.property_code,
-                            TypeId = propertyById.property_type_id,
+                            TypeId = propertyById.type_id,
                             EntityId = propertyById.entity_id,
                             StatusId = propertyById.status_id
                         }
@@ -186,9 +186,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                         Data = new PropertyGetByCode
                         {
                             Id = propertyByCode.id,
-                            Name = propertyByCode.name,
+                            Name = propertyByCode.property_name,
                             Code = propertyByCode.property_code,
-                            TypeId = propertyByCode.property_type_id,
+                            TypeId = propertyByCode.type_id,
                             EntityId = propertyByCode.entity_id,
                             StatusId = propertyByCode.status_id
                         }
@@ -222,9 +222,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                         Data = propertyByType.Select(c => new PropertyGetByType
                         {
                             Id = c.id,
-                            Name = c.name,
+                            Name = c.property_name,
                             Code = c.property_code,
-                            TypeId = c.property_type_id,
+                            TypeId = c.type_id,
                             EntityId = c.entity_id,
                             StatusId = c.status_id
                         }).ToList()
@@ -264,10 +264,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                             Rows = result.Select(c => new PropertyGetAllPaginated
                             {
                                 Id = c.id,
-                                Name = c.name,
+                                Name = c.property_name,
                                 Code = c.property_code,
-                                TypeId = c.property_type_id,
+                                TypeId = c.type_id,
                                 EntityId = c.entity_id,
+                                StatusId = c.status_id
                             }).ToList()
                         }
                     });
@@ -287,12 +288,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
             var propertyEntity = new PropertyEntity()
             {
                 id = id,
-                name = request.Name,
+                property_name = request.Name,
                 property_code = create == true
                 ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Property)
                 : null,
-                property_type_id = request.TypeId,
-                entity_id = request.EntityId
+                type_id = request.TypeId,
+                entity_id = request.EntityId,
+                status_id = request.StatusId
             };
             return propertyEntity;
         }

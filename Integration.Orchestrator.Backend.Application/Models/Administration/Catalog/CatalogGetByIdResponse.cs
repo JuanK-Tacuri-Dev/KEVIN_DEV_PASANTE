@@ -5,6 +5,5 @@
     }
     public class CatalogGetById : CatalogResponse
     {
-        public Guid Id { get; set; }
     }
 }

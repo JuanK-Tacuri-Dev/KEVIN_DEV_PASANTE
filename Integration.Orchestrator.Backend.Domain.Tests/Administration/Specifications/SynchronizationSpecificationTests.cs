@@ -24,8 +24,8 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
             var compiledCriteria = criteria.Compile();
             var testEntity = new SynchronizationEntity
             {
-                status = Guid.NewGuid(),
-                observations = "some observations"
+                status_id = Guid.NewGuid(),
+                synchronization_observations = "some observations"
             };
 
             Assert.True(compiledCriteria(testEntity));
@@ -47,8 +47,8 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
             var compiledCriteria = criteria.Compile();
             var testEntity = new SynchronizationEntity
             {
-                status = Guid.NewGuid(),
-                observations = "any observations"
+                status_id = Guid.NewGuid(),
+                synchronization_observations = "any observations"
             };
 
             Assert.True(compiledCriteria(testEntity));
@@ -75,7 +75,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
         {
             var paginatedModel = new PaginatedModel
             {
-                SortBy = nameof(SynchronizationEntity.status),
+                SortBy = nameof(SynchronizationEntity.status_id),
                 SortOrder = SortOrdering.Ascending,
                 Page = 1,
                 Rows = 10
@@ -92,7 +92,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
         {
             var paginatedModel = new PaginatedModel
             {
-                SortBy = nameof(SynchronizationEntity.status),
+                SortBy = nameof(SynchronizationEntity.status_id),
                 SortOrder = SortOrdering.Descending,
                 Page = 1,
                 Rows = 10
