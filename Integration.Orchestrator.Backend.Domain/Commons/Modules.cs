@@ -10,6 +10,7 @@
         Adapter = 6,
         Connection = 7,
         Entity = 8,
-        Catalog = 9
+        Catalog = 9,
+        Property = 10
     }
 }

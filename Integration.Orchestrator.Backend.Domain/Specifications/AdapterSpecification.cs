@@ -28,7 +28,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             = new Dictionary<string, Expression<Func<AdapterEntity, object>>>
         {
             { nameof(AdapterEntity.name), x => x.name },
-            { nameof(AdapterEntity.adapter_code), x => x.adapter_code }
+            { nameof(AdapterEntity.code), x => x.code }
         };
         private void SetupPagination(PaginatedModel model)
         {
@@ -71,7 +71,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.adapter_code.ToUpper().Contains(search.ToUpper()));
+                x.code.ToUpper().Contains(search.ToUpper()));
             }
 
             return criteria;
@@ -84,7 +84,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
         public static Expression<Func<AdapterEntity, bool>> GetByCodeExpression(string code)
         {
-            return x => true && x.adapter_code == code;
+            return x => true && x.code == code;
         }
 
         public static Expression<Func<AdapterEntity, bool>> GetByTypeExpression(Guid typeId)

@@ -2,6 +2,6 @@
 {
     public class PropertyGetByTypeRequest
     {
-        public string Type { get; set; }
+        public Guid TypeId { get; set; }
     }
 }

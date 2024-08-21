@@ -2,7 +2,7 @@
 {
     public class AdapterEntity : Entity<Guid>
     {
-        public string adapter_code { get; set; }
+        public string code { get; set; }
         public string name { get; set; }
         public Guid adapter_type_id { get; set; }
         public string version { get; set; }

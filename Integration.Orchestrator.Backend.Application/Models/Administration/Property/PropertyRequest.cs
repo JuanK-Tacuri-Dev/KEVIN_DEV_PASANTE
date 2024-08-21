@@ -3,8 +3,8 @@
     public class PropertyRequest
     {
         public string Name { get; set; }
-        public string Code { get; set; }
-        public string Type { get; set; }
+        public Guid TypeId { get; set; }
         public Guid EntityId { get; set; }
+        public Guid StatudId { get; set; }
     }
 }

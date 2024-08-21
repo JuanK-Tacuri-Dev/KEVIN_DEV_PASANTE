@@ -22,7 +22,9 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             var update = Builders<PropertyEntity>.Update
                 .Set(m => m.name, entity.name)
                 .Set(m => m.property_code, entity.property_code)
-                .Set(m => m.property_type, entity.property_type)
+                .Set(m => m.property_type_id, entity.property_type_id)
+                .Set(m => m.entity_id, entity.entity_id)
+                .Set(m => m.status_id, entity.status_id)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);
         }

@@ -1,17 +1,20 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Property;
+﻿using System.Net;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Property;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
-using System.Net;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Property.PropertyCommands;
 
-namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Property
+namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Property
 {
-    public class PropertyHandler(IPropertyService<PropertyEntity> propertyService)
+    public class PropertyHandler(IPropertyService<PropertyEntity> propertyService,
+        ICodeConfiguratorService codeConfiguratorService)
         :
         IRequestHandler<CreatePropertyCommandRequest, CreatePropertyCommandResponse>,
         IRequestHandler<UpdatePropertyCommandRequest, UpdatePropertyCommandResponse>,
@@ -22,12 +25,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         IRequestHandler<GetAllPaginatedPropertyCommandRequest, GetAllPaginatedPropertyCommandResponse>
     {
         public readonly IPropertyService<PropertyEntity> _propertyService = propertyService;
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreatePropertyCommandResponse> Handle(CreatePropertyCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var propertyEntity = MapAynchronizer(request.Property.PropertyRequest, Guid.NewGuid());
+                var propertyEntity = await MapProperty(request.Property.PropertyRequest, Guid.NewGuid(), true);
                 await _propertyService.InsertAsync(propertyEntity);
 
                 return new CreatePropertyCommandResponse(
@@ -40,8 +44,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Id = propertyEntity.id,
                             Code = propertyEntity.property_code,
                             Name = propertyEntity.name,
-                            Type = propertyEntity.property_type,
-                            EntityId = propertyEntity.entity_id
+                            TypeId = propertyEntity.property_type_id,
+                            EntityId = propertyEntity.entity_id,
+                            StatusId = propertyEntity.status_id
                         }
                     });
             }
@@ -65,7 +70,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     throw new ArgumentException(AppMessages.Application_PropertyNotFound);
                 }
 
-                var propertyEntity = MapAynchronizer(request.Property.PropertyRequest, request.Id);
+                var propertyEntity = await MapProperty(request.Property.PropertyRequest, request.Id);
                 await _propertyService.UpdateAsync(propertyEntity);
 
                 return new UpdatePropertyCommandResponse(
@@ -78,8 +83,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Id = propertyEntity.id,
                                 Code = propertyEntity.property_code,
                                 Name = propertyEntity.name,
-                                Type = propertyEntity.property_type,
-                                EntityId = propertyEntity.entity_id
+                                TypeId = propertyEntity.property_type_id,
+                                EntityId = propertyEntity.entity_id,
+                                StatusId = propertyEntity.status_id
                             }
                         });
             }
@@ -146,8 +152,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Id = propertyById.id,
                             Name = propertyById.name,
                             Code = propertyById.property_code,
-                            Type = propertyById.property_type,
-                            EntityId = propertyById.entity_id
+                            TypeId = propertyById.property_type_id,
+                            EntityId = propertyById.entity_id,
+                            StatusId = propertyById.status_id
                         }
                     });
             }
@@ -181,8 +188,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Id = propertyByCode.id,
                             Name = propertyByCode.name,
                             Code = propertyByCode.property_code,
-                            Type = propertyByCode.property_type,
-                            EntityId = propertyByCode.entity_id
+                            TypeId = propertyByCode.property_type_id,
+                            EntityId = propertyByCode.entity_id,
+                            StatusId = propertyByCode.status_id
                         }
                     });
             }
@@ -200,7 +208,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var propertyByType = await _propertyService.GetByTypeAsync(request.Property.Type);
+                var propertyByType = await _propertyService.GetByTypeIdAsync(request.Property.TypeId);
                 if (propertyByType == null)
                 {
                     throw new ArgumentException(AppMessages.Application_PropertyNotFound);
@@ -216,8 +224,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Id = c.id,
                             Name = c.name,
                             Code = c.property_code,
-                            Type = c.property_type,
-                            EntityId = c.entity_id
+                            TypeId = c.property_type_id,
+                            EntityId = c.entity_id,
+                            StatusId = c.status_id
                         }).ToList()
                     });
             }
@@ -257,7 +266,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Id = c.id,
                                 Name = c.name,
                                 Code = c.property_code,
-                                Type = c.property_type,
+                                TypeId = c.property_type_id,
                                 EntityId = c.entity_id,
                             }).ToList()
                         }
@@ -273,14 +282,16 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             }
         }
 
-        private PropertyEntity MapAynchronizer(PropertyCreateRequest request, Guid id)
+        private async Task<PropertyEntity> MapProperty(PropertyCreateRequest request, Guid id, bool? create = null)
         {
             var propertyEntity = new PropertyEntity()
             {
                 id = id,
                 name = request.Name,
-                property_code = request.Code,
-                property_type = request.Type,
+                property_code = create == true
+                ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Property)
+                : null,
+                property_type_id = request.TypeId,
                 entity_id = request.EntityId
             };
             return propertyEntity;

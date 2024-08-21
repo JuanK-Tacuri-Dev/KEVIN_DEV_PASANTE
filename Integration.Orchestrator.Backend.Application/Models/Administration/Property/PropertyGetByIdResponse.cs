@@ -3,7 +3,7 @@
     public class PropertyGetByIdResponse : ModelResponse<PropertyGetById>
     {
     }
-    public class PropertyGetById : PropertyRequest
+    public class PropertyGetById : PropertyResponse
     {
         public Guid Id { get; set; }
     }
