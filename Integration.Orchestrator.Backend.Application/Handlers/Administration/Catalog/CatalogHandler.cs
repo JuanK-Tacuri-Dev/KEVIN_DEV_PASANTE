@@ -40,11 +40,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Data = new CatalogCreate
                         {
                             Id = catalogEntity.id,
-                            Code = catalogEntity.code,
-                            Name = catalogEntity.name,
-                            Value = catalogEntity.value,
+                            Code = catalogEntity.catalog_code,
+                            Name = catalogEntity.catalog_name,
+                            Value = catalogEntity.catalog_value,
                             FatherId = catalogEntity.father_id,
-                            Detail = catalogEntity.detail,
+                            Detail = catalogEntity.catalog_detail,
                             StatusId = catalogEntity.status_id
                         }
                     });
@@ -84,11 +84,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Data = new CatalogUpdate
                             {
                                 Id = catalogEntity.id,
-                                Code = catalogEntity.code,
-                                Name = catalogEntity.name,
-                                Value = catalogEntity.value,
+                                Code = catalogEntity.catalog_code,
+                                Name = catalogEntity.catalog_name,
+                                Value = catalogEntity.catalog_value,
                                 FatherId = catalogEntity.father_id,
-                                Detail = catalogEntity.detail,
+                                Detail = catalogEntity.catalog_detail,
                                 StatusId = catalogEntity.status_id
                             }
                         });
@@ -162,11 +162,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Data = new CatalogGetById
                         {
                             Id = catalogById.id,
-                            Code = catalogById.code,
-                            Name = catalogById.name,
-                            Value = catalogById.value,
+                            Code = catalogById.catalog_code,
+                            Name = catalogById.catalog_name,
+                            Value = catalogById.catalog_value,
                             FatherId = catalogById.father_id,
-                            Detail = catalogById.detail,
+                            Detail = catalogById.catalog_detail,
                             StatusId = catalogById.status_id
                         }
                     });
@@ -203,11 +203,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Data = catalogByType.Select(p => new CatalogGetByType
                         {
                             Id = p.id,
-                            Code = p.code,
-                            Name = p.name,
-                            Value = p.value,
+                            Code = p.catalog_code,
+                            Name = p.catalog_name,
+                            Value = p.catalog_value,
                             FatherId = p.father_id,
-                            Detail = p.detail,
+                            Detail = p.catalog_detail,
                             StatusId = p.status_id
                         }).ToList()
                     });
@@ -244,11 +244,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Data = new CatalogGetByCode
                         {
                             Id = catalogByCode.id,
-                            Code = catalogByCode.code,
-                            Name = catalogByCode.name,
-                            Value = catalogByCode.value,
+                            Code = catalogByCode.catalog_code,
+                            Name = catalogByCode.catalog_name,
+                            Value = catalogByCode.catalog_value,
                             FatherId = catalogByCode.father_id,
-                            Detail = catalogByCode.detail,
+                            Detail = catalogByCode.catalog_detail,
                             StatusId = catalogByCode.status_id
                         }
                     });
@@ -292,11 +292,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Rows = result.Select(p => new CatalogGetAllPaginated
                             {
                                 Id = p.id,
-                                Code = p.code,
-                                Name = p.name,
-                                Value = p.value,
+                                Code = p.catalog_code,
+                                Name = p.catalog_name,
+                                Value = p.catalog_value,
                                 FatherId = p.father_id,
-                                Detail = p.detail,
+                                Detail = p.catalog_detail,
                                 StatusId = p.status_id
                             }).ToList()
                         }
@@ -317,12 +317,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
             var catalogEntity = new CatalogEntity()
             {
                 id = id,
-                code = create == true
+                catalog_code = create == true
                     ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Catalog)
                     : null,
-                name = request.Name,
-                value = request.Value,
-                detail = request.Detail,
+                catalog_name = request.Name,
+                catalog_value = request.Value,
+                catalog_detail = request.Detail,
                 father_id = request.FatherId,
                 status_id = request.StatusId
             };

@@ -20,8 +20,8 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             var filter = Builders<OperatorEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<OperatorEntity>.Update
-                .Set(m => m.name, entity.name)
-                .Set(m => m.operator_type, entity.operator_type)
+                .Set(m => m.operator_name, entity.operator_name)
+                .Set(m => m.type_id, entity.type_id)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);
         }

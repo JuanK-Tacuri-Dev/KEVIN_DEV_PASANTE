@@ -26,9 +26,9 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
             var entity = new IntegrationEntity
             {
                 id = Guid.NewGuid(),
-                name = "Test",
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                integration_name = "Test",
+                status_id = Guid.NewGuid(),
+                integration_observations = "Observation",
                 user_id = Guid.NewGuid(),
                 process = new List<Guid>
                 { Guid.NewGuid() }
@@ -48,9 +48,9 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
             var entity = new IntegrationEntity
             {
                 id = Guid.NewGuid(),
-                name = "Test",
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                integration_name = "Test",
+                status_id = Guid.NewGuid(),
+                integration_observations = "Observation",
                 user_id = Guid.NewGuid(),
                 process = new List<Guid>
                 { Guid.NewGuid() }
@@ -58,9 +58,9 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
 
             var filter = Builders<IntegrationEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<IntegrationEntity>.Update
-                .Set(m => m.name, entity.name)
-                .Set(m => m.status, entity.status)
-                .Set(m => m.observations, entity.observations)
+                .Set(m => m.integration_name, entity.integration_name)
+                .Set(m => m.status_id, entity.status_id)
+                .Set(m => m.integration_observations, entity.integration_observations)
                 .Set(m => m.user_id, entity.user_id)
                 .Set(m => m.process, entity.process)
                 .Set(m => m.updated_at, entity.updated_at);

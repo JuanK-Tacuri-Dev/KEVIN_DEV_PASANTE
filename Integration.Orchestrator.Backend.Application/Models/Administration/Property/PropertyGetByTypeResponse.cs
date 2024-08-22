@@ -3,7 +3,7 @@
     public class PropertyGetByTypeResponse : ModelResponse<IEnumerable<PropertyGetByType>>
     {
     }
-    public class PropertyGetByType : PropertyRequest
+    public class PropertyGetByType : PropertyResponse
     {
         public Guid Id { get; set; }
     }

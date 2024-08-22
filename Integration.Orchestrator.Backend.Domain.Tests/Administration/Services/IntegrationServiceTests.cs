@@ -24,9 +24,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             var integration = new IntegrationEntity
             {
                 id = Guid.NewGuid(),
-                name = "Integration",
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                integration_name = "Integration",
+                status_id = Guid.NewGuid(),
+                integration_observations = "Observation",
                 user_id = Guid.NewGuid(),
                 process = new List<Guid> 
                 { 
@@ -46,9 +46,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             var integration = new IntegrationEntity
             {
                 id = Guid.NewGuid(),
-                name = "Integration",
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                integration_name = "Integration",
+                status_id = Guid.NewGuid(),
+                integration_observations = "Observation",
                 user_id = Guid.NewGuid(),
                 process = new List<Guid>
                 { 
@@ -69,9 +69,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             var integration = new IntegrationEntity
             {
                 id = Guid.NewGuid(),
-                name = "Integration",
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                integration_name = "Integration",
+                status_id = Guid.NewGuid(),
+                integration_observations = "Observation",
                 user_id = Guid.NewGuid(),
                 process = new List<Guid>
                 { 
@@ -96,9 +96,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             var integration = new IntegrationEntity
             {
                 id = Guid.NewGuid(),
-                name = "Integration",
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                integration_name = "Integration",
+                status_id = Guid.NewGuid(),
+                integration_observations = "Observation",
                 user_id = Guid.NewGuid(),
                 process = new List<Guid>
                 { 
@@ -127,9 +127,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             var integration = new IntegrationEntity
             {
                 id = Guid.NewGuid(),
-                name = "Integration",
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                integration_name = "Integration",
+                status_id = Guid.NewGuid(),
+                integration_observations = "Observation",
                 user_id = Guid.NewGuid(),
                 process = new List<Guid>
                 { 

@@ -231,9 +231,9 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             {
                 new IntegrationEntity
                 {
-                    name = "Test",
-                    status = Guid.NewGuid(),
-                    observations = "observation",
+                    integration_name = "Test",
+                    status_id = Guid.NewGuid(),
+                    integration_observations = "observation",
                     user_id = Guid.NewGuid(),
                     process = new List<Guid>
                     {
@@ -242,9 +242,9 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                 },
                 new IntegrationEntity
                 {
-                    name = "Test",
-                    status = Guid.NewGuid(),
-                    observations = "observation",
+                    integration_name = "Test",
+                    status_id = Guid.NewGuid(),
+                    integration_observations = "observation",
                     user_id = Guid.NewGuid(),
                     process = new List<Guid>
                     {
@@ -290,9 +290,9 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         {
             new IntegrationEntity
             {
-                name = "Test",
-                        status = Guid.NewGuid(),
-                        observations = "observation",
+                integration_name = "Test",
+                        status_id = Guid.NewGuid(),
+                        integration_observations = "observation",
                         user_id = Guid.NewGuid(),
                         process = new List<Guid>
                         {
@@ -301,9 +301,9 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             },
             new IntegrationEntity
             {
-                name = "Test",
-                        status = Guid.NewGuid(),
-                        observations = "observation",
+                integration_name = "Test",
+                        status_id = Guid.NewGuid(),
+                        integration_observations = "observation",
                         user_id = Guid.NewGuid(),
                         process = new List<Guid>
                         {

@@ -10,11 +10,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
         {
             RuleFor(request => request.Property.PropertyRequest.Name)
             .NotEmpty().WithMessage(AppMessages.Property_Name_Required);
-
-            RuleFor(request => request.Property.PropertyRequest.Code)
-            .NotEmpty().WithMessage(AppMessages.Property_Code_Required);
-
-            RuleFor(request => request.Property.PropertyRequest.Type)
+            
+            RuleFor(request => request.Property.PropertyRequest.TypeId)
             .NotEmpty().WithMessage(AppMessages.Property_Type_Required);
 
             

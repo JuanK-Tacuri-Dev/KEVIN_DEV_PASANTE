@@ -27,9 +27,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<EntitiesEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<EntitiesEntity, object>>>
         {
-            { nameof(EntitiesEntity.entity_type_id), x => x.entity_type_id },
+            { nameof(EntitiesEntity.type_id), x => x.type_id },
             { nameof(EntitiesEntity.entity_code), x => x.entity_code },
-            { nameof(EntitiesEntity.name), x => x.name }
+            { nameof(EntitiesEntity.entity_name), x => x.entity_name }
         };
         private void SetupPagination(PaginatedModel model)
         {
@@ -90,7 +90,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
         public static Expression<Func<EntitiesEntity, bool>> GetByTypeExpression(Guid typeId)
         {
-            return x => true && x.entity_type_id == typeId;
+            return x => true && x.type_id == typeId;
         }
 
         public static Expression<Func<EntitiesEntity, bool>> GetByRepositoryIdExpression(Guid repositoryId)

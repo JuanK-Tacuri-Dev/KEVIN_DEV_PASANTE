@@ -35,10 +35,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = new SynchronizationStatusCreate
                         {
                             Id = synchronizationStatesEntity.id,
-                            Key = synchronizationStatesEntity.key,
-                            Text = synchronizationStatesEntity.text,
-                            Color = synchronizationStatesEntity.color,
-                            Background = synchronizationStatesEntity.background
+                            Key = synchronizationStatesEntity.synchronization_status_key,
+                            Text = synchronizationStatesEntity.synchronization_status_text,
+                            Color = synchronizationStatesEntity.synchronization_status_color,
+                            Background = synchronizationStatesEntity.synchronization_status_background
                         }
                     });
             }
@@ -77,10 +77,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Data = new SynchronizationStatusUpdate
                             {
                                 Id = synchronizationStatesEntity.id,
-                                Key = synchronizationStatesEntity.key,
-                                Text = synchronizationStatesEntity.text,
-                                Color = synchronizationStatesEntity.color,
-                                Background = synchronizationStatesEntity.background
+                                Key = synchronizationStatesEntity.synchronization_status_key,
+                                Text = synchronizationStatesEntity.synchronization_status_text,
+                                Color = synchronizationStatesEntity.synchronization_status_color,
+                                Background = synchronizationStatesEntity.synchronization_status_background
                             }
                         });
             }
@@ -153,10 +153,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = new SynchronizationStatusGetById
                         {
                             Id = synchronizationStatusById.id,
-                            Key = synchronizationStatusById.key,
-                            Text = synchronizationStatusById.text,
-                            Color = synchronizationStatusById.color,
-                            Background = synchronizationStatusById.background
+                            Key = synchronizationStatusById.synchronization_status_key,
+                            Text = synchronizationStatusById.synchronization_status_text,
+                            Color = synchronizationStatusById.synchronization_status_color,
+                            Background = synchronizationStatusById.synchronization_status_background
                         }
                     });
             }
@@ -198,10 +198,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Rows = result.Select(syn => new SynchronizationStatusGetAllPaginated
                             {
                                 Id = syn.id,
-                                Key = syn.key,
-                                Text = syn.text,
-                                Color = syn.color,
-                                Background = syn.background
+                                Key = syn.synchronization_status_key,
+                                Text = syn.synchronization_status_text,
+                                Color = syn.synchronization_status_color,
+                                Background = syn.synchronization_status_background
                             }
                         ).ToList()
                         }
@@ -222,10 +222,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
             var SynchronizationStatesEntity = new SynchronizationStatusEntity()
             {
                 id = id,
-                key = request.Key,
-                text = request.Text,
-                color = request.Color,
-                background = request.Background
+                synchronization_status_key = request.Key,
+                synchronization_status_text = request.Text,
+                synchronization_status_color = request.Color,
+                synchronization_status_background = request.Background
             };
             return SynchronizationStatesEntity;
         }

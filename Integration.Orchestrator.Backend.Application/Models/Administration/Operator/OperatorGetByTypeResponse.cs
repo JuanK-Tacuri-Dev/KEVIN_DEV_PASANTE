@@ -3,8 +3,7 @@
     public class OperatorGetByTypeResponse : ModelResponse<IEnumerable<OperatorGetByType>>
     {
     }
-    public class OperatorGetByType : OperatorRequest
+    public class OperatorGetByType : OperatorResponse
     {
-        public Guid Id { get; set; }
     }
 }

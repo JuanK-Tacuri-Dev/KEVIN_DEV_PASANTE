@@ -59,7 +59,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             if (create) 
             {
-                var processByType = await GetByKeyAsync(status.key);
+                var processByType = await GetByKeyAsync(status.status_key);
                 if (processByType != null)
                 {
                     throw new ArgumentException(AppMessages.Application_ResponseNotCreated);

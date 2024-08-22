@@ -40,12 +40,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                         Data = new RepositoryCreate
                         {
                             Id = repositoryEntity.id,
-                            Code = repositoryEntity.code,
-                            Port = repositoryEntity.port,
-                            UserName = repositoryEntity.user,
-                            Password = repositoryEntity.password,
+                            Code = repositoryEntity.repository_code,
+                            Port = repositoryEntity.repository_port,
+                            UserName = repositoryEntity.repository_user,
+                            Password = repositoryEntity.repository_password,
                             DataBaseName = repositoryEntity.data_base_name,
-                            AuthTypeId = repositoryEntity.auth_type_id,
+                            AuthTypeId = repositoryEntity.type_id,
                             StatusId = repositoryEntity.status_id
                         }
                     });
@@ -85,12 +85,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                         Data = new RepositoryUpdate
                         {
                             Id = repositoryEntity.id,
-                            Code = repositoryEntity.code,
-                            Port = repositoryEntity.port,
-                            UserName = repositoryEntity.user,
-                            Password = repositoryEntity.password,
+                            Code = repositoryEntity.repository_code,
+                            Port = repositoryEntity.repository_port,
+                            UserName = repositoryEntity.repository_user,
+                            Password = repositoryEntity.repository_password,
                             DataBaseName = repositoryEntity.data_base_name,
-                            AuthTypeId = repositoryEntity.auth_type_id,
+                            AuthTypeId = repositoryEntity.type_id,
                             StatusId = repositoryEntity.status_id
                         }
                     });
@@ -165,12 +165,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                         Data = new RepositoryGetById
                         {
                             Id = request.Repository.Id,
-                            Code = repositoryById.code,
-                            Port = repositoryById.port,
-                            UserName = repositoryById.user,
-                            Password = repositoryById.password,
+                            Code = repositoryById.repository_code,
+                            Port = repositoryById.repository_port,
+                            UserName = repositoryById.repository_user,
+                            Password = repositoryById.repository_password,
                             DataBaseName = repositoryById.data_base_name,
-                            AuthTypeId = repositoryById.auth_type_id,
+                            AuthTypeId = repositoryById.type_id,
                             StatusId = repositoryById.status_id
                         }
                     });
@@ -207,12 +207,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                         Data = new RepositoryGetByCode
                         {
                             Id = repositoryByCode.id,
-                            Code = repositoryByCode.code,
-                            Port = repositoryByCode.port,
-                            UserName = repositoryByCode.user,
-                            Password = repositoryByCode.password,
+                            Code = repositoryByCode.repository_code,
+                            Port = repositoryByCode.repository_port,
+                            UserName = repositoryByCode.repository_user,
+                            Password = repositoryByCode.repository_password,
                             DataBaseName = repositoryByCode.data_base_name,
-                            AuthTypeId = repositoryByCode.auth_type_id,
+                            AuthTypeId = repositoryByCode.type_id,
                             StatusId = repositoryByCode.status_id
                         }
                     });
@@ -256,12 +256,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                             Rows = result.Select(c => new RepositoryGetAllPaginated
                             {
                                 Id = c.id,
-                                Code = c.code,
-                                Port = c.port,
-                                UserName = c.user,
-                                Password = c.password,
+                                Code = c.repository_code,
+                                Port = c.repository_port,
+                                UserName = c.repository_user,
+                                Password = c.repository_password,
                                 DataBaseName = c.data_base_name,
-                                AuthTypeId = c.auth_type_id,
+                                AuthTypeId = c.type_id,
                                 StatusId = c.status_id
                             }).ToList()
                         }
@@ -282,14 +282,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
             var repositoryEntity = new RepositoryEntity()
             {
                 id = id,
-                code = create == true
+                repository_code = create == true
                     ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Repository)
                     : null,
-                port = request.Port,
-                user = request.UserName,
-                password = request.Password,
+                repository_port = request.Port,
+                repository_user = request.UserName,
+                repository_password = request.Password,
                 data_base_name = request.DataBaseName,
-                auth_type_id = request.AuthTypeId,
+                type_id = request.AuthTypeId,
                 status_id = request.StatusId
             };
             return repositoryEntity;

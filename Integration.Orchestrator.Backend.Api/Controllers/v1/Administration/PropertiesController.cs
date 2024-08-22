@@ -54,11 +54,11 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetByType(string type)
+        public async Task<IActionResult> GetByType(Guid typeId)
         {
             return Ok((await _mediator.Send(
                 new GetByTypePropertyCommandRequest(
-                    new PropertyGetByTypeRequest { Type = type }))).Message);
+                    new PropertyGetByTypeRequest { TypeId = typeId}))).Message);
         }
 
         [HttpPost]

@@ -20,10 +20,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             var filter = Builders<CatalogEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<CatalogEntity>.Update
-                .Set(m => m.name, entity.name)
-                .Set(m => m.value, entity.value)
+                .Set(m => m.catalog_name, entity.catalog_name)
+                .Set(m => m.catalog_value, entity.catalog_value)
                 .Set(m => m.father_id, entity.father_id)
-                .Set(m => m.detail, entity.detail)
+                .Set(m => m.catalog_detail, entity.catalog_detail)
                 .Set(m => m.status_id, entity.status_id)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);

@@ -14,7 +14,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.O
             RuleFor(request => request.Operator.OperatorRequest.Code)
             .NotEmpty().WithMessage(AppMessages.Operator_Code_Required);
 
-            RuleFor(request => request.Operator.OperatorRequest.Type)
+            RuleFor(request => request.Operator.OperatorRequest.TypeId)
             .NotEmpty().WithMessage(AppMessages.Operator_Type_Required);
 
             

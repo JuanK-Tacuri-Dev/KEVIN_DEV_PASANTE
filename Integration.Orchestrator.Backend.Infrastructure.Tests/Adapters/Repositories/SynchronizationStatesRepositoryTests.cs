@@ -28,10 +28,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
             var entity = new SynchronizationStatusEntity
             {
                 id = Guid.NewGuid(),
-                key = "Cancelado",
-                text = "canceled",
-                color = "F77D7D",
-                background = "#E2F7E2"
+                synchronization_status_key = "Cancelado",
+                synchronization_status_text = "canceled",
+                synchronization_status_color = "F77D7D",
+                synchronization_status_background = "#E2F7E2"
             };
 
             // Act
@@ -49,10 +49,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
             var entity = new SynchronizationStatusEntity
             {
                 id = id,
-                key = "Cancelado",
-                text = "canceled",
-                color = "F77D7D",
-                background = "#E2F7E2"
+                synchronization_status_key = "Cancelado",
+                synchronization_status_text = "canceled",
+                synchronization_status_color = "F77D7D",
+                synchronization_status_background = "#E2F7E2"
             };
 
 
@@ -84,17 +84,17 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Tests.Adapters.Reposit
             specification.Setup(s => s.Criteria).Returns(x => true);
             specification.Setup(s => s.Limit).Returns(10);
             specification.Setup(s => s.Skip).Returns(0);
-            specification.Setup(s => s.OrderBy).Returns(x=> x.key);
+            specification.Setup(s => s.OrderBy).Returns(x=> x.synchronization_status_key);
 
             var entities = new List<SynchronizationStatusEntity>
     {
         new SynchronizationStatusEntity
         {
             id = Guid.NewGuid(),
-            key = "Cancelado",
-            text = "canceled",
-            color = "F77D7D",
-            background = "#E2F7E2"
+            synchronization_status_key = "Cancelado",
+            synchronization_status_text = "canceled",
+            synchronization_status_color = "F77D7D",
+            synchronization_status_background = "#E2F7E2"
         }
             };
 

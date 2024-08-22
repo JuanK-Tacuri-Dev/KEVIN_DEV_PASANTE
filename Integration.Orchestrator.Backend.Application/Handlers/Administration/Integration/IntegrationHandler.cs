@@ -36,9 +36,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new IntegrationCreate
                         {
                             Id = integrationEntity.id,
-                            Name = integrationEntity.name,
-                            Status = integrationEntity.status,
-                            Observations = integrationEntity.observations,
+                            Name = integrationEntity.integration_name,
+                            Status = integrationEntity.status_id,
+                            Observations = integrationEntity.integration_observations,
                             UserId = integrationEntity.user_id,
                             Process = integrationEntity.process.Select(p => new ProcessRequest
                             {
@@ -78,9 +78,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Data = new IntegrationUpdate
                             {
                                 Id = integrationEntity.id,
-                                Name = integrationEntity.name,
-                                Status = integrationEntity.status,
-                                Observations = integrationEntity.observations,
+                                Name = integrationEntity.integration_name,
+                                Status = integrationEntity.status_id,
+                                Observations = integrationEntity.integration_observations,
                                 UserId = integrationEntity.user_id,
                                 Process = integrationEntity.process.Select(p => new ProcessRequest
                                 {
@@ -150,9 +150,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new IntegrationGetById
                         {
                             Id = integrationById.id,
-                            Name = integrationById.name,
-                            Status = integrationById.status,
-                            Observations = integrationById.observations,
+                            Name = integrationById.integration_name,
+                            Status = integrationById.status_id,
+                            Observations = integrationById.integration_observations,
                             Process = integrationById.process.Select(i => new ProcessRequest { Id = i }).ToList(),
                             UserId = integrationById.user_id
                         }
@@ -192,9 +192,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Rows = result.Select(syn => new IntegrationGetAllPaginated
                             {
                                 Id = syn.id,
-                                Name = syn.name,
-                                Status = syn.status,
-                                Observations = syn.observations,
+                                Name = syn.integration_name,
+                                Status = syn.status_id,
+                                Observations = syn.integration_observations,
                                 Process = syn.process.Select(i => new ProcessResponse { Id = i }).ToList(),
                                 UserId = syn.user_id
                             }).ToList()
@@ -216,9 +216,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             var integrationEntity = new IntegrationEntity()
             {
                 id = id,
-                name = request.Name,
-                status = request.Status,
-                observations = request.Observations,
+                integration_name = request.Name,
+                status_id = request.Status,
+                integration_observations = request.Observations,
                 process = request.Process.Select(i => i.Id).ToList(),
                 user_id = request.UserId
             };

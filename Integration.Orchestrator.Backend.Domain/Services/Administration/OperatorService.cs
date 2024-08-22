@@ -43,9 +43,9 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _operatorRepository.GetByCodeAsync(specification);
         }
 
-        public async Task<IEnumerable<OperatorEntity>> GetByTypeAsync(string type)
+        public async Task<IEnumerable<OperatorEntity>> GetByTypeIdAsync(Guid typeId)
         {
-            var specification = OperatorSpecification.GetByTypeExpression(type);
+            var specification = OperatorSpecification.GetByTypeExpression(typeId);
             return await _operatorRepository.GetByTypeAsync(specification);
         }
 

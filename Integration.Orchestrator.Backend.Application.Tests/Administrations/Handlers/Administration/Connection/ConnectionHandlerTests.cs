@@ -67,7 +67,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                 server_id = Guid.NewGuid(),
                 adapter_id = Guid.NewGuid(),
                 repository_id = Guid.NewGuid(),
-                description = "description",
+                connection_description = "description",
                 status_id = Guid.NewGuid()
             };
 
@@ -106,7 +106,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                     server_id = Guid.NewGuid(),
                     adapter_id = Guid.NewGuid(),
                     repository_id = Guid.NewGuid(),
-                    description = "description1",
+                    connection_description = "description1",
                     status_id = Guid.NewGuid()
                 },
                 new ConnectionEntity
@@ -115,7 +115,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                     server_id = Guid.NewGuid(),
                     adapter_id = Guid.NewGuid(),
                     repository_id = Guid.NewGuid(),
-                    description = "description2",
+                    connection_description = "description2",
                     status_id = Guid.NewGuid()  }
             };
 

@@ -3,10 +3,10 @@
     [Serializable]
     public class SynchronizationStatusEntity : Entity<Guid>
     {
-        public string key { get; set; }
-        public string text { get; set; }
-        public string color { get; set; }
-        public string background { get; set; }
+        public string synchronization_status_key { get; set; }
+        public string synchronization_status_text { get; set; }
+        public string synchronization_status_color { get; set; }
+        public string synchronization_status_background { get; set; }
         public DateTime created_at { get; private set; } = DateTime.UtcNow;
         public DateTime updated_at { get; private set; } = DateTime.UtcNow;
     }

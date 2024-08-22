@@ -27,7 +27,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<AdapterEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<AdapterEntity, object>>>
         {
-            { nameof(AdapterEntity.name), x => x.name },
+            { nameof(AdapterEntity.adapter_name), x => x.adapter_name },
             { nameof(AdapterEntity.adapter_code), x => x.adapter_code }
         };
         private void SetupPagination(PaginatedModel model)
@@ -89,7 +89,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
         public static Expression<Func<AdapterEntity, bool>> GetByTypeExpression(Guid typeId)
         {
-            return x => true && x.adapter_type_id == typeId;
+            return x => true && x.type_id == typeId;
         }
 
 

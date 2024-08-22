@@ -24,13 +24,13 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             var synchronization = new SynchronizationEntity
             {
                 id = Guid.NewGuid(),
-                name = "Synchronization",
+                synchronization_name = "Synchronization",
                 franchise_id = Guid.NewGuid(),
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                status_id = Guid.NewGuid(),
+                synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
                 integrations = new List<Guid> { },
-                hour_to_execute = DateTime.Now
+                synchronization_hour_to_execute = DateTime.Now
             };
 
             await _service.InsertAsync(synchronization);
@@ -45,10 +45,10 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             {
                 id = Guid.NewGuid(),
                 franchise_id = Guid.NewGuid(),
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                status_id = Guid.NewGuid(),
+                synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                hour_to_execute = DateTime.Now
+                synchronization_hour_to_execute = DateTime.Now
             };
 
             await _service.UpdateAsync(synchronization);
@@ -64,10 +64,10 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             {
                 id = id,
                 franchise_id = Guid.NewGuid(),
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                status_id = Guid.NewGuid(),
+                synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                hour_to_execute = DateTime.Now
+                synchronization_hour_to_execute = DateTime.Now
             };
 
             var expression = SynchronizationSpecification.GetByIdExpression(id);
@@ -88,10 +88,10 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             {
                 id = Guid.NewGuid(),
                 franchise_id = Guid.NewGuid(),
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                status_id = Guid.NewGuid(),
+                synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                hour_to_execute = DateTime.Now
+                synchronization_hour_to_execute = DateTime.Now
             };
 
             await _service.DeleteAsync(synchronization);
@@ -108,10 +108,10 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             {
                 id = Guid.NewGuid(),
                 franchise_id = franchiseId,
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                status_id = Guid.NewGuid(),
+                synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                hour_to_execute = DateTime.Now
+                synchronization_hour_to_execute = DateTime.Now
             };
 
             var synchronizations = new List<SynchronizationEntity> { synchronization };
@@ -145,10 +145,10 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             {
                 id = Guid.NewGuid(),
                 franchise_id = Guid.NewGuid(),
-                status = Guid.NewGuid(),
-                observations = "Observation",
+                status_id = Guid.NewGuid(),
+                synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                hour_to_execute = DateTime.Now
+                synchronization_hour_to_execute = DateTime.Now
             };
             var synchronizations = new List<SynchronizationEntity> { synchronization };
             var spec = new SynchronizationSpecification(paginatedModel);

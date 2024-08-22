@@ -43,9 +43,9 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _propertyRepository.GetByCodeAsync(specification);
         }
 
-        public async Task<IEnumerable<PropertyEntity>> GetByTypeAsync(string type)
+        public async Task<IEnumerable<PropertyEntity>> GetByTypeIdAsync(Guid typeId)
         {
-            var specification = PropertySpecification.GetByTypeExpression(type);
+            var specification = PropertySpecification.GetByTypeExpression(typeId);
             return await _propertyRepository.GetByTypeAsync(specification);
         }
 
