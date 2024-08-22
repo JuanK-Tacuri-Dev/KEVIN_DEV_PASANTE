@@ -67,5 +67,12 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
             return Ok((await _mediator.Send(
                 new GetAllPaginatedCatalogCommandRequest(request))).Message);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetAllPaginatedCarlos(CatalogGetAllPaginatedRequest request)
+        {
+            return Ok((await _mediator.Send(
+                new GetAllPaginatedCatalogCommandRequest(request))).Message);
+        }
     }
 }
