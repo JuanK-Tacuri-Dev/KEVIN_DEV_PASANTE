@@ -9,7 +9,7 @@ resources:
 - repo: self
 
 variables:
-  tag: 'dev'
+  tag: '$(Build.BuildId)'
 
 stages:
 - stage: buildAndPush
@@ -26,8 +26,7 @@ stages:
         command: buildAndPush
         containerRegistry: SC_ACR_GRUPOKFC_DEV
         repository: mxpv2-orchestrator
-        buildContext: '$(Build.SourcesDirectory)/'
-        dockerfile: '$(Build.SourcesDirectory)/Integration.Orchestrator.Backend.Api/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)'
         tags: |
           $(tag)
 
