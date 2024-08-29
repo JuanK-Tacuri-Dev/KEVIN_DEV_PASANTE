@@ -74,7 +74,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             if (create)
             {
                 var entitiesByCode = await GetByCodeAsync(entities.entity_code);
-                var numEntitiesByNameAndRepositoryId = await CountEntitiesByNameAndRepositoryId(entities);
+                var numEntitiesByNameAndRepositoryId = await CountEntitiesByNameAndRepositoryIdAsync(entities);
 
                 if (entitiesByCode != null)
                 {
@@ -88,7 +88,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             }
         }
 
-        private async Task<int> CountEntitiesByNameAndRepositoryId(EntitiesEntity entities)
+        private async Task<int> CountEntitiesByNameAndRepositoryIdAsync(EntitiesEntity entities)
         {
             var entitiesByNameAndRepositoryId = await GetByNameAndRepositoryIdAsync(entities.entity_name, entities.repository_id);
             return entitiesByNameAndRepositoryId.ToList().Count;
