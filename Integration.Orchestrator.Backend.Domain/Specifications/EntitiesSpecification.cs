@@ -1,7 +1,7 @@
-﻿using Integration.Orchestrator.Backend.Domain.Commons;
+﻿using System.Linq.Expressions;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Models;
-using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Domain.Specifications
 {
@@ -97,6 +97,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return x => true && x.repository_id == repositoryId;
         }
-
+        
+        public static Expression<Func<EntitiesEntity, bool>> GetByNameAndRepositoryIdExpression(string name, Guid repositoryId)
+        {
+            return x => true && x.entity_name == name && x.repository_id == repositoryId;
+        }
     }
 }

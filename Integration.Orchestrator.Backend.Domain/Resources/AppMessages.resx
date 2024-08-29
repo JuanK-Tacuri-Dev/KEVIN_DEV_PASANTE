@@ -597,4 +597,7 @@
   <data name="Value_Type_Required" xml:space="preserve">
     <value>The type is required</value>
   </data>
+  <data name="Domain_EntityRepositoryExists" xml:space="preserve">
+    <value>The entity with this repository exists</value>
+  </data>  
 </root>
