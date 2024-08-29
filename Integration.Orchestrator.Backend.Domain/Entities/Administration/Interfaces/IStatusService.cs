@@ -1,5 +1,4 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Models;
-using System.Threading.Tasks;
 
 namespace Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces
 {
