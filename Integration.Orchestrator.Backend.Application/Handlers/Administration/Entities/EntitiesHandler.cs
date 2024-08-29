@@ -45,7 +45,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Name = entitiesEntity.entity_name,
                             Code = entitiesEntity.entity_code,
                             TypeId = entitiesEntity.type_id,
-                            RepositoryId = entitiesEntity.repository_id
+                            RepositoryId = entitiesEntity.repository_id,
+                            StatusId = entitiesEntity.status_id
                         }
                     });
             }
@@ -350,7 +351,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                     ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Entity)
                     : null,
                 type_id = request.TypeId,
-                repository_id = request.RepositoryId
+                repository_id = request.RepositoryId,
+                status_id = request.StatusId
             };
             return entitiesEntity;
         }
