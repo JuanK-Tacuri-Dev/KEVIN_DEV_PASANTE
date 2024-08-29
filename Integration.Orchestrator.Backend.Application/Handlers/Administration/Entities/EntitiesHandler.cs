@@ -11,7 +11,7 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Administratio
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities
 {
-    public class EntitiesHandler(
+    public class c(
         IEntitiesService<EntitiesEntity> entitiesService,
         ICodeConfiguratorService codeConfiguratorService)
         :
@@ -88,7 +88,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                                 Name = entitiesEntity.entity_name,
                                 Code = entitiesEntity.entity_code,
                                 TypeId = entitiesEntity.type_id,
-                                RepositoryId = entitiesEntity.repository_id
+                                RepositoryId = entitiesEntity.repository_id,
+                                StatusId = entitiesEntity.status_id
                             }
                         });
             }
@@ -164,7 +165,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Name = entitiesById.entity_name,
                             Code = entitiesById.entity_code,
                             TypeId = entitiesById.type_id,
-                            RepositoryId = entitiesById.repository_id
+                            RepositoryId = entitiesById.repository_id,
+                            StatusId = entitiesById.status_id
                         }
                     });
             }
@@ -203,7 +205,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Name = entitiesByCode.entity_name,
                             Code = entitiesByCode.entity_code,
                             TypeId = entitiesByCode.type_id,
-                            RepositoryId = entitiesByCode.repository_id
+                            RepositoryId = entitiesByCode.repository_id,
+                            StatusId = entitiesByCode.status_id
                         }
                     });
             }
@@ -242,7 +245,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Name = c.entity_name,
                             Code = c.entity_code,
                             TypeId = c.type_id,
-                            RepositoryId = c.repository_id
+                            RepositoryId = c.repository_id,
+                            StatusId = c.status_id
                         }).ToList()
                     });
             }
@@ -281,7 +285,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Name = c.entity_name,
                             Code = c.entity_code,
                             TypeId = c.type_id,
-                            RepositoryId = c.repository_id
+                            RepositoryId = c.repository_id,
+                            StatusId = c.status_id
                         }).ToList()
                     });
             }
@@ -326,7 +331,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                                 Name = c.entity_name,
                                 Code = c.entity_code,
                                 TypeId = c.type_id,
-                                RepositoryId = c.repository_id
+                                RepositoryId = c.repository_id,
+                                StatusId = c.status_id
                             }).ToList()
                         }
                     });
