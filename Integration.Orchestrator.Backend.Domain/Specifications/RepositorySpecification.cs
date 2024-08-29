@@ -1,7 +1,7 @@
-﻿using Integration.Orchestrator.Backend.Domain.Commons;
+﻿using System.Linq.Expressions;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Models;
-using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Domain.Specifications
 {
