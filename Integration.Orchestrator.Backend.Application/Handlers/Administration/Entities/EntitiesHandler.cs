@@ -11,7 +11,7 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Administratio
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities
 {
-    public class c(
+    public class EntitiesHandler(
         IEntitiesService<EntitiesEntity> entitiesService,
         ICodeConfiguratorService codeConfiguratorService)
         :
