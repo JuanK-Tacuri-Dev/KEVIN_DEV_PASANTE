@@ -66,11 +66,30 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             if (create)
             {
                 var propertyByCode = await GetByCodeAsync(property.property_code);
+                var numPropertiesByNameAndEntityId = await CountPropertiesByNameAndEntityIdAsync(property);
+                
                 if (propertyByCode != null) 
                 {
                     throw new ArgumentException(AppMessages.Domain_PropertyExists);
                 }
+                
+                if (numPropertiesByNameAndEntityId > 0)
+                {
+                    throw new ArgumentException(AppMessages.Domain_PropertyEntityExists);
+                }
             }
         }
+        
+        private async Task<int> CountPropertiesByNameAndEntityIdAsync(PropertyEntity entity)
+        {
+            var entitiesByNameAndRepositoryId = await GetByNameAndEntityIdAsync(entity.property_name, entity.entity_id);
+            return entitiesByNameAndRepositoryId.ToList().Count;
+        }
+
+        public async Task<IEnumerable<PropertyEntity>> GetByNameAndEntityIdAsync(string name, Guid entityId)
+        {
+            var specification = PropertySpecification.GetByNameAndEntityIdExpression(name, entityId);
+            return await _propertyRepository.GetByNameAndEntityIdAsync(specification);
+        }        
     }
 }

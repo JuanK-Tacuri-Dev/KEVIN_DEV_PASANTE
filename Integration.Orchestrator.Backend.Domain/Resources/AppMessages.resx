@@ -598,6 +598,9 @@
     <value>The type is required</value>
   </data>
   <data name="Domain_EntityRepositoryExists" xml:space="preserve">
-    <value>The entity with this repository exists</value>
-  </data>  
+    <value>Entity name for this repository already exists</value>
+  </data>
+  <data name="Domain_PropertyEntityExists" xml:space="preserve">
+    <value>Property name for this entity already exists</value>
+  </data>
 </root>

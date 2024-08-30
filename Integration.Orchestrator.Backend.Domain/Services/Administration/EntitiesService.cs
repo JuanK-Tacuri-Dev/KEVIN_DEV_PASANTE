@@ -88,16 +88,16 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             }
         }
 
-        private async Task<int> CountEntitiesByNameAndRepositoryIdAsync(EntitiesEntity entities)
+        private async Task<int> CountEntitiesByNameAndRepositoryIdAsync(EntitiesEntity entity)
         {
-            var entitiesByNameAndRepositoryId = await GetByNameAndRepositoryIdAsync(entities.entity_name, entities.repository_id);
+            var entitiesByNameAndRepositoryId = await GetByNameAndRepositoryIdAsync(entity.entity_name, entity.repository_id);
             return entitiesByNameAndRepositoryId.ToList().Count;
         }
 
         public async Task<IEnumerable<EntitiesEntity>> GetByNameAndRepositoryIdAsync(string name, Guid repositoryId)
         {
             var specification = EntitiesSpecification.GetByNameAndRepositoryIdExpression(name, repositoryId);
-            return await _entitiesRepository.GetByNameAndTypeIdAsync(specification);
+            return await _entitiesRepository.GetByNameAndRepositoryIdAsync(specification);
         }
     }
 }
