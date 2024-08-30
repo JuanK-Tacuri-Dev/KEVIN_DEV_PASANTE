@@ -31,7 +31,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
         {
             try
             {
-                var entitiesEntity = await MapEntities(request.Entities.EntitiesRequest, Guid.NewGuid(), true);
+                var entitiesEntity = await MapEntities(request.Entities.EntitiesRequest);
                 await _entitiesService.InsertAsync(entitiesEntity);
 
                 return new CreateEntitiesCommandResponse(
@@ -74,7 +74,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Data = request.Entities.EntitiesRequest
                         });
 
-                var entitiesEntity = await MapEntities(request.Entities.EntitiesRequest, request.Id);
+                var entitiesEntity = await MapEntities(request.Entities.EntitiesRequest, entitiesById);
                 await _entitiesService.UpdateAsync(entitiesEntity);
 
                 return new UpdateEntitiesCommandResponse(
@@ -347,20 +347,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
             }
         }
 
-        private async Task<EntitiesEntity> MapEntities(EntitiesCreateRequest request, Guid id, bool? create = null)
+        private async Task<EntitiesEntity> MapEntities(EntitiesCreateRequest request, EntitiesEntity savedEntity = null)
         {
-            var entitiesEntity = new EntitiesEntity()
+            return new EntitiesEntity()
             {
-                id = id,
+                id = savedEntity == null ? Guid.NewGuid() : savedEntity.id,
                 entity_name = request.Name,
-                entity_code = create == true
+                entity_code = savedEntity == null
                     ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Entity)
-                    : null,
+                    : savedEntity.entity_code,
                 type_id = request.TypeId,
                 repository_id = request.RepositoryId,
                 status_id = request.StatusId
             };
-            return entitiesEntity;
         }
     }
 }
