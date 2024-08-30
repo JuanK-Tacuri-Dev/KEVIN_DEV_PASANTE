@@ -88,5 +88,11 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .CountDocumentsAsync();
         }
 
+        public async Task<IEnumerable<PropertyEntity>> GetByNameAndEntityIdAsync(Expression<Func<PropertyEntity, bool>> specification)
+        {
+            return await _collection
+                .Find(Builders<PropertyEntity>.Filter.Where(specification))
+                .ToListAsync();
+        }
     }
 }

@@ -825,7 +825,7 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The entity with this repository exists.
+        ///   Looks up a localized string similar to Entity name for this repository already exists.
         /// </summary>
         public static string Domain_EntityRepositoryExists {
             get {
@@ -857,6 +857,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Domain_ProcessExists {
             get {
                 return ResourceManager.GetString("Domain_ProcessExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Property name for this entity already exists.
+        /// </summary>
+        public static string Domain_PropertyEntityExists {
+            get {
+                return ResourceManager.GetString("Domain_PropertyEntityExists", resourceCulture);
             }
         }
         

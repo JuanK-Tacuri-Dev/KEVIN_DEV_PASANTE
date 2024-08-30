@@ -95,7 +95,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .CountDocumentsAsync();
         }
         
-        public async Task<IEnumerable<EntitiesEntity>> GetByNameAndTypeIdAsync(Expression<Func<EntitiesEntity, bool>> specification)
+        public async Task<IEnumerable<EntitiesEntity>> GetByNameAndRepositoryIdAsync(Expression<Func<EntitiesEntity, bool>> specification)
         {
             return await _collection
                 .Find(Builders<EntitiesEntity>.Filter.Where(specification))

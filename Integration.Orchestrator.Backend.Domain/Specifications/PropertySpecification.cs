@@ -91,6 +91,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return x => true && x.type_id == typeId;
         }
+        
+        public static Expression<Func<PropertyEntity, bool>> GetByNameAndEntityIdExpression(string name, Guid entityId)
+        {
+            return x => true && x.property_name == name && x.entity_id == entityId;
+        }        
 
 
     }
