@@ -31,7 +31,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
         {
             try
             {
-                var propertyEntity = await MapProperty(request.Property.PropertyRequest, Guid.NewGuid(), true);
+                var propertyEntity = await MapProperty(request.Property.PropertyRequest);
                 await _propertyService.InsertAsync(propertyEntity);
 
                 return new CreatePropertyCommandResponse(
@@ -70,7 +70,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                     throw new ArgumentException(AppMessages.Application_PropertyNotFound);
                 }
 
-                var propertyEntity = await MapProperty(request.Property.PropertyRequest, request.Id);
+                var propertyEntity = await MapProperty(request.Property.PropertyRequest, propertyById);
                 await _propertyService.UpdateAsync(propertyEntity);
 
                 return new UpdatePropertyCommandResponse(
@@ -283,20 +283,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
             }
         }
 
-        private async Task<PropertyEntity> MapProperty(PropertyCreateRequest request, Guid id, bool? create = null)
+        private async Task<PropertyEntity> MapProperty(PropertyCreateRequest request, PropertyEntity savedProperty = null)
         {
-            var propertyEntity = new PropertyEntity()
+            return new PropertyEntity()
             {
-                id = id,
+                id = savedProperty == null ? Guid.NewGuid() : savedProperty.id,
                 property_name = request.Name,
-                property_code = create == true
+                property_code = savedProperty == null
                 ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Property)
-                : null,
+                : savedProperty.property_code,
                 type_id = request.TypeId,
                 entity_id = request.EntityId,
                 status_id = request.StatusId
             };
-            return propertyEntity;
         }
     }
 }
