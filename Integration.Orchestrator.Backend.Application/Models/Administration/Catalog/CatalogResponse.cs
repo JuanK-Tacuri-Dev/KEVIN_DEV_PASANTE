@@ -7,6 +7,7 @@
         public string Name { get; set; }
         public string Value { get; set; }
         public string? FatherCode { get; set; }
+        public bool IsFather => String.IsNullOrEmpty(FatherCode);
         public string Detail { get; set; }
         public Guid StatusId { get; set; }
     }
