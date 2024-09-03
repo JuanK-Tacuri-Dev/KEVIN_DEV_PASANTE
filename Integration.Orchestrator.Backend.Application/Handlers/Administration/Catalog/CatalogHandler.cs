@@ -43,7 +43,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Code = catalogEntity.catalog_code,
                             Name = catalogEntity.catalog_name,
                             Value = catalogEntity.catalog_value,
-                            FatherId = catalogEntity.father_id,
+                            FatherCode = catalogEntity.father_code,
                             Detail = catalogEntity.catalog_detail,
                             StatusId = catalogEntity.status_id
                         }
@@ -87,7 +87,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                                 Code = catalogEntity.catalog_code,
                                 Name = catalogEntity.catalog_name,
                                 Value = catalogEntity.catalog_value,
-                                FatherId = catalogEntity.father_id,
+                                FatherCode = catalogEntity.father_code,
                                 Detail = catalogEntity.catalog_detail,
                                 StatusId = catalogEntity.status_id
                             }
@@ -165,7 +165,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Code = catalogById.catalog_code,
                             Name = catalogById.catalog_name,
                             Value = catalogById.catalog_value,
-                            FatherId = catalogById.father_id,
+                            FatherCode = catalogById.father_code,
                             Detail = catalogById.catalog_detail,
                             StatusId = catalogById.status_id
                         }
@@ -185,7 +185,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         {
             try
             {
-                var catalogByType = await _catalogService.GetByFatherAsync(request.Catalog.FatherId);
+                var catalogByType = await _catalogService.GetByFatherAsync(request.Catalog.FatherCode);
                 if (catalogByType == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
@@ -206,7 +206,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Code = p.catalog_code,
                             Name = p.catalog_name,
                             Value = p.catalog_value,
-                            FatherId = p.father_id,
+                            FatherCode = p.father_code,
                             Detail = p.catalog_detail,
                             StatusId = p.status_id
                         }).ToList()
@@ -247,7 +247,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Code = catalogByCode.catalog_code,
                             Name = catalogByCode.catalog_name,
                             Value = catalogByCode.catalog_value,
-                            FatherId = catalogByCode.father_id,
+                            FatherCode = catalogByCode.father_code,
                             Detail = catalogByCode.catalog_detail,
                             StatusId = catalogByCode.status_id
                         }
@@ -295,7 +295,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                                 Code = p.catalog_code,
                                 Name = p.catalog_name,
                                 Value = p.catalog_value,
-                                FatherId = p.father_id,
+                                FatherCode = p.father_code,
                                 Detail = p.catalog_detail,
                                 StatusId = p.status_id
                             }).ToList()
@@ -323,7 +323,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                 catalog_name = request.Name,
                 catalog_value = request.Value,
                 catalog_detail = request.Detail,
-                father_id = request.FatherId,
+                father_code = request.FatherCode,
                 status_id = request.StatusId
             };
             return catalogEntity;

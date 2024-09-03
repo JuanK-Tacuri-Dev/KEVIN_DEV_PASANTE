@@ -40,9 +40,9 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _processRepository.GetByCodeAsync(specification);
         }
 
-        public async Task<IEnumerable<CatalogEntity>> GetByFatherAsync(Guid fatherId)
+        public async Task<IEnumerable<CatalogEntity>> GetByFatherAsync(string fatherCode)
         {
-            var specification = CatalogSpecification.GetByFatherExpression(fatherId);
+            var specification = CatalogSpecification.GetByFatherExpression(fatherCode);
             return await _processRepository.GetByFatherAsync(specification);
         }
 

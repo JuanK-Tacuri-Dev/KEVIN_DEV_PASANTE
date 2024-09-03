@@ -22,7 +22,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             var update = Builders<CatalogEntity>.Update
                 .Set(m => m.catalog_name, entity.catalog_name)
                 .Set(m => m.catalog_value, entity.catalog_value)
-                .Set(m => m.father_id, entity.father_id)
+                .Set(m => m.father_code, entity.father_code)
                 .Set(m => m.catalog_detail, entity.catalog_detail)
                 .Set(m => m.status_id, entity.status_id)
                 .Set(m => m.updated_at, entity.updated_at);

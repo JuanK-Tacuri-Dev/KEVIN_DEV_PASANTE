@@ -2,6 +2,6 @@
 {
     public class CatalogGetByFatherRequest
     {
-        public Guid FatherId { get; set; }
+        public string FatherCode { get; set; }
     }
 }

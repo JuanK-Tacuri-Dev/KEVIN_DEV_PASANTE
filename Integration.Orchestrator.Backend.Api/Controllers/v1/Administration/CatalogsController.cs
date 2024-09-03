@@ -46,11 +46,11 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetByFatherId(Guid id)
+        public async Task<IActionResult> GetByFatherId(string id)
         {
             return Ok((await _mediator.Send(
                 new GetByFatherCatalogCommandRequest(
-                    new CatalogGetByFatherRequest { FatherId = id }))).Message);
+                    new CatalogGetByFatherRequest { FatherCode = id }))).Message);
         }
 
         [HttpGet]

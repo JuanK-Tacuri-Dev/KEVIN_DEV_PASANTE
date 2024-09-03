@@ -84,9 +84,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         }
 
 
-        public static Expression<Func<CatalogEntity, bool>> GetByFatherExpression(Guid fatherId)
+        public static Expression<Func<CatalogEntity, bool>> GetByFatherExpression(string fatherCode)
         {
-            return x => true && x.father_id == fatherId;
+            return x => true && x.father_code == fatherCode;
         }
 
         public static Expression<Func<CatalogEntity, bool>> GetByCodeExpression(string code)
