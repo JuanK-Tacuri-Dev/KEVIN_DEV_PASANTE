@@ -46,7 +46,7 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetByFatherId(string id)
+        public async Task<IActionResult> GetByFatherCode(string id)
         {
             return Ok((await _mediator.Send(
                 new GetByFatherCatalogCommandRequest(
