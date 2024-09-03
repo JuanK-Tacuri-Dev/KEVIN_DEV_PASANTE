@@ -22,6 +22,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
         IRequestHandler<GetByIdPropertyCommandRequest, GetByIdPropertyCommandResponse>,
         IRequestHandler<GetByCodePropertyCommandRequest, GetByCodePropertyCommandResponse>,
         IRequestHandler<GetByTypePropertyCommandRequest, GetByTypePropertyCommandResponse>,
+        IRequestHandler<GetByEntityPropertyCommandRequest, GetByEntityPropertyCommandResponse>,
         IRequestHandler<GetAllPaginatedPropertyCommandRequest, GetAllPaginatedPropertyCommandResponse>
     {
         public readonly IPropertyService<PropertyEntity> _propertyService = propertyService;
@@ -296,6 +297,41 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                 entity_id = request.EntityId,
                 status_id = request.StatusId
             };
+        }
+        
+        public async Task<GetByEntityPropertyCommandResponse> Handle(GetByEntityPropertyCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var propertyByEntity = await _propertyService.GetByEntityIdAsync(request.Property.EntityId);
+                if (propertyByEntity == null)
+                {
+                    throw new ArgumentException(AppMessages.Application_PropertyNotFound);
+                }
+
+                return new GetByEntityPropertyCommandResponse(
+                    new PropertyGetByEntityResponse
+                    {
+                        Code = HttpStatusCode.OK.GetHashCode(),
+                        Messages = [AppMessages.Application_RespondeGet],
+                        Data = propertyByEntity.Select(c => new PropertyGetByEntity                        {
+                            Id = c.id,
+                            Name = c.property_name,
+                            Code = c.property_code,
+                            TypeId = c.type_id,
+                            EntityId = c.entity_id,
+                            StatusId = c.status_id
+                        }).ToList()
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
         }
     }
 }

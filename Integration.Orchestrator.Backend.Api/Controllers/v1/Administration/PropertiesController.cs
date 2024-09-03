@@ -60,6 +60,15 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
                 new GetByTypePropertyCommandRequest(
                     new PropertyGetByTypeRequest { TypeId = typeId}))).Message);
         }
+        
+
+        [HttpGet]
+        public async Task<IActionResult> GetByEntity(Guid typeId)
+        {
+            return Ok((await _mediator.Send(
+                new GetByEntityPropertyCommandRequest(
+                    new PropertyGetByEntityRequest { EntityId = typeId}))).Message);
+        }        
 
         [HttpPost]
         public async Task<IActionResult> GetAllPaginated(PropertyGetAllPaginatedRequest request)
