@@ -25,5 +25,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
 
         public readonly record struct GetAllPaginatedPropertyCommandRequest(PropertyGetAllPaginatedRequest Property) : IRequest<GetAllPaginatedPropertyCommandResponse>;
         public readonly record struct GetAllPaginatedPropertyCommandResponse(PropertyGetAllPaginatedResponse Message);
+        
+        public readonly record struct GetByEntityPropertyCommandRequest(PropertyGetByEntityRequest Property) : IRequest<GetByEntityPropertyCommandResponse>;
+        public readonly record struct GetByEntityPropertyCommandResponse(PropertyGetByEntityResponse Message);
+
     }
 }
