@@ -31,7 +31,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
         {
             try
             {
-                var entitiesEntity = await MapEntities(request.Entities.EntitiesRequest, Guid.NewGuid(), true);
+                var entitiesEntity = await MapEntities(request.Entities.EntitiesRequest);
                 await _entitiesService.InsertAsync(entitiesEntity);
 
                 return new CreateEntitiesCommandResponse(
@@ -45,7 +45,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Name = entitiesEntity.entity_name,
                             Code = entitiesEntity.entity_code,
                             TypeId = entitiesEntity.type_id,
-                            RepositoryId = entitiesEntity.repository_id
+                            RepositoryId = entitiesEntity.repository_id,
+                            StatusId = entitiesEntity.status_id
                         }
                     });
             }
@@ -73,7 +74,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Data = request.Entities.EntitiesRequest
                         });
 
-                var entitiesEntity = await MapEntities(request.Entities.EntitiesRequest, request.Id);
+                var entitiesEntity = await MapEntities(request.Entities.EntitiesRequest, entitiesById);
                 await _entitiesService.UpdateAsync(entitiesEntity);
 
                 return new UpdateEntitiesCommandResponse(
@@ -87,7 +88,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                                 Name = entitiesEntity.entity_name,
                                 Code = entitiesEntity.entity_code,
                                 TypeId = entitiesEntity.type_id,
-                                RepositoryId = entitiesEntity.repository_id
+                                RepositoryId = entitiesEntity.repository_id,
+                                StatusId = entitiesEntity.status_id
                             }
                         });
             }
@@ -163,7 +165,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Name = entitiesById.entity_name,
                             Code = entitiesById.entity_code,
                             TypeId = entitiesById.type_id,
-                            RepositoryId = entitiesById.repository_id
+                            RepositoryId = entitiesById.repository_id,
+                            StatusId = entitiesById.status_id
                         }
                     });
             }
@@ -202,7 +205,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Name = entitiesByCode.entity_name,
                             Code = entitiesByCode.entity_code,
                             TypeId = entitiesByCode.type_id,
-                            RepositoryId = entitiesByCode.repository_id
+                            RepositoryId = entitiesByCode.repository_id,
+                            StatusId = entitiesByCode.status_id
                         }
                     });
             }
@@ -241,7 +245,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Name = c.entity_name,
                             Code = c.entity_code,
                             TypeId = c.type_id,
-                            RepositoryId = c.repository_id
+                            RepositoryId = c.repository_id,
+                            StatusId = c.status_id
                         }).ToList()
                     });
             }
@@ -280,7 +285,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Name = c.entity_name,
                             Code = c.entity_code,
                             TypeId = c.type_id,
-                            RepositoryId = c.repository_id
+                            RepositoryId = c.repository_id,
+                            StatusId = c.status_id
                         }).ToList()
                     });
             }
@@ -325,7 +331,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                                 Name = c.entity_name,
                                 Code = c.entity_code,
                                 TypeId = c.type_id,
-                                RepositoryId = c.repository_id
+                                RepositoryId = c.repository_id,
+                                StatusId = c.status_id
                             }).ToList()
                         }
                     });
@@ -340,19 +347,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
             }
         }
 
-        private async Task<EntitiesEntity> MapEntities(EntitiesCreateRequest request, Guid id, bool? create = null)
+        private async Task<EntitiesEntity> MapEntities(EntitiesCreateRequest request, EntitiesEntity savedEntity = null)
         {
-            var entitiesEntity = new EntitiesEntity()
+            return new EntitiesEntity()
             {
-                id = id,
+                id = savedEntity == null ? Guid.NewGuid() : savedEntity.id,
                 entity_name = request.Name,
-                entity_code = create == true
+                entity_code = savedEntity == null
                     ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Entity)
-                    : null,
+                    : savedEntity.entity_code,
                 type_id = request.TypeId,
-                repository_id = request.RepositoryId
+                repository_id = request.RepositoryId,
+                status_id = request.StatusId
             };
-            return entitiesEntity;
         }
     }
 }

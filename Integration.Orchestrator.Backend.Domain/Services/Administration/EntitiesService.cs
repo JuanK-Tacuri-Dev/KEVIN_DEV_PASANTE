@@ -52,7 +52,9 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         public async Task<IEnumerable<EntitiesEntity>> GetByRepositoryIdAsync(Guid repositoryId)
         {
             var specification = EntitiesSpecification.GetByRepositoryIdExpression(repositoryId);
-            return await _entitiesRepository.GetByRepositoryIdAsync(specification);
+            var byRepositoryIdAsync = _entitiesRepository.GetByRepositoryIdAsync(specification);
+
+            return await byRepositoryIdAsync;
         }
 
         public async Task<IEnumerable<EntitiesEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
@@ -72,11 +74,30 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             if (create)
             {
                 var entitiesByCode = await GetByCodeAsync(entities.entity_code);
-                if (entitiesByCode != null) 
+                var numEntitiesByNameAndRepositoryId = await CountEntitiesByNameAndRepositoryIdAsync(entities);
+
+                if (entitiesByCode != null)
                 {
                     throw new ArgumentException(AppMessages.Domain_EntitiesExists);
                 }
+                
+                if (numEntitiesByNameAndRepositoryId > 0)
+                {
+                    throw new ArgumentException(AppMessages.Domain_EntityRepositoryExists);
+                }
             }
+        }
+
+        private async Task<int> CountEntitiesByNameAndRepositoryIdAsync(EntitiesEntity entity)
+        {
+            var entitiesByNameAndRepositoryId = await GetByNameAndRepositoryIdAsync(entity.entity_name, entity.repository_id);
+            return entitiesByNameAndRepositoryId.ToList().Count;
+        }
+
+        public async Task<IEnumerable<EntitiesEntity>> GetByNameAndRepositoryIdAsync(string name, Guid repositoryId)
+        {
+            var specification = EntitiesSpecification.GetByNameAndRepositoryIdExpression(name, repositoryId);
+            return await _entitiesRepository.GetByNameAndRepositoryIdAsync(specification);
         }
     }
 }

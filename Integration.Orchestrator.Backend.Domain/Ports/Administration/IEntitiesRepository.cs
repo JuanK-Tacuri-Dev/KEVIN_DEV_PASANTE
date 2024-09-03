@@ -1,5 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Domain.Specifications;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
+using Integration.Orchestrator.Backend.Domain.Specifications;
 
 namespace Integration.Orchestrator.Backend.Domain.Ports.Administration
 {
@@ -14,5 +14,6 @@ namespace Integration.Orchestrator.Backend.Domain.Ports.Administration
         Task<IEnumerable<T>> GetByRepositoryIdAsync(Expression<Func<T, bool>> specification);
         Task<IEnumerable<T>> GetAllAsync(ISpecification<T> specification);
         public Task<long> GetTotalRows(ISpecification<T> specification);
+        Task<IEnumerable<T>> GetByNameAndRepositoryIdAsync(Expression<Func<T, bool>> specification);
     }
 }
