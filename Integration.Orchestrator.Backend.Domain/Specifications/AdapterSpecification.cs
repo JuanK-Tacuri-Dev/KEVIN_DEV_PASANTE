@@ -28,7 +28,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             = new Dictionary<string, Expression<Func<AdapterEntity, object>>>
         {
             { nameof(AdapterEntity.adapter_name), x => x.adapter_name },
-            { nameof(AdapterEntity.adapter_code), x => x.adapter_code }
+            { nameof(AdapterEntity.adapter_code), x => x.adapter_code },
+            { nameof(AdapterEntity.created_at), x => x.created_at }
         };
         private void SetupPagination(PaginatedModel model)
         {
@@ -71,7 +72,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.adapter_code.ToUpper().Contains(search.ToUpper()));
+                x.adapter_code.ToUpper().Contains(search.ToUpper()) ||
+                x.adapter_name.ToLower().Contains(search.ToLower()));
             }
 
             return criteria;
