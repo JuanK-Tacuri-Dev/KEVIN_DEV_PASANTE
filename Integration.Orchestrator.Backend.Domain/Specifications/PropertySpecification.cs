@@ -100,7 +100,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         
         public static Expression<Func<PropertyEntity, bool>> GetByNameAndEntityIdExpression(string name, Guid entityId)
         {
-            return x => true && x.property_name == name && x.entity_id == entityId;
+            return x => true && x.property_name.ToUpper() == name.ToUpper() && x.entity_id == entityId;
         }        
 
 
