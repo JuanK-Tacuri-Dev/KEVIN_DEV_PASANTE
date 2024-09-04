@@ -27,8 +27,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<ConnectionEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<ConnectionEntity, object>>>
         {
-            { nameof(ConnectionEntity.connection_code), x => x.connection_code },
-            { nameof(ConnectionEntity.connection_description), x => x.connection_description }
+            { nameof(ConnectionEntity.connection_code).Split("_")[1], x => x.connection_code },
+            { nameof(ConnectionEntity.connection_description).Split("_")[1], x => x.connection_description },
+            { nameof(ConnectionEntity.created_at).Split("_")[0], x => x.created_at }
         };
         private void SetupPagination(PaginatedModel model)
         {
@@ -71,7 +72,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.connection_code.ToUpper().Contains(search.ToUpper()));
+                x.connection_description.ToUpper().Contains(search.ToUpper()));
             }
 
             return criteria;
