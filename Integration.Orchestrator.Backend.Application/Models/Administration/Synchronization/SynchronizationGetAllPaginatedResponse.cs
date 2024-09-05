@@ -1,4 +1,7 @@
-﻿namespace Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization
+﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Status;
+using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStatus;
+
+namespace Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization
 {
     public class SynchronizationGetAllPaginatedResponse : ModelResponseGetAll<SynchronizationGetAllRows>
     {
@@ -13,5 +16,6 @@
 
     public class SynchronizationGetAllPaginated : SynchronizationResponse
     {
+        public SynchronizationStatusResponse Status { get; set; }
     }
 }

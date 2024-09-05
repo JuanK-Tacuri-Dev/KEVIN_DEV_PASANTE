@@ -3,8 +3,8 @@
     public class SynchronizationGetByFranchiseIdResponse : ModelResponse<IEnumerable<SynchronizationGetByFranchiseId>>
     {
     }
-    public class SynchronizationGetByFranchiseId : SynchronizationRequest
+    public class SynchronizationGetByFranchiseId : SynchronizationResponse
     {
-        public Guid Id { get; set; }
+        public Guid StatusId { get; set; }
     }
 }
