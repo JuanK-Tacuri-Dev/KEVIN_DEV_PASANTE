@@ -295,7 +295,7 @@
     <value>Server Updated Succesfully</value>
   </data>
   <data name="Application_StatusNotFound" xml:space="preserve">
-    <value>Status not found</value>
+    <value>Estado no encontrado</value>
   </data>
   <data name="Application_StatusResponseCreated" xml:space="preserve">
     <value>Status Created Succesfully</value>

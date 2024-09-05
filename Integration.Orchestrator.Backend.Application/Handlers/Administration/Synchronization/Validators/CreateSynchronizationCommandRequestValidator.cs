@@ -10,16 +10,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         public CreateSynchronizationCommandRequestValidator()
         {
 
-            RuleFor(request => request.Synchronization.SynchronizationRequest.Status)
+            RuleFor(request => request.Synchronization.SynchronizationRequest.StatusId)
             .NotEmpty().WithMessage(AppMessages.Synchronization_Status_Required);
 
             RuleFor(request => request.Synchronization.SynchronizationRequest.Integrations)
             .NotNull().WithMessage(AppMessages.Synchronization_Integrations_Required)
             .NotEmpty().WithMessage(AppMessages.Synchronization_Integrations_MinimumValue);
-
-            RuleFor(request => request.Synchronization.SynchronizationRequest.HourToExecute)
-            .NotNull().WithMessage(AppMessages.Synchronization_HourToExecute_Required)
-            .Must(BeAValidDateTime).WithMessage(AppMessages.Synchronization_HourToExecute_Invalid);
         }
 
         private bool BeAValidDateTime(string dateTimeString)
