@@ -603,4 +603,7 @@
   <data name="Domain_PropertyEntityExists" xml:space="preserve">
     <value>Property name for this entity already exists</value>
   </data>
+  <data name="Domain_CatalogFatherCodeExists" xml:space="preserve">
+    <value>Catalog name for this Father Code already exists</value>
+  </data>
 </root>

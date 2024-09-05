@@ -807,6 +807,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Catalog name for this Father Code already exists.
+        /// </summary>
+        public static string Domain_CatalogFatherCodeExists {
+            get {
+                return ResourceManager.GetString("Domain_CatalogFatherCodeExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The code exists.
         /// </summary>
         public static string Domain_ConnectionExists {
