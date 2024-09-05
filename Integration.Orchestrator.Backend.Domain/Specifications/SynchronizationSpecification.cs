@@ -27,9 +27,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<SynchronizationEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<SynchronizationEntity, object>>>
         {
-            { nameof(SynchronizationEntity.status_id), x => x.status_id },
-            { nameof(SynchronizationEntity.synchronization_hour_to_execute), x => x.synchronization_hour_to_execute },
-            { nameof(SynchronizationEntity.updated_at), x => x.updated_at },
+            { nameof(SynchronizationEntity.synchronization_name).Split("_")[1], x => x.status_id },
+            { nameof(SynchronizationEntity.synchronization_observations).Split("_")[1], x => x.synchronization_hour_to_execute },
+            { nameof(SynchronizationEntity.created_at).Split("_")[0], x => x.created_at },
         };
         private void SetupPagination(PaginatedModel model)
         {
@@ -72,7 +72,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.synchronization_observations.ToUpper().Contains(search.ToUpper()));
+                x.synchronization_observations.ToUpper().Contains(search.ToUpper()) ||
+                x.synchronization_name.ToUpper().Contains(search.ToUpper()));
             }
 
             return criteria;
