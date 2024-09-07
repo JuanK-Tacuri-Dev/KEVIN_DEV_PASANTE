@@ -13,14 +13,14 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
     public class SynchronizationHandlerTests
     {
         private readonly Mock<ISynchronizationService<SynchronizationEntity>> _mockService;
-        private readonly Mock<IStatusService<StatusEntity>> _mockStatusService;
+        private readonly Mock<ISynchronizationStatesService<SynchronizationStatusEntity>> _mockSynchronizationStatusService;
         private readonly SynchronizationHandler _handler;
 
         public SynchronizationHandlerTests()
         {
             _mockService = new Mock<ISynchronizationService<SynchronizationEntity>>();
-            _mockStatusService = new Mock<IStatusService<StatusEntity>>();
-            _handler = new SynchronizationHandler(_mockService.Object, _mockStatusService.Object);
+            _mockSynchronizationStatusService = new Mock<ISynchronizationStatesService<SynchronizationStatusEntity>>();
+            _handler = new SynchronizationHandler(_mockService.Object, _mockSynchronizationStatusService.Object);
         }
 
         [Fact]
@@ -30,7 +30,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             {
                 Name = "Test Name",
                 FranchiseId = Guid.NewGuid(),
-                Status = Guid.NewGuid(),
+                StatusId = Guid.NewGuid(),
                 Observations = "Test Observations",
                 HourToExecute = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
                 Integrations = new List<IntegrationRequest> { new IntegrationRequest { Id = Guid.NewGuid() } },
@@ -78,7 +78,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             {
                 Name = name,
                 FranchiseId = franchiseId,
-                Status = status,
+                StatusId = status,
                 Observations = observation,
                 HourToExecute = hour_to_execute.ToString(),
                 Integrations = new List<IntegrationRequest> { new IntegrationRequest { Id = integrationId } },
@@ -114,7 +114,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             {
                 Name = name,
                 FranchiseId = franchiseId,
-                Status = status,
+                StatusId = status,
                 Observations = observation,
                 HourToExecute = hour_to_execute.ToString(),
                 Integrations = new List<IntegrationRequest> { new IntegrationRequest { Id = integrationId } },
@@ -250,7 +250,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         public async Task Handle_GetAllPaginatedSynchronizationCommandRequest_ShouldReturnCorrectResponse()
         {
             // Arrange
-            var paginatedModel = new PaginatedModel { Page = 1, Rows = 10, SortBy = "" };
+            var paginatedModel = new PaginatedModel { First = 1, Rows = 10, Sort_field = "" };
             var synchronizations = new List<SynchronizationEntity>
         {
             new SynchronizationEntity { id = Guid.NewGuid(), synchronization_name = "Test Name", integrations = new List<Guid> { Guid.NewGuid()} }
@@ -260,7 +260,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
 
             var request = new GetAllPaginatedSynchronizationCommandRequest
             {
-                Synchronization = new SynchronizationGetAllPaginatedRequest { Page = 1, Rows = 10, SortBy = "" }
+                Synchronization = new SynchronizationGetAllPaginatedRequest { First = 1, Rows = 10, Sort_field = "" }
             };
 
             // Act
@@ -278,14 +278,14 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         public async Task Handle_GetAllPaginatedSynchronizationCommandRequest_ShouldReturnIncorrectResponse()
         {
             // Arrange
-            var paginatedModel = new PaginatedModel { Page = 1, Rows = 10, SortBy = "" };
+            var paginatedModel = new PaginatedModel { First = 1, Rows = 10, Sort_field = "" };
             var synchronizations = new List<SynchronizationEntity>
         {
             new SynchronizationEntity { id = Guid.NewGuid(), synchronization_name = "Test Name", integrations = new List<Guid> { Guid.NewGuid()} }
         };
             var request = new GetAllPaginatedSynchronizationCommandRequest
             {
-                Synchronization = new SynchronizationGetAllPaginatedRequest { Page = 1, Rows = 10, SortBy = "" }
+                Synchronization = new SynchronizationGetAllPaginatedRequest { First = 1, Rows = 10, Sort_field = "" }
             };
 
             // Act & Assert

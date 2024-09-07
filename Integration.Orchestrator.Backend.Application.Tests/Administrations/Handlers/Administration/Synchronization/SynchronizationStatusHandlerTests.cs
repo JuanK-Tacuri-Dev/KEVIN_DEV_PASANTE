@@ -78,9 +78,9 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             {
                 Synchronization = new SynchronizationStatusGetAllPaginatedRequest
                 {
-                    Page = 1,
+                    First = 1,
                     Rows = 10,
-                    SortBy = ""
+                    Sort_field = ""
                 }
             };
 
@@ -129,9 +129,9 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             {
                 Synchronization = new SynchronizationStatusGetAllPaginatedRequest
                 {
-                    Page = 1,
+                    First = 1,
                     Rows = 1,
-                    SortBy = ""
+                    Sort_field = ""
                 }
             };
 

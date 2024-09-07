@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Api.Controllers.v1.Administration;
 using Integration.Orchestrator.Backend.Application.Models.Administration.Status;
 using Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization;
+using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStatus;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             {
                 Name = "Test",
                 FranchiseId = Guid.NewGuid(),
-                Status = Guid.NewGuid(),
+                StatusId = Guid.NewGuid(),
                 Observations = "observation",
                 UserId = Guid.NewGuid(),
                 HourToExecute = DateTime.Now.ToString(),
@@ -75,7 +76,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             {
                 Name = "Test",
                 FranchiseId = Guid.NewGuid(),
-                Status = Guid.NewGuid(),
+                StatusId = Guid.NewGuid(),
                 Observations = "observation",
                 UserId = Guid.NewGuid(),
                 HourToExecute = DateTime.Now.ToString(CultureInfo.CurrentCulture),
@@ -155,10 +156,10 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                             Id = Guid.NewGuid(),
                             Name = "Test",
                             FranchiseId = franchiseId,
-                            Status = Guid.NewGuid(),
+                            StatusId = Guid.NewGuid(),
                             Observations = "Observation",
                             HourToExecute = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
-                            Integrations = [new IntegrationRequest {Id = Guid.NewGuid() }],
+                            Integrations = [new IntegrationResponse {Id = Guid.NewGuid() }],
                             UserId = Guid.NewGuid()
                         }
                     ]
@@ -192,10 +193,10 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                         Id = Guid.NewGuid(),
                         Name = "Test",
                         FranchiseId = franchiseId,
-                        Status = Guid.NewGuid(),
+                        StatusId = Guid.NewGuid(),
                         Observations = "Observation",
                         HourToExecute = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
-                        Integrations = new List<IntegrationRequest>() { new IntegrationRequest { Id = Guid.NewGuid() } },
+                        Integrations = new List<IntegrationResponse>() { new IntegrationResponse { Id = Guid.NewGuid() } },
                         UserId = Guid.NewGuid()
                     }
                 });
@@ -219,11 +220,11 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             // Arrange
             var request = new SynchronizationGetAllPaginatedRequest
             {
-                Page = 1,
+                First = 1,
                 Rows = 1,
-                SortBy = "",
+                Sort_field = "",
                 Search ="",
-                SortOrder = 0
+                Sort_order = 0
             };
 
 
@@ -240,7 +241,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                     {
                         Id = Guid.NewGuid(),
                         Name = "Test",
-                        Status = new StatusResponse
+                        Status = new SynchronizationStatusResponse
                         {
                             Id = Guid.NewGuid(),
                             Text = "Test",
@@ -250,7 +251,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
                         },
                         Observations = "Observation",
                         HourToExecute = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
-                        Integrations = new List<IntegrationRequest>(),
+                        Integrations = new List<IntegrationResponse>(),
                         UserId = Guid.NewGuid()
                     }
                 ]

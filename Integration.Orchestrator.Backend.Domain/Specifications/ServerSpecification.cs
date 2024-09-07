@@ -27,20 +27,22 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<ServerEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<ServerEntity, object>>>
         {
-            { nameof(ServerEntity.server_name), x => x.server_name },
-            { nameof(ServerEntity.server_code), x => x.server_code }
+            { nameof(ServerEntity.server_code).Split("_")[1], x => x.server_code },
+            { nameof(ServerEntity.server_name).Split("_")[1], x => x.server_name },
+            { nameof(ServerEntity.server_url).Split("_")[1], x => x.server_url },
+            { nameof(ServerEntity.created_at).Split("_")[0], x => x.created_at }
         };
         private void SetupPagination(PaginatedModel model)
         {
-            Skip = (model.Page - 1) * model.Rows;
+            Skip = (model.First - 1) * model.Rows;
             Limit = model.Rows;
         }
 
         private void SetupOrdering(PaginatedModel model)
         {
-            if (sortExpressions.TryGetValue(model.SortBy, out var expression))
+            if (sortExpressions.TryGetValue(model.Sort_field, out var expression))
             {
-                if (model.SortOrder == SortOrdering.Ascending)
+                if (model.Sort_order == SortOrdering.Ascending)
                 {
                     OrderBy = expression;
                 }

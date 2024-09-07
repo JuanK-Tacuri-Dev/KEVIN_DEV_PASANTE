@@ -27,20 +27,20 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<OperatorEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<OperatorEntity, object>>>
         {
-            { nameof(OperatorEntity.type_id), x => x.type_id },
-            { nameof(OperatorEntity.operator_code), x => x.operator_code }
+            { nameof(OperatorEntity.operator_name).Split("_")[1], x => x.operator_name },
+            { nameof(OperatorEntity.created_at).Split("_")[0], x => x.created_at },
         };
         private void SetupPagination(PaginatedModel model)
         {
-            Skip = (model.Page - 1) * model.Rows;
+            Skip = (model.First - 1) * model.Rows;
             Limit = model.Rows;
         }
 
         private void SetupOrdering(PaginatedModel model)
         {
-            if (sortExpressions.TryGetValue(model.SortBy, out var expression))
+            if (sortExpressions.TryGetValue(model.Sort_field, out var expression))
             {
-                if (model.SortOrder == SortOrdering.Ascending)
+                if (model.Sort_order == SortOrdering.Ascending)
                 {
                     OrderBy = expression;
                 }
@@ -71,7 +71,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.operator_code.ToUpper().Contains(search.ToUpper()));
+                x.operator_name.ToUpper().Contains(search.ToUpper()));
             }
 
             return criteria;

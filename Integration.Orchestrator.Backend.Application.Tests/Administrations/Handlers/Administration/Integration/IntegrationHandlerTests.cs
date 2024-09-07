@@ -31,7 +31,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                     new IntegrationCreateRequest
                     {
                         Name = "Test",
-                        Status = Guid.NewGuid(),
+                        StatusId = Guid.NewGuid(),
                         Observations = "observation",
                         UserId = Guid.NewGuid(),
                         Process = new List<ProcessRequest>
@@ -66,7 +66,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                     new IntegrationCreateRequest
                     {
                         Name = "Test",
-                        Status = Guid.NewGuid(),
+                        StatusId = Guid.NewGuid(),
                         Observations = "observation",
                         UserId = Guid.NewGuid(),
                         Process = new List<ProcessRequest>
@@ -96,7 +96,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                     new IntegrationUpdateRequest
                     {
                         Name = "Test",
-                        Status = Guid.NewGuid(),
+                        StatusId = Guid.NewGuid(),
                         Observations = "observation",
                         UserId = Guid.NewGuid(),
                         Process = new List<ProcessRequest>
@@ -138,7 +138,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                     new IntegrationUpdateRequest
                     {
                         Name = "Test",
-                        Status = Guid.NewGuid(),
+                        StatusId = Guid.NewGuid(),
                         Observations = "observation",
                         UserId = Guid.NewGuid(),
                         Process = new List<ProcessRequest>
@@ -218,11 +218,11 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             // Arrange
             var paginatedModel = new IntegrationGetAllPaginatedRequest()
             {
-                Page = 1,
+                First = 1,
                 Rows = 2,
                 Search = "",
-                SortBy = "",
-                SortOrder = 1
+                Sort_field = "",
+                Sort_order = 1
             };
             var request = new GetAllPaginatedIntegrationCommandRequest(paginatedModel);
             var cancellationToken = CancellationToken.None;
@@ -277,11 +277,11 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             // Arrange
             var paginatedModel = new IntegrationGetAllPaginatedRequest()
             {
-                Page = 1,
+                First = 1,
                 Rows = 2,
                 Search = "",
-                SortBy = "",
-                SortOrder = 1
+                Sort_field = "",
+                Sort_order = 1
             };
             var request = new GetAllPaginatedIntegrationCommandRequest(paginatedModel);
             var cancellationToken = CancellationToken.None;

@@ -1,6 +1,8 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Operator;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
@@ -11,7 +13,9 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Administratio
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Operator
 {
-    public class OperatorHandler(IOperatorService<OperatorEntity> operatorService)
+    public class OperatorHandler(
+        IOperatorService<OperatorEntity> operatorService,
+        ICodeConfiguratorService codeConfiguratorService)
         :
         IRequestHandler<CreateOperatorCommandRequest, CreateOperatorCommandResponse>,
         IRequestHandler<UpdateOperatorCommandRequest, UpdateOperatorCommandResponse>,
@@ -22,19 +26,20 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         IRequestHandler<GetAllPaginatedOperatorCommandRequest, GetAllPaginatedOperatorCommandResponse>
     {
         public readonly IOperatorService<OperatorEntity> _operatorService = operatorService;
+        public readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateOperatorCommandResponse> Handle(CreateOperatorCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var operatorEntity = MapOperator(request.Operator.OperatorRequest, Guid.NewGuid());
+                var operatorEntity = await MapOperator(request.Operator.OperatorRequest, Guid.NewGuid(), true);
                 await _operatorService.InsertAsync(operatorEntity);
 
                 return new CreateOperatorCommandResponse(
                     new OperatorCreateResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeCreated],
+                        Code = (int)ResponseCode.CreatedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new OperatorCreate
                         {
                             Id = operatorEntity.id,
@@ -64,7 +69,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     throw new ArgumentException(AppMessages.Application_OperatorNotFound);
                 }
 
-                var operatorEntity = MapOperator(request.Operator.OperatorRequest, request.Id);
+                var operatorEntity = await MapOperator(request.Operator.OperatorRequest, request.Id);
                 await _operatorService.UpdateAsync(operatorEntity);
 
                 return new UpdateOperatorCommandResponse(
@@ -267,13 +272,15 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             }
         }
 
-        private OperatorEntity MapOperator(OperatorCreateRequest request, Guid id)
+        private async Task<OperatorEntity> MapOperator(OperatorCreateRequest request, Guid id, bool? create = null)
         {
             var operatorEntity = new OperatorEntity()
             {
                 id = id,
                 operator_name = request.Name,
-                operator_code = request.Code,
+                operator_code = create == true
+                ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Operator)
+                : null,
                 type_id = request.TypeId
             };
             return operatorEntity;

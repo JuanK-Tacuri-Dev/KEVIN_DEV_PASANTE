@@ -26,7 +26,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             var request = new IntegrationCreateRequest()
             {
                 Name = "Test",
-                Status = Guid.NewGuid(),
+                StatusId = Guid.NewGuid(),
                 Observations = "observation",
                 UserId = Guid.NewGuid(),
                 Process = new List<ProcessRequest>
@@ -70,7 +70,7 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             var request = new IntegrationUpdateRequest
             {
                 Name = "Test",
-                Status = Guid.NewGuid(),
+                StatusId = Guid.NewGuid(),
                 Observations = "observation",
                 UserId = Guid.NewGuid(),
                 Process = new List<ProcessRequest>
@@ -138,9 +138,9 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             // Arrange
             var request = new IntegrationGetAllPaginatedRequest
             {
-                Page = 1,
+                First = 1,
                 Rows = 1,
-                SortBy = ""
+                Sort_field = ""
             };
             var response = new GetAllPaginatedIntegrationCommandResponse(
                 new IntegrationGetAllPaginatedResponse

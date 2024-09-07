@@ -35,7 +35,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             }), Guid.NewGuid());
 
             var result = _validator.TestValidate(model);
-            result.ShouldHaveValidationErrorFor(request => request.Synchronization.SynchronizationRequest.Status)
+            result.ShouldHaveValidationErrorFor(request => request.Synchronization.SynchronizationRequest.StatusId)
                   .WithErrorMessage(AppMessages.Synchronization_Status_Required);
         }
 
@@ -45,11 +45,11 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
         {
             var model = new UpdateSynchronizationCommandRequest(new SynchronizationBasicInfoRequest<SynchronizationUpdateRequest>(new SynchronizationUpdateRequest
             {
-                Status = Guid.NewGuid()
+                StatusId = Guid.NewGuid()
             }), Guid.NewGuid());
 
             var result = _validator.TestValidate(model);
-            result.ShouldNotHaveValidationErrorFor(request => request.Synchronization.SynchronizationRequest.Status);
+            result.ShouldNotHaveValidationErrorFor(request => request.Synchronization.SynchronizationRequest.StatusId);
         }
 
         [Fact]

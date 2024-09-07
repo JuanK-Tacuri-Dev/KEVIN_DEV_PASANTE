@@ -84,7 +84,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                             Data = new AdapterUpdate
                             {
                                 Id = adapterEntity.id,
-                                Code = adapterEntity.adapter_code,
+                                Code = adapterById.adapter_code,
                                 Name = adapterEntity.adapter_name,
                                 TypeAdapterId = adapterEntity.type_id,
                                 Version = adapterEntity.adapter_version,

@@ -1,4 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Integration;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
@@ -31,13 +32,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new CreateIntegrationCommandResponse(
                     new IntegrationCreateResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeCreated],
+                        Code = (int)ResponseCode.CreatedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new IntegrationCreate
                         {
                             Id = integrationEntity.id,
                             Name = integrationEntity.integration_name,
-                            Status = integrationEntity.status_id,
+                            StatusId = integrationEntity.status_id,
                             Observations = integrationEntity.integration_observations,
                             UserId = integrationEntity.user_id,
                             Process = integrationEntity.process.Select(p => new ProcessRequest
@@ -63,9 +64,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var integrationById = await _integrationService.GetByIdAsync(request.Id);
                 if (integrationById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_IntegrationNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors()
+                            {
+                                Code = (int)ResponseCode.NotFoundSuccessfully,
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                                Data = request.Integration.IntegrationRequest
+                            });
 
                 var integrationEntity = MapIntegration(request.Integration.IntegrationRequest, request.Id);
                 await _integrationService.UpdateAsync(integrationEntity);
@@ -73,13 +78,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new UpdateIntegrationCommandResponse(
                         new IntegrationUpdateResponse
                         {
-                            Code = HttpStatusCode.OK.GetHashCode(),
-                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Code = (int)ResponseCode.UpdatedSuccessfully,
+                            Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new IntegrationUpdate
                             {
                                 Id = integrationEntity.id,
                                 Name = integrationEntity.integration_name,
-                                Status = integrationEntity.status_id,
+                                StatusId = integrationEntity.status_id,
                                 Observations = integrationEntity.integration_observations,
                                 UserId = integrationEntity.user_id,
                                 Process = integrationEntity.process.Select(p => new ProcessRequest
@@ -105,17 +110,21 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var integrationById = await _integrationService.GetByIdAsync(request.Integration.Id);
                 if (integrationById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_IntegrationNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors()
+                            {
+                                Code = (int)ResponseCode.NotFoundSuccessfully,
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                                Data = request.Integration
+                            });
 
                 await _integrationService.DeleteAsync(integrationById);
 
                 return new DeleteIntegrationCommandResponse(
                     new IntegrationDeleteResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Code = (int)ResponseCode.DeletedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
                         Data = new IntegrationDelete 
                         {
                             Id = request.Integration.Id
@@ -138,20 +147,24 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 var integrationById = await _integrationService.GetByIdAsync(request.Integration.Id);
                 if (integrationById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_IntegrationNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors()
+                            {
+                                Code = (int)ResponseCode.NotFoundSuccessfully,
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                                Data = request.Integration
+                            });
 
                 return new GetByIdIntegrationCommandResponse(
                     new IntegrationGetByIdResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new IntegrationGetById
                         {
                             Id = integrationById.id,
                             Name = integrationById.integration_name,
-                            Status = integrationById.status_id,
+                            StatusId = integrationById.status_id,
                             Observations = integrationById.integration_observations,
                             Process = integrationById.process.Select(i => new ProcessRequest { Id = i }).ToList(),
                             UserId = integrationById.user_id
@@ -175,17 +188,21 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var model = request.Integration.Adapt<PaginatedModel>();
                 var rows = await _integrationService.GetTotalRowsAsync(model);
                 if (rows == 0)
-                {
-                    throw new ArgumentException(AppMessages.Application_IntegrationNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors()
+                            {
+                                Code = (int)ResponseCode.NotFoundSuccessfully,
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
+                            });
+
                 var result = await _integrationService.GetAllPaginatedAsync(model);
 
 
                 return new GetAllPaginatedIntegrationCommandResponse(
                     new IntegrationGetAllPaginatedResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_RespondeGetAll,
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully),
                         Data = new IntegrationGetAllRows
                         {
                             Total_rows = rows,
@@ -217,7 +234,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 id = id,
                 integration_name = request.Name,
-                status_id = request.Status,
+                status_id = request.StatusId,
                 integration_observations = request.Observations,
                 process = request.Process.Select(i => i.Id).ToList(),
                 user_id = request.UserId

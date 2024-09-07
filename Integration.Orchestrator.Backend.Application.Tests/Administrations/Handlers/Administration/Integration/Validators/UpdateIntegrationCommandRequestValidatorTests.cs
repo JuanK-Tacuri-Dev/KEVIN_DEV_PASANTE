@@ -36,10 +36,10 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                 new IntegrationBasicInfoRequest<IntegrationUpdateRequest>(
                     new IntegrationUpdateRequest
                     {
-                        Status = Guid.Empty
+                        StatusId = Guid.Empty
                     }), Guid.NewGuid());
             var result = _validator.TestValidate(model);
-            result.ShouldHaveValidationErrorFor(x => x.Integration.IntegrationRequest.Status)
+            result.ShouldHaveValidationErrorFor(x => x.Integration.IntegrationRequest.StatusId)
                   .WithErrorMessage(AppMessages.Integration_Status_Required);
         }
 
@@ -93,7 +93,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
                     new IntegrationUpdateRequest
                     {
                         Name = "Valid Name",
-                        Status = Guid.NewGuid(),
+                        StatusId = Guid.NewGuid(),
                         Observations = "Valid Observations",
                         UserId = Guid.NewGuid(),
                         Process = new List<ProcessRequest> 
@@ -107,7 +107,7 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             
             var result = _validator.TestValidate(model);
             result.ShouldNotHaveValidationErrorFor(x => x.Integration.IntegrationRequest.Name);
-            result.ShouldNotHaveValidationErrorFor(x => x.Integration.IntegrationRequest.Status);
+            result.ShouldNotHaveValidationErrorFor(x => x.Integration.IntegrationRequest.StatusId);
             result.ShouldNotHaveValidationErrorFor(x => x.Integration.IntegrationRequest.Observations);
             result.ShouldNotHaveValidationErrorFor(x => x.Integration.IntegrationRequest.UserId);
             result.ShouldNotHaveValidationErrorFor(x => x.Integration.IntegrationRequest.Process);

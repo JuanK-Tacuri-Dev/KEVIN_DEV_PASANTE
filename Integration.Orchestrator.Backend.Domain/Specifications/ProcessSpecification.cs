@@ -27,21 +27,22 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<ProcessEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<ProcessEntity, object>>>
         {
-            { nameof(ProcessEntity.connection_id), x => x.connection_id },
-            { nameof(ProcessEntity.process_type), x => x.process_type },
-            { nameof(ProcessEntity.process_code), x => x.process_code }
+            { nameof(ProcessEntity.process_code).Split("_")[1], x => x.process_code },
+            { nameof(ProcessEntity.process_name).Split("_")[1], x => x.process_name },
+            { nameof(ProcessEntity.process_description).Split("_")[1], x => x.process_description },
+            { nameof(ProcessEntity.created_at).Split("_")[0], x => x.created_at }
         };
         private void SetupPagination(PaginatedModel model)
         {
-            Skip = (model.Page - 1) * model.Rows;
+            Skip = (model.First - 1) * model.Rows;
             Limit = model.Rows;
         }
 
         private void SetupOrdering(PaginatedModel model)
         {
-            if (sortExpressions.TryGetValue(model.SortBy, out var expression))
+            if (sortExpressions.TryGetValue(model.Sort_field, out var expression))
             {
-                if (model.SortOrder == SortOrdering.Ascending)
+                if (model.Sort_order == SortOrdering.Ascending)
                 {
                     OrderBy = expression;
                 }
@@ -72,7 +73,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.process_code.ToUpper().Contains(search.ToUpper()));
+                x.process_name.ToUpper().Contains(search.ToUpper()) ||
+                x.process_description.ToLower().Contains(search.ToUpper()));
             }
 
             return criteria;
@@ -88,9 +90,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return x => true && x.process_code == code;
         }
 
-        public static Expression<Func<ProcessEntity, bool>> GetByTypeExpression(string type)
+        public static Expression<Func<ProcessEntity, bool>> GetByTypeExpression(Guid typeId)
         {
-            return x => true && x.process_type == type;
+            return x => true && x.process_type_id == typeId;
         }
 
 

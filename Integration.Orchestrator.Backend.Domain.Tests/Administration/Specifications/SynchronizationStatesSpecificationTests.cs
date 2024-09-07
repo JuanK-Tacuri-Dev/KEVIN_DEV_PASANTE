@@ -13,9 +13,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
             var paginatedModel = new PaginatedModel
             {
                 Search = "",
-                Page = 1,
+                First = 1,
                 Rows = 10,
-                SortBy = "status"
+                Sort_field = "status"
             };
 
             var specification = new SynchronizationStatesSpecification(paginatedModel);
@@ -39,9 +39,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
         {
             var paginatedModel = new PaginatedModel
             {
-                Page = 1,
+                First = 1,
                 Rows = 10,
-                SortBy = ""
+                Sort_field = ""
             };
 
             var specification = new SynchronizationStatesSpecification(paginatedModel);
@@ -65,9 +65,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
         {
             var paginatedModel = new PaginatedModel
             {
-                Page = 2,
+                First = 2,
                 Rows = 10,
-                SortBy = ""
+                Sort_field = ""
             };
 
             var specification = new SynchronizationStatesSpecification(paginatedModel);
@@ -81,9 +81,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
         {
             var paginatedModel = new PaginatedModel
             {
-                SortBy = nameof(SynchronizationStatusEntity.synchronization_status_key),
-                SortOrder = SortOrdering.Ascending,
-                Page = 1,
+                Sort_field = nameof(SynchronizationStatusEntity.synchronization_status_key),
+                Sort_order = SortOrdering.Ascending,
+                First = 1,
                 Rows = 10
             };
 
@@ -98,9 +98,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
         {
             var paginatedModel = new PaginatedModel
             {
-                SortBy = nameof(SynchronizationStatusEntity.synchronization_status_key),
-                SortOrder = SortOrdering.Descending,
-                Page = 1,
+                Sort_field = nameof(SynchronizationStatusEntity.synchronization_status_key),
+                Sort_order = SortOrdering.Descending,
+                First = 1,
                 Rows = 10
             };
 

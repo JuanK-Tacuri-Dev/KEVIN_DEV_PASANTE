@@ -92,11 +92,11 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
             var cancellationToken = CancellationToken.None;
             var paginatedModel = new PaginatedModel()
             {
-                Page = 1,
+                First = 1,
                 Rows = 2,
                 Search = "",
-                SortBy = "",
-                SortOrder = SortOrdering.Ascending
+                Sort_field = "",
+                Sort_order = SortOrdering.Ascending
             };
             var connectionEntities = new List<ConnectionEntity>
             {

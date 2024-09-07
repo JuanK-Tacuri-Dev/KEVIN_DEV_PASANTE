@@ -11,7 +11,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.I
             RuleFor(request => request.Integration.IntegrationRequest.Name)
             .NotEmpty().WithMessage(AppMessages.Integration_Name_Required);
 
-            RuleFor(request => request.Integration.IntegrationRequest.Status)
+            RuleFor(request => request.Integration.IntegrationRequest.StatusId)
             .NotEmpty().WithMessage(AppMessages.Integration_Status_Required);
 
             RuleFor(request => request.Integration.IntegrationRequest.Observations)

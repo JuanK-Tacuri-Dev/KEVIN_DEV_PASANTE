@@ -92,11 +92,11 @@ namespace Integration.Orchestrator.Backend.Api.Tests.Controllers.v1.Administrati
             // Arrange
             var request = new ConnectionGetAllPaginatedRequest
             {
-                Page = 1,
+                First = 1,
                 Rows = 1,
-                SortBy = "",
+                Sort_field = "",
                 Search = "",
-                SortOrder = 0
+                Sort_order = 0
             };
             var response = new GetAllPaginatedConnectionCommandResponse(
                 new ConnectionGetAllPaginatedResponse
