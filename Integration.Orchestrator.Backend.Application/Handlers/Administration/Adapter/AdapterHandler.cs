@@ -108,6 +108,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
             {
                 var adapterById = await _adapterService.GetByIdAsync(request.Adapter.Id);
                 if (adapterById == null)
+                {
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -115,6 +116,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
                             Data = request.Adapter
                         });
+                }
 
                 await _adapterService.DeleteAsync(adapterById);
 
@@ -145,6 +147,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
             {
                 var adapterById = await _adapterService.GetByIdAsync(request.Adapter.Id);
                 if (adapterById == null)
+                {
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -152,6 +155,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
                             Data = request.Adapter
                         });
+                }
 
                 return new GetByIdAdapterCommandResponse(
                     new AdapterGetByIdResponse

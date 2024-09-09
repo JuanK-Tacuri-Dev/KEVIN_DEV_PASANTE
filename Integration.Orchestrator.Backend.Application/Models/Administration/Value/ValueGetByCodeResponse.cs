@@ -3,8 +3,7 @@
     public class ValueGetByCodeResponse : ModelResponse<ValueGetByCode>
     {
     }
-    public class ValueGetByCode : ValueRequest
+    public class ValueGetByCode : ValueResponse
     {
-        public Guid Id { get; set; }
     }
 }

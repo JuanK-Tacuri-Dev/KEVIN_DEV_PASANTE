@@ -86,7 +86,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
         public static Expression<Func<SynchronizationEntity, bool>> GetByFranchiseIdExpression(Guid franchiseId)
         {
-            return BaseSpecification<SynchronizationEntity>.GetByUuid(x => x.franchise_id, franchiseId);
+            return x => x.franchise_id == franchiseId;
         }
     }
 }

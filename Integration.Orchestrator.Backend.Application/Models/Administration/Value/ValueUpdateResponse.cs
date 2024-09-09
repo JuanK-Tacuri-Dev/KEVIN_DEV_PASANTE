@@ -3,8 +3,7 @@
     public class ValueUpdateResponse : ModelResponse<ValueUpdate>
     {
     }
-    public class ValueUpdate : ValueRequest
+    public class ValueUpdate : ValueResponse
     {
-        public Guid Id { get; set; }
     }
 }

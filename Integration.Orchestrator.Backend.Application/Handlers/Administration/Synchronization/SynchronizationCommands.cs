@@ -1,5 +1,4 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Status;
-using Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization;
+﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization;
 using MediatR;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization

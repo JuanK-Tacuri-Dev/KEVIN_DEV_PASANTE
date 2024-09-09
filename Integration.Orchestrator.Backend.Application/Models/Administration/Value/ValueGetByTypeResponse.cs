@@ -3,8 +3,7 @@
     public class ValueGetByTypeResponse : ModelResponse<IEnumerable<ValueGetByType>>
     {
     }
-    public class ValueGetByType : ValueRequest
+    public class ValueGetByType : ValueResponse
     {
-        public Guid Id { get; set; }
     }
 }

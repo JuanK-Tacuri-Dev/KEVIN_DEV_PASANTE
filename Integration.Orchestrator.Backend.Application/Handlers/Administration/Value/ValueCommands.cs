@@ -8,7 +8,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.V
         public readonly record struct CreateValueCommandRequest(ValueBasicInfoRequest<ValueCreateRequest> Value) : IRequest<CreateValueCommandResponse>;
         public readonly record struct CreateValueCommandResponse(ValueCreateResponse Message);
 
-        public readonly record struct UpdateValueCommandRequest(ValueBasicInfoRequest<ValueUpdateRequest> Value, Guid Id) : IRequest<UpdateValueCommandResponse>;
+        public readonly record struct UpdateValueCommandRequest(ValueBasicInfoRequest<ValueUpdateRequest> Value) : IRequest<UpdateValueCommandResponse>;
         public readonly record struct UpdateValueCommandResponse(ValueUpdateResponse Message);
 
         public readonly record struct DeleteValueCommandRequest(ValueDeleteRequest Value) : IRequest<DeleteValueCommandResponse>;

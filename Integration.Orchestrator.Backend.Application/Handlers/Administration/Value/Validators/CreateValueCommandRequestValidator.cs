@@ -11,10 +11,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.V
             RuleFor(request => request.Value.ValueRequest.Name)
             .NotEmpty().WithMessage(AppMessages.Value_Name_Required);
 
-            RuleFor(request => request.Value.ValueRequest.Code)
-            .NotEmpty().WithMessage(AppMessages.Value_Code_Required);
-
-            RuleFor(request => request.Value.ValueRequest.Type)
+            RuleFor(request => request.Value.ValueRequest.TypeId)
             .NotEmpty().WithMessage(AppMessages.Value_Type_Required);
 
             

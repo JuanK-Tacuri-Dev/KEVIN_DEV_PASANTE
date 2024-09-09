@@ -24,9 +24,10 @@ namespace Value.Orchestrator.Backend.Api.Controllers.v1.Administration
         [HttpPut]
         public async Task<IActionResult> Update(ValueUpdateRequest request, Guid id)
         {
+            request.Id = id;
             return Ok((await _mediator.Send(
                 new UpdateValueCommandRequest(
-                    new ValueBasicInfoRequest<ValueUpdateRequest>(request), id))).Message);
+                    new ValueBasicInfoRequest<ValueUpdateRequest>(request)))).Message);
         }
 
         [HttpDelete]
@@ -53,11 +54,11 @@ namespace Value.Orchestrator.Backend.Api.Controllers.v1.Administration
                     new ValueGetByCodeRequest { Code = code }))).Message);
         }
         [HttpGet]
-        public async Task<IActionResult> GetByType(string type)
+        public async Task<IActionResult> GetByType(Guid typeId)
         {
             return Ok((await _mediator.Send(
                 new GetByTypeValueCommandRequest(
-                    new ValueGetByTypeRequest { Type = type }))).Message);
+                    new ValueGetByTypeRequest { TypeId = typeId }))).Message);
         }
 
         [HttpPost]

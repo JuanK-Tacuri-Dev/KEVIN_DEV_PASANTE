@@ -2,8 +2,10 @@
 using Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
+using Mapster;
 using Moq;
 using System.Net;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization.SynchronizationCommands;
@@ -14,13 +16,15 @@ namespace Integration.Orchestrator.Backend.Application.Tests.Administrations.Han
     {
         private readonly Mock<ISynchronizationService<SynchronizationEntity>> _mockService;
         private readonly Mock<ISynchronizationStatesService<SynchronizationStatusEntity>> _mockSynchronizationStatusService;
+        private readonly Mock<ICodeConfiguratorService> _mockCodeConfiguratorService;
         private readonly SynchronizationHandler _handler;
 
         public SynchronizationHandlerTests()
         {
             _mockService = new Mock<ISynchronizationService<SynchronizationEntity>>();
             _mockSynchronizationStatusService = new Mock<ISynchronizationStatesService<SynchronizationStatusEntity>>();
-            _handler = new SynchronizationHandler(_mockService.Object, _mockSynchronizationStatusService.Object);
+            _mockCodeConfiguratorService = new Mock<ICodeConfiguratorService>();
+            _handler = new SynchronizationHandler(_mockService.Object, _mockSynchronizationStatusService.Object, _mockCodeConfiguratorService.Object);
         }
 
         [Fact]

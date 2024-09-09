@@ -27,8 +27,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<ValueEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<ValueEntity, object>>>
         {
-            { nameof(ValueEntity.value_type), x => x.value_type },
-            { nameof(ValueEntity.value_code), x => x.value_code }
+            { nameof(ValueEntity.value_name).Split("_")[1], x => x.value_name },
+            { nameof(ValueEntity.value_code).Split("_")[1], x => x.value_code },
+            { nameof(ValueEntity.created_at).Split("_")[0], x => x.created_at }
         };
         private void SetupPagination(PaginatedModel model)
         {
@@ -71,7 +72,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.value_code.ToUpper().Contains(search.ToUpper()));
+                x.value_name.ToUpper().Contains(search.ToUpper()));
             }
 
             return criteria;
@@ -87,9 +88,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return x => true && x.value_code == code;
         }
 
-        public static Expression<Func<ValueEntity, bool>> GetByTypeExpression(string type)
+        public static Expression<Func<ValueEntity, bool>> GetByTypeExpression(Guid typeId)
         {
-            return x => true && x.value_type == type;
+            return x => true && x.type_id == typeId;
         }
 
 

@@ -2,5 +2,6 @@
 {
     public class ValueUpdateRequest : ValueCreateRequest
     {
+        public Guid Id { get; set; }
     }
 }

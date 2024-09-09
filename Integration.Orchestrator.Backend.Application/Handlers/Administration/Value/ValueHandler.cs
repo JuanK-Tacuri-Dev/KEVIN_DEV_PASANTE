@@ -1,6 +1,8 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Value;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
@@ -11,7 +13,9 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Administratio
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Value
 {
-    public class ValueHandler(IValueService<ValueEntity> entitiesService)
+    public class ValueHandler(
+        IValueService<ValueEntity> entitiesService,
+        ICodeConfiguratorService codeConfiguratorService)
         :
         IRequestHandler<CreateValueCommandRequest, CreateValueCommandResponse>,
         IRequestHandler<UpdateValueCommandRequest, UpdateValueCommandResponse>,
@@ -22,31 +26,33 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         IRequestHandler<GetAllPaginatedValueCommandRequest, GetAllPaginatedValueCommandResponse>
     {
         public readonly IValueService<ValueEntity> _valueService = entitiesService;
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateValueCommandResponse> Handle(CreateValueCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var valueEntity = MapValue(request.Value.ValueRequest, Guid.NewGuid());
+                var valueEntity = await MapValue(request.Value.ValueRequest, Guid.NewGuid(), true);
                 await _valueService.InsertAsync(valueEntity);
 
                 return new CreateValueCommandResponse(
                     new ValueCreateResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeCreated],
+                        Code = (int)ResponseCode.CreatedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new ValueCreate
                         {
                             Id = valueEntity.id,
                             Code = valueEntity.value_code,
-                            Name = valueEntity.name,
-                            Type = valueEntity.value_type
+                            Name = valueEntity.value_name,
+                            TypeId = valueEntity.type_id,
+                            StatusId = valueEntity.status_id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -58,32 +64,39 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var valueById = await _valueService.GetByIdAsync(request.Id);
+                var valueById = await _valueService.GetByIdAsync(request.Value.ValueRequest.Id);
                 if (valueById == null)
                 {
-                    throw new ArgumentException(AppMessages.Application_ValueNotFound);
+                    throw new OrchestratorArgumentException(string.Empty,
+                         new DetailsArgumentErrors()
+                         {
+                             Code = (int)ResponseCode.NotFoundSuccessfully,
+                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                             Data = request.Value.ValueRequest
+                         });
                 }
 
-                var valueEntity = MapValue(request.Value.ValueRequest, request.Id);
+                var valueEntity = await MapValue(request.Value.ValueRequest, request.Value.ValueRequest.Id);
                 await _valueService.UpdateAsync(valueEntity);
 
                 return new UpdateValueCommandResponse(
                         new ValueUpdateResponse
                         {
-                            Code = HttpStatusCode.OK.GetHashCode(),
-                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Code = (int)ResponseCode.UpdatedSuccessfully,
+                            Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new ValueUpdate
                             {
                                 Id = valueEntity.id,
-                                Code = valueEntity.value_code,
-                                Name = valueEntity.name,
-                                Type = valueEntity.value_type
+                                Code = valueById.value_code,
+                                Name = valueEntity.value_name,
+                                TypeId = valueEntity.type_id,
+                                StatusId = valueEntity.status_id
                             }
                         });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -98,7 +111,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var valueById = await _valueService.GetByIdAsync(request.Value.Id);
                 if (valueById == null)
                 {
-                    throw new ArgumentException(AppMessages.Application_ValueNotFound);
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Value
+                        });
                 }
 
                 await _valueService.DeleteAsync(valueById);
@@ -106,17 +125,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new DeleteValueCommandResponse(
                     new ValueDeleteResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeDeleted],
-                        Data = new ValueDelete 
+                        Code = (int)ResponseCode.DeletedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
+                        Data = new ValueDelete
                         {
                             Id = valueById.id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -131,26 +150,33 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var valueById = await _valueService.GetByIdAsync(request.Value.Id);
                 if (valueById == null)
                 {
-                    throw new ArgumentException(AppMessages.Application_ValueNotFound);
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Value
+                        });
                 }
 
                 return new GetByIdValueCommandResponse(
                     new ValueGetByIdResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new ValueGetById
                         {
                             Id = valueById.id,
-                            Name = valueById.name,
+                            Name = valueById.value_name,
                             Code = valueById.value_code,
-                            Type = valueById.value_type
+                            TypeId = valueById.type_id,
+                            StatusId = valueById.status_id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -165,26 +191,33 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var entitiesByCode = await _valueService.GetByCodeAsync(request.Value.Code);
                 if (entitiesByCode == null)
                 {
-                    throw new ArgumentException(AppMessages.Application_ValueNotFound);
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Value
+                        });
                 }
 
                 return new GetByCodeValueCommandResponse(
                     new ValueGetByCodeResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new ValueGetByCode
                         {
                             Id = entitiesByCode.id,
-                            Name = entitiesByCode.name,
+                            Name = entitiesByCode.value_name,
                             Code = entitiesByCode.value_code,
-                            Type = entitiesByCode.value_type
+                            TypeId = entitiesByCode.type_id,
+                            StatusId = entitiesByCode.status_id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -196,29 +229,36 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var entitiesByType = await _valueService.GetByTypeAsync(request.Value.Type);
+                var entitiesByType = await _valueService.GetByTypeAsync(request.Value.TypeId);
                 if (entitiesByType == null)
                 {
-                    throw new ArgumentException(AppMessages.Application_ValueNotFound);
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                            Data = request.Value
+                        });
                 }
 
                 return new GetByTypeValueCommandResponse(
                     new ValueGetByTypeResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = entitiesByType.Select(c => new ValueGetByType
                         {
                             Id = c.id,
-                            Name = c.name,
+                            Name = c.value_name,
                             Code = c.value_code,
-                            Type = c.value_type
+                            TypeId = c.type_id,
+                            StatusId = c.status_id
                         }).ToList()
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -234,7 +274,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var rows = await _valueService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new ArgumentException(AppMessages.Application_ValueNotFound);
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
+                        });
                 }
                 var result = await _valueService.GetAllPaginatedAsync(model);
 
@@ -242,24 +287,25 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 return new GetAllPaginatedValueCommandResponse(
                     new ValueGetAllPaginatedResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_RespondeGetAll,
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully),
                         Data = new ValueGetAllRows
                         {
                             Total_rows = rows,
                             Rows = result.Select(c => new ValueGetAllPaginated
                             {
                                 Id = c.id,
-                                Name = c.name,
+                                Name = c.value_name,
                                 Code = c.value_code,
-                                Type = c.value_type
+                                TypeId = c.type_id,
+                                StatusId = c.status_id
                             }).ToList()
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -267,14 +313,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             }
         }
 
-        private ValueEntity MapValue(ValueCreateRequest request, Guid id)
+        private async Task<ValueEntity> MapValue(ValueCreateRequest request, Guid id, bool? create = null)
         {
             var entitiesEntity = new ValueEntity()
             {
                 id = id,
-                name = request.Name,
-                value_code = request.Code,
-                value_type = request.Type
+                value_name = request.Name,
+                value_code = create == true
+                ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Value)
+                : null,
+                type_id = request.TypeId,
+                status_id = request.StatusId
             };
             return entitiesEntity;
         }
