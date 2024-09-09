@@ -12,24 +12,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
             RuleFor(request => request.Id)
             .NotEmpty().WithMessage(AppMessages.Synchronization_Id_Required);
 
-            //RuleFor(request => request.Synchronization.SynchronizationRequest.FranchiseId)
-            //.NotEmpty().WithMessage(AppMessages.Synchronization_FranchiseId_Required);
-
-            RuleFor(request => request.Synchronization.SynchronizationRequest.Status)
+            RuleFor(request => request.Synchronization.SynchronizationRequest.StatusId)
            .NotEmpty().WithMessage(AppMessages.Synchronization_Status_Required);
-
-            //RuleFor(request => request.Synchronization.SynchronizationRequest.Observations)
-            //.NotEmpty().WithMessage(AppMessages.Synchronization_Observations_Required)
-            //.MinimumLength(1).WithMessage(AppMessages.Synchronization_Observations_MinimumSize)
-            //.MaximumLength(255).WithMessage(AppMessages.Synchronization_Observations_MaximumSize);
 
             RuleFor(request => request.Synchronization.SynchronizationRequest.Integrations)
             .NotNull().WithMessage(AppMessages.Synchronization_Integrations_Required)
             .NotEmpty().WithMessage(AppMessages.Synchronization_Integrations_MinimumValue);
-
-            RuleFor(request => request.Synchronization.SynchronizationRequest.HourToExecute)
-            .NotNull().WithMessage(AppMessages.Synchronization_HourToExecute_Required)
-            .Must(BeAValidDateTime).WithMessage(AppMessages.Synchronization_HourToExecute_Invalid);
         }
 
         private bool BeAValidDateTime(string dateTimeString)

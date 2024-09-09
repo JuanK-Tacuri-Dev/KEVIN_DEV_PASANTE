@@ -37,29 +37,22 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
         public async Task<PropertyEntity> GetByIdAsync(Expression<Func<PropertyEntity, bool>> specification)
         {
-            var filter = Builders<PropertyEntity>.Filter.Where(specification);
-            var propertyEntity = await _collection
-                .Find(filter)
-                .FirstOrDefaultAsync();
-            return propertyEntity;
+            return await FindByFilter(specification).FirstOrDefaultAsync();
         }
 
         public async Task<PropertyEntity> GetByCodeAsync(Expression<Func<PropertyEntity, bool>> specification)
         {
-            var filter = Builders<PropertyEntity>.Filter.Where(specification);
-            var propertyEntity = await _collection
-                .Find(filter)
-                .FirstOrDefaultAsync();
-            return propertyEntity;
+            return await FindByFilter(specification).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<PropertyEntity>> GetByTypeAsync(Expression<Func<PropertyEntity, bool>> specification)
         {
-            var filter = Builders<PropertyEntity>.Filter.Where(specification);
-            var propertyEntity = await _collection
-                .Find(filter)
-                .ToListAsync();
-            return propertyEntity;
+            return await FindByFilter(specification).ToListAsync();
+        }
+        
+        public async Task<IEnumerable<PropertyEntity>> GetByEntityAsync(Expression<Func<PropertyEntity, bool>> specification)
+        {
+            return await FindByFilter(specification).ToListAsync();
         }
 
         public async Task<IEnumerable<PropertyEntity>> GetAllAsync(ISpecification<PropertyEntity> specification)
@@ -90,9 +83,17 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
         public async Task<IEnumerable<PropertyEntity>> GetByNameAndEntityIdAsync(Expression<Func<PropertyEntity, bool>> specification)
         {
-            return await _collection
-                .Find(Builders<PropertyEntity>.Filter.Where(specification))
-                .ToListAsync();
+            return await FindByFilter(specification).ToListAsync();
+        }
+
+        private IFindFluent<PropertyEntity,PropertyEntity> FindByFilter(Expression<Func<PropertyEntity, bool>> specification)
+        {
+            return _collection.Find(BuildFilter(specification));
+        }
+
+        private static FilterDefinition<PropertyEntity> BuildFilter(Expression<Func<PropertyEntity, bool>> specification)
+        {
+            return Builders<PropertyEntity>.Filter.Where(specification);
         }
     }
 }

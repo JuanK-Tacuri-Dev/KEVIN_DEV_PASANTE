@@ -48,6 +48,12 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             var specification = PropertySpecification.GetByTypeExpression(typeId);
             return await _propertyRepository.GetByTypeAsync(specification);
         }
+        
+        public async Task<IEnumerable<PropertyEntity>> GetByEntityIdAsync(Guid entityId)
+        {
+            var specification = PropertySpecification.GetByEntityExpression(entityId);
+            return await _propertyRepository.GetByEntityAsync(specification);
+        }
 
         public async Task<IEnumerable<PropertyEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
         {

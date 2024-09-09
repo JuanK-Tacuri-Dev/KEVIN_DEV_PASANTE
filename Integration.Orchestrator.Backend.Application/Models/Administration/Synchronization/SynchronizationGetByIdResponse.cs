@@ -3,8 +3,8 @@
     public class SynchronizationGetByIdResponse : ModelResponse<SynchronizationGetById>
     {
     }
-    public class SynchronizationGetById : SynchronizationRequest
+    public class SynchronizationGetById : SynchronizationResponse
     {
-        public Guid Id { get; set; }
+        public Guid StatusId { get; set; }
     }
 }
