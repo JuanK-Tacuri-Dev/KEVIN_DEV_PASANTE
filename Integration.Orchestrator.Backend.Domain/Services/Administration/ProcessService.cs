@@ -42,9 +42,9 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _processRepository.GetByCodeAsync(specification);
         }
 
-        public async Task<IEnumerable<ProcessEntity>> GetByTypeAsync(string type)
+        public async Task<IEnumerable<ProcessEntity>> GetByTypeAsync(Guid typeId)
         {
-            var specification = ProcessSpecification.GetByTypeExpression(type);
+            var specification = ProcessSpecification.GetByTypeExpression(typeId);
             return await _processRepository.GetByTypeAsync(specification);
         }
 

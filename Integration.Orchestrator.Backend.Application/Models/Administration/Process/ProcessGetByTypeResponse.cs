@@ -3,8 +3,7 @@
     public class ProcessGetByTypeResponse : ModelResponse<IEnumerable<ProcessGetByType>>
     {
     }
-    public class ProcessGetByType : ProcessRequest
+    public class ProcessGetByType : ProcessResponse
     {
-        public Guid Id { get; set; }
     }
 }

@@ -8,10 +8,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
     {
         public CreateProcessCommandRequestValidator()
         {
-            RuleFor(request => request.Process.ProcessRequest.ProcessCode)
-            .NotEmpty().WithMessage(AppMessages.Process_ProcessCode_Required);
 
-            RuleFor(request => request.Process.ProcessRequest.Type)
+            RuleFor(request => request.Process.ProcessRequest.TypeId)
             .NotEmpty().WithMessage(AppMessages.Process_Type_Required);
 
             RuleFor(request => request.Process.ProcessRequest.ConnectionId)

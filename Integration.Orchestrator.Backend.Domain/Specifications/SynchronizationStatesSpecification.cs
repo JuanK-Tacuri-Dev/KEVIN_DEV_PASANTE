@@ -27,23 +27,23 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<SynchronizationStatusEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<SynchronizationStatusEntity, object>>>
         {
-            { nameof(SynchronizationStatusEntity.synchronization_status_key), x => x.synchronization_status_key },
-            { nameof(SynchronizationStatusEntity.synchronization_status_text), x => x.synchronization_status_text },
-            { nameof(SynchronizationStatusEntity.synchronization_status_color), x => x.synchronization_status_color },
-            { nameof(SynchronizationStatusEntity.synchronization_status_background), x => x.synchronization_status_background },
-            { nameof(SynchronizationStatusEntity.updated_at), x => x.updated_at },
+            { nameof(SynchronizationStatusEntity.synchronization_status_key).Split("_")[2], x => x.synchronization_status_key },
+            { nameof(SynchronizationStatusEntity.synchronization_status_text).Split("_")[2], x => x.synchronization_status_text },
+            { nameof(SynchronizationStatusEntity.synchronization_status_color).Split("_")[2], x => x.synchronization_status_color },
+            { nameof(SynchronizationStatusEntity.synchronization_status_background).Split("_")[2], x => x.synchronization_status_background },
+            { nameof(SynchronizationStatusEntity.updated_at).Split("_")[0], x => x.updated_at },
         };
         private void SetupPagination(PaginatedModel model)
         {
-            Skip = (model.Page - 1) * model.Rows;
+            Skip = (model.First - 1) * model.Rows;
             Limit = model.Rows;
         }
 
         private void SetupOrdering(PaginatedModel model)
         {
-            if (sortExpressions.TryGetValue(model.SortBy, out var expression))
+            if (sortExpressions.TryGetValue(model.Sort_field, out var expression))
             {
-                if (model.SortOrder == SortOrdering.Ascending)
+                if (model.Sort_order == SortOrdering.Ascending)
                 {
                     OrderBy = expression;
                 }
@@ -74,7 +74,6 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.synchronization_status_key.ToUpper().Contains(search.ToUpper()) ||
                 x.synchronization_status_text.ToUpper().Contains(search.ToUpper()));
             }
 

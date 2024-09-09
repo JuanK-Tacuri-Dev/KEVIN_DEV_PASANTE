@@ -27,21 +27,22 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<EntitiesEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<EntitiesEntity, object>>>
         {
-            { nameof(EntitiesEntity.type_id), x => x.type_id },
-            { nameof(EntitiesEntity.entity_code), x => x.entity_code },
-            { nameof(EntitiesEntity.entity_name), x => x.entity_name }
+            { nameof(EntitiesEntity.type_id).Split("_")[1], x => x.type_id },
+            { nameof(EntitiesEntity.entity_code).Split("_")[1], x => x.entity_code },
+            { nameof(EntitiesEntity.entity_name).Split("_")[1], x => x.entity_name },
+            { nameof(EntitiesEntity.created_at).Split("_")[0], x => x.entity_name }
         };
         private void SetupPagination(PaginatedModel model)
         {
-            Skip = (model.Page - 1) * model.Rows;
+            Skip = (model.First - 1) * model.Rows;
             Limit = model.Rows;
         }
 
         private void SetupOrdering(PaginatedModel model)
         {
-            if (sortExpressions.TryGetValue(model.SortBy, out var expression))
+            if (sortExpressions.TryGetValue(model.Sort_field, out var expression))
             {
-                if (model.SortOrder == SortOrdering.Ascending)
+                if (model.Sort_order == SortOrdering.Ascending)
                 {
                     OrderBy = expression;
                 }
@@ -72,8 +73,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria
-                    .And(x => x.entity_code.ToUpper().Contains(search.ToUpper()) || 
-                              x.entity_name.ToUpper().Contains(search.ToUpper()));
+                    .And(x => x.entity_name.ToUpper().Contains(search.ToUpper()));
             }
 
             return criteria;

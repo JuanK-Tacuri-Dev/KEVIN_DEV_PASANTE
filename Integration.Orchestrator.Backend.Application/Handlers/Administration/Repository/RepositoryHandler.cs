@@ -44,7 +44,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                             Port = repositoryEntity.repository_port,
                             UserName = repositoryEntity.repository_user,
                             Password = repositoryEntity.repository_password,
-                            DatabaseName = repositoryEntity.data_base_name,
+                            DatabaseName = repositoryEntity.repository_databaseName,
                             AuthTypeId = repositoryEntity.type_id,
                             StatusId = repositoryEntity.status_id
                         }
@@ -85,11 +85,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                         Data = new RepositoryUpdate
                         {
                             Id = repositoryEntity.id,
-                            Code = repositoryEntity.repository_code,
+                            Code = repositoryById.repository_code,
                             Port = repositoryEntity.repository_port,
                             UserName = repositoryEntity.repository_user,
                             Password = repositoryEntity.repository_password,
-                            DatabaseName = repositoryEntity.data_base_name,
+                            DatabaseName = repositoryEntity.repository_databaseName,
                             AuthTypeId = repositoryEntity.type_id,
                             StatusId = repositoryEntity.status_id
                         }
@@ -169,7 +169,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                             Port = repositoryById.repository_port,
                             UserName = repositoryById.repository_user,
                             Password = repositoryById.repository_password,
-                            DatabaseName = repositoryById.data_base_name,
+                            DatabaseName = repositoryById.repository_databaseName,
                             AuthTypeId = repositoryById.type_id,
                             StatusId = repositoryById.status_id
                         }
@@ -211,7 +211,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                             Port = repositoryByCode.repository_port,
                             UserName = repositoryByCode.repository_user,
                             Password = repositoryByCode.repository_password,
-                            DatabaseName = repositoryByCode.data_base_name,
+                            DatabaseName = repositoryByCode.repository_databaseName,
                             AuthTypeId = repositoryByCode.type_id,
                             StatusId = repositoryByCode.status_id
                         }
@@ -260,7 +260,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                                 Port = c.repository_port,
                                 UserName = c.repository_user,
                                 Password = c.repository_password,
-                                DatabaseName = c.data_base_name,
+                                DatabaseName = c.repository_databaseName,
                                 AuthTypeId = c.type_id,
                                 StatusId = c.status_id
                             }).ToList()
@@ -288,7 +288,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                 repository_port = request.Port,
                 repository_user = request.UserName,
                 repository_password = request.Password,
-                data_base_name = request.DatabaseName,
+                repository_databaseName = request.DatabaseName,
                 type_id = request.AuthTypeId,
                 status_id = request.StatusId
             };

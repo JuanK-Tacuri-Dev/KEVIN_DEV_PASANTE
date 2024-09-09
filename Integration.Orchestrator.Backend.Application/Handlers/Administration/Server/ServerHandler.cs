@@ -84,7 +84,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Data = new ServerUpdate
                             {
                                 Id = serverEntity.id,
-                                Code = serverEntity.server_code,
+                                Code = serverById.server_code,
                                 Name = serverEntity.server_name,
                                 TypeServerId = serverEntity.type_id,
                                 Url = serverEntity.server_url,

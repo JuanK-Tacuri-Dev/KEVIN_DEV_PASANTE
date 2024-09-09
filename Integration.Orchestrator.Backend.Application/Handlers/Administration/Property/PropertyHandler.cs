@@ -1,12 +1,10 @@
-﻿using System.Net;
-using Integration.Orchestrator.Backend.Application.Models.Administration.Property;
+﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Property;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
-using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Property.PropertyCommands;
@@ -32,14 +30,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
         {
             try
             {
-                var propertyEntity = await MapProperty(request.Property.PropertyRequest);
+                var propertyEntity = await MapProperty(request.Property.PropertyRequest, Guid.NewGuid(), true);
                 await _propertyService.InsertAsync(propertyEntity);
 
                 return new CreatePropertyCommandResponse(
                     new PropertyCreateResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeCreated],
+                        Code = (int)ResponseCode.CreatedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new PropertyCreate
                         {
                             Id = propertyEntity.id,
@@ -51,9 +49,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -67,22 +65,26 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
             {
                 var propertyById = await _propertyService.GetByIdAsync(request.Id);
                 if (propertyById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_PropertyNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors()
+                            {
+                                Code = (int)ResponseCode.NotFoundSuccessfully,
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                                Data = request.Property.PropertyRequest
+                            });
 
-                var propertyEntity = await MapProperty(request.Property.PropertyRequest, propertyById);
+                var propertyEntity = await MapProperty(request.Property.PropertyRequest, request.Id);
                 await _propertyService.UpdateAsync(propertyEntity);
 
                 return new UpdatePropertyCommandResponse(
                         new PropertyUpdateResponse
                         {
-                            Code = HttpStatusCode.OK.GetHashCode(),
-                            Messages = [AppMessages.Application_RespondeUpdated],
+                            Code = (int)ResponseCode.UpdatedSuccessfully,
+                            Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new PropertyUpdate
                             {
                                 Id = propertyEntity.id,
-                                Code = propertyEntity.property_code,
+                                Code = propertyById.property_code,
                                 Name = propertyEntity.property_name,
                                 TypeId = propertyEntity.type_id,
                                 EntityId = propertyEntity.entity_id,
@@ -90,9 +92,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                             }
                         });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -106,26 +108,30 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
             {
                 var propertyById = await _propertyService.GetByIdAsync(request.Property.Id);
                 if (propertyById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_PropertyNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors()
+                            {
+                                Code = (int)ResponseCode.NotFoundSuccessfully,
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                                Data = request.Property
+                            });
 
                 await _propertyService.DeleteAsync(propertyById);
 
                 return new DeletePropertyCommandResponse(
                     new PropertyDeleteResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeDeleted],
+                        Code = (int)ResponseCode.DeletedSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
                         Data = new PropertyDelete 
                         {
                             Id = propertyById.id
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -139,15 +145,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
             {
                 var propertyById = await _propertyService.GetByIdAsync(request.Property.Id);
                 if (propertyById == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_PropertyNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors()
+                            {
+                                Code = (int)ResponseCode.NotFoundSuccessfully,
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                                Data = request.Property
+                            });
 
                 return new GetByIdPropertyCommandResponse(
                     new PropertyGetByIdResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new PropertyGetById
                         {
                             Id = propertyById.id,
@@ -159,9 +169,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -175,15 +185,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
             {
                 var propertyByCode = await _propertyService.GetByCodeAsync(request.Property.Code);
                 if (propertyByCode == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_PropertyNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors()
+                            {
+                                Code = (int)ResponseCode.NotFoundSuccessfully,
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                                Data = request.Property
+                            });
 
                 return new GetByCodePropertyCommandResponse(
                     new PropertyGetByCodeResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new PropertyGetByCode
                         {
                             Id = propertyByCode.id,
@@ -195,9 +209,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -211,15 +225,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
             {
                 var propertyByType = await _propertyService.GetByTypeIdAsync(request.Property.TypeId);
                 if (propertyByType == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_PropertyNotFound);
-                }
+                    throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors()
+                            {
+                                Code = (int)ResponseCode.NotFoundSuccessfully,
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                                Data = request.Property
+                            });
 
                 return new GetByTypePropertyCommandResponse(
                     new PropertyGetByTypeResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = propertyByType.Select(c => new PropertyGetByType
                         {
                             Id = c.id,
@@ -231,15 +249,56 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                         }).ToList()
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
                 throw new OrchestratorException(ex.Message);
             }
         }
+
+        public async Task<GetByEntityPropertyCommandResponse> Handle(GetByEntityPropertyCommandRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var propertyByEntity = await _propertyService.GetByEntityIdAsync(request.Property.EntityId);
+                if (propertyByEntity == null)
+                    throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors()
+                            {
+                                Code = (int)ResponseCode.NotFoundSuccessfully,
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                                Data = request.Property
+                            });
+
+                return new GetByEntityPropertyCommandResponse(
+                    new PropertyGetByEntityResponse
+                    {
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
+                        Data = propertyByEntity.Select(c => new PropertyGetByEntity
+                        {
+                            Id = c.id,
+                            Name = c.property_name,
+                            Code = c.property_code,
+                            TypeId = c.type_id,
+                            EntityId = c.entity_id,
+                            StatusId = c.status_id
+                        }).ToList()
+                    });
+            }
+            catch (OrchestratorArgumentException ex)
+            {
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
+            }
+            catch (Exception ex)
+            {
+                throw new OrchestratorException(ex.Message);
+            }
+        }
+
 
         public async Task<GetAllPaginatedPropertyCommandResponse> Handle(GetAllPaginatedPropertyCommandRequest request, CancellationToken cancellationToken)
         {
@@ -249,7 +308,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                 var rows = await _propertyService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new ArgumentException(AppMessages.Application_PropertyNotFound);
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
+                        });
                 }
                 var result = await _propertyService.GetAllPaginatedAsync(model);
 
@@ -257,8 +321,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                 return new GetAllPaginatedPropertyCommandResponse(
                     new PropertyGetAllPaginatedResponse
                     {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Description = AppMessages.Application_RespondeGetAll,
+                        Code = (int)ResponseCode.FoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully),
                         Data = new PropertyGetAllRows
                         {
                             Total_rows = rows,
@@ -274,9 +338,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                         }
                     });
             }
-            catch (ArgumentException ex)
+            catch (OrchestratorArgumentException ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new OrchestratorArgumentException(string.Empty, ex.Details);
             }
             catch (Exception ex)
             {
@@ -284,54 +348,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
             }
         }
 
-        private async Task<PropertyEntity> MapProperty(PropertyCreateRequest request, PropertyEntity savedProperty = null)
+        private async Task<PropertyEntity> MapProperty(PropertyCreateRequest request, Guid id, bool? create = null)
         {
             return new PropertyEntity()
             {
-                id = savedProperty == null ? Guid.NewGuid() : savedProperty.id,
+                id = id,
                 property_name = request.Name,
-                property_code = savedProperty == null
+                property_code = create == true
                 ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Property)
-                : savedProperty.property_code,
+                : null,
                 type_id = request.TypeId,
                 entity_id = request.EntityId,
                 status_id = request.StatusId
             };
-        }
-        
-        public async Task<GetByEntityPropertyCommandResponse> Handle(GetByEntityPropertyCommandRequest request, CancellationToken cancellationToken)
-        {
-            try
-            {
-                var propertyByEntity = await _propertyService.GetByEntityIdAsync(request.Property.EntityId);
-                if (propertyByEntity == null)
-                {
-                    throw new ArgumentException(AppMessages.Application_PropertyNotFound);
-                }
-
-                return new GetByEntityPropertyCommandResponse(
-                    new PropertyGetByEntityResponse
-                    {
-                        Code = HttpStatusCode.OK.GetHashCode(),
-                        Messages = [AppMessages.Application_RespondeGet],
-                        Data = propertyByEntity.Select(c => new PropertyGetByEntity                        {
-                            Id = c.id,
-                            Name = c.property_name,
-                            Code = c.property_code,
-                            TypeId = c.type_id,
-                            EntityId = c.entity_id,
-                            StatusId = c.status_id
-                        }).ToList()
-                    });
-            }
-            catch (ArgumentException ex)
-            {
-                throw new ArgumentException(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new OrchestratorException(ex.Message);
-            }
         }
     }
 }

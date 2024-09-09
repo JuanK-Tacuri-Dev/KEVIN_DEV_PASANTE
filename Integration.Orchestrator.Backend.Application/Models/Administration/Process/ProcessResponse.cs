@@ -3,9 +3,12 @@
     public class ProcessResponse
     {
         public Guid Id { get; set; }
-        public string ProcessCode { get; set; }
-        public string Type { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public Guid TypeId { get; set; }
         public Guid ConnectionId { get; set; }
+        public Guid StatusId { get; set; }
         public List<EntitiesResponse> Entities { get; set; }
     }
 
@@ -18,13 +21,14 @@
 
     public class PropertiesResponse
     {
-        public Guid KeyId { get; set; }
+        public Guid Id { get; set; }
+        public Guid InternalStatusId { get; set; }
     }
 
     public class FilterResponse
     {
-        public Guid KeyId { get; set; }
+        public Guid PropertyId { get; set; }
         public Guid OperatorId { get; set; }
-        public Guid ValueId { get; set; }
+        public string Value { get; set; }
     }
 }

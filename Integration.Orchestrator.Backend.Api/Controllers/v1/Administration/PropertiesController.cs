@@ -63,11 +63,11 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
         
 
         [HttpGet]
-        public async Task<IActionResult> GetByEntity(Guid typeId)
+        public async Task<IActionResult> GetByEntityId(Guid entityId)
         {
             return Ok((await _mediator.Send(
                 new GetByEntityPropertyCommandRequest(
-                    new PropertyGetByEntityRequest { EntityId = typeId}))).Message);
+                    new PropertyGetByEntityRequest { EntityId = entityId }))).Message);
         }        
 
         [HttpPost]

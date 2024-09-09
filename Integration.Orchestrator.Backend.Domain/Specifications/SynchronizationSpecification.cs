@@ -27,21 +27,22 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<SynchronizationEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<SynchronizationEntity, object>>>
         {
-            { nameof(SynchronizationEntity.synchronization_name).Split("_")[1], x => x.status_id },
-            { nameof(SynchronizationEntity.synchronization_observations).Split("_")[1], x => x.synchronization_hour_to_execute },
+            { nameof(SynchronizationEntity.synchronization_name).Split("_")[1], x => x.synchronization_name },
+            { nameof(SynchronizationEntity.synchronization_observations).Split("_")[1], x => x.synchronization_observations },
+            { nameof(SynchronizationEntity.synchronization_hour_to_execute).Split("_")[1], x => x.synchronization_hour_to_execute },
             { nameof(SynchronizationEntity.created_at).Split("_")[0], x => x.created_at },
         };
         private void SetupPagination(PaginatedModel model)
         {
-            Skip = (model.Page - 1) * model.Rows;
+            Skip = (model.First - 1) * model.Rows;
             Limit = model.Rows;
         }
 
         private void SetupOrdering(PaginatedModel model)
         {
-            if (sortExpressions.TryGetValue(model.SortBy, out var expression))
+            if (sortExpressions.TryGetValue(model.Sort_field, out var expression))
             {
-                if (model.SortOrder == SortOrdering.Ascending)
+                if (model.Sort_order == SortOrdering.Ascending)
                 {
                     OrderBy = expression;
                 }
@@ -72,7 +73,6 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.synchronization_observations.ToUpper().Contains(search.ToUpper()) ||
                 x.synchronization_name.ToUpper().Contains(search.ToUpper()));
             }
 
@@ -86,7 +86,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
         public static Expression<Func<SynchronizationEntity, bool>> GetByFranchiseIdExpression(Guid franchiseId)
         {
-            return BaseSpecification<SynchronizationEntity>.GetByUuid(x => x.franchise_id, franchiseId);
+            return x => x.franchise_id == franchiseId;
         }
     }
 }

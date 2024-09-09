@@ -84,7 +84,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Data = new ConnectionUpdate
                             {
                                 Id = connectionEntity.id,
-                                Code = connectionEntity.connection_code,
+                                Code = connectionById.connection_code,
                                 ServerId = connectionEntity.server_id,
                                 AdapterId = connectionEntity.adapter_id,
                                 RepositoryId = connectionEntity.repository_id,

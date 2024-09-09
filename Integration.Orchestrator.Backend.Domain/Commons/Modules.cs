@@ -11,6 +11,10 @@
         Connection = 7,
         Entity = 8,
         Catalog = 9,
-        Property = 10
+        Property = 10,
+        Process = 11,
+        Operator = 12,
+        Synchronization = 13,
+        Value = 14
     }
 }
