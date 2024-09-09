@@ -27,23 +27,21 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<IntegrationEntity, object>>> sortExpressions
             = new Dictionary<string, Expression<Func<IntegrationEntity, object>>>
         {
-            { nameof(IntegrationEntity.integration_name), x => x.integration_name },
-            { nameof(IntegrationEntity.status_id), x => x.status_id },
-            { nameof(IntegrationEntity.integration_observations), x => x.integration_observations },
-            { nameof(IntegrationEntity.user_id), x => x.user_id },
-            { nameof(IntegrationEntity.updated_at), x => x.updated_at },
+            { nameof(IntegrationEntity.integration_name).Split("_")[1], x => x.integration_name },
+            { nameof(IntegrationEntity.integration_observations).Split("_")[1], x => x.integration_observations },
+            { nameof(IntegrationEntity.updated_at).Split("_")[0], x => x.updated_at },
         };
         private void SetupPagination(PaginatedModel model)
         {
-            Skip = (model.Page - 1) * model.Rows;
+            Skip = (model.First - 1) * model.Rows;
             Limit = model.Rows;
         }
 
         private void SetupOrdering(PaginatedModel model)
         {
-            if (sortExpressions.TryGetValue(model.SortBy, out var expression))
+            if (sortExpressions.TryGetValue(model.Sort_field, out var expression))
             {
-                if (model.SortOrder == SortOrdering.Ascending)
+                if (model.Sort_order == SortOrdering.Ascending)
                 {
                     OrderBy = expression;
                 }

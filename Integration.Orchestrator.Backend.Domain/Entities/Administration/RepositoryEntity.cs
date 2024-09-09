@@ -3,7 +3,7 @@
     public class RepositoryEntity : Entity<Guid>
     {
         public string repository_code { get; set; }
-        public string data_base_name { get; set; }
+        public string repository_databaseName { get; set; }
         public int repository_port { get; set; }
         public string repository_user { get; set; }
         public string repository_password { get; set; }

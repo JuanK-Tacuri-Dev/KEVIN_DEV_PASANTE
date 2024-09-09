@@ -23,7 +23,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .Set(m => m.repository_port, entity.repository_port)
                 .Set(m => m.repository_user, entity.repository_user)
                 .Set(m => m.repository_password, entity.repository_password)
-                .Set(m => m.data_base_name, entity.data_base_name)
+                .Set(m => m.repository_databaseName, entity.repository_databaseName)
                 .Set(m => m.type_id, entity.type_id)
                 .Set(m => m.status_id, entity.status_id)
                 .Set(m => m.updated_at, entity.updated_at);

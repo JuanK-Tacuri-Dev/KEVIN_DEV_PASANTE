@@ -69,8 +69,6 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             services.AddSingleton(s => database.GetCollection<StatusEntity>(statusCollection));
             services.AddSingleton(s => database.GetCollection<EntitiesEntity>(entityCollection));
             services.AddSingleton(s => database.GetCollection<PropertyEntity>(propertyCollection));
-            services.AddSingleton(s => database.GetCollection<ValueEntity>(valueCollection));
-            services.AddSingleton(s => database.GetCollection<OperatorEntity>(operatorCollection));
             services.AddSingleton(s => database.GetCollection<ServerEntity>(serverCollection));
             services.AddSingleton(s => database.GetCollection<RepositoryEntity>(repositoryCollection));
             services.AddSingleton(s => database.GetCollection<AdapterEntity>(adapterCollection));
