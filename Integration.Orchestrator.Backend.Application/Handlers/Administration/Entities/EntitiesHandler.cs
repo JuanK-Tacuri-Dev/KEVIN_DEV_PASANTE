@@ -31,7 +31,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
         {
             try
             {
-                var entitiesEntity = await MapEntities(request.Entities.EntitiesRequest);
+                var entitiesEntity = await MapEntities(request.Entities.EntitiesRequest, Guid.NewGuid(), true);
                 await _entitiesService.InsertAsync(entitiesEntity);
 
                 return new CreateEntitiesCommandResponse(
@@ -74,7 +74,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Data = request.Entities.EntitiesRequest
                         });
 
-                var entitiesEntity = await MapEntities(request.Entities.EntitiesRequest, entitiesById);
+                var entitiesEntity = await MapEntities(request.Entities.EntitiesRequest, request.Id);
                 await _entitiesService.UpdateAsync(entitiesEntity);
 
                 return new UpdateEntitiesCommandResponse(
@@ -347,15 +347,15 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
             }
         }
 
-        private async Task<EntitiesEntity> MapEntities(EntitiesCreateRequest request, EntitiesEntity savedEntity = null)
+        private async Task<EntitiesEntity> MapEntities(EntitiesCreateRequest request, Guid id, bool? create = null)
         {
             return new EntitiesEntity()
             {
-                id = savedEntity == null ? Guid.NewGuid() : savedEntity.id,
+                id = id,
                 entity_name = request.Name,
-                entity_code = savedEntity == null
-                    ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Entity)
-                    : savedEntity.entity_code,
+                entity_code = create == true
+                ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Entity)
+                : null,
                 type_id = request.TypeId,
                 repository_id = request.RepositoryId,
                 status_id = request.StatusId

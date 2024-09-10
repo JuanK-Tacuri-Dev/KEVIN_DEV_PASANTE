@@ -44,6 +44,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Name = catalogEntity.catalog_name,
                             Value = catalogEntity.catalog_value,
                             FatherId = catalogEntity.father_id,
+                            IsFather = catalogEntity.is_fhater,
                             Detail = catalogEntity.catalog_detail,
                             StatusId = catalogEntity.status_id
                         }
@@ -84,10 +85,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Data = new CatalogUpdate
                             {
                                 Id = catalogEntity.id,
-                                Code = catalogEntity.catalog_code,
+                                Code = catalogById.catalog_code,
                                 Name = catalogEntity.catalog_name,
                                 Value = catalogEntity.catalog_value,
                                 FatherId = catalogEntity.father_id,
+                                IsFather = catalogEntity.is_fhater,
                                 Detail = catalogEntity.catalog_detail,
                                 StatusId = catalogEntity.status_id
                             }
@@ -166,6 +168,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Name = catalogById.catalog_name,
                             Value = catalogById.catalog_value,
                             FatherId = catalogById.father_id,
+                            IsFather = catalogById.is_fhater,
                             Detail = catalogById.catalog_detail,
                             StatusId = catalogById.status_id
                         }
@@ -207,6 +210,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Name = p.catalog_name,
                             Value = p.catalog_value,
                             FatherId = p.father_id,
+                            IsFather = p.is_fhater,
                             Detail = p.catalog_detail,
                             StatusId = p.status_id
                         }).ToList()
@@ -248,6 +252,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Name = catalogByCode.catalog_name,
                             Value = catalogByCode.catalog_value,
                             FatherId = catalogByCode.father_id,
+                            IsFather = catalogByCode.is_fhater,
                             Detail = catalogByCode.catalog_detail,
                             StatusId = catalogByCode.status_id
                         }
@@ -296,6 +301,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                                 Name = p.catalog_name,
                                 Value = p.catalog_value,
                                 FatherId = p.father_id,
+                                IsFather = p.is_fhater,
                                 Detail = p.catalog_detail,
                                 StatusId = p.status_id
                             }).ToList()
@@ -322,8 +328,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                     : null,
                 catalog_name = request.Name,
                 catalog_value = request.Value,
-                catalog_detail = request.Detail,
                 father_id = request.FatherId,
+                is_fhater = request.IsFather,
+                catalog_detail = request.Detail,
                 status_id = request.StatusId
             };
             return catalogEntity;

@@ -52,7 +52,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
         public async Task GetAllPaginatedAsync_ShouldReturnEntitiesFromRepository()
         {
             // Arrange
-            var paginatedModel = new PaginatedModel { Page = 1, Rows = 10, SortBy ="" };
+            var paginatedModel = new PaginatedModel { First = 1, Rows = 10, Sort_field ="" };
             var expectedEntities = new List<SynchronizationStatusEntity> { new SynchronizationStatusEntity() };
             _mockRepo.Setup(repo => repo.GetAllAsync(It.IsAny<SynchronizationStatesSpecification>())).ReturnsAsync(expectedEntities);
 
@@ -68,7 +68,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
         public async Task GetTotalRowsAsync_ShouldReturnTotalRowsFromRepository()
         {
             // Arrange
-            var paginatedModel = new PaginatedModel { Page = 1, Rows = 10, SortBy = "" };
+            var paginatedModel = new PaginatedModel { First = 1, Rows = 10, Sort_field = "" };
             var expectedTotalRows = 100L;
             _mockRepo.Setup(repo => repo.GetTotalRows(It.IsAny<SynchronizationStatesSpecification>())).ReturnsAsync(expectedTotalRows);
 

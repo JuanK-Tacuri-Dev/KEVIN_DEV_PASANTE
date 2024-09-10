@@ -3,8 +3,7 @@
     public class ProcessUpdateResponse : ModelResponse<ProcessUpdate>
     {
     }
-    public class ProcessUpdate : ProcessRequest
+    public class ProcessUpdate : ProcessResponse
     {
-        public Guid Id { get; set; }
     }
 }

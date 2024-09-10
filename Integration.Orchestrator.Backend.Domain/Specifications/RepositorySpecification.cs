@@ -27,21 +27,24 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<RepositoryEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<RepositoryEntity, object>>>
         {
-            { nameof(RepositoryEntity.repository_port), x => x.repository_port },
-            { nameof(RepositoryEntity.repository_code), x => x.repository_code },
-            { nameof(RepositoryEntity.repository_user), x => x.repository_user }
+            { nameof(RepositoryEntity.repository_code).Split("_")[1], x => x.repository_code },
+            { nameof(RepositoryEntity.repository_port).Split("_")[1], x => x.repository_port },
+            { nameof(RepositoryEntity.repository_user).Split("_")[1], x => x.repository_user },
+            { nameof(RepositoryEntity.repository_password).Split("_")[1], x => x.repository_password },
+            { nameof(RepositoryEntity.repository_databaseName).Split("_")[1], x => x.repository_databaseName },
+            { nameof(RepositoryEntity.created_at).Split("_")[0], x => x.created_at }
         };
         private void SetupPagination(PaginatedModel model)
         {
-            Skip = (model.Page - 1) * model.Rows;
+            Skip = (model.First - 1) * model.Rows;
             Limit = model.Rows;
         }
 
         private void SetupOrdering(PaginatedModel model)
         {
-            if (sortExpressions.TryGetValue(model.SortBy, out var expression))
+            if (sortExpressions.TryGetValue(model.Sort_field, out var expression))
             {
-                if (model.SortOrder == SortOrdering.Ascending)
+                if (model.Sort_order == SortOrdering.Ascending)
                 {
                     OrderBy = expression;
                 }
@@ -72,8 +75,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.repository_code.ToUpper().Contains(search.ToUpper()) ||
-                x.data_base_name.ToUpper().Contains(search.ToUpper()));
+                x.repository_databaseName.ToUpper().Contains(search.ToUpper()));
             }
 
             return criteria;

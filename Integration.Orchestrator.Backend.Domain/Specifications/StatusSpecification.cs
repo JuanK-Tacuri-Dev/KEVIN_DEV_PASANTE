@@ -27,21 +27,23 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<StatusEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<StatusEntity, object>>>
         {
-            { nameof(StatusEntity.status_key), x => x.status_key },
-            { nameof(StatusEntity.status_text), x => x.status_text },
-            { nameof(StatusEntity.status_color), x => x.status_color },
+            { nameof(StatusEntity.status_key).Split("_")[1], x => x.status_key },
+            { nameof(StatusEntity.status_text).Split("_")[1], x => x.status_text },
+            { nameof(StatusEntity.status_color).Split("_")[1], x => x.status_color },
+            { nameof(StatusEntity.status_background).Split("_")[1], x => x.status_background },
+            { nameof(StatusEntity.created_at).Split("_")[0], x => x.created_at }
         };
         private void SetupPagination(PaginatedModel model)
         {
-            Skip = (model.Page - 1) * model.Rows;
+            Skip = (model.First - 1) * model.Rows;
             Limit = model.Rows;
         }
 
         private void SetupOrdering(PaginatedModel model)
         {
-            if (sortExpressions.TryGetValue(model.SortBy, out var expression))
+            if (sortExpressions.TryGetValue(model.Sort_field, out var expression))
             {
-                if (model.SortOrder == SortOrdering.Ascending)
+                if (model.Sort_order == SortOrdering.Ascending)
                 {
                     OrderBy = expression;
                 }
@@ -72,7 +74,6 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.status_key.ToUpper().Contains(search.ToUpper()) ||
                 x.status_text.ToUpper().Contains(search.ToUpper()));
             }
 

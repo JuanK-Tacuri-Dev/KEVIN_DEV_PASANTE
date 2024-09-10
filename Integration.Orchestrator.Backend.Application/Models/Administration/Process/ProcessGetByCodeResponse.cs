@@ -3,8 +3,7 @@
     public class ProcessGetByCodeResponse : ModelResponse<ProcessGetByCode>
     {
     }
-    public class ProcessGetByCode : ProcessRequest
+    public class ProcessGetByCode : ProcessResponse
     {
-        public Guid Id { get; set; }
     }
 }

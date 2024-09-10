@@ -33,15 +33,15 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         };
         private void SetupPagination(PaginatedModel model)
         {
-            Skip = (model.Page - 1) * model.Rows;
+            Skip = (model.First - 1) * model.Rows;
             Limit = model.Rows;
         }
 
         private void SetupOrdering(PaginatedModel model)
         {
-            if (sortExpressions.TryGetValue(model.SortBy, out var expression))
+            if (sortExpressions.TryGetValue(model.Sort_field, out var expression))
             {
-                if (model.SortOrder == SortOrdering.Ascending)
+                if (model.Sort_order == SortOrdering.Ascending)
                 {
                     OrderBy = expression;
                 }

@@ -2,9 +2,11 @@
 {
     public class ProcessRequest
     {
-        public string ProcessCode { get; set; }
-        public string Type { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public Guid TypeId { get; set; }
         public Guid ConnectionId { get; set; }
+        public Guid StatusId { get; set; }
         public List<EntitiesRequest> Entities { get; set; }
     }
 
@@ -17,13 +19,14 @@
 
     public class PropertiesRequest
     {
-        public Guid KeyId { get; set; }
+        public Guid Id { get; set; }
+        public Guid InternalStatusId { get; set; }
     }
 
     public class FilterRequest
     {
-        public Guid KeyId { get; set; }
+        public Guid PropertyId { get; set; }
         public Guid OperatorId { get; set; }
-        public Guid ValueId { get; set; }
+        public string Value { get; set; }
     }
 }

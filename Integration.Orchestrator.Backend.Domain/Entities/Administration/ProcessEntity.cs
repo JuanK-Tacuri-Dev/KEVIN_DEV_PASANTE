@@ -4,8 +4,11 @@
     public class ProcessEntity : Entity<Guid>
     {
         public string process_code { get; set; }
-        public string process_type { get; set; }
+        public string process_name { get; set; }
+        public string process_description { get; set; }
+        public Guid process_type_id { get; set; }
         public Guid connection_id { get; set; }
+        public Guid status_id { get; set; }
         public List<ObjectEntity> entities { get; set; }
         public DateTime created_at { get; private set; } = DateTime.UtcNow;
         public DateTime updated_at { get; private set; } = DateTime.UtcNow;
@@ -20,13 +23,14 @@
 
     public class PropertiesEntity
     {
-        public Guid key_id { get; set; }
+        public Guid property_id { get; set; }
+        public Guid internal_status_id { get; set; }
     }
 
     public class FiltersEntity
     {
-        public Guid key_id { get; set; }
+        public Guid property_id { get; set; }
         public Guid operator_id { get; set; }
-        public Guid value_id { get; set; }
+        public string value { get; set; }
     }
 }
