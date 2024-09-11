@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration.Orchestrator.Ba
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Integration.Orchestrator.Backend.Domain.Tests", "Integration.Orchestrator.Backend.Domain.Tests\Integration.Orchestrator.Backend.Domain.Tests.csproj", "{8531460F-0A48-495C-9008-3B6302117682}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Integration.Orchestrator.Backend.Integration.Tests", "Integration.Orchestrator.Backend.Integration.Tests\Integration.Orchestrator.Backend.Integration.Tests.csproj", "{384878E5-83A9-4028-B062-1BFC3B987E58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,12 +43,17 @@ Global
 		{8531460F-0A48-495C-9008-3B6302117682}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8531460F-0A48-495C-9008-3B6302117682}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8531460F-0A48-495C-9008-3B6302117682}.Release|Any CPU.Build.0 = Release|Any CPU
+		{384878E5-83A9-4028-B062-1BFC3B987E58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{384878E5-83A9-4028-B062-1BFC3B987E58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{384878E5-83A9-4028-B062-1BFC3B987E58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{384878E5-83A9-4028-B062-1BFC3B987E58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8531460F-0A48-495C-9008-3B6302117682} = {D7A5AD37-6E6A-44D7-9CD9-9887E585FC4C}
+		{384878E5-83A9-4028-B062-1BFC3B987E58} = {D7A5AD37-6E6A-44D7-9CD9-9887E585FC4C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8E12939D-AA32-4E31-B010-16AB1165E1AE}

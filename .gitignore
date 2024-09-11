@@ -49,6 +49,8 @@ Integration.Orchestrator.Backend.Infrastructure/bin/
 /.vs/Integration.Orchestrator.Backend/v17/.suo
 /.vs/Integration.Orchestrator.Backend/v17/.suo
 /.vs/Integration.Orchestrator.Backend/v17/TestStore/0
+/Integration.Orchestrator.Backend.Integration.Tests/obj
+/Integration.Orchestrator.Backend.Integration.Tests/bin/Debug/net8.0
 .idea/
 /Integration.Orchestrator.Backend.Integration.Tests/bin/Debug/net8.0
 /Integration.Orchestrator.Backend.Integration.Tests/obj/Debug/net8.0
