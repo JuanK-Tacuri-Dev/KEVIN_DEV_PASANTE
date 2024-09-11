@@ -700,6 +700,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No puede exceder {0} caracteres.
+        /// </summary>
+        public static string Application_Validator_MaxLength {
+            get {
+                return ResourceManager.GetString("Application_Validator_MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to is required.
         /// </summary>
         public static string Application_Validator_Required {
