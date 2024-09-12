@@ -30,9 +30,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
             var entity = new AdapterEntity
             {
                 adapter_code = "69503d8f-fa70-2196-f0a0-e3a85fa10aec",
-                name = "mongo",
-                adapter_type_id = Guid.NewGuid(),
-                version = "dd",
+                adapter_name = "mongo",
+                adapter_version= "1",
+                type_id = Guid.NewGuid(),
                 status_id = Guid.NewGuid()
 
             };
@@ -49,9 +49,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
             var entity = new AdapterEntity
             {
                 adapter_code = "69503d8f-fa70-2196-f0a0-e3a85fa10aec",
-                name = "mongo",
-                adapter_type_id = Guid.NewGuid(),
-                version = "8.0",
+                adapter_name = "mongo",
+                adapter_version = "1",
+                type_id = Guid.NewGuid(),
                 status_id = Guid.NewGuid()
 
             };
@@ -63,10 +63,10 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         {
             var entity = new AdapterEntity
             {
-                adapter_code = "ddd",
-                name = "mongo",
-                adapter_type_id = Guid.NewGuid(),
-                version = "8.0",
+                adapter_code = "69503d8f-fa70-2196-f0a0-e3a85fa10aec",
+                adapter_name = "mongo",
+                adapter_version = "1",
+                type_id = Guid.NewGuid(),
                 status_id = Guid.NewGuid()
 
             };
@@ -79,11 +79,10 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
             var id = Guid.NewGuid();
             var adapter = new AdapterEntity
             {
-                id = id,
-                adapter_code = "ddd",
-                name = "mongo",
-                adapter_type_id = Guid.NewGuid(),
-                version = "8.0",
+                adapter_code = id,
+                adapter_name = "mongo",
+                adapter_version = "1",
+                type_id = Guid.NewGuid(),
                 status_id = Guid.NewGuid()
 
             };
