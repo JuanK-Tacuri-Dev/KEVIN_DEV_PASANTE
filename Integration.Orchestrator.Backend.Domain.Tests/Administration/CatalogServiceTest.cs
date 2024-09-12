@@ -22,10 +22,11 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         {
             var entity = new CatalogEntity
             {
-                name = "Catlog",
-                value = "value",
+                catalog_code="codigo",
+                catalog_name = "Catlog",
+                catalog_value = "value",
                 father_id = Guid.NewGuid(),
-                detail = "details of catalog",
+                catalog_detail = "details of catalog",
                 status_id = Guid.NewGuid()
             };
             await _service.DeleteAsync(entity);
@@ -36,18 +37,19 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         {
             var paginatedModel = new PaginatedModel()
             {
-                Page = 1,
+                First = 1,
                 Rows = 1,
                 Search = "",
-                SortBy = "",
-                SortOrder = Commons.SortOrdering.Ascending
+                Sort_field = "",
+                Sort_order = Commons.SortOrdering.Ascending
             };
             var catalog = new CatalogEntity
             {
-                name = "Catlog",
-                value = "value",
+                catalog_code = "codigo",
+                catalog_name = "Catlog",
+                catalog_value = "value",
                 father_id = Guid.NewGuid(),
-                detail = "details of catalog",
+                catalog_detail = "details of catalog",
                 status_id = Guid.NewGuid()
             };
             var catalogs= new List<CatalogEntity> { catalog };
@@ -65,10 +67,11 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
             var father_id= Guid.NewGuid();
             var catalog = new CatalogEntity
             {
-                name = "Catlog",
-                value = "value",
+                catalog_code = "codigo",
+                catalog_name = "Catlog",
+                catalog_value = "value",
                 father_id = Guid.NewGuid(),
-                detail = "details of catalog",
+                catalog_detail = "details of catalog",
                 status_id = Guid.NewGuid()
             };
             var catalogs = new List<CatalogEntity> { catalog };
@@ -90,10 +93,11 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
             var id = Guid.NewGuid();
             var catalog = new CatalogEntity
             {
-                name = "Catlog",
-                value = "value",
+                catalog_code = "codigo",
+                catalog_name = "Catlog",
+                catalog_value = "value",
                 father_id = Guid.NewGuid(),
-                detail = "details of catalog",
+                catalog_detail = "details of catalog",
                 status_id = Guid.NewGuid()
             };
             var expression = CatalogSpecification.GetByIdExpression(id);
@@ -111,11 +115,11 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         {
             var paginatedModel = new PaginatedModel()
             {
-                Page = 1,
+                First = 1,
                 Rows = 1,
                 Search = "",
-                SortBy = "",
-                SortOrder = Commons.SortOrdering.Ascending
+                Sort_field = "",
+                Sort_order = Commons.SortOrdering.Ascending
             };
             var totalRows = 10L;
             var spec = new CatalogSpecification(paginatedModel);
@@ -129,10 +133,11 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         {
             var catalog = new CatalogEntity
             {
-                name = "Catlog",
-                value = "value",
+                catalog_code = "codigo",
+                catalog_name = "Catlog",
+                catalog_value = "value",
                 father_id = Guid.NewGuid(),
-                detail = "details of catalog",
+                catalog_detail = "details of catalog",
                 status_id = Guid.NewGuid()
             };
             await _service.InsertAsync(catalog);
@@ -144,10 +149,11 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         {
             var catalog = new CatalogEntity
             {
-                name = "Catlog",
-                value = "value",
+                catalog_code = "codigo",
+                catalog_name = "Catlog",
+                catalog_value = "value",
                 father_id = Guid.NewGuid(),
-                detail = "details of catalog",
+                catalog_detail = "details of catalog",
                 status_id = Guid.NewGuid()
             };
             await _service.UpdateAsync(catalog);

@@ -79,7 +79,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
             var id = Guid.NewGuid();
             var adapter = new AdapterEntity
             {
-                adapter_code = id,
+                adapter_code = "69503d8f-fa70-2196-f0a0-e3a85fa10aec",
                 adapter_name = "mongo",
                 adapter_version = "1",
                 type_id = Guid.NewGuid(),

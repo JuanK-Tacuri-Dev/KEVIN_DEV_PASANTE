@@ -119,11 +119,11 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         {
             var paginatedModel = new PaginatedModel()
             {
-                Page = 1,
+                First = 1,
                 Rows = 1,
                 Search = "",
-                SortBy = "",
-                SortOrder = Commons.SortOrdering.Ascending
+                Sort_field = "",
+                Sort_order = Commons.SortOrdering.Ascending
             };
             var connection = new ConnectionEntity()
             {
@@ -149,11 +149,11 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         {
             var paginatedModel = new PaginatedModel()
             {
-                Page = 1,
+                First = 1,
                 Rows = 1,
                 Search = "",
-                SortBy = "",
-                SortOrder = Commons.SortOrdering.Ascending
+                Sort_field = "",
+                Sort_order = Commons.SortOrdering.Ascending
             };
             var totalRows = 10L;
             var spec = new ConnectionSpecification(paginatedModel);
