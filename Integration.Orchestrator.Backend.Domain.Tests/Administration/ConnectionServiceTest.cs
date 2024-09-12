@@ -22,11 +22,12 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         {
             var connection = new ConnectionEntity()
             {
-                code = "code",
+                connection_code = "code",
+                connection_name= "name",
                 server_id = Guid.NewGuid(),
                 adapter_id = Guid.NewGuid(),
                 repository_id = Guid.NewGuid(),
-                description = "description",
+                connection_description = "description",
                 status_id = Guid.NewGuid()
             };
             await _service.InsertAsync(connection);
@@ -37,11 +38,12 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         {
             var connection = new ConnectionEntity()
             {
-                code = "code",
+                connection_code = "code",
+                connection_name = "name",
                 server_id = Guid.NewGuid(),
                 adapter_id = Guid.NewGuid(),
                 repository_id = Guid.NewGuid(),
-                description = "description",
+                connection_description = "description",
                 status_id = Guid.NewGuid()
             };
             await _service.UpdateAsync(connection);
@@ -52,11 +54,12 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         {
             var connection = new ConnectionEntity()
             {
-                code = "code",
+                connection_code = "code",
+                connection_name = "name",
                 server_id = Guid.NewGuid(),
                 adapter_id = Guid.NewGuid(),
                 repository_id = Guid.NewGuid(),
-                description = "description",
+                connection_description = "description",
                 status_id = Guid.NewGuid()
             };
             await _service.DeleteAsync(connection);
@@ -68,12 +71,13 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
             var id= Guid.NewGuid();
             var connection = new ConnectionEntity()
             {
-                code = "code",
+                connection_code = "code",
+                connection_name = "name",
                 server_id = id,
                 adapter_id = id,
                 repository_id = id,
-                description = "description",
-                status_id = id,
+                connection_description = "description",
+                status_id = id
             };
             var expression= ConnectionSpecification.GetByIdExpression(id);
             _mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<ConnectionEntity, bool>>>()))
@@ -91,12 +95,13 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
             var code = "code";
             var connection = new ConnectionEntity()
             {
-                code = "code",
+                connection_code = "code",
+                connection_name = "name",
                 server_id = Guid.NewGuid(),
                 adapter_id = Guid.NewGuid(),
                 repository_id = Guid.NewGuid(),
-                description = "description",
-                status_id = Guid.NewGuid(),
+                connection_description = "description",
+                status_id = Guid.NewGuid()
             };
 
             var expression = ConnectionSpecification.GetByCodeExpression(code);
@@ -122,12 +127,13 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
             };
             var connection = new ConnectionEntity()
             {
-                code = "code",
+                connection_code = "code",
+                connection_name = "name",
                 server_id = Guid.NewGuid(),
                 adapter_id = Guid.NewGuid(),
                 repository_id = Guid.NewGuid(),
-                description = "description",
-                status_id = Guid.NewGuid(),
+                connection_description = "description",
+                status_id = Guid.NewGuid()
             };
             var connections= new List<ConnectionEntity> { connection };
             var spec = new ConnectionSpecification(paginatedModel);
