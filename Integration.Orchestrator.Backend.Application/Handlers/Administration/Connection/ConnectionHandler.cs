@@ -44,6 +44,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             ServerId = connectionEntity.server_id,
                             AdapterId = connectionEntity.adapter_id,
                             RepositoryId = connectionEntity.repository_id,
+                            Name = connectionEntity.connection_name,
                             Description = connectionEntity.connection_description,
                             StatusId = connectionEntity.status_id
                         }
@@ -88,6 +89,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                                 ServerId = connectionEntity.server_id,
                                 AdapterId = connectionEntity.adapter_id,
                                 RepositoryId = connectionEntity.repository_id,
+                                Name = connectionEntity.connection_name,
                                 Description = connectionEntity.connection_description,
                                 StatusId = connectionEntity.status_id
                             }
@@ -166,6 +168,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             ServerId = connectionById.server_id,
                             AdapterId = connectionById.adapter_id,
                             RepositoryId = connectionById.repository_id,
+                            Name = connectionById.connection_name,
                             Description = connectionById.connection_description,
                             StatusId = connectionById.status_id
                         }
@@ -207,6 +210,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             ServerId = connectionByCode.server_id,
                             AdapterId = connectionByCode.adapter_id,
                             RepositoryId = connectionByCode.repository_id,
+                            Name = connectionByCode.connection_name,
                             Description = connectionByCode.connection_description,
                             StatusId = connectionByCode.status_id
                         }
@@ -255,6 +259,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                                 ServerId = c.server_id,
                                 AdapterId = c.adapter_id,
                                 RepositoryId = c.repository_id,
+                                Name = c.connection_name,
                                 Description = c.connection_description,
                                 StatusId = c.status_id
                             }).ToList()
@@ -282,6 +287,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                 server_id = request.ServerId,
                 adapter_id = request.AdapterId,
                 repository_id = request.RepositoryId,
+                connection_name = request.Name,
                 connection_description = request.Description,
                 status_id = request.StatusId
             };
