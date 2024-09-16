@@ -700,6 +700,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No debe exceder los {0} caracteres.
+        /// </summary>
+        public static string Application_Validator_MaxLength {
+            get {
+                return ResourceManager.GetString("Application_Validator_MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to is required.
         /// </summary>
         public static string Application_Validator_Required {
@@ -808,7 +817,7 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Catalog name for this Father Code already exists.
+        ///   Looks up a localized string similar to El nombre del catálogo para este código padre ya existe.
         /// </summary>
         public static string Domain_CatalogFatherCodeExists {
             get {

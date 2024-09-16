@@ -37,13 +37,13 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _processRepository.GetByIdAsync(specification);
         }
 
-        public async Task<CatalogEntity> GetByCodeAsync(string code)
+        public async Task<CatalogEntity> GetByCodeAsync(int code)
         {
             var specification = CatalogSpecification.GetByCodeExpression(code);
             return await _processRepository.GetByCodeAsync(specification);
         }
 
-        public async Task<IEnumerable<CatalogEntity>> GetByFatherAsync(string fatherCode)
+        public async Task<IEnumerable<CatalogEntity>> GetByFatherAsync(int fatherCode)
         {
             var specification = CatalogSpecification.GetByFatherExpression(fatherCode);
             return await _processRepository.GetByFatherAsync(specification);
@@ -74,7 +74,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             }
         }
         
-        public async Task<IEnumerable<CatalogEntity>> GetByNameAndFatherCodeAsync(string name, string fatherCode)
+        public async Task<IEnumerable<CatalogEntity>> GetByNameAndFatherCodeAsync(string name, int? fatherCode)
         {
             var specification = CatalogSpecification.GetByNameAndFatherCodeExpression(name, fatherCode);
             return await _processRepository.GetByNameAndFatherCodeAsync(specification);

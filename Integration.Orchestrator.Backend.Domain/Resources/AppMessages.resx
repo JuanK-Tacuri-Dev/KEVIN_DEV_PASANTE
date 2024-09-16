@@ -604,6 +604,9 @@
     <value>Property name for this entity already exists</value>
   </data>
   <data name="Domain_CatalogFatherCodeExists" xml:space="preserve">
-    <value>Catalog name for this Father Code already exists</value>
+    <value>El nombre del catálogo para este código padre ya existe</value>
+  </data>
+  <data name="Application_Validator_MaxLength" xml:space="preserve">
+    <value>No debe exceder los {0} caracteres</value>
   </data>
 </root>

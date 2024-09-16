@@ -8,8 +8,8 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Administration.Interf
         Task UpdateAsync(T catalog);
         Task DeleteAsync(T catalog);
         Task<T> GetByIdAsync(Guid id);
-        Task<CatalogEntity> GetByCodeAsync(string code);
-        Task<IEnumerable<CatalogEntity>> GetByFatherAsync(string fatherCode);
+        Task<CatalogEntity> GetByCodeAsync(int code);
+        Task<IEnumerable<CatalogEntity>> GetByFatherAsync(int fatherCode);
         Task<IEnumerable<T>> GetAllPaginatedAsync(PaginatedModel paginatedModel);
         Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel);
     }
