@@ -9,28 +9,19 @@ using Integration.Orchestrator.Backend.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-// Configure appsettings.json location
-builder.Configuration
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-
-
-var allowedOrigins = config.GetSection("Cors:AllowedOrigins").Get<string[]>();
-
-// Configuracion de rutas con permisos CORS
-builder.Services.AddCors(options =>
+switch (builder.Environment.EnvironmentName)
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-        policy =>
-        {
-            policy.WithOrigins(allowedOrigins)
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
-});
-
+    case "Test":
+        builder.Configuration.AddJsonFile("appsettings.TestIntegrations.json", optional: false, reloadOnChange: true);
+        break;
+    case "Development":
+        builder.Configuration.AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true);
+        break;
+    default:
+        builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+        break;
+};
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -61,11 +52,9 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 });
 
 var app = builder.Build();
-
-// Configuracion de CORS
-app.UseCors(MyAllowSpecificOrigins);
-
 app.AddAppConfigurationsInAssembly(builder.Configuration);
 app.UseRouting();
 app.MapControllers();
 app.Run();
+
+public partial class Program { }

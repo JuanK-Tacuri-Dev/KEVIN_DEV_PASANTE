@@ -28,6 +28,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             = new Dictionary<string, Expression<Func<ConnectionEntity, object>>>
         {
             { nameof(ConnectionEntity.connection_code).Split("_")[1], x => x.connection_code },
+            { nameof(ConnectionEntity.connection_name).Split("_")[1], x => x.connection_name },
             { nameof(ConnectionEntity.connection_description).Split("_")[1], x => x.connection_description },
             { nameof(ConnectionEntity.created_at).Split("_")[0], x => x.created_at }
         };
@@ -72,7 +73,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>
-                x.connection_description.ToUpper().Contains(search.ToUpper()));
+                x.connection_name.ToUpper().Contains(search.ToUpper()));
             }
 
             return criteria;
