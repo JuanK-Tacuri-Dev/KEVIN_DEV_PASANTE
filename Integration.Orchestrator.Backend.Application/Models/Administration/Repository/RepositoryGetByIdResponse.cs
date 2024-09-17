@@ -3,9 +3,7 @@
     public class RepositoryGetByIdResponse : ModelResponse<RepositoryGetById>
     {
     }
-    public class RepositoryGetById : RepositoryRequest
+    public class RepositoryGetById : RepositoryResponse
     {
-        public Guid Id { get; set; }
-        public string Code { get; set; }
     }
 }

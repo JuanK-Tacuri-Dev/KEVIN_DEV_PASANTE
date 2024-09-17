@@ -17,9 +17,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
             RuleFor(request => request.Repository.RepositoryRequest.DatabaseName)
             .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
 
-            RuleFor(request => request.Repository.RepositoryRequest.AuthTypeId)
-            .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
-
             RuleFor(request => request.Repository.RepositoryRequest.StatusId)
                 .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
 

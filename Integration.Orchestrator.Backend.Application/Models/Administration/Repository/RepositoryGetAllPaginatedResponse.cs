@@ -9,9 +9,7 @@
         public IEnumerable<RepositoryGetAllPaginated> Rows { get; set; }
     }
 
-    public class RepositoryGetAllPaginated : RepositoryRequest
+    public class RepositoryGetAllPaginated : RepositoryResponse
     {
-        public Guid Id { get; set; }
-        public string Code { get; set; }
     }
 }

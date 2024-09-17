@@ -45,7 +45,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                             UserName = repositoryEntity.repository_user,
                             Password = repositoryEntity.repository_password,
                             DatabaseName = repositoryEntity.repository_databaseName,
-                            AuthTypeId = repositoryEntity.type_id,
+                            AuthTypeId = repositoryEntity.auth_type_id,
                             StatusId = repositoryEntity.status_id
                         }
                     });
@@ -90,7 +90,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                             UserName = repositoryEntity.repository_user,
                             Password = repositoryEntity.repository_password,
                             DatabaseName = repositoryEntity.repository_databaseName,
-                            AuthTypeId = repositoryEntity.type_id,
+                            AuthTypeId = repositoryEntity.auth_type_id,
                             StatusId = repositoryEntity.status_id
                         }
                     });
@@ -170,7 +170,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                             UserName = repositoryById.repository_user,
                             Password = repositoryById.repository_password,
                             DatabaseName = repositoryById.repository_databaseName,
-                            AuthTypeId = repositoryById.type_id,
+                            AuthTypeId = repositoryById.auth_type_id,
                             StatusId = repositoryById.status_id
                         }
                     });
@@ -212,7 +212,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                             UserName = repositoryByCode.repository_user,
                             Password = repositoryByCode.repository_password,
                             DatabaseName = repositoryByCode.repository_databaseName,
-                            AuthTypeId = repositoryByCode.type_id,
+                            AuthTypeId = repositoryByCode.auth_type_id,
                             StatusId = repositoryByCode.status_id
                         }
                     });
@@ -261,7 +261,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                                 UserName = c.repository_user,
                                 Password = c.repository_password,
                                 DatabaseName = c.repository_databaseName,
-                                AuthTypeId = c.type_id,
+                                AuthTypeId = c.auth_type_id,
                                 StatusId = c.status_id
                             }).ToList()
                         }
@@ -289,7 +289,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                 repository_user = request.UserName,
                 repository_password = request.Password,
                 repository_databaseName = request.DatabaseName,
-                type_id = request.AuthTypeId,
+                auth_type_id = request.AuthTypeId,
                 status_id = request.StatusId
             };
             return repositoryEntity;
