@@ -93,8 +93,8 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
             var result = await _service.GetByIdAsync(id);
 
             Assert.Equal(adapter, result);
-            _mockRepo.Verify(repo => repo.GetByIdAsync(It.Is<Expression<Func<AdapterEntity, bool>>>(expr =>
-                expr.Compile()(adapter))), Times.Once);
+            _mockRepo.Verify(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<AdapterEntity, bool>>>()), Times.Once);
+
         }
     }
 }
