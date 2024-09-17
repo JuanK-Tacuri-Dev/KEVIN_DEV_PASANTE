@@ -43,9 +43,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Code = catalogEntity.catalog_code,
                             Name = catalogEntity.catalog_name,
                             Value = catalogEntity.catalog_value,
-                            FatherId = catalogEntity.father_id,
-                            IsFather = catalogEntity.is_fhater,
+                            FatherCode = catalogEntity.father_code,
                             Detail = catalogEntity.catalog_detail,
+                            IsFather = catalogEntity.is_father,
                             StatusId = catalogEntity.status_id
                         }
                     });
@@ -88,9 +88,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                                 Code = catalogById.catalog_code,
                                 Name = catalogEntity.catalog_name,
                                 Value = catalogEntity.catalog_value,
-                                FatherId = catalogEntity.father_id,
-                                IsFather = catalogEntity.is_fhater,
+                                FatherCode = catalogEntity.father_code,
                                 Detail = catalogEntity.catalog_detail,
+                                IsFather = catalogEntity.is_father,
                                 StatusId = catalogEntity.status_id
                             }
                         });
@@ -167,9 +167,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Code = catalogById.catalog_code,
                             Name = catalogById.catalog_name,
                             Value = catalogById.catalog_value,
-                            FatherId = catalogById.father_id,
-                            IsFather = catalogById.is_fhater,
+                            FatherCode = catalogById.father_code,
                             Detail = catalogById.catalog_detail,
+                            IsFather = catalogById.is_father,
                             StatusId = catalogById.status_id
                         }
                     });
@@ -188,7 +188,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         {
             try
             {
-                var catalogByType = await _catalogService.GetByFatherAsync(request.Catalog.FatherId);
+                var catalogByType = await _catalogService.GetByFatherAsync(request.Catalog.FatherCode);
                 if (catalogByType == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
@@ -209,9 +209,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Code = p.catalog_code,
                             Name = p.catalog_name,
                             Value = p.catalog_value,
-                            FatherId = p.father_id,
-                            IsFather = p.is_fhater,
+                            FatherCode = p.father_code,
                             Detail = p.catalog_detail,
+                            IsFather = p.is_father,
                             StatusId = p.status_id
                         }).ToList()
                     });
@@ -251,9 +251,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Code = catalogByCode.catalog_code,
                             Name = catalogByCode.catalog_name,
                             Value = catalogByCode.catalog_value,
-                            FatherId = catalogByCode.father_id,
-                            IsFather = catalogByCode.is_fhater,
+                            FatherCode = catalogByCode.father_code,
                             Detail = catalogByCode.catalog_detail,
+                            IsFather = catalogByCode.is_father,
                             StatusId = catalogByCode.status_id
                         }
                     });
@@ -300,9 +300,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                                 Code = p.catalog_code,
                                 Name = p.catalog_name,
                                 Value = p.catalog_value,
-                                FatherId = p.father_id,
-                                IsFather = p.is_fhater,
+                                FatherCode = p.father_code,
                                 Detail = p.catalog_detail,
+                                IsFather = p.is_father,
                                 StatusId = p.status_id
                             }).ToList()
                         }
@@ -323,14 +323,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
             var catalogEntity = new CatalogEntity()
             {
                 id = id,
-                catalog_code = create == true
-                    ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Catalog)
-                    : null,
+                catalog_code = request.Code,
                 catalog_name = request.Name,
                 catalog_value = request.Value,
-                father_id = request.FatherId,
-                is_fhater = request.IsFather,
                 catalog_detail = request.Detail,
+                father_code = request.FatherCode,
                 status_id = request.StatusId
             };
             return catalogEntity;

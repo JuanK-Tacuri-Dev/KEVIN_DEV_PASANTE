@@ -11,9 +11,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
             RuleFor(request => request.Server.ServerRequest.Name)
             .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
 
-            RuleFor(request => request.Server.ServerRequest.TypeServerId)
-            .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
-
             RuleFor(request => request.Server.ServerRequest.Url)
             .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
         }

@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
+using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Administration
@@ -15,11 +16,13 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         public async Task InsertAsync(CatalogEntity process)
         {
+            await ValidateBussinesLogic(process, true);
             await _processRepository.InsertAsync(process);
         }
 
         public async Task UpdateAsync(CatalogEntity process)
         {
+            await ValidateBussinesLogic(process);
             await _processRepository.UpdateAsync(process);
         }
 
@@ -34,15 +37,15 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _processRepository.GetByIdAsync(specification);
         }
 
-        public async Task<CatalogEntity> GetByCodeAsync(string code)
+        public async Task<CatalogEntity> GetByCodeAsync(int code)
         {
             var specification = CatalogSpecification.GetByCodeExpression(code);
             return await _processRepository.GetByCodeAsync(specification);
         }
 
-        public async Task<IEnumerable<CatalogEntity>> GetByFatherAsync(Guid fatherId)
+        public async Task<IEnumerable<CatalogEntity>> GetByFatherAsync(int fatherCode)
         {
-            var specification = CatalogSpecification.GetByFatherExpression(fatherId);
+            var specification = CatalogSpecification.GetByFatherExpression(fatherCode);
             return await _processRepository.GetByFatherAsync(specification);
         }
 
@@ -57,5 +60,24 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             var spec = new CatalogSpecification(paginatedModel);
             return await _processRepository.GetTotalRows(spec);
         }
+        
+        private async Task ValidateBussinesLogic(CatalogEntity entity, bool create = false)
+        {
+            var catalogList = await GetByNameAndFatherCodeAsync(entity.catalog_name, entity.father_code);
+
+            switch (create)
+            {
+                case true when catalogList.ToList().Count > 0:
+                    throw new ArgumentException(AppMessages.Domain_CatalogFatherCodeExists);
+                case false when catalogList.ToList().Exists(catalogEntity => catalogEntity.id != entity.id):
+                    throw new ArgumentException(AppMessages.Domain_CatalogFatherCodeExists);
+            }
+        }
+        
+        public async Task<IEnumerable<CatalogEntity>> GetByNameAndFatherCodeAsync(string name, int? fatherCode)
+        {
+            var specification = CatalogSpecification.GetByNameAndFatherCodeExpression(name, fatherCode);
+            return await _processRepository.GetByNameAndFatherCodeAsync(specification);
+        }        
     }
 }

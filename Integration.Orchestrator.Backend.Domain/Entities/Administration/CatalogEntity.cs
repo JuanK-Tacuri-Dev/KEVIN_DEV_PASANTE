@@ -3,12 +3,21 @@
     [Serializable]
     public class CatalogEntity : Entity<Guid>
     {
-        public string catalog_code { get; set; }
+        public int catalog_code { get; set; }
         public string catalog_name { get; set; }
         public string catalog_value { get; set; }
         public string catalog_detail { get; set; }
-        public Guid? father_id { get; set; }
-        public bool is_fhater { get; set; }
+        private int? _father_code;
+        public int? father_code
+        {
+            get => _father_code;
+            set
+            {
+                _father_code = value;
+                is_father = _father_code == null;
+            }
+        }
+        public bool is_father { get; set; } = false;
         public Guid status_id { get; set; }
         public DateTime created_at { get; private set; } = DateTime.UtcNow;
         public DateTime updated_at { get; private set; } = DateTime.UtcNow;

@@ -2,11 +2,11 @@
 {
     public class CatalogRequest
     {
+        public int Code { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
-        public Guid? FatherId { get; set; }
-        public bool IsFather { get; set; } = false;
         public string Detail { get; set; }
+        public int? FatherCode { get; set; }
         public Guid StatusId { get; set; }
     }
 }

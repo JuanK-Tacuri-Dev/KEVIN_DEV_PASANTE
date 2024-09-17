@@ -8,20 +8,18 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
     {
         public UpdateRepositoryCommandRequestValidator()
         {
-            RuleFor(request => request.Repository.RepositoryRequest.Port)
-            .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
 
-            //RuleFor(request => request.Repository.RepositoryRequest.User)
-            //.NotEmpty().WithMessage(AppMessages.Repository_User_Required);
+            RuleFor(request => request.Repository.RepositoryRequest.UserName)
+            .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
 
             RuleFor(request => request.Repository.RepositoryRequest.Password)
             .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
 
-            //RuleFor(request => request.Repository.RepositoryRequest.RepositoryId)
-            //.NotEmpty().WithMessage(AppMessages.Repository_ServerId_Required);
+            RuleFor(request => request.Repository.RepositoryRequest.DatabaseName)
+            .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
 
-            //RuleFor(request => request.Repository.RepositoryRequest.AdapterId)
-            //.NotEmpty().WithMessage(AppMessages.Repository_AdapterId_Required);
+            RuleFor(request => request.Repository.RepositoryRequest.StatusId)
+                .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
 
 
         }

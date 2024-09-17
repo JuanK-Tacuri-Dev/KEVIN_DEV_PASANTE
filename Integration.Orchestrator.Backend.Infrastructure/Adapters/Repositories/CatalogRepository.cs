@@ -1,8 +1,8 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+﻿using System.Linq.Expressions;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Driver;
-using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
@@ -22,7 +22,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             var update = Builders<CatalogEntity>.Update
                 .Set(m => m.catalog_name, entity.catalog_name)
                 .Set(m => m.catalog_value, entity.catalog_value)
-                .Set(m => m.father_id, entity.father_id)
                 .Set(m => m.catalog_detail, entity.catalog_detail)
                 .Set(m => m.status_id, entity.status_id)
                 .Set(m => m.updated_at, entity.updated_at);
@@ -37,29 +36,17 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
         public async Task<CatalogEntity> GetByIdAsync(Expression<Func<CatalogEntity, bool>> specification)
         {
-            var filter = Builders<CatalogEntity>.Filter.Where(specification);
-            var catalogEntity = await _collection
-                .Find(filter)
-                .FirstOrDefaultAsync();
-            return catalogEntity;
+            return await FindByFilter(specification).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<CatalogEntity>> GetByFatherAsync(Expression<Func<CatalogEntity, bool>> specification)
         {
-            var filter = Builders<CatalogEntity>.Filter.Where(specification);
-            var catalogEntity = await _collection
-                .Find(filter)
-                .ToListAsync();
-            return catalogEntity;
+            return await FindByFilter(specification).ToListAsync();
         }
 
         public async Task<CatalogEntity> GetByCodeAsync(Expression<Func<CatalogEntity, bool>> specification)
         {
-            var filter = Builders<CatalogEntity>.Filter.Where(specification);
-            var catalogEntity = await _collection
-                .Find(filter)
-                .FirstOrDefaultAsync();
-            return catalogEntity;
+            return await FindByFilter(specification).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<CatalogEntity>> GetAllAsync(ISpecification<CatalogEntity> specification)
@@ -88,5 +75,19 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .CountDocumentsAsync();
         }
 
+        public async Task<IEnumerable<CatalogEntity>> GetByNameAndFatherCodeAsync(Expression<Func<CatalogEntity, bool>> specification)
+        {
+            return await FindByFilter(specification).ToListAsync();
+        }
+        
+        private IFindFluent<CatalogEntity,CatalogEntity> FindByFilter(Expression<Func<CatalogEntity, bool>> specification)
+        {
+            return _collection.Find(BuildFilter(specification));
+        }
+
+        private static FilterDefinition<CatalogEntity> BuildFilter(Expression<Func<CatalogEntity, bool>> specification)
+        {
+            return Builders<CatalogEntity>.Filter.Where(specification);
+        }
     }
 }

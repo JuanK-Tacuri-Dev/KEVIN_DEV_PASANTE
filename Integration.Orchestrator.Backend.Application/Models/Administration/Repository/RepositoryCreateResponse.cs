@@ -3,9 +3,7 @@
     public class RepositoryCreateResponse : ModelResponse<RepositoryCreate>
     {
     }
-    public class RepositoryCreate : RepositoryRequest
+    public class RepositoryCreate : RepositoryResponse
     {
-        public Guid Id { get; set; }
-        public string Code { get; set; }
     }
 }

@@ -4,10 +4,11 @@
     {
         public Guid Id { get; set; }
         public string Code { get; set; }
-        public string Port { get; set; }
-        public string User { get; set; }
+        public int? Port { get; set; }
+        public string UserName { get; set; }
         public string Password { get; set; }
-        public Guid ServerId { get; set; }
-        public Guid AdapterId { get; set; }
+        public string DatabaseName { get; set; }
+        public Guid? AuthTypeId { get; set; }
+        public Guid StatusId { get; set; }
     }
 }

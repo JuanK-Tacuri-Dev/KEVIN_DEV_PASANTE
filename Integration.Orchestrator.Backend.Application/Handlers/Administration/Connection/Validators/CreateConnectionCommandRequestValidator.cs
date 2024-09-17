@@ -18,9 +18,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
             RuleFor(request => request.Connection.ConnectionRequest.RepositoryId)
             .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
 
-            RuleFor(request => request.Connection.ConnectionRequest.Description)
-            .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
-
             RuleFor(request => request.Connection.ConnectionRequest.Name)
             .NotEmpty().WithMessage(AppMessages.Application_Validator_Required)
             .MaximumLength(100).WithMessage(string.Format(AppMessages.Application_Validator_MaxLength, 100));
