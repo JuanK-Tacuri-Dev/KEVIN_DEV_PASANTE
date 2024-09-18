@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
+namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
 {
     public class AdapterServiceTests
     {
@@ -31,7 +31,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
             {
                 adapter_code = "69503d8f-fa70-2196-f0a0-e3a85fa10aec",
                 adapter_name = "mongo",
-                adapter_version= "1",
+                adapter_version = "1",
                 type_id = Guid.NewGuid(),
                 status_id = Guid.NewGuid()
 

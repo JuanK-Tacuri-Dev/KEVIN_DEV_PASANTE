@@ -316,7 +316,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
             {
                 id = id,
                 server_code = create == true
-                    ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Server)
+                    ? await _codeConfiguratorService.GenerateCodeAsync(Prefix.Server)
                     : null,
                 server_name = request.Name,
                 type_id = request.TypeServerId,

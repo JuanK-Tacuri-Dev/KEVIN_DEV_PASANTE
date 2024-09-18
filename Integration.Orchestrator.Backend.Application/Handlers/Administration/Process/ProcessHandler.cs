@@ -417,7 +417,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 id = id,
                 process_code = create == true
-                    ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Process)
+                    ? await _codeConfiguratorService.GenerateCodeAsync(Prefix.Process)
                     : null,
                 process_name = request.Name,
                 process_description = request.Description,

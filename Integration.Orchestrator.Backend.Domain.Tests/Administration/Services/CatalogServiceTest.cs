@@ -6,7 +6,7 @@ using Integration.Orchestrator.Backend.Domain.Specifications;
 using Moq;
 using System.Linq.Expressions;
 
-namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
+namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
 {
     public class CatalogServiceTest
     {
@@ -22,10 +22,10 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         {
             var entity = new CatalogEntity
             {
-                catalog_code="codigo",
+                catalog_code = 10,
                 catalog_name = "Catlog",
                 catalog_value = "value",
-                father_id = Guid.NewGuid(),
+                father_code = 1,
                 catalog_detail = "details of catalog",
                 status_id = Guid.NewGuid()
             };
@@ -45,14 +45,14 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
             };
             var catalog = new CatalogEntity
             {
-                catalog_code = "codigo",
+                catalog_code = 10,
                 catalog_name = "Catlog",
                 catalog_value = "value",
-                father_id = Guid.NewGuid(),
+                father_code = 1,
                 catalog_detail = "details of catalog",
                 status_id = Guid.NewGuid()
             };
-            var catalogs= new List<CatalogEntity> { catalog };
+            var catalogs = new List<CatalogEntity> { catalog };
             var spec = new CatalogSpecification(paginatedModel);
             _mockRepo.Setup(repo => repo.GetAllAsync(It.IsAny<ISpecification<CatalogEntity>>())).ReturnsAsync(catalogs);
 
@@ -64,22 +64,22 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         [Fact]
         public async Task GetByFatherAsync()
         {
-            var father_id= Guid.NewGuid();
+            var father_code = 1;
             var catalog = new CatalogEntity
             {
-                catalog_code = "codigo",
+                catalog_code = 10,
                 catalog_name = "Catlog",
                 catalog_value = "value",
-                father_id = Guid.NewGuid(),
+                father_code = father_code,
                 catalog_detail = "details of catalog",
                 status_id = Guid.NewGuid()
             };
             var catalogs = new List<CatalogEntity> { catalog };
-            var specification = CatalogSpecification.GetByFatherExpression(father_id);
+            var specification = CatalogSpecification.GetByFatherExpression(father_code);
             _mockRepo.Setup(repo => repo.GetByFatherAsync(It.IsAny<Expression<Func<CatalogEntity, bool>>>()))
                      .ReturnsAsync(catalogs);
 
-            var result = await _service.GetByFatherAsync(father_id);
+            var result = await _service.GetByFatherAsync(father_code);
 
             Assert.Equal(catalogs, result);
             /*_mockRepo.Verify(repo => repo.GetByIdAsync(It.Is<Expression<Func<CatalogEntity, bool>>>(expr =>
@@ -93,15 +93,15 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
             var id = Guid.NewGuid();
             var catalog = new CatalogEntity
             {
-                catalog_code = "codigo",
+                catalog_code = 10,
                 catalog_name = "Catlog",
                 catalog_value = "value",
-                father_id = Guid.NewGuid(),
+                father_code = 1,
                 catalog_detail = "details of catalog",
                 status_id = Guid.NewGuid()
             };
             var expression = CatalogSpecification.GetByIdExpression(id);
-            _mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<CatalogEntity, bool>>>())) 
+            _mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<CatalogEntity, bool>>>()))
                 .ReturnsAsync(catalog);
 
             var result = await _service.GetByIdAsync(id);
@@ -133,10 +133,10 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         {
             var catalog = new CatalogEntity
             {
-                catalog_code = "codigo",
+                catalog_code = 10,
                 catalog_name = "Catlog",
                 catalog_value = "value",
-                father_id = Guid.NewGuid(),
+                father_code = 1,
                 catalog_detail = "details of catalog",
                 status_id = Guid.NewGuid()
             };
@@ -149,15 +149,15 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         {
             var catalog = new CatalogEntity
             {
-                catalog_code = "codigo",
+                catalog_code = 10,
                 catalog_name = "Catlog",
                 catalog_value = "value",
-                father_id = Guid.NewGuid(),
+                father_code = 1,
                 catalog_detail = "details of catalog",
                 status_id = Guid.NewGuid()
             };
             await _service.UpdateAsync(catalog);
-            _mockRepo.Verify(repo => repo.UpdateAsync(catalog), Times.Once);    
+            _mockRepo.Verify(repo => repo.UpdateAsync(catalog), Times.Once);
         }
     }
 }

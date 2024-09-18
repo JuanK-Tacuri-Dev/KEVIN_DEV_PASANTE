@@ -355,7 +355,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                 id = id,
                 property_name = request.Name,
                 property_code = create == true
-                ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Property)
+                ? await _codeConfiguratorService.GenerateCodeAsync(Prefix.Property)
                 : null,
                 type_id = request.TypeId,
                 entity_id = request.EntityId,

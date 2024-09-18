@@ -283,7 +283,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
             {
                 id = id,
                 repository_code = create == true
-                    ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Repository)
+                    ? await _codeConfiguratorService.GenerateCodeAsync(Prefix.Repository)
                     : null,
                 repository_port = request.Port,
                 repository_user = request.UserName,
