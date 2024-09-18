@@ -487,7 +487,7 @@
     <value>The connectionId is required</value>
   </data>
   <data name="Process_Objects_Required" xml:space="preserve">
-    <value>The objects is required</value>
+    <value>El objeto es requerido</value>
   </data>
   <data name="Process_ProcessCode_Required" xml:space="preserve">
     <value>The processCode is required</value>
