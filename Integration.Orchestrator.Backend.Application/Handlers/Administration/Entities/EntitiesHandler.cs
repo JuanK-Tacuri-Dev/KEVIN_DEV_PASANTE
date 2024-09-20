@@ -86,7 +86,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             {
                                 Id = entitiesEntity.id,
                                 Name = entitiesEntity.entity_name,
-                                Code = entitiesEntity.entity_code,
+                                Code = entitiesById.entity_code,
                                 TypeId = entitiesEntity.type_id,
                                 RepositoryId = entitiesEntity.repository_id,
                                 StatusId = entitiesEntity.status_id

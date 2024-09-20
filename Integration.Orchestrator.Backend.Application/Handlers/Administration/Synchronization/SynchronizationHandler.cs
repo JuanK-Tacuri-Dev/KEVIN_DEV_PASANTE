@@ -9,7 +9,6 @@ using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
-using System.Net;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization.SynchronizationCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Synchronization
@@ -38,7 +37,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var currentSyncStatus = await SyncStatusValidationById(request.Synchronization.SynchronizationRequest.StatusId);
                 var synchronizationEntity = await MapSynchronizer(request.Synchronization.SynchronizationRequest, Guid.NewGuid(), true);
 
-                if (currentSyncStatus == SyncStatus.running)
+                if (currentSyncStatus != SyncStatus.programmed)
                 {
                     synchronizationEntity.synchronization_hour_to_execute = DateTime.Now;
                 }
@@ -93,6 +92,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             });
 
                 var synchronizationEntity = await MapSynchronizer(request.Synchronization.SynchronizationRequest, request.Id);
+                var currentSyncStatus = await SyncStatusValidationById(request.Synchronization.SynchronizationRequest.StatusId);
+                if (currentSyncStatus != SyncStatus.programmed)
+                {
+                    synchronizationEntity.synchronization_hour_to_execute = DateTime.Now;
+                }
+
                 await _synchronizationService.UpdateAsync(synchronizationEntity);
 
                 return new UpdateSynchronizationCommandResponse(
