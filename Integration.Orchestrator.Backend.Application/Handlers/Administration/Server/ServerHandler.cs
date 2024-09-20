@@ -30,8 +30,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         {
             try
             {
-                var serverEntity = await MapServer(request.Server.ServerRequest, Guid.NewGuid(), true);
-                await _serverService.InsertAsync(serverEntity);
+                var serverMap = await MapServer(request.Server.ServerRequest, Guid.NewGuid(), true);
+                await _serverService.InsertAsync(serverMap);
 
                 return new CreateServerCommandResponse(
                     new ServerCreateResponse
@@ -40,12 +40,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new ServerCreate
                         {
-                            Id = serverEntity.id,
-                            Code = serverEntity.server_code,
-                            Name = serverEntity.server_name,
-                            TypeServerId = serverEntity.type_id,
-                            Url = serverEntity.server_url,
-                            StatusId = serverEntity.status_id
+                            Id = serverMap.id,
+                            Code = serverMap.server_code,
+                            Name = serverMap.server_name,
+                            TypeServerId = serverMap.type_id,
+                            Url = serverMap.server_url,
+                            StatusId = serverMap.status_id
                         }
                     });
             }
@@ -63,8 +63,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         {
             try
             {
-                var serverById = await _serverService.GetByIdAsync(request.Id);
-                if (serverById == null)
+                var serverFound = await _serverService.GetByIdAsync(request.Id);
+                if (serverFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -73,8 +73,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Data = request.Server.ServerRequest
                         });
 
-                var serverEntity = await MapServer(request.Server.ServerRequest, request.Id);
-                await _serverService.UpdateAsync(serverEntity);
+                var serverMap = await MapServer(request.Server.ServerRequest, request.Id);
+                await _serverService.UpdateAsync(serverMap);
 
                 return new UpdateServerCommandResponse(
                         new ServerUpdateResponse
@@ -83,12 +83,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new ServerUpdate
                             {
-                                Id = serverEntity.id,
-                                Code = serverById.server_code,
-                                Name = serverEntity.server_name,
-                                TypeServerId = serverEntity.type_id,
-                                Url = serverEntity.server_url,
-                                StatusId = serverEntity.status_id
+                                Id = serverMap.id,
+                                Code = serverFound.server_code,
+                                Name = serverMap.server_name,
+                                TypeServerId = serverMap.type_id,
+                                Url = serverMap.server_url,
+                                StatusId = serverMap.status_id
                             }
                         });
             }
@@ -106,8 +106,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         {
             try
             {
-                var serverById = await _serverService.GetByIdAsync(request.Server.Id);
-                if (serverById == null)
+                var serverFound = await _serverService.GetByIdAsync(request.Server.Id);
+                if (serverFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -116,7 +116,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Data = request.Server
                         });
 
-                await _serverService.DeleteAsync(serverById);
+                await _serverService.DeleteAsync(serverFound);
 
                 return new DeleteServerCommandResponse(
                     new ServerDeleteResponse
@@ -125,7 +125,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
                         Data = new ServerDelete
                         {
-                            Id = serverById.id
+                            Id = serverFound.id
                         }
                     });
             }
@@ -143,8 +143,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         {
             try
             {
-                var serverById = await _serverService.GetByIdAsync(request.Server.Id);
-                if (serverById == null)
+                var serverFound = await _serverService.GetByIdAsync(request.Server.Id);
+                if (serverFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -160,12 +160,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new ServerGetById
                         {
-                            Id = serverById.id,
-                            Code = serverById.server_code,
-                            Name = serverById.server_name,
-                            TypeServerId = serverById.type_id,
-                            Url = serverById.server_url,
-                            StatusId = serverById.status_id
+                            Id = serverFound.id,
+                            Code = serverFound.server_code,
+                            Name = serverFound.server_name,
+                            TypeServerId = serverFound.type_id,
+                            Url = serverFound.server_url,
+                            StatusId = serverFound.status_id
                         }
                     });
             }
@@ -183,8 +183,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         {
             try
             {
-                var serverByCode = await _serverService.GetByCodeAsync(request.Server.Code);
-                if (serverByCode == null)
+                var serverFound = await _serverService.GetByCodeAsync(request.Server.Code);
+                if (serverFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -200,12 +200,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new ServerGetByCode
                         {
-                            Id = serverByCode.id,
-                            Code = serverByCode.server_code,
-                            Name = serverByCode.server_name,
-                            TypeServerId = serverByCode.type_id,
-                            Url = serverByCode.server_url,
-                            StatusId = serverByCode.status_id
+                            Id = serverFound.id,
+                            Code = serverFound.server_code,
+                            Name = serverFound.server_name,
+                            TypeServerId = serverFound.type_id,
+                            Url = serverFound.server_url,
+                            StatusId = serverFound.status_id
                         }
                     });
             }
@@ -223,8 +223,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         {
             try
             {
-                var serverByType = await _serverService.GetByTypeAsync(request.Server.Type);
-                if (serverByType == null)
+                var serverFound = await _serverService.GetByTypeAsync(request.Server.Type);
+                if (serverFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -238,14 +238,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                     {
                         Code = (int)ResponseCode.FoundSuccessfully,
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
-                        Data = serverByType.Select(s => new ServerGetByType
+                        Data = serverFound.Select(server => new ServerGetByType
                         {
-                            Id = s.id,
-                            Code = s.server_code,
-                            Name = s.server_name,
-                            TypeServerId = s.type_id,
-                            Url = s.server_url,
-                            StatusId = s.status_id
+                            Id = server.id,
+                            Code = server.server_code,
+                            Name = server.server_name,
+                            TypeServerId = server.type_id,
+                            Url = server.server_url,
+                            StatusId = server.status_id
 
                         }).ToList()
                     });
@@ -275,7 +275,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
                         });
                 }
-                var result = await _serverService.GetAllPaginatedAsync(model);
+                var serversFound = await _serverService.GetAllPaginatedAsync(model);
 
 
                 return new GetAllPaginatedServerCommandResponse(
@@ -286,14 +286,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = new ServerGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = result.Select(s => new ServerGetAllPaginated
+                            Rows = serversFound.Select(server => new ServerGetAllPaginated
                             {
-                                Id = s.id,
-                                Code = s.server_code,
-                                Name = s.server_name,
-                                TypeServerId = s.type_id,
-                                Url = s.server_url,
-                                StatusId = s.status_id
+                                Id = server.id,
+                                Code = server.server_code,
+                                Name = server.server_name,
+                                TypeServerId = server.type_id,
+                                Url = server.server_url,
+                                StatusId = server.status_id
 
                             }).ToList()
                         }
@@ -312,7 +312,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
 
         private async Task<ServerEntity> MapServer(ServerCreateRequest request, Guid id, bool? create = null)
         {
-            var serverEntity = new ServerEntity()
+            return new ServerEntity()
             {
                 id = id,
                 server_code = create == true
@@ -323,7 +323,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                 server_url = request.Url,
                 status_id = request.StatusId
             };
-            return serverEntity;
         }
     }
 }

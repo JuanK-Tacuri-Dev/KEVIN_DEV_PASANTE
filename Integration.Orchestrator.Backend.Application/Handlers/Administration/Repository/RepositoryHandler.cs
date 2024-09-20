@@ -29,8 +29,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
         {
             try
             {
-                var repositoryEntity = await MapRepository(request.Repository.RepositoryRequest, Guid.NewGuid(), true);
-                await _repositoryService.InsertAsync(repositoryEntity);
+                var repositoryMap = await MapRepository(request.Repository.RepositoryRequest, Guid.NewGuid(), true);
+                await _repositoryService.InsertAsync(repositoryMap);
 
                 return new CreateRepositoryCommandResponse(
                     new RepositoryCreateResponse
@@ -39,14 +39,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new RepositoryCreate
                         {
-                            Id = repositoryEntity.id,
-                            Code = repositoryEntity.repository_code,
-                            Port = repositoryEntity.repository_port,
-                            UserName = repositoryEntity.repository_user,
-                            Password = repositoryEntity.repository_password,
-                            DatabaseName = repositoryEntity.repository_databaseName,
-                            AuthTypeId = repositoryEntity.auth_type_id,
-                            StatusId = repositoryEntity.status_id
+                            Id = repositoryMap.id,
+                            Code = repositoryMap.repository_code,
+                            Port = repositoryMap.repository_port,
+                            UserName = repositoryMap.repository_user,
+                            Password = repositoryMap.repository_password,
+                            DatabaseName = repositoryMap.repository_databaseName,
+                            AuthTypeId = repositoryMap.auth_type_id,
+                            StatusId = repositoryMap.status_id
                         }
                     });
             }
@@ -64,8 +64,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
         {
             try
             {
-                var repositoryById = await _repositoryService.GetByIdAsync(request.Id);
-                if (repositoryById == null)
+                var repositoryFound = await _repositoryService.GetByIdAsync(request.Id);
+                if (repositoryFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -74,8 +74,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                             Data = request.Repository.RepositoryRequest
                         });
 
-                var repositoryEntity = await MapRepository(request.Repository.RepositoryRequest, request.Id);
-                await _repositoryService.UpdateAsync(repositoryEntity);
+                var repositoryMap = await MapRepository(request.Repository.RepositoryRequest, request.Id);
+                await _repositoryService.UpdateAsync(repositoryMap);
 
                 return new UpdateRepositoryCommandResponse(
                     new RepositoryUpdateResponse
@@ -84,14 +84,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                         Data = new RepositoryUpdate
                         {
-                            Id = repositoryEntity.id,
-                            Code = repositoryById.repository_code,
-                            Port = repositoryEntity.repository_port,
-                            UserName = repositoryEntity.repository_user,
-                            Password = repositoryEntity.repository_password,
-                            DatabaseName = repositoryEntity.repository_databaseName,
-                            AuthTypeId = repositoryEntity.auth_type_id,
-                            StatusId = repositoryEntity.status_id
+                            Id = repositoryMap.id,
+                            Code = repositoryFound.repository_code,
+                            Port = repositoryMap.repository_port,
+                            UserName = repositoryMap.repository_user,
+                            Password = repositoryMap.repository_password,
+                            DatabaseName = repositoryMap.repository_databaseName,
+                            AuthTypeId = repositoryMap.auth_type_id,
+                            StatusId = repositoryMap.status_id
                         }
                     });
 
@@ -110,8 +110,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
         {
             try
             {
-                var repositoryById = await _repositoryService.GetByIdAsync(request.Repository.Id);
-                if (repositoryById == null)
+                var repositoryFound = await _repositoryService.GetByIdAsync(request.Repository.Id);
+                if (repositoryFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -120,7 +120,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                             Data = request.Repository
                         });
 
-                await _repositoryService.DeleteAsync(repositoryById);
+                await _repositoryService.DeleteAsync(repositoryFound);
 
                 return new DeleteRepositoryCommandResponse(
                     new RepositoryDeleteResponse
@@ -129,7 +129,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
                         Data = new RepositoryDelete
                         {
-                            Id = repositoryById.id
+                            Id = repositoryFound.id
                         }
                     });
             }
@@ -147,8 +147,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
         {
             try
             {
-                var repositoryById = await _repositoryService.GetByIdAsync(request.Repository.Id);
-                if (repositoryById == null)
+                var repositoryFound = await _repositoryService.GetByIdAsync(request.Repository.Id);
+                if (repositoryFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -165,13 +165,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                         Data = new RepositoryGetById
                         {
                             Id = request.Repository.Id,
-                            Code = repositoryById.repository_code,
-                            Port = repositoryById.repository_port,
-                            UserName = repositoryById.repository_user,
-                            Password = repositoryById.repository_password,
-                            DatabaseName = repositoryById.repository_databaseName,
-                            AuthTypeId = repositoryById.auth_type_id,
-                            StatusId = repositoryById.status_id
+                            Code = repositoryFound.repository_code,
+                            Port = repositoryFound.repository_port,
+                            UserName = repositoryFound.repository_user,
+                            Password = repositoryFound.repository_password,
+                            DatabaseName = repositoryFound.repository_databaseName,
+                            AuthTypeId = repositoryFound.auth_type_id,
+                            StatusId = repositoryFound.status_id
                         }
                     });
             }
@@ -189,8 +189,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
         {
             try
             {
-                var repositoryByCode = await _repositoryService.GetByCodeAsync(request.Repository.Code);
-                if (repositoryByCode == null)
+                var repositoryFound = await _repositoryService.GetByCodeAsync(request.Repository.Code);
+                if (repositoryFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -206,14 +206,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new RepositoryGetByCode
                         {
-                            Id = repositoryByCode.id,
-                            Code = repositoryByCode.repository_code,
-                            Port = repositoryByCode.repository_port,
-                            UserName = repositoryByCode.repository_user,
-                            Password = repositoryByCode.repository_password,
-                            DatabaseName = repositoryByCode.repository_databaseName,
-                            AuthTypeId = repositoryByCode.auth_type_id,
-                            StatusId = repositoryByCode.status_id
+                            Id = repositoryFound.id,
+                            Code = repositoryFound.repository_code,
+                            Port = repositoryFound.repository_port,
+                            UserName = repositoryFound.repository_user,
+                            Password = repositoryFound.repository_password,
+                            DatabaseName = repositoryFound.repository_databaseName,
+                            AuthTypeId = repositoryFound.auth_type_id,
+                            StatusId = repositoryFound.status_id
                         }
                     });
             }
@@ -242,7 +242,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
                         });
                 }
-                var result = await _repositoryService.GetAllPaginatedAsync(model);
+                var repositoriesFound = await _repositoryService.GetAllPaginatedAsync(model);
 
 
                 return new GetAllPaginatedRepositoryCommandResponse(
@@ -253,16 +253,16 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                         Data = new RepositoryGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = result.Select(c => new RepositoryGetAllPaginated
+                            Rows = repositoriesFound.Select(repository => new RepositoryGetAllPaginated
                             {
-                                Id = c.id,
-                                Code = c.repository_code,
-                                Port = c.repository_port,
-                                UserName = c.repository_user,
-                                Password = c.repository_password,
-                                DatabaseName = c.repository_databaseName,
-                                AuthTypeId = c.auth_type_id,
-                                StatusId = c.status_id
+                                Id = repository.id,
+                                Code = repository.repository_code,
+                                Port = repository.repository_port,
+                                UserName = repository.repository_user,
+                                Password = repository.repository_password,
+                                DatabaseName = repository.repository_databaseName,
+                                AuthTypeId = repository.auth_type_id,
+                                StatusId = repository.status_id
                             }).ToList()
                         }
                     });
@@ -279,7 +279,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
 
         private async Task<RepositoryEntity> MapRepository(RepositoryCreateRequest request, Guid id, bool? create = null)
         {
-            var repositoryEntity = new RepositoryEntity()
+            return new RepositoryEntity()
             {
                 id = id,
                 repository_code = create == true
@@ -292,7 +292,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                 auth_type_id = request.AuthTypeId,
                 status_id = request.StatusId
             };
-            return repositoryEntity;
         }
     }
 }

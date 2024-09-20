@@ -35,15 +35,15 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             try
             {
                 var currentSyncStatus = await SyncStatusValidationById(request.Synchronization.SynchronizationRequest.StatusId);
-                var synchronizationEntity = await MapSynchronizer(request.Synchronization.SynchronizationRequest, Guid.NewGuid(), true);
+                var synchronizationMap = await MapSynchronizer(request.Synchronization.SynchronizationRequest, Guid.NewGuid(), true);
 
                 if (currentSyncStatus != SyncStatus.programmed)
                 {
-                    synchronizationEntity.synchronization_hour_to_execute = DateTime.Now;
+                    synchronizationMap.synchronization_hour_to_execute = DateTime.Now;
                 }
 
 
-                await _synchronizationService.InsertAsync(synchronizationEntity);
+                await _synchronizationService.InsertAsync(synchronizationMap);
 
                 return new CreateSynchronizationCommandResponse(
                     new SynchronizationCreateResponse
@@ -52,18 +52,18 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new SynchronizationCreate
                         {
-                            Id = synchronizationEntity.id,
-                            Code = synchronizationEntity.synchronization_code,
-                            Name = synchronizationEntity.synchronization_name,
-                            FranchiseId = synchronizationEntity.franchise_id,
-                            StatusId = synchronizationEntity.status_id,
-                            Observations = synchronizationEntity.synchronization_observations,
-                            HourToExecute = synchronizationEntity.synchronization_hour_to_execute.ToString(dateFormat),
-                            Integrations = synchronizationEntity.integrations.Select(i => new IntegrationResponse
+                            Id = synchronizationMap.id,
+                            Code = synchronizationMap.synchronization_code,
+                            Name = synchronizationMap.synchronization_name,
+                            FranchiseId = synchronizationMap.franchise_id,
+                            StatusId = synchronizationMap.status_id,
+                            Observations = synchronizationMap.synchronization_observations,
+                            HourToExecute = synchronizationMap.synchronization_hour_to_execute.ToString(dateFormat),
+                            Integrations = synchronizationMap.integrations.Select(i => new IntegrationResponse
                             {
                                 Id = i
                             }).ToList(),
-                            UserId = synchronizationEntity.user_id
+                            UserId = synchronizationMap.user_id
                         }
                     });
             }
@@ -81,8 +81,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var synchronizationById = await _synchronizationService.GetByIdAsync(request.Id);
-                if (synchronizationById == null)
+                var synchronizationFound = await _synchronizationService.GetByIdAsync(request.Id);
+                if (synchronizationFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -91,14 +91,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Data = request.Synchronization.SynchronizationRequest
                             });
 
-                var synchronizationEntity = await MapSynchronizer(request.Synchronization.SynchronizationRequest, request.Id);
+                var synchronizationMap = await MapSynchronizer(request.Synchronization.SynchronizationRequest, request.Id);
                 var currentSyncStatus = await SyncStatusValidationById(request.Synchronization.SynchronizationRequest.StatusId);
                 if (currentSyncStatus != SyncStatus.programmed)
                 {
-                    synchronizationEntity.synchronization_hour_to_execute = DateTime.Now;
+                    synchronizationMap.synchronization_hour_to_execute = DateTime.Now;
                 }
 
-                await _synchronizationService.UpdateAsync(synchronizationEntity);
+                await _synchronizationService.UpdateAsync(synchronizationMap);
 
                 return new UpdateSynchronizationCommandResponse(
                         new SynchronizationUpdateResponse
@@ -107,18 +107,18 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new SynchronizationUpdate()
                             {
-                                Id = synchronizationEntity.id,
-                                Code = synchronizationById.synchronization_code,
-                                Name = synchronizationEntity.synchronization_name,
-                                FranchiseId = synchronizationEntity.franchise_id,
-                                StatusId = synchronizationEntity.status_id,
-                                Observations = synchronizationEntity.synchronization_observations,
-                                HourToExecute = synchronizationEntity.synchronization_hour_to_execute.ToString(dateFormat),
-                                Integrations = synchronizationEntity.integrations.Select(i => new IntegrationResponse
+                                Id = synchronizationMap.id,
+                                Code = synchronizationFound.synchronization_code,
+                                Name = synchronizationMap.synchronization_name,
+                                FranchiseId = synchronizationMap.franchise_id,
+                                StatusId = synchronizationMap.status_id,
+                                Observations = synchronizationMap.synchronization_observations,
+                                HourToExecute = synchronizationMap.synchronization_hour_to_execute.ToString(dateFormat),
+                                Integrations = synchronizationMap.integrations.Select(i => new IntegrationResponse
                                 {
                                     Id = i
                                 }).ToList(),
-                                UserId = synchronizationEntity.user_id
+                                UserId = synchronizationMap.user_id
                             }
                         });
             }
@@ -136,8 +136,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var synchronizationById = await _synchronizationService.GetByIdAsync(request.Synchronization.Id);
-                if (synchronizationById == null)
+                var synchronizationFound = await _synchronizationService.GetByIdAsync(request.Synchronization.Id);
+                if (synchronizationFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -146,7 +146,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Data = request.Synchronization
                             });
 
-                await _synchronizationService.DeleteAsync(synchronizationById);
+                await _synchronizationService.DeleteAsync(synchronizationFound);
 
                 return new DeleteSynchronizationCommandResponse(
                     new SynchronizationDeleteResponse
@@ -155,7 +155,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
                         Data = new SynchronizationDelete
                         {
-                            Id = synchronizationById.id
+                            Id = synchronizationFound.id
                         }
                     });
             }
@@ -173,8 +173,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var synchronizationById = await _synchronizationService.GetByIdAsync(request.Synchronization.Id);
-                if (synchronizationById == null)
+                var synchronizationFound = await _synchronizationService.GetByIdAsync(request.Synchronization.Id);
+                if (synchronizationFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -191,15 +191,15 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new SynchronizationGetById
                         {
-                            Id = synchronizationById.id,
-                            Code = synchronizationById.synchronization_code,
-                            Name = synchronizationById.synchronization_name,
-                            FranchiseId = synchronizationById.franchise_id,
-                            StatusId = synchronizationById.status_id,
-                            Observations = synchronizationById.synchronization_observations,
-                            HourToExecute = synchronizationById.synchronization_hour_to_execute.ToString(dateFormat),
-                            Integrations = synchronizationById.integrations.Select(i => new IntegrationResponse { Id = i }).ToList(),
-                            UserId = synchronizationById.user_id
+                            Id = synchronizationFound.id,
+                            Code = synchronizationFound.synchronization_code,
+                            Name = synchronizationFound.synchronization_name,
+                            FranchiseId = synchronizationFound.franchise_id,
+                            StatusId = synchronizationFound.status_id,
+                            Observations = synchronizationFound.synchronization_observations,
+                            HourToExecute = synchronizationFound.synchronization_hour_to_execute.ToString(dateFormat),
+                            Integrations = synchronizationFound.integrations.Select(i => new IntegrationResponse { Id = i }).ToList(),
+                            UserId = synchronizationFound.user_id
                         }
                     });
             }
@@ -217,8 +217,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var synchronizationByFranchise = await _synchronizationService.GetByFranchiseIdAsync(request.Synchronization.FranchiseId);
-                if (synchronizationByFranchise == null || !synchronizationByFranchise.Any())
+                var synchronizationFound = await _synchronizationService.GetByFranchiseIdAsync(request.Synchronization.FranchiseId);
+                if (synchronizationFound == null || !synchronizationFound.Any())
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -232,18 +232,18 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     {
                         Code = (int)ResponseCode.FoundSuccessfully,
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
-                        Data = synchronizationByFranchise
-                        .Select(syn => new SynchronizationGetByFranchiseId
+                        Data = synchronizationFound
+                        .Select(synchronization => new SynchronizationGetByFranchiseId
                         {
-                            Id = syn.id,
-                            Code = syn.synchronization_code,
-                            Name = syn.synchronization_name,
-                            FranchiseId = syn.franchise_id,
-                            StatusId = syn.status_id,
-                            Observations = syn.synchronization_observations,
-                            HourToExecute = syn.synchronization_hour_to_execute.ToString(dateFormat),
-                            Integrations = syn.integrations.Select(i => new IntegrationResponse { Id = i }).ToList(),
-                            UserId = syn.user_id
+                            Id = synchronization.id,
+                            Code = synchronization.synchronization_code,
+                            Name = synchronization.synchronization_name,
+                            FranchiseId = synchronization.franchise_id,
+                            StatusId = synchronization.status_id,
+                            Observations = synchronization.synchronization_observations,
+                            HourToExecute = synchronization.synchronization_hour_to_execute.ToString(dateFormat),
+                            Integrations = synchronization.integrations.Select(i => new IntegrationResponse { Id = i }).ToList(),
+                            UserId = synchronization.user_id
                         }).ToList()
                     });
             }
@@ -289,20 +289,20 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Background = status.synchronization_status_background
                     });
 
-                var dataRows = result.Select(item => new SynchronizationGetAllPaginated
+                var dataRows = result.Select(synchronization => new SynchronizationGetAllPaginated
                 {
-                    Id = item.id,
-                    Code = item.synchronization_code,
-                    Name = item.synchronization_name,
-                    FranchiseId = item.franchise_id,
-                    Status = statusDictionary.TryGetValue(item.status_id, out SynchronizationStatusResponse status) ? status : null,
-                    Observations = item.synchronization_observations,
-                    Integrations = item.integrations.Select(i => new IntegrationResponse
+                    Id = synchronization.id,
+                    Code = synchronization.synchronization_code,
+                    Name = synchronization.synchronization_name,
+                    FranchiseId = synchronization.franchise_id,
+                    Status = statusDictionary.TryGetValue(synchronization.status_id, out SynchronizationStatusResponse status) ? status : null,
+                    Observations = synchronization.synchronization_observations,
+                    Integrations = synchronization.integrations.Select(i => new IntegrationResponse
                     {
                         Id = i
                     }).ToList(),
-                    HourToExecute = item.synchronization_hour_to_execute.ToString(dateFormat),
-                    UserId = item.user_id
+                    HourToExecute = synchronization.synchronization_hour_to_execute.ToString(dateFormat),
+                    UserId = synchronization.user_id
                 }).ToList();
 
                 return new GetAllPaginatedSynchronizationCommandResponse(
@@ -329,7 +329,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
         private async Task<SynchronizationEntity> MapSynchronizer(SynchronizationCreateRequest request, Guid id, bool? create = null)
         {
-            var synchronizationEntity = new SynchronizationEntity()
+            return new SynchronizationEntity()
             {
                 id = id,
                 synchronization_code = create == true
@@ -343,19 +343,18 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 integrations = request.Integrations.Select(i => i.Id).ToList(),
                 user_id = request.UserId
             };
-            return synchronizationEntity;
         }
 
         private async Task<SyncStatus> SyncStatusValidationById(Guid id)
         {
-            var entitySynchronizationStatus = await _synchronizationStatesService.GetByIdAsync(id);
+            var synchronizationStatusFound = await _synchronizationStatesService.GetByIdAsync(id);
 
-            if (entitySynchronizationStatus == null)
+            if (synchronizationStatusFound == null)
             {
                 throw new ArgumentException(AppMessages.Application_StatusNotFound);
             }
 
-            if (Enum.TryParse<SyncStatus>(entitySynchronizationStatus.synchronization_status_key, out var status))
+            if (Enum.TryParse<SyncStatus>(synchronizationStatusFound.synchronization_status_key, out var status))
             {
                 return status;
             }

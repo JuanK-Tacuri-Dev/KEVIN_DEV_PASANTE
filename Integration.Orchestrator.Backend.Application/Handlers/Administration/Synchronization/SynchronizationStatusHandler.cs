@@ -24,8 +24,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         {
             try
             {
-                var synchronizationStatesEntity = MapSynchronizerStates(request.SynchronizationStatus.SynchronizationStatesRequest, Guid.NewGuid());
-                await _synchronizationStatesService.InsertAsync(synchronizationStatesEntity);
+                var synchronizationStatesMap = MapSynchronizerStates(request.SynchronizationStatus.SynchronizationStatesRequest, Guid.NewGuid());
+                await _synchronizationStatesService.InsertAsync(synchronizationStatesMap);
 
                 return new CreateSynchronizationStatusCommandResponse(
                     new SynchronizationStatusCreateResponse
@@ -34,11 +34,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new SynchronizationStatusCreate
                         {
-                            Id = synchronizationStatesEntity.id,
-                            Key = synchronizationStatesEntity.synchronization_status_key,
-                            Text = synchronizationStatesEntity.synchronization_status_text,
-                            Color = synchronizationStatesEntity.synchronization_status_color,
-                            Background = synchronizationStatesEntity.synchronization_status_background
+                            Id = synchronizationStatesMap.id,
+                            Key = synchronizationStatesMap.synchronization_status_key,
+                            Text = synchronizationStatesMap.synchronization_status_text,
+                            Color = synchronizationStatesMap.synchronization_status_color,
+                            Background = synchronizationStatesMap.synchronization_status_background
                         }
                     });
             }
@@ -56,8 +56,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         {
             try
             {
-                var synchronizationStatesById = await _synchronizationStatesService.GetByIdAsync(request.Id);
-                if (synchronizationStatesById == null)
+                var synchronizationStatesFound = await _synchronizationStatesService.GetByIdAsync(request.Id);
+                if (synchronizationStatesFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -66,8 +66,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Data = request.SynchronizationStatus.SynchronizationStatesRequest
                         });
 
-                var synchronizationStatesEntity = MapSynchronizerStates(request.SynchronizationStatus.SynchronizationStatesRequest, request.Id);
-                await _synchronizationStatesService.UpdateAsync(synchronizationStatesById);
+                var synchronizationStatesMap = MapSynchronizerStates(request.SynchronizationStatus.SynchronizationStatesRequest, request.Id);
+                await _synchronizationStatesService.UpdateAsync(synchronizationStatesFound);
 
                 return new UpdateSynchronizationStatusCommandResponse(
                         new SynchronizationStatusUpdateResponse
@@ -76,11 +76,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new SynchronizationStatusUpdate
                             {
-                                Id = synchronizationStatesEntity.id,
-                                Key = synchronizationStatesEntity.synchronization_status_key,
-                                Text = synchronizationStatesEntity.synchronization_status_text,
-                                Color = synchronizationStatesEntity.synchronization_status_color,
-                                Background = synchronizationStatesEntity.synchronization_status_background
+                                Id = synchronizationStatesMap.id,
+                                Key = synchronizationStatesMap.synchronization_status_key,
+                                Text = synchronizationStatesMap.synchronization_status_text,
+                                Color = synchronizationStatesMap.synchronization_status_color,
+                                Background = synchronizationStatesMap.synchronization_status_background
                             }
                         });
             }
@@ -98,8 +98,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         {
             try
             {
-                var sinchronizationStatusById = await _synchronizationStatesService.GetByIdAsync(request.SynchronizationStatus.Id);
-                if (sinchronizationStatusById == null)
+                var sinchronizationStatusFound = await _synchronizationStatesService.GetByIdAsync(request.SynchronizationStatus.Id);
+                if (sinchronizationStatusFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -108,7 +108,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Data = request.SynchronizationStatus
                         });
 
-                await _synchronizationStatesService.DeleteAsync(sinchronizationStatusById);
+                await _synchronizationStatesService.DeleteAsync(sinchronizationStatusFound);
 
                 return new DeleteSynchronizationStatusCommandResponse(
                     new SynchronizationStatusDeleteResponse
@@ -117,7 +117,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
                         Data = new SynchronizationStatusDelete
                         {
-                            Id = sinchronizationStatusById.id
+                            Id = sinchronizationStatusFound.id
                         }
                     });
             }
@@ -135,8 +135,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         {
             try
             {
-                var synchronizationStatusById = await _synchronizationStatesService.GetByIdAsync(request.SynchronizationStatus.Id);
-                if (synchronizationStatusById == null)
+                var synchronizationStatusFound = await _synchronizationStatesService.GetByIdAsync(request.SynchronizationStatus.Id);
+                if (synchronizationStatusFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -152,11 +152,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new SynchronizationStatusGetById
                         {
-                            Id = synchronizationStatusById.id,
-                            Key = synchronizationStatusById.synchronization_status_key,
-                            Text = synchronizationStatusById.synchronization_status_text,
-                            Color = synchronizationStatusById.synchronization_status_color,
-                            Background = synchronizationStatusById.synchronization_status_background
+                            Id = synchronizationStatusFound.id,
+                            Key = synchronizationStatusFound.synchronization_status_key,
+                            Text = synchronizationStatusFound.synchronization_status_text,
+                            Color = synchronizationStatusFound.synchronization_status_color,
+                            Background = synchronizationStatusFound.synchronization_status_background
                         }
                     });
             }
@@ -184,7 +184,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
                         });
 
-                var result = await _synchronizationStatesService.GetAllPaginatedAsync(model);
+                var synchronizationsStateFound = await _synchronizationStatesService.GetAllPaginatedAsync(model);
 
 
                 return new GetAllPaginatedSynchronizationStatusCommandResponse(
@@ -195,7 +195,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = new SynchronizationStatusGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = result.Select(syn => new SynchronizationStatusGetAllPaginated
+                            Rows = synchronizationsStateFound.Select(syn => new SynchronizationStatusGetAllPaginated
                             {
                                 Id = syn.id,
                                 Key = syn.synchronization_status_key,
@@ -219,7 +219,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
 
         private SynchronizationStatusEntity MapSynchronizerStates(SynchronizationStatusCreateRequest request, Guid id)
         {
-            var SynchronizationStatesEntity = new SynchronizationStatusEntity()
+            return new SynchronizationStatusEntity()
             {
                 id = id,
                 synchronization_status_key = request.Key,
@@ -227,7 +227,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                 synchronization_status_color = request.Color,
                 synchronization_status_background = request.Background
             };
-            return SynchronizationStatesEntity;
         }
     }
 }

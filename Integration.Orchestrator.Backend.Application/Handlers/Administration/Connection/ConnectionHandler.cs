@@ -29,8 +29,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         {
             try
             {
-                var connectionEntity = await MapConnection(request.Connection.ConnectionRequest, Guid.NewGuid(), true);
-                await _connectionService.InsertAsync(connectionEntity);
+                var connectionMap = await MapConnection(request.Connection.ConnectionRequest, Guid.NewGuid(), true);
+                await _connectionService.InsertAsync(connectionMap);
 
                 return new CreateConnectionCommandResponse(
                     new ConnectionCreateResponse
@@ -39,14 +39,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new ConnectionCreate
                         {
-                            Id = connectionEntity.id,
-                            Code = connectionEntity.connection_code,
-                            ServerId = connectionEntity.server_id,
-                            AdapterId = connectionEntity.adapter_id,
-                            RepositoryId = connectionEntity.repository_id,
-                            Name = connectionEntity.connection_name,
-                            Description = connectionEntity.connection_description,
-                            StatusId = connectionEntity.status_id
+                            Id = connectionMap.id,
+                            Code = connectionMap.connection_code,
+                            ServerId = connectionMap.server_id,
+                            AdapterId = connectionMap.adapter_id,
+                            RepositoryId = connectionMap.repository_id,
+                            Name = connectionMap.connection_name,
+                            Description = connectionMap.connection_description,
+                            StatusId = connectionMap.status_id
                         }
                     });
             }
@@ -64,8 +64,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         {
             try
             {
-                var connectionById = await _connectionService.GetByIdAsync(request.Id);
-                if (connectionById == null)
+                var connectionFound = await _connectionService.GetByIdAsync(request.Id);
+                if (connectionFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -74,8 +74,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Data = request.Connection.ConnectionRequest
                         });
 
-                var connectionEntity = await MapConnection(request.Connection.ConnectionRequest, request.Id);
-                await _connectionService.UpdateAsync(connectionEntity);
+                var connectionMap = await MapConnection(request.Connection.ConnectionRequest, request.Id);
+                await _connectionService.UpdateAsync(connectionMap);
 
                 return new UpdateConnectionCommandResponse(
                         new ConnectionUpdateResponse
@@ -84,14 +84,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new ConnectionUpdate
                             {
-                                Id = connectionEntity.id,
-                                Code = connectionById.connection_code,
-                                ServerId = connectionEntity.server_id,
-                                AdapterId = connectionEntity.adapter_id,
-                                RepositoryId = connectionEntity.repository_id,
-                                Name = connectionEntity.connection_name,
-                                Description = connectionEntity.connection_description,
-                                StatusId = connectionEntity.status_id
+                                Id = connectionMap.id,
+                                Code = connectionFound.connection_code,
+                                ServerId = connectionMap.server_id,
+                                AdapterId = connectionMap.adapter_id,
+                                RepositoryId = connectionMap.repository_id,
+                                Name = connectionMap.connection_name,
+                                Description = connectionMap.connection_description,
+                                StatusId = connectionMap.status_id
                             }
                         });
             }
@@ -109,8 +109,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         {
             try
             {
-                var connectionById = await _connectionService.GetByIdAsync(request.Connection.Id);
-                if (connectionById == null)
+                var connectionFound = await _connectionService.GetByIdAsync(request.Connection.Id);
+                if (connectionFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -119,16 +119,16 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Data = request.Connection
                         });
 
-                await _connectionService.DeleteAsync(connectionById);
+                await _connectionService.DeleteAsync(connectionFound);
 
                 return new DeleteConnectionCommandResponse(
                     new ConnectionDeleteResponse
                     {
                         Code = (int)ResponseCode.DeletedSuccessfully,
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
-                        Data = new ConnectionDelete 
+                        Data = new ConnectionDelete
                         {
-                            Id = connectionById.id
+                            Id = connectionFound.id
                         }
                     });
             }
@@ -146,8 +146,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         {
             try
             {
-                var connectionById = await _connectionService.GetByIdAsync(request.Connection.Id);
-                if (connectionById == null)
+                var connectionFound = await _connectionService.GetByIdAsync(request.Connection.Id);
+                if (connectionFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -163,14 +163,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new ConnectionGetById
                         {
-                            Id = connectionById.id,
-                            Code = connectionById.connection_code,
-                            ServerId = connectionById.server_id,
-                            AdapterId = connectionById.adapter_id,
-                            RepositoryId = connectionById.repository_id,
-                            Name = connectionById.connection_name,
-                            Description = connectionById.connection_description,
-                            StatusId = connectionById.status_id
+                            Id = connectionFound.id,
+                            Code = connectionFound.connection_code,
+                            ServerId = connectionFound.server_id,
+                            AdapterId = connectionFound.adapter_id,
+                            RepositoryId = connectionFound.repository_id,
+                            Name = connectionFound.connection_name,
+                            Description = connectionFound.connection_description,
+                            StatusId = connectionFound.status_id
                         }
                     });
             }
@@ -188,8 +188,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         {
             try
             {
-                var connectionByCode = await _connectionService.GetByCodeAsync(request.Connection.Code);
-                if (connectionByCode == null)
+                var connectionFound = await _connectionService.GetByCodeAsync(request.Connection.Code);
+                if (connectionFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -205,14 +205,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new ConnectionGetByCode
                         {
-                            Id = connectionByCode.id,
-                            Code = connectionByCode.connection_code,
-                            ServerId = connectionByCode.server_id,
-                            AdapterId = connectionByCode.adapter_id,
-                            RepositoryId = connectionByCode.repository_id,
-                            Name = connectionByCode.connection_name,
-                            Description = connectionByCode.connection_description,
-                            StatusId = connectionByCode.status_id
+                            Id = connectionFound.id,
+                            Code = connectionFound.connection_code,
+                            ServerId = connectionFound.server_id,
+                            AdapterId = connectionFound.adapter_id,
+                            RepositoryId = connectionFound.repository_id,
+                            Name = connectionFound.connection_name,
+                            Description = connectionFound.connection_description,
+                            StatusId = connectionFound.status_id
                         }
                     });
             }
@@ -241,7 +241,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
                         });
                 }
-                var result = await _connectionService.GetAllPaginatedAsync(model);
+                var connectionsFound = await _connectionService.GetAllPaginatedAsync(model);
 
 
                 return new GetAllPaginatedConnectionCommandResponse(
@@ -252,16 +252,16 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Data = new ConnectionGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = result.Select(c => new ConnectionGetAllPaginated
+                            Rows = connectionsFound.Select(connection => new ConnectionGetAllPaginated
                             {
-                                Id = c.id,
-                                Code = c.connection_code,
-                                ServerId = c.server_id,
-                                AdapterId = c.adapter_id,
-                                RepositoryId = c.repository_id,
-                                Name = c.connection_name,
-                                Description = c.connection_description,
-                                StatusId = c.status_id
+                                Id = connection.id,
+                                Code = connection.connection_code,
+                                ServerId = connection.server_id,
+                                AdapterId = connection.adapter_id,
+                                RepositoryId = connection.repository_id,
+                                Name = connection.connection_name,
+                                Description = connection.connection_description,
+                                StatusId = connection.status_id
                             }).ToList()
                         }
                     });
@@ -278,7 +278,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
 
         private async Task<ConnectionEntity> MapConnection(ConnectionCreateRequest request, Guid id, bool? create = null)
         {
-            var connectionEntity = new ConnectionEntity()
+            return new ConnectionEntity()
             {
                 id = id,
                 connection_code = create == true
@@ -291,7 +291,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                 connection_description = request.Description,
                 status_id = request.StatusId
             };
-            return connectionEntity;
         }
     }
 }

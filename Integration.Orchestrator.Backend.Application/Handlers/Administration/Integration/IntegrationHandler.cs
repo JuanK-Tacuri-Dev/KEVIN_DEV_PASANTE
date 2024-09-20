@@ -26,8 +26,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var integrationEntity = MapIntegration(request.Integration.IntegrationRequest, Guid.NewGuid());
-                await _integrationService.InsertAsync(integrationEntity);
+                var integrationMap = MapIntegration(request.Integration.IntegrationRequest, Guid.NewGuid());
+                await _integrationService.InsertAsync(integrationMap);
 
                 return new CreateIntegrationCommandResponse(
                     new IntegrationCreateResponse
@@ -36,12 +36,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new IntegrationCreate
                         {
-                            Id = integrationEntity.id,
-                            Name = integrationEntity.integration_name,
-                            StatusId = integrationEntity.status_id,
-                            Observations = integrationEntity.integration_observations,
-                            UserId = integrationEntity.user_id,
-                            Process = integrationEntity.process.Select(p => new ProcessRequest
+                            Id = integrationMap.id,
+                            Name = integrationMap.integration_name,
+                            StatusId = integrationMap.status_id,
+                            Observations = integrationMap.integration_observations,
+                            UserId = integrationMap.user_id,
+                            Process = integrationMap.process.Select(p => new ProcessRequest
                             {
                                 Id = p
                             }).ToList()
@@ -62,8 +62,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var integrationById = await _integrationService.GetByIdAsync(request.Id);
-                if (integrationById == null)
+                var integrationFound = await _integrationService.GetByIdAsync(request.Id);
+                if (integrationFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -72,8 +72,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Data = request.Integration.IntegrationRequest
                             });
 
-                var integrationEntity = MapIntegration(request.Integration.IntegrationRequest, request.Id);
-                await _integrationService.UpdateAsync(integrationEntity);
+                var integrationMap = MapIntegration(request.Integration.IntegrationRequest, request.Id);
+                await _integrationService.UpdateAsync(integrationMap);
 
                 return new UpdateIntegrationCommandResponse(
                         new IntegrationUpdateResponse
@@ -82,12 +82,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new IntegrationUpdate
                             {
-                                Id = integrationEntity.id,
-                                Name = integrationEntity.integration_name,
-                                StatusId = integrationEntity.status_id,
-                                Observations = integrationEntity.integration_observations,
-                                UserId = integrationEntity.user_id,
-                                Process = integrationEntity.process.Select(p => new ProcessRequest
+                                Id = integrationMap.id,
+                                Name = integrationMap.integration_name,
+                                StatusId = integrationMap.status_id,
+                                Observations = integrationMap.integration_observations,
+                                UserId = integrationMap.user_id,
+                                Process = integrationMap.process.Select(p => new ProcessRequest
                                 {
                                     Id = p
                                 }).ToList()
@@ -108,8 +108,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var integrationById = await _integrationService.GetByIdAsync(request.Integration.Id);
-                if (integrationById == null)
+                var integrationFound = await _integrationService.GetByIdAsync(request.Integration.Id);
+                if (integrationFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -118,14 +118,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Data = request.Integration
                             });
 
-                await _integrationService.DeleteAsync(integrationById);
+                await _integrationService.DeleteAsync(integrationFound);
 
                 return new DeleteIntegrationCommandResponse(
                     new IntegrationDeleteResponse
                     {
                         Code = (int)ResponseCode.DeletedSuccessfully,
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
-                        Data = new IntegrationDelete 
+                        Data = new IntegrationDelete
                         {
                             Id = request.Integration.Id
                         }
@@ -145,8 +145,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var integrationById = await _integrationService.GetByIdAsync(request.Integration.Id);
-                if (integrationById == null)
+                var integrationFound = await _integrationService.GetByIdAsync(request.Integration.Id);
+                if (integrationFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -162,12 +162,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new IntegrationGetById
                         {
-                            Id = integrationById.id,
-                            Name = integrationById.integration_name,
-                            StatusId = integrationById.status_id,
-                            Observations = integrationById.integration_observations,
-                            Process = integrationById.process.Select(i => new ProcessRequest { Id = i }).ToList(),
-                            UserId = integrationById.user_id
+                            Id = integrationFound.id,
+                            Name = integrationFound.integration_name,
+                            StatusId = integrationFound.status_id,
+                            Observations = integrationFound.integration_observations,
+                            Process = integrationFound.process.Select(i => new ProcessRequest { Id = i }).ToList(),
+                            UserId = integrationFound.user_id
                         }
                     });
             }
@@ -195,7 +195,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
                             });
 
-                var result = await _integrationService.GetAllPaginatedAsync(model);
+                var integrationsFound = await _integrationService.GetAllPaginatedAsync(model);
 
 
                 return new GetAllPaginatedIntegrationCommandResponse(
@@ -206,14 +206,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new IntegrationGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = result.Select(syn => new IntegrationGetAllPaginated
+                            Rows = integrationsFound.Select(integration => new IntegrationGetAllPaginated
                             {
-                                Id = syn.id,
-                                Name = syn.integration_name,
-                                Status = syn.status_id,
-                                Observations = syn.integration_observations,
-                                Process = syn.process.Select(i => new ProcessResponse { Id = i }).ToList(),
-                                UserId = syn.user_id
+                                Id = integration.id,
+                                Name = integration.integration_name,
+                                Status = integration.status_id,
+                                Observations = integration.integration_observations,
+                                Process = integration.process.Select(i => new ProcessResponse { Id = i }).ToList(),
+                                UserId = integration.user_id
                             }).ToList()
                         }
                     });
@@ -230,7 +230,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
         private IntegrationEntity MapIntegration(IntegrationCreateRequest request, Guid id)
         {
-            var integrationEntity = new IntegrationEntity()
+            return new IntegrationEntity()
             {
                 id = id,
                 integration_name = request.Name,
@@ -239,7 +239,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 process = request.Process.Select(i => i.Id).ToList(),
                 user_id = request.UserId
             };
-            return integrationEntity;
         }
     }
 }
