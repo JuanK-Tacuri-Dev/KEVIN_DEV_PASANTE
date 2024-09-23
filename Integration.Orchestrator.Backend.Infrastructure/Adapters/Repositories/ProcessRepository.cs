@@ -23,6 +23,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .Set(m => m.process_type_id, entity.process_type_id)
                 .Set(m => m.connection_id, entity.connection_id)
                 .Set(m => m.entities, entity.entities)
+                .Set(m => m.status_id, entity.status_id)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);
         }
