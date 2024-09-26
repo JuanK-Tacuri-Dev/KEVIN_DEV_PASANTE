@@ -124,7 +124,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                     {
                         Code = (int)ResponseCode.DeletedSuccessfully,
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
-                        Data = new EntitiesDelete 
+                        Data = new EntitiesDelete
                         {
                             Id = entitiesFound.id
                         }
@@ -307,15 +307,20 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                 var model = request.Entities.Adapt<PaginatedModel>();
                 var rows = await _entitiesService.GetTotalRowsAsync(model);
                 if (rows == 0)
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
+                {
+                    return new GetAllPaginatedEntitiesCommandResponse(
+                    new EntitiesGetAllPaginatedResponse
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                        Data = new EntitiesGetAllRows
                         {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
-                        });
-
+                            Total_rows = rows,
+                            Rows = Enumerable.Empty<EntitiesGetAllPaginated>()
+                        }
+                    });
+                }
                 var entitiesFound = await _entitiesService.GetAllPaginatedAsync(model);
-
 
                 return new GetAllPaginatedEntitiesCommandResponse(
                     new EntitiesGetAllPaginatedResponse
@@ -325,14 +330,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                         Data = new EntitiesGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = entitiesFound.Select(c => new EntitiesGetAllPaginated
+                            Rows = entitiesFound.Select(entity => new EntitiesGetAllPaginated
                             {
-                                Id = c.id,
-                                Name = c.entity_name,
-                                Code = c.entity_code,
-                                TypeId = c.type_id,
-                                RepositoryId = c.repository_id,
-                                StatusId = c.status_id
+                                Id = entity.id,
+                                Name = entity.entity_name,
+                                Code = entity.entity_code,
+                                TypeId = entity.type_id,
+                                RepositoryId = entity.repository_id,
+                                StatusId = entity.status_id
                             }).ToList()
                         }
                     });

@@ -34,8 +34,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         };
         private void SetupPagination(PaginatedModel model)
         {
-            Skip = (model.First - 1) * model.Rows;
-            Limit = model.Rows;
+            if (model.Rows > 0)
+            {
+                Skip = model.First;
+                Limit = model.Rows;
+            }
         }
 
         private void SetupOrdering(PaginatedModel model)

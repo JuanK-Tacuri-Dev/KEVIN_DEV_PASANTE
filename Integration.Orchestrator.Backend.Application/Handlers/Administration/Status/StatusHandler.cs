@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Status;
+﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Status;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
@@ -6,6 +7,7 @@ using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities.EntitiesCommands;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Status.StatusCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Status
@@ -178,15 +180,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                 var rows = await _statusService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
+                    return new GetAllPaginatedStatusCommandResponse(
+                    new StatusGetAllPaginatedResponse
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                        Data = new StatusGetAllRows
                         {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
-                        });
+                            Total_rows = rows,
+                            Rows = Enumerable.Empty<StatusGetAllPaginated>()
+                        }
+                    });
                 }
                 var statesFound = await _statusService.GetAllPaginatedAsync(model);
-
 
                 return new GetAllPaginatedStatusCommandResponse(
                     new StatusGetAllPaginatedResponse

@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization;
+﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization;
 using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStatus;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
@@ -9,6 +10,7 @@ using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities.EntitiesCommands;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization.SynchronizationCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Synchronization
@@ -265,12 +267,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var rows = await _synchronizationService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
+                    return new GetAllPaginatedSynchronizationCommandResponse(
+                    new SynchronizationGetAllPaginatedResponse
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                        Data = new SynchronizationGetAllRows
                         {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
-                        });
+                            Total_rows = rows,
+                            Rows = Enumerable.Empty<SynchronizationGetAllPaginated>()
+                        }
+                    });
                 }
 
                 var result = await _synchronizationService.GetAllPaginatedAsync(model);

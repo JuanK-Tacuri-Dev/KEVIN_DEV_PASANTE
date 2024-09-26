@@ -1,4 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Connection;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
@@ -8,6 +9,7 @@ using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection.ConnectionCommands;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities.EntitiesCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection
 {
@@ -234,15 +236,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                 var rows = await _connectionService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
+                    return new GetAllPaginatedConnectionCommandResponse(
+                    new ConnectionGetAllPaginatedResponse
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                        Data = new ConnectionGetAllRows
                         {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
-                        });
+                            Total_rows = rows,
+                            Rows = Enumerable.Empty<ConnectionGetAllPaginated>()
+                        }
+                    });
                 }
                 var connectionsFound = await _connectionService.GetAllPaginatedAsync(model);
-
 
                 return new GetAllPaginatedConnectionCommandResponse(
                     new ConnectionGetAllPaginatedResponse

@@ -1,4 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Adapter;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
@@ -8,6 +9,7 @@ using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Adapter.AdapterCommands;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities.EntitiesCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Adapter
 {
@@ -271,12 +273,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                 var rows = await _adapterService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
+                    return new GetAllPaginatedAdapterCommandResponse(
+                    new AdapterGetAllPaginatedResponse
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                        Data = new AdapterGetAllRows
                         {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
-                        });
+                            Total_rows = rows,
+                            Rows = Enumerable.Empty<AdapterGetAllPaginated>()
+                        }
+                    });
                 }
                 var adaptersFound = await _adapterService.GetAllPaginatedAsync(model);
 

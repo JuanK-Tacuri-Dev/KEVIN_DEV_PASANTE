@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Property;
+﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Property;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
@@ -7,6 +8,7 @@ using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities.EntitiesCommands;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Property.PropertyCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Property
@@ -123,7 +125,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                     {
                         Code = (int)ResponseCode.DeletedSuccessfully,
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
-                        Data = new PropertyDelete 
+                        Data = new PropertyDelete
                         {
                             Id = propertyFound.id
                         }
@@ -307,15 +309,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                 var rows = await _propertyService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
+                    return new GetAllPaginatedPropertyCommandResponse(
+                    new PropertyGetAllPaginatedResponse
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                        Data = new PropertyGetAllRows
                         {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
-                        });
+                            Total_rows = rows,
+                            Rows = Enumerable.Empty<PropertyGetAllPaginated>()
+                        }
+                    });
                 }
                 var propertiesFound = await _propertyService.GetAllPaginatedAsync(model);
-
 
                 return new GetAllPaginatedPropertyCommandResponse(
                     new PropertyGetAllPaginatedResponse
@@ -325,14 +331,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                         Data = new PropertyGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = propertiesFound.Select(c => new PropertyGetAllPaginated
+                            Rows = propertiesFound.Select(property => new PropertyGetAllPaginated
                             {
-                                Id = c.id,
-                                Name = c.property_name,
-                                Code = c.property_code,
-                                TypeId = c.type_id,
-                                EntityId = c.entity_id,
-                                StatusId = c.status_id
+                                Id = property.id,
+                                Name = property.property_name,
+                                Code = property.property_code,
+                                TypeId = property.type_id,
+                                EntityId = property.entity_id,
+                                StatusId = property.status_id
                             }).ToList()
                         }
                     });

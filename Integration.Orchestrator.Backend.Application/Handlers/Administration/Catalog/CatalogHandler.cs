@@ -1,4 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Catalog;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
@@ -7,6 +8,7 @@ using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Catalog.CatalogCommands;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities.EntitiesCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Catalog
 {
@@ -273,15 +275,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                 var rows = await _catalogService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
+                    return new GetAllPaginatedCatalogCommandResponse(
+                    new CatalogGetAllPaginatedResponse
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                        Data = new CatalogGetAllRows
                         {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
-                        });
+                            Total_rows = rows,
+                            Rows = Enumerable.Empty<CatalogGetAllPaginated>()
+                        }
+                    });
                 }
                 var catalogsFound = await _catalogService.GetAllPaginatedAsync(model);
-
 
                 return new GetAllPaginatedCatalogCommandResponse(
                     new CatalogGetAllPaginatedResponse

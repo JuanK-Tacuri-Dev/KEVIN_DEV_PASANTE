@@ -9,10 +9,10 @@
         public Guid TypeId { get; set; }
         public Guid ConnectionId { get; set; }
         public Guid StatusId { get; set; }
-        public List<EntitiesResponse> Entities { get; set; }
+        public List<EntityResponse> Entities { get; set; }
     }
 
-    public class EntitiesResponse
+    public class EntityResponse
     {
         public Guid Id { get; set; }
         public List<PropertiesResponse> Properties { get; set; }

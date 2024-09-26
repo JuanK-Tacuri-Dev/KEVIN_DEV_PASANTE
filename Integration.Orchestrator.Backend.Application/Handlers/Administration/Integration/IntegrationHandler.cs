@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Integration;
+﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Integration;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
@@ -8,6 +9,7 @@ using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
 using System.Net;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities.EntitiesCommands;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Integration.IntegrationCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Integration
@@ -188,15 +190,20 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var model = request.Integration.Adapt<PaginatedModel>();
                 var rows = await _integrationService.GetTotalRowsAsync(model);
                 if (rows == 0)
-                    throw new OrchestratorArgumentException(string.Empty,
-                            new DetailsArgumentErrors()
-                            {
-                                Code = (int)ResponseCode.NotFoundSuccessfully,
-                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
-                            });
-
+                {
+                    return new GetAllPaginatedIntegrationCommandResponse(
+                    new IntegrationGetAllPaginatedResponse
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                        Data = new IntegrationGetAllRows
+                        {
+                            Total_rows = rows,
+                            Rows = Enumerable.Empty<IntegrationGetAllPaginated>()
+                        }
+                    });
+                }
                 var integrationsFound = await _integrationService.GetAllPaginatedAsync(model);
-
 
                 return new GetAllPaginatedIntegrationCommandResponse(
                     new IntegrationGetAllPaginatedResponse
