@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStatus;
+﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
+using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStatus;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
@@ -6,6 +7,7 @@ using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities.EntitiesCommands;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization.SynchronizationStatusCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization
@@ -177,15 +179,20 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                 var model = request.Synchronization.Adapt<PaginatedModel>();
                 var rows = await _synchronizationStatesService.GetTotalRowsAsync(model);
                 if (rows == 0)
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
+                {
+                    return new GetAllPaginatedSynchronizationStatusCommandResponse(
+                    new SynchronizationStatusGetAllPaginatedResponse
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                        Data = new SynchronizationStatusGetAllRows
                         {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
-                        });
-
+                            Total_rows = rows,
+                            Rows = Enumerable.Empty<SynchronizationStatusGetAllPaginated>()
+                        }
+                    });
+                }
                 var synchronizationsStateFound = await _synchronizationStatesService.GetAllPaginatedAsync(model);
-
 
                 return new GetAllPaginatedSynchronizationStatusCommandResponse(
                     new SynchronizationStatusGetAllPaginatedResponse

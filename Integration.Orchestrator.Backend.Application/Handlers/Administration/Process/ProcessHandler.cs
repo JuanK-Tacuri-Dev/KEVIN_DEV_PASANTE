@@ -5,10 +5,8 @@ using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces
 using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
-using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
-using System.Net;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Process.ProcessCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Process
@@ -50,7 +48,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             ConnectionId = processMap.connection_id,
                             StatusId = processMap.status_id,
                             Entities = processMap.entities.Select(e =>
-                            new EntitiesResponse
+                            new EntityResponse
                             {
                                 Id = e.id,
                                 Properties = e.Properties.Select(p => new PropertiesResponse
@@ -110,7 +108,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 ConnectionId = processFound.connection_id,
                                 StatusId = processFound.status_id,
                                 Entities = processFound.entities.Select(e =>
-                                new EntitiesResponse
+                                new EntityResponse
                                 {
                                     Id = e.id,
                                     Properties = e.Properties.Select(p => new PropertiesResponse
@@ -204,7 +202,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             ConnectionId = processFound.connection_id,
                             StatusId = processFound.status_id,
                             Entities = processFound.entities.Select(e =>
-                            new EntitiesResponse
+                            new EntityResponse
                             {
                                 Id = e.id,
                                 Properties = e.Properties.Select(p => new PropertiesResponse
@@ -261,7 +259,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             ConnectionId = processFound.connection_id,
                             StatusId = processFound.status_id,
                             Entities = processFound.entities.Select(e =>
-                            new EntitiesResponse
+                            new EntityResponse
                             {
                                 Id = e.id,
                                 Properties = e.Properties.Select(p => new PropertiesResponse
@@ -318,7 +316,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             ConnectionId = process.connection_id,
                             StatusId = process.status_id,
                             Entities = process.entities.Select(e =>
-                            new EntitiesResponse
+                            new EntityResponse
                             {
                                 Id = e.id,
                                 Properties = e.Properties.Select(p => new PropertiesResponse
@@ -354,12 +352,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var rows = await _processService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
+                    return new GetAllPaginatedProcessCommandResponse(
+                    new ProcessGetAllPaginatedResponse
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                        Data = new ProcessGetAllRows
                         {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
-                        });
+                            Total_rows = rows,
+                            Rows = Enumerable.Empty<ProcessGetAllPaginated>()
+                        }
+                    });
                 }
                 var processesFound = await _processService.GetAllPaginatedAsync(model);
 
@@ -372,17 +375,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new ProcessGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = processesFound.Select(p => new ProcessGetAllPaginated
+                            Rows = processesFound.Select(process => new ProcessGetAllPaginated
                             {
-                                Id = p.id,
-                                Name = p.process_name,
-                                Description = p.process_description,
-                                Code = p.process_code,
-                                TypeId = p.process_type_id,
-                                ConnectionId = p.connection_id,
-                                StatusId = p.status_id,
-                                Entities = p.entities.Select(e =>
-                                new EntitiesResponse
+                                Id = process.id,
+                                Name = process.process_name,
+                                Description = process.process_description,
+                                Code = process.process_code,
+                                TypeId = process.process_type_id,
+                                ConnectionId = process.connection_id,
+                                StatusId = process.status_id,
+                                Entities = process.entities.Select(e =>
+                                new EntityResponse
                                 {
                                     Id = e.id,
                                     Properties = e.Properties.Select(p => new PropertiesResponse
