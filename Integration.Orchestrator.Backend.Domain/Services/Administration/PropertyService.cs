@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+﻿using Integration.Orchestrator.Backend.Domain.Commons;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
@@ -57,6 +58,11 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         public async Task<IEnumerable<PropertyEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
         {
+            if (string.IsNullOrEmpty(paginatedModel.Sort_field))
+            {
+                paginatedModel.Sort_field = nameof(PropertyEntity.created_at);
+                paginatedModel.Sort_order = SortOrdering.Descending;
+            }
             var spec = new PropertySpecification(paginatedModel);
             return await _propertyRepository.GetAllAsync(spec);
         }

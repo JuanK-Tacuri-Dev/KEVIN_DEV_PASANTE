@@ -1,5 +1,4 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Connection;
-using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
@@ -9,7 +8,6 @@ using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection.ConnectionCommands;
-using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities.EntitiesCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection
 {
