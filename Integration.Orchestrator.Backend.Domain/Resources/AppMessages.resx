@@ -142,7 +142,7 @@
     <value>Los datos del operador se obtuvieron correctamente</value>
   </data>
   <data name="Api_ProcessResponse" xml:space="preserve">
-    <value>    Los datos del proceso se obtuvieron con éxito</value>
+    <value>Los datos del proceso se obtuvieron con éxito</value>
   </data>
   <data name="Api_PropertyResponse" xml:space="preserve">
     <value>Los datos de la propiedad se obtuvieron correctamente</value>

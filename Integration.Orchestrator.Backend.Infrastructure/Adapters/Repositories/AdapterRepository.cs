@@ -87,5 +87,16 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .CountDocumentsAsync();
         }
 
+        public async Task<bool> ValidateAdapterNameVersion(AdapterEntity entity)
+        {
+            var filter = Builders<AdapterEntity>.Filter.And(
+                Builders<AdapterEntity>.Filter.Eq(e => e.adapter_name, entity.adapter_name),
+                Builders<AdapterEntity>.Filter.Eq(e => e.adapter_version, entity.adapter_version)
+            );
+
+            var count = await _collection.Find(filter).CountDocumentsAsync();
+            return count >= 1;
+        }
+
     }
 }

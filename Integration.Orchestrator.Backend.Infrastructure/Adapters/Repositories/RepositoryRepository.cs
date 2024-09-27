@@ -78,5 +78,17 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .CountDocumentsAsync();
         }
 
+        public async Task<bool> ValidateDbPortUser(RepositoryEntity entity)
+        {
+            var filter = Builders<RepositoryEntity>.Filter.And(
+                Builders<RepositoryEntity>.Filter.Eq(e => e.repository_databaseName, entity.repository_databaseName),
+                Builders<RepositoryEntity>.Filter.Eq(e => e.repository_port, entity.repository_port),
+                Builders<RepositoryEntity>.Filter.Eq(e => e.repository_user, entity.repository_user)
+            );
+
+            var count = await _collection.Find(filter).CountDocumentsAsync();
+            return count >= 1;
+        }
+
     }
 }
