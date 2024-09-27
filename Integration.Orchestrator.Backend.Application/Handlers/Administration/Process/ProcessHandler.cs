@@ -91,7 +91,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             });
 
                 var processMap = await MapProcess(request.Process.ProcessRequest, request.Id);
-                await _processService.UpdateAsync(processFound);
+                await _processService.UpdateAsync(processMap);
 
                 return new UpdateProcessCommandResponse(
                         new ProcessUpdateResponse
@@ -100,14 +100,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new ProcessUpdate
                             {
-                                Id = processFound.id,
-                                Name = processFound.process_name,
-                                Description = processFound.process_description,
-                                Code = processMap.process_code,
-                                TypeId = processFound.process_type_id,
-                                ConnectionId = processFound.connection_id,
-                                StatusId = processFound.status_id,
-                                Entities = processFound.entities.Select(e =>
+                                Id = processMap.id,
+                                Name = processMap.process_name,
+                                Description = processMap.process_description,
+                                Code = processFound.process_code,
+                                TypeId = processMap.process_type_id,
+                                ConnectionId = processMap.connection_id,
+                                StatusId = processMap.status_id,
+                                Entities = processMap.entities.Select(e =>
                                 new EntityResponse
                                 {
                                     Id = e.id,
@@ -349,6 +349,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             try
             {
                 var model = request.Process.Adapt<PaginatedModel>();
+                
                 var rows = await _processService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {

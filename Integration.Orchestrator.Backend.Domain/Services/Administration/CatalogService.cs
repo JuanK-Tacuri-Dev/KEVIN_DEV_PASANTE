@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+﻿using Integration.Orchestrator.Backend.Domain.Commons;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
@@ -51,6 +52,11 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         public async Task<IEnumerable<CatalogEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
         {
+            if (string.IsNullOrEmpty(paginatedModel.Sort_field))
+            {
+                paginatedModel.Sort_field = nameof(CatalogEntity.created_at);
+                paginatedModel.Sort_order = SortOrdering.Descending;
+            }
             var spec = new CatalogSpecification(paginatedModel);
             return await _processRepository.GetAllAsync(spec);
         }

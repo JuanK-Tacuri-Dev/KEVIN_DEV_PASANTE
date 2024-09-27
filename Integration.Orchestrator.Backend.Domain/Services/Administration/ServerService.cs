@@ -53,6 +53,11 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         public async Task<IEnumerable<ServerEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
         {
+            if (string.IsNullOrEmpty(paginatedModel.Sort_field))
+            {
+                paginatedModel.Sort_field = nameof(ServerEntity.created_at);
+                paginatedModel.Sort_order = SortOrdering.Descending;
+            }
             var spec = new ServerSpecification(paginatedModel);
             return await _serverRepository.GetAllAsync(spec);
         }

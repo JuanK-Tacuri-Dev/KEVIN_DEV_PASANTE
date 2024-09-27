@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+﻿using Integration.Orchestrator.Backend.Domain.Commons;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
@@ -50,12 +51,19 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         public async Task<IEnumerable<ProcessEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
         {
+            if (string.IsNullOrEmpty(paginatedModel.Sort_field))
+            {
+                paginatedModel.Sort_field = nameof(ProcessEntity.created_at);
+                paginatedModel.Sort_order = SortOrdering.Descending;
+            }
+
             var spec = new ProcessSpecification(paginatedModel);
             return await _processRepository.GetAllAsync(spec);
         }
 
         public async Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel)
         {
+            
             var spec = new ProcessSpecification(paginatedModel);
             return await _processRepository.GetTotalRows(spec);
         }
