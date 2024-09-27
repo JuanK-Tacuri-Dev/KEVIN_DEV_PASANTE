@@ -1,18 +1,18 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Catalog;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
-using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Catalog.CatalogCommands;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities.EntitiesCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Catalog
 {
-    public class CatalogHandler(ICatalogService<CatalogEntity> catalogService,
-        ICodeConfiguratorService codeConfiguratorService)
+    public class CatalogHandler(ICatalogService<CatalogEntity> catalogService)
         :
         IRequestHandler<CreateCatalogCommandRequest, CreateCatalogCommandResponse>,
         IRequestHandler<UpdateCatalogCommandRequest, UpdateCatalogCommandResponse>,
@@ -23,14 +23,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         IRequestHandler<GetAllPaginatedCatalogCommandRequest, GetAllPaginatedCatalogCommandResponse>
     {
         public readonly ICatalogService<CatalogEntity> _catalogService = catalogService;
-        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateCatalogCommandResponse> Handle(CreateCatalogCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var catalogEntity = await MapCatalog(request.Catalog.CatalogRequest, Guid.NewGuid(), true);
-                await _catalogService.InsertAsync(catalogEntity);
+                var catalogMap = MapCatalog(request.Catalog.CatalogRequest, Guid.NewGuid(), true);
+                await _catalogService.InsertAsync(catalogMap);
 
                 return new CreateCatalogCommandResponse(
                     new CatalogCreateResponse
@@ -39,14 +38,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new CatalogCreate
                         {
-                            Id = catalogEntity.id,
-                            Code = catalogEntity.catalog_code,
-                            Name = catalogEntity.catalog_name,
-                            Value = catalogEntity.catalog_value,
-                            FatherCode = catalogEntity.father_code,
-                            Detail = catalogEntity.catalog_detail,
-                            IsFather = catalogEntity.is_father,
-                            StatusId = catalogEntity.status_id
+                            Id = catalogMap.id,
+                            Code = catalogMap.catalog_code,
+                            Name = catalogMap.catalog_name,
+                            Value = catalogMap.catalog_value,
+                            FatherCode = catalogMap.father_code,
+                            Detail = catalogMap.catalog_detail,
+                            IsFather = catalogMap.is_father,
+                            StatusId = catalogMap.status_id
                         }
                     });
             }
@@ -64,8 +63,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         {
             try
             {
-                var catalogById = await _catalogService.GetByIdAsync(request.Id);
-                if (catalogById == null)
+                var catalogFound = await _catalogService.GetByIdAsync(request.Id);
+                if (catalogFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -74,8 +73,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Data = request.Catalog.CatalogRequest
                         });
 
-                var catalogEntity = await MapCatalog(request.Catalog.CatalogRequest, request.Id);
-                await _catalogService.UpdateAsync(catalogEntity);
+                var catalogMap = MapCatalog(request.Catalog.CatalogRequest, request.Id);
+                await _catalogService.UpdateAsync(catalogMap);
 
                 return new UpdateCatalogCommandResponse(
                         new CatalogUpdateResponse
@@ -84,14 +83,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new CatalogUpdate
                             {
-                                Id = catalogEntity.id,
-                                Code = catalogById.catalog_code,
-                                Name = catalogEntity.catalog_name,
-                                Value = catalogEntity.catalog_value,
-                                FatherCode = catalogEntity.father_code,
-                                Detail = catalogEntity.catalog_detail,
-                                IsFather = catalogEntity.is_father,
-                                StatusId = catalogEntity.status_id
+                                Id = catalogMap.id,
+                                Code = catalogFound.catalog_code,
+                                Name = catalogMap.catalog_name,
+                                Value = catalogMap.catalog_value,
+                                FatherCode = catalogMap.father_code,
+                                Detail = catalogMap.catalog_detail,
+                                IsFather = catalogMap.is_father,
+                                StatusId = catalogMap.status_id
                             }
                         });
             }
@@ -109,8 +108,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         {
             try
             {
-                var catalogById = await _catalogService.GetByIdAsync(request.Catalog.Id);
-                if (catalogById == null)
+                var cataloFound = await _catalogService.GetByIdAsync(request.Catalog.Id);
+                if (cataloFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -119,7 +118,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Data = request.Catalog
                         });
 
-                await _catalogService.DeleteAsync(catalogById);
+                await _catalogService.DeleteAsync(cataloFound);
 
                 return new DeleteCatalogCommandResponse(
                     new CatalogDeleteResponse
@@ -128,7 +127,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
                         Data = new CatalogDelete
                         {
-                            Id = catalogById.id,
+                            Id = cataloFound.id,
                         }
                     });
             }
@@ -146,8 +145,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         {
             try
             {
-                var catalogById = await _catalogService.GetByIdAsync(request.Catalog.Id);
-                if (catalogById == null)
+                var catalogFound = await _catalogService.GetByIdAsync(request.Catalog.Id);
+                if (catalogFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -163,14 +162,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new CatalogGetById
                         {
-                            Id = catalogById.id,
-                            Code = catalogById.catalog_code,
-                            Name = catalogById.catalog_name,
-                            Value = catalogById.catalog_value,
-                            FatherCode = catalogById.father_code,
-                            Detail = catalogById.catalog_detail,
-                            IsFather = catalogById.is_father,
-                            StatusId = catalogById.status_id
+                            Id = catalogFound.id,
+                            Code = catalogFound.catalog_code,
+                            Name = catalogFound.catalog_name,
+                            Value = catalogFound.catalog_value,
+                            FatherCode = catalogFound.father_code,
+                            Detail = catalogFound.catalog_detail,
+                            IsFather = catalogFound.is_father,
+                            StatusId = catalogFound.status_id
                         }
                     });
             }
@@ -188,8 +187,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         {
             try
             {
-                var catalogByType = await _catalogService.GetByFatherAsync(request.Catalog.FatherCode);
-                if (catalogByType == null)
+                var catalogFound = await _catalogService.GetByFatherAsync(request.Catalog.FatherCode);
+                if (catalogFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -203,16 +202,16 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                     {
                         Code = (int)ResponseCode.FoundSuccessfully,
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
-                        Data = catalogByType.Select(p => new CatalogGetByType
+                        Data = catalogFound.Select(catalog => new CatalogGetByType
                         {
-                            Id = p.id,
-                            Code = p.catalog_code,
-                            Name = p.catalog_name,
-                            Value = p.catalog_value,
-                            FatherCode = p.father_code,
-                            Detail = p.catalog_detail,
-                            IsFather = p.is_father,
-                            StatusId = p.status_id
+                            Id = catalog.id,
+                            Code = catalog.catalog_code,
+                            Name = catalog.catalog_name,
+                            Value = catalog.catalog_value,
+                            FatherCode = catalog.father_code,
+                            Detail = catalog.catalog_detail,
+                            IsFather = catalog.is_father,
+                            StatusId = catalog.status_id
                         }).ToList()
                     });
             }
@@ -230,8 +229,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         {
             try
             {
-                var catalogByCode = await _catalogService.GetByCodeAsync(request.Catalog.Code);
-                if (catalogByCode == null)
+                var catalogFound = await _catalogService.GetByCodeAsync(request.Catalog.Code);
+                if (catalogFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -247,14 +246,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new CatalogGetByCode
                         {
-                            Id = catalogByCode.id,
-                            Code = catalogByCode.catalog_code,
-                            Name = catalogByCode.catalog_name,
-                            Value = catalogByCode.catalog_value,
-                            FatherCode = catalogByCode.father_code,
-                            Detail = catalogByCode.catalog_detail,
-                            IsFather = catalogByCode.is_father,
-                            StatusId = catalogByCode.status_id
+                            Id = catalogFound.id,
+                            Code = catalogFound.catalog_code,
+                            Name = catalogFound.catalog_name,
+                            Value = catalogFound.catalog_value,
+                            FatherCode = catalogFound.father_code,
+                            Detail = catalogFound.catalog_detail,
+                            IsFather = catalogFound.is_father,
+                            StatusId = catalogFound.status_id
                         }
                     });
             }
@@ -276,15 +275,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                 var rows = await _catalogService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
+                    return new GetAllPaginatedCatalogCommandResponse(
+                    new CatalogGetAllPaginatedResponse
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                        Data = new CatalogGetAllRows
                         {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
-                        });
+                            Total_rows = rows,
+                            Rows = Enumerable.Empty<CatalogGetAllPaginated>()
+                        }
+                    });
                 }
-                var result = await _catalogService.GetAllPaginatedAsync(model);
-
+                var catalogsFound = await _catalogService.GetAllPaginatedAsync(model);
 
                 return new GetAllPaginatedCatalogCommandResponse(
                     new CatalogGetAllPaginatedResponse
@@ -294,16 +297,16 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                         Data = new CatalogGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = result.Select(p => new CatalogGetAllPaginated
+                            Rows = catalogsFound.Select(catalog => new CatalogGetAllPaginated
                             {
-                                Id = p.id,
-                                Code = p.catalog_code,
-                                Name = p.catalog_name,
-                                Value = p.catalog_value,
-                                FatherCode = p.father_code,
-                                Detail = p.catalog_detail,
-                                IsFather = p.is_father,
-                                StatusId = p.status_id
+                                Id = catalog.id,
+                                Code = catalog.catalog_code,
+                                Name = catalog.catalog_name,
+                                Value = catalog.catalog_value,
+                                FatherCode = catalog.father_code,
+                                Detail = catalog.catalog_detail,
+                                IsFather = catalog.is_father,
+                                StatusId = catalog.status_id
                             }).ToList()
                         }
                     });
@@ -318,9 +321,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
             }
         }
 
-        private async Task<CatalogEntity> MapCatalog(CatalogCreateRequest request, Guid id, bool? create = null)
+        private CatalogEntity MapCatalog(CatalogCreateRequest request, Guid id, bool? create = null)
         {
-            var catalogEntity = new CatalogEntity()
+            return new CatalogEntity()
             {
                 id = id,
                 catalog_code = request.Code,
@@ -330,7 +333,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                 father_code = request.FatherCode,
                 status_id = request.StatusId
             };
-            return catalogEntity;
         }
     }
 }

@@ -1204,7 +1204,7 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The objects is required.
+        ///   Looks up a localized string similar to El objeto es requerido.
         /// </summary>
         public static string Process_Objects_Required {
             get {

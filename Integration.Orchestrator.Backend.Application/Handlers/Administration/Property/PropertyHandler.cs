@@ -30,8 +30,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
         {
             try
             {
-                var propertyEntity = await MapProperty(request.Property.PropertyRequest, Guid.NewGuid(), true);
-                await _propertyService.InsertAsync(propertyEntity);
+                var propertyMap = await MapProperty(request.Property.PropertyRequest, Guid.NewGuid(), true);
+                await _propertyService.InsertAsync(propertyMap);
 
                 return new CreatePropertyCommandResponse(
                     new PropertyCreateResponse
@@ -40,12 +40,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new PropertyCreate
                         {
-                            Id = propertyEntity.id,
-                            Code = propertyEntity.property_code,
-                            Name = propertyEntity.property_name,
-                            TypeId = propertyEntity.type_id,
-                            EntityId = propertyEntity.entity_id,
-                            StatusId = propertyEntity.status_id
+                            Id = propertyMap.id,
+                            Code = propertyMap.property_code,
+                            Name = propertyMap.property_name,
+                            TypeId = propertyMap.type_id,
+                            EntityId = propertyMap.entity_id,
+                            StatusId = propertyMap.status_id
                         }
                     });
             }
@@ -63,8 +63,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
         {
             try
             {
-                var propertyById = await _propertyService.GetByIdAsync(request.Id);
-                if (propertyById == null)
+                var propertyFound = await _propertyService.GetByIdAsync(request.Id);
+                if (propertyFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -73,8 +73,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                                 Data = request.Property.PropertyRequest
                             });
 
-                var propertyEntity = await MapProperty(request.Property.PropertyRequest, request.Id);
-                await _propertyService.UpdateAsync(propertyEntity);
+                var propertyMap = await MapProperty(request.Property.PropertyRequest, request.Id);
+                await _propertyService.UpdateAsync(propertyMap);
 
                 return new UpdatePropertyCommandResponse(
                         new PropertyUpdateResponse
@@ -83,12 +83,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                             Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new PropertyUpdate
                             {
-                                Id = propertyEntity.id,
-                                Code = propertyById.property_code,
-                                Name = propertyEntity.property_name,
-                                TypeId = propertyEntity.type_id,
-                                EntityId = propertyEntity.entity_id,
-                                StatusId = propertyEntity.status_id
+                                Id = propertyMap.id,
+                                Code = propertyFound.property_code,
+                                Name = propertyMap.property_name,
+                                TypeId = propertyMap.type_id,
+                                EntityId = propertyMap.entity_id,
+                                StatusId = propertyMap.status_id
                             }
                         });
             }
@@ -106,8 +106,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
         {
             try
             {
-                var propertyById = await _propertyService.GetByIdAsync(request.Property.Id);
-                if (propertyById == null)
+                var propertyFound = await _propertyService.GetByIdAsync(request.Property.Id);
+                if (propertyFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -116,16 +116,16 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                                 Data = request.Property
                             });
 
-                await _propertyService.DeleteAsync(propertyById);
+                await _propertyService.DeleteAsync(propertyFound);
 
                 return new DeletePropertyCommandResponse(
                     new PropertyDeleteResponse
                     {
                         Code = (int)ResponseCode.DeletedSuccessfully,
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
-                        Data = new PropertyDelete 
+                        Data = new PropertyDelete
                         {
-                            Id = propertyById.id
+                            Id = propertyFound.id
                         }
                     });
             }
@@ -143,8 +143,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
         {
             try
             {
-                var propertyById = await _propertyService.GetByIdAsync(request.Property.Id);
-                if (propertyById == null)
+                var propertyFound = await _propertyService.GetByIdAsync(request.Property.Id);
+                if (propertyFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -160,12 +160,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new PropertyGetById
                         {
-                            Id = propertyById.id,
-                            Name = propertyById.property_name,
-                            Code = propertyById.property_code,
-                            TypeId = propertyById.type_id,
-                            EntityId = propertyById.entity_id,
-                            StatusId = propertyById.status_id
+                            Id = propertyFound.id,
+                            Name = propertyFound.property_name,
+                            Code = propertyFound.property_code,
+                            TypeId = propertyFound.type_id,
+                            EntityId = propertyFound.entity_id,
+                            StatusId = propertyFound.status_id
                         }
                     });
             }
@@ -183,8 +183,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
         {
             try
             {
-                var propertyByCode = await _propertyService.GetByCodeAsync(request.Property.Code);
-                if (propertyByCode == null)
+                var propertyFound = await _propertyService.GetByCodeAsync(request.Property.Code);
+                if (propertyFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -200,12 +200,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new PropertyGetByCode
                         {
-                            Id = propertyByCode.id,
-                            Name = propertyByCode.property_name,
-                            Code = propertyByCode.property_code,
-                            TypeId = propertyByCode.type_id,
-                            EntityId = propertyByCode.entity_id,
-                            StatusId = propertyByCode.status_id
+                            Id = propertyFound.id,
+                            Name = propertyFound.property_name,
+                            Code = propertyFound.property_code,
+                            TypeId = propertyFound.type_id,
+                            EntityId = propertyFound.entity_id,
+                            StatusId = propertyFound.status_id
                         }
                     });
             }
@@ -223,8 +223,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
         {
             try
             {
-                var propertyByType = await _propertyService.GetByTypeIdAsync(request.Property.TypeId);
-                if (propertyByType == null)
+                var propertyFound = await _propertyService.GetByTypeIdAsync(request.Property.TypeId);
+                if (propertyFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -238,14 +238,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                     {
                         Code = (int)ResponseCode.FoundSuccessfully,
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
-                        Data = propertyByType.Select(c => new PropertyGetByType
+                        Data = propertyFound.Select(property => new PropertyGetByType
                         {
-                            Id = c.id,
-                            Name = c.property_name,
-                            Code = c.property_code,
-                            TypeId = c.type_id,
-                            EntityId = c.entity_id,
-                            StatusId = c.status_id
+                            Id = property.id,
+                            Name = property.property_name,
+                            Code = property.property_code,
+                            TypeId = property.type_id,
+                            EntityId = property.entity_id,
+                            StatusId = property.status_id
                         }).ToList()
                     });
             }
@@ -263,8 +263,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
         {
             try
             {
-                var propertyByEntity = await _propertyService.GetByEntityIdAsync(request.Property.EntityId);
-                if (propertyByEntity == null)
+                var propertyFound = await _propertyService.GetByEntityIdAsync(request.Property.EntityId);
+                if (propertyFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -278,14 +278,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                     {
                         Code = (int)ResponseCode.FoundSuccessfully,
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
-                        Data = propertyByEntity.Select(c => new PropertyGetByEntity
+                        Data = propertyFound.Select(property => new PropertyGetByEntity
                         {
-                            Id = c.id,
-                            Name = c.property_name,
-                            Code = c.property_code,
-                            TypeId = c.type_id,
-                            EntityId = c.entity_id,
-                            StatusId = c.status_id
+                            Id = property.id,
+                            Name = property.property_name,
+                            Code = property.property_code,
+                            TypeId = property.type_id,
+                            EntityId = property.entity_id,
+                            StatusId = property.status_id
                         }).ToList()
                     });
             }
@@ -299,7 +299,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
             }
         }
 
-
         public async Task<GetAllPaginatedPropertyCommandResponse> Handle(GetAllPaginatedPropertyCommandRequest request, CancellationToken cancellationToken)
         {
             try
@@ -308,15 +307,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                 var rows = await _propertyService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
+                    return new GetAllPaginatedPropertyCommandResponse(
+                    new PropertyGetAllPaginatedResponse
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                        Data = new PropertyGetAllRows
                         {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
-                        });
+                            Total_rows = rows,
+                            Rows = Enumerable.Empty<PropertyGetAllPaginated>()
+                        }
+                    });
                 }
-                var result = await _propertyService.GetAllPaginatedAsync(model);
-
+                var propertiesFound = await _propertyService.GetAllPaginatedAsync(model);
 
                 return new GetAllPaginatedPropertyCommandResponse(
                     new PropertyGetAllPaginatedResponse
@@ -326,14 +329,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                         Data = new PropertyGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = result.Select(c => new PropertyGetAllPaginated
+                            Rows = propertiesFound.Select(property => new PropertyGetAllPaginated
                             {
-                                Id = c.id,
-                                Name = c.property_name,
-                                Code = c.property_code,
-                                TypeId = c.type_id,
-                                EntityId = c.entity_id,
-                                StatusId = c.status_id
+                                Id = property.id,
+                                Name = property.property_name,
+                                Code = property.property_code,
+                                TypeId = property.type_id,
+                                EntityId = property.entity_id,
+                                StatusId = property.status_id
                             }).ToList()
                         }
                     });

@@ -9,13 +9,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.I
         public CreateIntegrationCommandRequestValidator()
         {
             RuleFor(request => request.Integration.IntegrationRequest.Name)
-            .NotEmpty().WithMessage(AppMessages.Integration_Name_Required);
+            .NotEmpty().WithMessage(AppMessages.Integration_Name_Required)
+            .MaximumLength(100).WithMessage(string.Format(AppMessages.Application_Validator_MaxLength, 100));
 
             RuleFor(request => request.Integration.IntegrationRequest.StatusId)
             .NotEmpty().WithMessage(AppMessages.Integration_Status_Required);
 
             RuleFor(request => request.Integration.IntegrationRequest.Observations)
-            .NotEmpty().WithMessage(AppMessages.Integration_Observations_Required);
+            .MaximumLength(100).WithMessage(string.Format(AppMessages.Application_Validator_MaxLength, 100));
 
             RuleFor(request => request.Integration.IntegrationRequest.UserId)
             .NotEmpty().WithMessage(AppMessages.Integration_UserId_Required);

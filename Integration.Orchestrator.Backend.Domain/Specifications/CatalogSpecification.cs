@@ -27,6 +27,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<CatalogEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<CatalogEntity, object>>>
         {
+            { nameof(CatalogEntity.catalog_code).Split("_")[1], x => x.catalog_code },
             { nameof(CatalogEntity.catalog_name).Split("_")[1], x => x.catalog_name },
             { nameof(CatalogEntity.catalog_detail).Split("_")[1], x => x.catalog_detail },
             { nameof(CatalogEntity.catalog_value).Split("_")[1], x => x.catalog_value },
@@ -34,8 +35,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         };
         private void SetupPagination(PaginatedModel model)
         {
-            Skip = (model.First - 1) * model.Rows;
-            Limit = model.Rows;
+            if (model.Rows > 0)
+            {
+                Skip = model.First;
+                Limit = model.Rows;
+            }
         }
 
         private void SetupOrdering(PaginatedModel model)

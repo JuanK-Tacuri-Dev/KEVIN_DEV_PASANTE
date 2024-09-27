@@ -5,10 +5,8 @@ using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces
 using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
-using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
-using System.Net;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Process.ProcessCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Process
@@ -32,8 +30,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var processEntity = await MapProcess(request.Process.ProcessRequest, Guid.NewGuid(), true);
-                await _processService.InsertAsync(processEntity);
+                var processMap = await MapProcess(request.Process.ProcessRequest, Guid.NewGuid(), true);
+                await _processService.InsertAsync(processMap);
 
                 return new CreateProcessCommandResponse(
                     new ProcessCreateResponse
@@ -42,15 +40,15 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new ProcessCreate
                         {
-                            Id = processEntity.id,
-                            Name = processEntity.process_name,
-                            Description = processEntity.process_description,
-                            Code = processEntity.process_code,
-                            TypeId = processEntity.process_type_id,
-                            ConnectionId = processEntity.connection_id,
-                            StatusId = processEntity.status_id,
-                            Entities = processEntity.entities.Select(e =>
-                            new EntitiesResponse
+                            Id = processMap.id,
+                            Name = processMap.process_name,
+                            Description = processMap.process_description,
+                            Code = processMap.process_code,
+                            TypeId = processMap.process_type_id,
+                            ConnectionId = processMap.connection_id,
+                            StatusId = processMap.status_id,
+                            Entities = processMap.entities.Select(e =>
+                            new EntityResponse
                             {
                                 Id = e.id,
                                 Properties = e.Properties.Select(p => new PropertiesResponse
@@ -82,8 +80,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var processById = await _processService.GetByIdAsync(request.Id);
-                if (processById == null)
+                var processFound = await _processService.GetByIdAsync(request.Id);
+                if (processFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -92,8 +90,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Data = request.Process.ProcessRequest
                             });
 
-                var processEntity = await MapProcess(request.Process.ProcessRequest, request.Id);
-                await _processService.UpdateAsync(processEntity);
+                var processMap = await MapProcess(request.Process.ProcessRequest, request.Id);
+                await _processService.UpdateAsync(processMap);
 
                 return new UpdateProcessCommandResponse(
                         new ProcessUpdateResponse
@@ -102,15 +100,15 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new ProcessUpdate
                             {
-                                Id = processEntity.id,
-                                Name = processEntity.process_name,
-                                Description = processEntity.process_description,
-                                Code = processEntity.process_code,
-                                TypeId = processEntity.process_type_id,
-                                ConnectionId = processEntity.connection_id,
-                                StatusId = processEntity.status_id,
-                                Entities = processEntity.entities.Select(e =>
-                                new EntitiesResponse
+                                Id = processMap.id,
+                                Name = processMap.process_name,
+                                Description = processMap.process_description,
+                                Code = processFound.process_code,
+                                TypeId = processMap.process_type_id,
+                                ConnectionId = processMap.connection_id,
+                                StatusId = processMap.status_id,
+                                Entities = processMap.entities.Select(e =>
+                                new EntityResponse
                                 {
                                     Id = e.id,
                                     Properties = e.Properties.Select(p => new PropertiesResponse
@@ -142,8 +140,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var processById = await _processService.GetByIdAsync(request.Process.Id);
-                if (processById == null)
+                var processFound = await _processService.GetByIdAsync(request.Process.Id);
+                if (processFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -152,7 +150,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Data = request.Process
                             });
 
-                await _processService.DeleteAsync(processById);
+                await _processService.DeleteAsync(processFound);
 
                 return new DeleteProcessCommandResponse(
                     new ProcessDeleteResponse
@@ -161,7 +159,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
                         Data = new ProcessDelete
                         {
-                            Id = processById.id,
+                            Id = processFound.id,
                         }
                     });
             }
@@ -179,8 +177,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var processById = await _processService.GetByIdAsync(request.Process.Id);
-                if (processById == null)
+                var processFound = await _processService.GetByIdAsync(request.Process.Id);
+                if (processFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -196,15 +194,15 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new ProcessGetById
                         {
-                            Id = processById.id,
-                            Name = processById.process_name,
-                            Description = processById.process_description,
-                            Code = processById.process_code,
-                            TypeId = processById.process_type_id,
-                            ConnectionId = processById.connection_id,
-                            StatusId = processById.status_id,
-                            Entities = processById.entities.Select(e =>
-                            new EntitiesResponse
+                            Id = processFound.id,
+                            Name = processFound.process_name,
+                            Description = processFound.process_description,
+                            Code = processFound.process_code,
+                            TypeId = processFound.process_type_id,
+                            ConnectionId = processFound.connection_id,
+                            StatusId = processFound.status_id,
+                            Entities = processFound.entities.Select(e =>
+                            new EntityResponse
                             {
                                 Id = e.id,
                                 Properties = e.Properties.Select(p => new PropertiesResponse
@@ -236,8 +234,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var processByCode = await _processService.GetByCodeAsync(request.Process.Code);
-                if (processByCode == null)
+                var processFound = await _processService.GetByCodeAsync(request.Process.Code);
+                if (processFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -253,15 +251,15 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new ProcessGetByCode
                         {
-                            Id = processByCode.id,
-                            Name = processByCode.process_name,
-                            Description = processByCode.process_description,
-                            Code = processByCode.process_code,
-                            TypeId = processByCode.process_type_id,
-                            ConnectionId = processByCode.connection_id,
-                            StatusId = processByCode.status_id,
-                            Entities = processByCode.entities.Select(e =>
-                            new EntitiesResponse
+                            Id = processFound.id,
+                            Name = processFound.process_name,
+                            Description = processFound.process_description,
+                            Code = processFound.process_code,
+                            TypeId = processFound.process_type_id,
+                            ConnectionId = processFound.connection_id,
+                            StatusId = processFound.status_id,
+                            Entities = processFound.entities.Select(e =>
+                            new EntityResponse
                             {
                                 Id = e.id,
                                 Properties = e.Properties.Select(p => new PropertiesResponse
@@ -293,8 +291,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         {
             try
             {
-                var processByType = await _processService.GetByTypeAsync(request.Process.TypeId);
-                if (processByType == null)
+                var processFound = await _processService.GetByTypeAsync(request.Process.TypeId);
+                if (processFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
@@ -308,17 +306,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     {
                         Code = (int)ResponseCode.FoundSuccessfully,
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
-                        Data = processByType.Select(p => new ProcessGetByType
+                        Data = processFound.Select(process => new ProcessGetByType
                         {
-                            Id = p.id,
-                            Name = p.process_name,
-                            Description = p.process_description,
-                            Code = p.process_code,
-                            TypeId = p.process_type_id,
-                            ConnectionId = p.connection_id,
-                            StatusId = p.status_id,
-                            Entities = p.entities.Select(e =>
-                            new EntitiesResponse
+                            Id = process.id,
+                            Name = process.process_name,
+                            Description = process.process_description,
+                            Code = process.process_code,
+                            TypeId = process.process_type_id,
+                            ConnectionId = process.connection_id,
+                            StatusId = process.status_id,
+                            Entities = process.entities.Select(e =>
+                            new EntityResponse
                             {
                                 Id = e.id,
                                 Properties = e.Properties.Select(p => new PropertiesResponse
@@ -351,17 +349,23 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             try
             {
                 var model = request.Process.Adapt<PaginatedModel>();
+                
                 var rows = await _processService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
+                    return new GetAllPaginatedProcessCommandResponse(
+                    new ProcessGetAllPaginatedResponse
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                        Data = new ProcessGetAllRows
                         {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
-                        });
+                            Total_rows = rows,
+                            Rows = Enumerable.Empty<ProcessGetAllPaginated>()
+                        }
+                    });
                 }
-                var result = await _processService.GetAllPaginatedAsync(model);
+                var processesFound = await _processService.GetAllPaginatedAsync(model);
 
 
                 return new GetAllPaginatedProcessCommandResponse(
@@ -372,17 +376,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         Data = new ProcessGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = result.Select(p => new ProcessGetAllPaginated
+                            Rows = processesFound.Select(process => new ProcessGetAllPaginated
                             {
-                                Id = p.id,
-                                Name = p.process_name,
-                                Description = p.process_description,
-                                Code = p.process_code,
-                                TypeId = p.process_type_id,
-                                ConnectionId = p.connection_id,
-                                StatusId = p.status_id,
-                                Entities = p.entities.Select(e =>
-                                new EntitiesResponse
+                                Id = process.id,
+                                Name = process.process_name,
+                                Description = process.process_description,
+                                Code = process.process_code,
+                                TypeId = process.process_type_id,
+                                ConnectionId = process.connection_id,
+                                StatusId = process.status_id,
+                                Entities = process.entities.Select(e =>
+                                new EntityResponse
                                 {
                                     Id = e.id,
                                     Properties = e.Properties.Select(p => new PropertiesResponse
@@ -413,7 +417,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
         private async Task<ProcessEntity> MapProcess(ProcessCreateRequest request, Guid id, bool? create = null)
         {
-            var processEntity = new ProcessEntity()
+            return new ProcessEntity()
             {
                 id = id,
                 process_code = create == true
@@ -440,7 +444,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     }).ToList()
                 }).ToList()
             };
-            return processEntity;
         }
     }
 }

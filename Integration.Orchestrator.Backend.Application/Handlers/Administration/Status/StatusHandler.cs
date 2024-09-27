@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Status;
+﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Status;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
@@ -6,6 +7,7 @@ using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
+using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities.EntitiesCommands;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Status.StatusCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Status
@@ -24,8 +26,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         {
             try
             {
-                var statusEntity = MapStatus(request.Status.StatusRequest, Guid.NewGuid());
-                await _statusService.InsertAsync(statusEntity);
+                var statusMap = MapStatus(request.Status.StatusRequest, Guid.NewGuid());
+                await _statusService.InsertAsync(statusMap);
 
                 return new CreateStatusCommandResponse(
                     new StatusCreateResponse
@@ -34,11 +36,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully)],
                         Data = new StatusCreate
                         {
-                            Id = statusEntity.id,
-                            Key = statusEntity.status_key,
-                            Text = statusEntity.status_text,
-                            Color = statusEntity.status_color,
-                            Background = statusEntity.status_background
+                            Id = statusMap.id,
+                            Key = statusMap.status_key,
+                            Text = statusMap.status_text,
+                            Color = statusMap.status_color,
+                            Background = statusMap.status_background
                         }
                     });
             }
@@ -56,8 +58,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         {
             try
             {
-                var statusById = await _statusService.GetByIdAsync(request.Id);
-                if (statusById == null)
+                var statusFound = await _statusService.GetByIdAsync(request.Id);
+                if (statusFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -66,8 +68,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Data = request.Status.StatusRequest
                         });
 
-                var statusEntity = MapStatus(request.Status.StatusRequest, request.Id);
-                await _statusService.UpdateAsync(statusEntity);
+                var statusMap = MapStatus(request.Status.StatusRequest, request.Id);
+                await _statusService.UpdateAsync(statusMap);
 
                 return new UpdateStatusCommandResponse(
                         new StatusUpdateResponse
@@ -76,11 +78,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.UpdatedSuccessfully)],
                             Data = new StatusUpdate
                             {
-                                Id = statusEntity.id,
-                                Key = statusEntity.status_key,
-                                Text = statusEntity.status_text,
-                                Color = statusEntity.status_color,
-                                Background = statusEntity.status_background
+                                Id = statusMap.id,
+                                Key = statusMap.status_key,
+                                Text = statusMap.status_text,
+                                Color = statusMap.status_color,
+                                Background = statusMap.status_background
                             }
                         });
             }
@@ -98,8 +100,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         {
             try
             {
-                var statusById = await _statusService.GetByIdAsync(request.Status.Id);
-                if (statusById == null)
+                var statusFound = await _statusService.GetByIdAsync(request.Status.Id);
+                if (statusFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -108,16 +110,16 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Data = request.Status
                         });
 
-                await _statusService.DeleteAsync(statusById);
+                await _statusService.DeleteAsync(statusFound);
 
                 return new DeleteStatusCommandResponse(
                     new StatusDeleteResponse
                     {
                         Code = (int)ResponseCode.DeletedSuccessfully,
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.DeletedSuccessfully)],
-                        Data = new StatusDelete 
+                        Data = new StatusDelete
                         {
-                            Id = statusById.id
+                            Id = statusFound.id
                         }
                     });
             }
@@ -135,8 +137,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         {
             try
             {
-                var statusById = await _statusService.GetByIdAsync(request.Status.Id);
-                if (statusById == null)
+                var statusFound = await _statusService.GetByIdAsync(request.Status.Id);
+                if (statusFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -152,11 +154,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Messages = [ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully)],
                         Data = new StatusGetById
                         {
-                            Id = statusById.id,
-                            Key = statusById.status_key,
-                            Text = statusById.status_text,
-                            Color = statusById.status_color,
-                            Background = statusById.status_background
+                            Id = statusFound.id,
+                            Key = statusFound.status_key,
+                            Text = statusFound.status_text,
+                            Color = statusFound.status_color,
+                            Background = statusFound.status_background
                         }
                     });
             }
@@ -178,15 +180,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                 var rows = await _statusService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
+                    return new GetAllPaginatedStatusCommandResponse(
+                    new StatusGetAllPaginatedResponse
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                        Data = new StatusGetAllRows
                         {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully)
-                        });
+                            Total_rows = rows,
+                            Rows = Enumerable.Empty<StatusGetAllPaginated>()
+                        }
+                    });
                 }
-                var result = await _statusService.GetAllPaginatedAsync(model);
-
+                var statesFound = await _statusService.GetAllPaginatedAsync(model);
 
                 return new GetAllPaginatedStatusCommandResponse(
                     new StatusGetAllPaginatedResponse
@@ -196,7 +202,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                         Data = new StatusGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = result.Select(c => new StatusGetAllPaginated
+                            Rows = statesFound.Select(c => new StatusGetAllPaginated
                             {
                                 Id = c.id,
                                 Key = c.status_key,
@@ -219,7 +225,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
 
         private StatusEntity MapStatus(StatusCreateRequest request, Guid id)
         {
-            var statusEntity = new StatusEntity()
+            return new StatusEntity()
             {
                 id = id,
                 status_key = request.Key,
@@ -227,7 +233,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                 status_color = request.Color,
                 status_background = request.Background
             };
-            return statusEntity;
         }
     }
 }

@@ -118,274 +118,274 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Adapter_Code_Required" xml:space="preserve">
-    <value>The code is required</value>
+    <value>El código es obligatorio</value>
   </data>
   <data name="Adapter_Name_Required" xml:space="preserve">
-    <value>The name is required</value>
+    <value>El nombre es obligatorio</value>
   </data>
   <data name="Adapter_Type_Required" xml:space="preserve">
-    <value>The  type is required</value>
+    <value>El tipo es obligatorio</value>
   </data>
   <data name="Api_AdapterResponse" xml:space="preserve">
-    <value>Adapter data get successfully</value>
+    <value>Los datos del adaptador se obtuvieron correctamente</value>
   </data>
   <data name="Api_ConnectionResponse" xml:space="preserve">
-    <value>Connection data get successfully</value>
+    <value>Los datos de conexión se obtuvieron correctamente</value>
   </data>
   <data name="Api_EntitiesResponse" xml:space="preserve">
-    <value>Entity data get successfully</value>
+    <value>Los datos de la entidad se obtuvieron correctamente</value>
   </data>
   <data name="Api_IntegrationResponse" xml:space="preserve">
-    <value>Integration data get successfully</value>
+    <value>Los datos de integración se obtuvieron correctamente</value>
   </data>
   <data name="Api_OperatorResponse" xml:space="preserve">
-    <value>Operator data get successfully</value>
+    <value>Los datos del operador se obtuvieron correctamente</value>
   </data>
   <data name="Api_ProcessResponse" xml:space="preserve">
-    <value>Process data get successfully</value>
+    <value>    Los datos del proceso se obtuvieron con éxito</value>
   </data>
   <data name="Api_PropertyResponse" xml:space="preserve">
-    <value>Property data get successfully</value>
+    <value>Los datos de la propiedad se obtuvieron correctamente</value>
   </data>
   <data name="Api_RepositoryResponse" xml:space="preserve">
-    <value>Repository data get successfully</value>
+    <value>Los datos del repositorio se obtuvieron correctamente</value>
   </data>
   <data name="Api_ServerResponse" xml:space="preserve">
-    <value>Server data get successfully</value>
+    <value>Los datos del servidor se obtuvieron correctamente</value>
   </data>
   <data name="Api_StatusResponse" xml:space="preserve">
-    <value>Status data get successfully</value>
+    <value>Los datos de estado se obtuvieron correctamente</value>
   </data>
   <data name="Api_SynchronizationResponse" xml:space="preserve">
-    <value>Synchronization data get successfully</value>
+    <value>Los datos de sincronización se obtuvieron correctamente</value>
   </data>
   <data name="Api_SynchronizationStatesResponse" xml:space="preserve">
-    <value>Synchronization states data get successfully</value>
+    <value>Los datos de los estados de sincronización se obtuvieron correctamente</value>
   </data>
   <data name="Api_ValueResponse" xml:space="preserve">
-    <value>Value data get successfully</value>
+    <value>Los datos de valor se obtuvieron correctamente</value>
   </data>
   <data name="Application_AdapterNotFound" xml:space="preserve">
-    <value>Adapter not found</value>
+    <value>Adaptador no encontrado</value>
   </data>
   <data name="Application_AdapterResponseCreated" xml:space="preserve">
-    <value>Adapter Created Succesfully</value>
+    <value>Adaptador creado exitosamente</value>
   </data>
   <data name="Application_AdapterResponseDeleted" xml:space="preserve">
-    <value>Adapter Deleted Succesfully</value>
+    <value>Adaptador eliminado exitosamente</value>
   </data>
   <data name="Application_AdapterResponseUpdated" xml:space="preserve">
-    <value>Adapter Updated Succesfully</value>
+    <value>Adaptador actualizado exitosamente</value>
   </data>
   <data name="Application_CatalogNotFound" xml:space="preserve">
-    <value>Catolog not found</value>
+    <value>Catálogo no encontrado</value>
   </data>
   <data name="Application_ConnectionNotFound" xml:space="preserve">
-    <value>Connection not found</value>
+    <value>Conexión no encontrada</value>
   </data>
   <data name="Application_ConnectionResponseCreated" xml:space="preserve">
-    <value>Connection Created Succesfully</value>
+    <value>Conexión creada exitosamente</value>
   </data>
   <data name="Application_ConnectionResponseDeleted" xml:space="preserve">
-    <value>Connection Deleted Succesfully</value>
+    <value>Conexión eliminada exitosamente</value>
   </data>
   <data name="Application_ConnectionResponseUpdated" xml:space="preserve">
-    <value>Connection Updated Succesfully</value>
+    <value>Conexión actualizada exitosamente</value>
   </data>
   <data name="Application_EntitiesNotFound" xml:space="preserve">
-    <value>Entity not found</value>
+    <value>Entidad no encontrada</value>
   </data>
   <data name="Application_EntitiesResponseCreated" xml:space="preserve">
-    <value>Entity Created Succesfully</value>
+    <value>Entidad creada exitosamente</value>
   </data>
   <data name="Application_EntitiesResponseDeleted" xml:space="preserve">
-    <value>Entity Deleted Succesfully</value>
+    <value>Entidad eliminada exitosamente</value>
   </data>
   <data name="Application_EntitiesResponseUpdated" xml:space="preserve">
-    <value>Entity Updated Succesfully</value>
+    <value>Entidad actualizada exitosamente</value>
   </data>
   <data name="Application_IntegrationNotFound" xml:space="preserve">
-    <value>Integration not found</value>
+    <value>Integración no encontrada</value>
   </data>
   <data name="Application_IntegrationResponseCreated" xml:space="preserve">
-    <value>Integration Created Succesfully</value>
+    <value>Integración creada con éxito</value>
   </data>
   <data name="Application_IntegrationResponseDeleted" xml:space="preserve">
-    <value>Integration Deleted Succesfully</value>
+    <value>Integración eliminada exitosamente</value>
   </data>
   <data name="Application_IntegrationResponseUpdated" xml:space="preserve">
-    <value>Integration Updated Succesfully</value>
+    <value>Integración actualizada con éxito</value>
   </data>
   <data name="Application_OperatorNotFound" xml:space="preserve">
-    <value>Operator not found</value>
+    <value>Operador no encontrado</value>
   </data>
   <data name="Application_OperatorResponseCreated" xml:space="preserve">
-    <value>Operator Created Succesfully</value>
+    <value>Operador creado con éxito</value>
   </data>
   <data name="Application_OperatorResponseDeleted" xml:space="preserve">
-    <value>Operator Deleted Succesfully</value>
+    <value>Operador eliminado exitosamente</value>
   </data>
   <data name="Application_OperatorResponseUpdated" xml:space="preserve">
-    <value>Operator Updated Succesfully</value>
+    <value>Operador actualizado con éxito</value>
   </data>
   <data name="Application_ProcessNotFound" xml:space="preserve">
-    <value>Process not found</value>
+    <value>Proceso no encontrado</value>
   </data>
   <data name="Application_ProcessResponseCreated" xml:space="preserve">
-    <value>Process Created Succesfully</value>
+    <value>Proceso creado con éxito</value>
   </data>
   <data name="Application_ProcessResponseDeleted" xml:space="preserve">
-    <value>Process Deleted Succesfully</value>
+    <value>Proceso eliminado exitosamente</value>
   </data>
   <data name="Application_ProcessResponseUpdated" xml:space="preserve">
-    <value>Process Updated Succesfully</value>
+    <value>Proceso actualizado exitosamente</value>
   </data>
   <data name="Application_PropertyNotFound" xml:space="preserve">
-    <value>Property not found</value>
+    <value>Propiedad no encontrada</value>
   </data>
   <data name="Application_PropertyResponseCreated" xml:space="preserve">
-    <value>Property Created Succesfully</value>
+    <value>Propiedad creada con éxito</value>
   </data>
   <data name="Application_PropertyResponseDeleted" xml:space="preserve">
-    <value>Property Deleted Succesfully</value>
+    <value>Propiedad eliminada exitosamente</value>
   </data>
   <data name="Application_PropertyResponseUpdated" xml:space="preserve">
-    <value>Property Updated Succesfully</value>
+    <value>Propiedad actualizada con éxito</value>
   </data>
   <data name="Application_RepositoryNotFound" xml:space="preserve">
-    <value>Repository not found</value>
+    <value>Repositorio no encontrado</value>
   </data>
   <data name="Application_RepositoryResponseCreated" xml:space="preserve">
-    <value>Repository Created Succesfully</value>
+    <value>Repositorio creado exitosamente</value>
   </data>
   <data name="Application_RepositoryResponseDeleted" xml:space="preserve">
-    <value>Repository Deleted Succesfully</value>
+    <value>Repositorio eliminado exitosamente</value>
   </data>
   <data name="Application_RepositoryResponseUpdated" xml:space="preserve">
-    <value>Repository Updated Succesfully</value>
+    <value>Repositorio actualizado con éxito</value>
   </data>
   <data name="Application_RespondeCreated" xml:space="preserve">
-    <value>created succefully</value>
+    <value>Creado exitosamente</value>
   </data>
   <data name="Application_RespondeDeleted" xml:space="preserve">
-    <value>deleted succefully</value>
+    <value>eliminado exitosamente</value>
   </data>
   <data name="Application_RespondeGet" xml:space="preserve">
-    <value>returned successfully</value>
+    <value>regresó exitosamente</value>
   </data>
   <data name="Application_RespondeGetAll" xml:space="preserve">
-    <value>data returned succesfully</value>
+    <value>Los datos se devolvieron correctamente</value>
   </data>
   <data name="Application_RespondeUpdated" xml:space="preserve">
-    <value>upated succesfully</value>
+    <value>actualizado exitosamente</value>
   </data>
   <data name="Application_ResponseNotCreated" xml:space="preserve">
-    <value>not created succefully</value>
+    <value>not created succefNo creado exitosamenteully</value>
   </data>
   <data name="Application_ServerNotFound" xml:space="preserve">
-    <value>Server not found</value>
+    <value>Servidor no encontrado</value>
   </data>
   <data name="Application_ServerResponseCreated" xml:space="preserve">
-    <value>Server Created Succesfully</value>
+    <value>Servidor creado exitosamente</value>
   </data>
   <data name="Application_ServerResponseDeleted" xml:space="preserve">
-    <value>Server Deleted Succesfully</value>
+    <value>Servidor eliminado exitosamente</value>
   </data>
   <data name="Application_ServerResponseUpdated" xml:space="preserve">
-    <value>Server Updated Succesfully</value>
+    <value>Servidor actualizado exitosamente</value>
   </data>
   <data name="Application_StatusNotFound" xml:space="preserve">
     <value>Estado no encontrado</value>
   </data>
   <data name="Application_StatusResponseCreated" xml:space="preserve">
-    <value>Status Created Succesfully</value>
+    <value>Estado creado exitosamente</value>
   </data>
   <data name="Application_StatusResponseDeleted" xml:space="preserve">
-    <value>Status Deleted Succesfully</value>
+    <value>Estado eliminado exitosamente</value>
   </data>
   <data name="Application_StatusResponseUpdated" xml:space="preserve">
-    <value>Status Updated Succesfully</value>
+    <value>Estado actualizado exitosamente</value>
   </data>
   <data name="Application_SynchronizationNotFound" xml:space="preserve">
-    <value>Synchronization not found</value>
+    <value>Sincronización no encontrada</value>
   </data>
   <data name="Application_SynchronizationResponseCreated" xml:space="preserve">
-    <value>Synchronization Created Succesfully</value>
+    <value>Sincronización creada con éxito</value>
   </data>
   <data name="Application_SynchronizationResponseDeleted" xml:space="preserve">
-    <value>Synchronization Deleted Succesfully</value>
+    <value>Sincronización eliminada exitosamente</value>
   </data>
   <data name="Application_SynchronizationResponseUpdated" xml:space="preserve">
-    <value>Synchronization Updated Succesfully</value>
+    <value>Sincronización actualizada con éxito</value>
   </data>
   <data name="Application_SynchronizationStatesNotFound" xml:space="preserve">
-    <value>Synchronization States not found</value>
+    <value>Estados de sincronización no encontrados</value>
   </data>
   <data name="Application_SynchronizationStatesResponseCreated" xml:space="preserve">
-    <value>Synchronization States Created Succesfully</value>
+    <value>Estados de sincronización creados con éxito</value>
   </data>
   <data name="Application_SynchronizationStatesResponseDeleted" xml:space="preserve">
-    <value>Synchronization States Deleted Succesfully</value>
+    <value>Estados de sincronización eliminados correctamente</value>
   </data>
   <data name="Application_SynchronizationStatesResponseUpdated" xml:space="preserve">
-    <value>Synchronization States Updated Succesfully</value>
+    <value>Estado de sincronización actualizado exitosamente</value>
   </data>
   <data name="Application_Validator_Required" xml:space="preserve">
-    <value>is required</value>
+    <value>se requiere</value>
   </data>
   <data name="Application_ValueNotFound" xml:space="preserve">
-    <value>Value not found</value>
+    <value>Valor no encontrado</value>
   </data>
   <data name="Application_ValueResponseCreated" xml:space="preserve">
-    <value>Value Created Succesfully</value>
+    <value>Valor creado con éxito</value>
   </data>
   <data name="Application_ValueResponseDeleted" xml:space="preserve">
-    <value>Value Deleted Succesfully</value>
+    <value>Valor eliminado exitosamente</value>
   </data>
   <data name="Application_ValueResponseUpdated" xml:space="preserve">
-    <value>Value Updated Succesfully</value>
+    <value>Valor actualizado exitosamente</value>
   </data>
   <data name="Connection_Adapter_Required" xml:space="preserve">
-    <value>The adapter is required</value>
+    <value>Se requiere el adaptador</value>
   </data>
   <data name="Connection_Code_Required" xml:space="preserve">
-    <value>The code is required</value>
+    <value>El código es obligatorio</value>
   </data>
   <data name="Connection_Password_Required" xml:space="preserve">
-    <value>The password is required</value>
+    <value>La contraseña es necesaria</value>
   </data>
   <data name="Connection_Port_Required" xml:space="preserve">
-    <value>The port is required</value>
+    <value>El puerto es obligatorio</value>
   </data>
   <data name="Connection_Server_Required" xml:space="preserve">
-    <value>The server is required</value>
+    <value>El servidor es necesario</value>
   </data>
   <data name="Connection_User_Required" xml:space="preserve">
-    <value>The user is required</value>
+    <value>El usuario es obligatorio</value>
   </data>
   <data name="Domain_AdapterExists" xml:space="preserve">
-    <value>The adpater exists</value>
+    <value>El adaptador existe</value>
   </data>
   <data name="Domain_ConnectionExists" xml:space="preserve">
-    <value>The code exists</value>
+    <value>El código existe</value>
   </data>
   <data name="Domain_EntitiesExists" xml:space="preserve">
-    <value>The entity exists</value>
+    <value>La entidad existe</value>
   </data>
   <data name="Domain_IntegrationMinTwoRequired" xml:space="preserve">
-    <value>The process must have at least two records</value>
+    <value>El proceso debe tener al menos dos registros</value>
   </data>
   <data name="Domain_OperatorExists" xml:space="preserve">
-    <value>The operation exists</value>
+    <value>La operación existe</value>
   </data>
   <data name="Domain_ProcessExists" xml:space="preserve">
-    <value>The code exists</value>
+    <value>El código existe</value>
   </data>
   <data name="Domain_PropertyExists" xml:space="preserve">
-    <value>The property exists</value>
+    <value>La propiedad existe</value>
   </data>
   <data name="Domain_RepositoryExists" xml:space="preserve">
-    <value>The repository exists</value>
+    <value>El repositorio existe</value>
   </data>
   <data name="Domain_ResponseCode_CreatedSuccessfully" xml:space="preserve">
     <value>Creado Correctamente</value>
@@ -421,19 +421,19 @@
     <value>Codigo en uso</value>
   </data>
   <data name="Domain_ServerExists" xml:space="preserve">
-    <value>The server exists</value>
+    <value>El servidor existe</value>
   </data>
   <data name="Domain_StatusExists" xml:space="preserve">
-    <value>The status exists</value>
+    <value>El estado existe</value>
   </data>
   <data name="Domain_SynchronizationStatesExists" xml:space="preserve">
-    <value>The synchronization states exists</value>
+    <value>Los estados de sincronización existen</value>
   </data>
   <data name="Domain_ValueExists" xml:space="preserve">
-    <value>The value exists</value>
+    <value>El valor existe</value>
   </data>
   <data name="Entities_Code_Required" xml:space="preserve">
-    <value>The code is required</value>
+    <value>El código es obligatorio</value>
   </data>
   <data name="Entities_Name_Required" xml:space="preserve">
     <value>The name is required</value>
@@ -478,7 +478,7 @@
     <value>The code is required</value>
   </data>
   <data name="Operator_Name_Required" xml:space="preserve">
-    <value>The name is required</value>
+    <value>El nombre es obligatorio</value>
   </data>
   <data name="Operator_Type_Required" xml:space="preserve">
     <value>The type is required</value>
@@ -487,7 +487,7 @@
     <value>The connectionId is required</value>
   </data>
   <data name="Process_Objects_Required" xml:space="preserve">
-    <value>The objects is required</value>
+    <value>El objeto es requerido</value>
   </data>
   <data name="Process_ProcessCode_Required" xml:space="preserve">
     <value>The processCode is required</value>
@@ -502,106 +502,106 @@
     <value>The name is required</value>
   </data>
   <data name="Property_Type_Required" xml:space="preserve">
-    <value>The type is required</value>
+    <value>El tipo es obligatorio</value>
   </data>
   <data name="Repository_AdapterId_Required" xml:space="preserve">
-    <value>The adapterId is required</value>
+    <value>Se requiere el ID del adaptador</value>
   </data>
   <data name="Repository_Code_Required" xml:space="preserve">
-    <value>The code is required</value>
+    <value>El código es obligatorio</value>
   </data>
   <data name="Repository_Password_Required" xml:space="preserve">
-    <value>The password is required</value>
+    <value>La contraseña es necesaria</value>
   </data>
   <data name="Repository_Port_Required" xml:space="preserve">
-    <value>The port is required</value>
+    <value>El puerto es obligatorio</value>
   </data>
   <data name="Repository_ServerId_Required" xml:space="preserve">
-    <value>The serverId is required</value>
+    <value>El serverId es obligatorio</value>
   </data>
   <data name="Repository_User_Required" xml:space="preserve">
-    <value>The username is required</value>
+    <value>El nombre de usuario es obligatorio</value>
   </data>
   <data name="Server_Code_Required" xml:space="preserve">
-    <value>The  code is required</value>
+    <value>El código es obligatorio</value>
   </data>
   <data name="Server_Name_Required" xml:space="preserve">
-    <value>The name is required</value>
+    <value>El nombre es obligatorio</value>
   </data>
   <data name="Server_Type_Required" xml:space="preserve">
-    <value>The type is required</value>
+    <value>El tipo es obligatorio</value>
   </data>
   <data name="Server_Url_Required" xml:space="preserve">
-    <value>The url is required</value>
+    <value>La URL es obligatoria</value>
   </data>
   <data name="Status_Color_Required" xml:space="preserve">
-    <value>The color is required</value>
+    <value>El color es requerido</value>
   </data>
   <data name="Status_Key_Required" xml:space="preserve">
-    <value>The key is required</value>
+    <value>La clave es necesaria</value>
   </data>
   <data name="Status_Text_Required" xml:space="preserve">
-    <value>The text is required</value>
+    <value>El texto es obligatorio</value>
   </data>
   <data name="SynchronizationStates_Code_Required" xml:space="preserve">
-    <value>The code is required</value>
+    <value>El código es obligatorio</value>
   </data>
   <data name="SynchronizationStates_Color_Required" xml:space="preserve">
     <value>The color is required</value>
   </data>
   <data name="SynchronizationStates_Name_Required" xml:space="preserve">
-    <value>The name is required</value>
+    <value>El nombre es obligatorio</value>
   </data>
   <data name="Synchronization_FranchiseId_Required" xml:space="preserve">
-    <value>The franchiseId is required</value>
+    <value>Se requiere el ID de franquicia</value>
   </data>
   <data name="Synchronization_HourToExecute_Invalid" xml:space="preserve">
-    <value>The hourToExecute is invalid</value>
+    <value>La hora a ejecutar no es válida</value>
   </data>
   <data name="Synchronization_HourToExecute_Required" xml:space="preserve">
-    <value>The hourToExecute is required</value>
+    <value>Se requiere la hora a ejecutar</value>
   </data>
   <data name="Synchronization_Id_Required" xml:space="preserve">
-    <value>The id is required</value>
+    <value>El id es requerido</value>
   </data>
   <data name="Synchronization_Integrations_MinimumValue" xml:space="preserve">
-    <value>The integrations must contain at least one value</value>
+    <value>Las integraciones deben contener al menos un valor</value>
   </data>
   <data name="Synchronization_Integrations_Required" xml:space="preserve">
-    <value>The integrations is required</value>
+    <value>Se requieren integraciones</value>
   </data>
   <data name="Synchronization_Observations_MaximumSize" xml:space="preserve">
-    <value>The hourToExecute requires a maximum of 255 character</value>
+    <value>La hora a ejecutar requiere un máximo de 255 caracteres</value>
   </data>
   <data name="Synchronization_Observations_MinimumSize" xml:space="preserve">
-    <value>The observations requires a minimum of 1 character</value>
+    <value>Las observaciones requieren un mínimo de 1 carácter</value>
   </data>
   <data name="Synchronization_Observations_Required" xml:space="preserve">
-    <value>The observations is required</value>
+    <value>Se requieren las observaciones</value>
   </data>
   <data name="Synchronization_Status_MaximumSize" xml:space="preserve">
-    <value>The status requires a maximum of 1 character</value>
+    <value>El estado requiere un máximo de 1 carácter</value>
   </data>
   <data name="Synchronization_Status_MinimumSize" xml:space="preserve">
-    <value>The status requires a minimum of 1 character</value>
+    <value>El estado requiere un mínimo de 1 carácter</value>
   </data>
   <data name="Synchronization_Status_Required" xml:space="preserve">
-    <value>The status is required</value>
+    <value>El estado es obligatorio</value>
   </data>
   <data name="Value_Code_Required" xml:space="preserve">
-    <value>The code is required</value>
+    <value>El código es obligatorio</value>
   </data>
   <data name="Value_Name_Required" xml:space="preserve">
-    <value>The name is required</value>
+    <value>El nombre es obligatorio</value>
   </data>
   <data name="Value_Type_Required" xml:space="preserve">
-    <value>The type is required</value>
+    <value>El tipo es obligatorio</value>
   </data>
   <data name="Domain_EntityRepositoryExists" xml:space="preserve">
-    <value>Entity name for this repository already exists</value>
+    <value>El nombre de entidad para este repositorio ya existe</value>
   </data>
   <data name="Domain_PropertyEntityExists" xml:space="preserve">
-    <value>Property name for this entity already exists</value>
+    <value>El nombre de la propiedad para esta entidad ya existe</value>
   </data>
   <data name="Domain_CatalogFatherCodeExists" xml:space="preserve">
     <value>El nombre del catálogo para este código padre ya existe</value>
