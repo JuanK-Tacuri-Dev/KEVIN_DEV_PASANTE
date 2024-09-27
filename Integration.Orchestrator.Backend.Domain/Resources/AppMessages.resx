@@ -436,70 +436,70 @@
     <value>El código es obligatorio</value>
   </data>
   <data name="Entities_Name_Required" xml:space="preserve">
-    <value>The name is required</value>
+    <value>El nombre es obligatorio</value>
   </data>
   <data name="Entities_Type_Required" xml:space="preserve">
-    <value>The type is required</value>
+    <value>El tipo es obligatorio</value>
   </data>
   <data name="Exception.BadRequestException" xml:space="preserve">
-    <value>Api layer error</value>
+    <value>Error de capa de API</value>
   </data>
   <data name="Exception.InvalidRequestException" xml:space="preserve">
-    <value>Application layer error</value>
+    <value>Error de capa de aplicación</value>
   </data>
   <data name="Exception.UnexpectedException" xml:space="preserve">
-    <value>Unexpected error</value>
+    <value>Error inesperado</value>
   </data>
   <data name="Exception_ArgumentException" xml:space="preserve">
-    <value>Domain layer error</value>
+    <value>Error de capa de dominio</value>
   </data>
   <data name="Exception_BussinesException" xml:space="preserve">
-    <value>Business exception</value>
+    <value>Excepción empresarial</value>
   </data>
   <data name="Exception_IntegrationException" xml:space="preserve">
-    <value>Integration Exception</value>
+    <value>Excepción de integración</value>
   </data>
   <data name="Integration_Name_Required" xml:space="preserve">
-    <value>The name is required</value>
+    <value>El nombre es obligatorio</value>
   </data>
   <data name="Integration_Observations_Required" xml:space="preserve">
-    <value>The observations is required</value>
+    <value>Se requieren las observaciones</value>
   </data>
   <data name="Integration_Process_Required" xml:space="preserve">
-    <value>The process is required</value>
+    <value>El proceso es obligatorio</value>
   </data>
   <data name="Integration_Status_Required" xml:space="preserve">
-    <value>The status is required</value>
+    <value>El estado es obligatorio</value>
   </data>
   <data name="Integration_UserId_Required" xml:space="preserve">
-    <value>The userId is required</value>
+    <value>El ID de usuario es obligatorio</value>
   </data>
   <data name="Operator_Code_Required" xml:space="preserve">
-    <value>The code is required</value>
+    <value>El código es obligatorio</value>
   </data>
   <data name="Operator_Name_Required" xml:space="preserve">
     <value>El nombre es obligatorio</value>
   </data>
   <data name="Operator_Type_Required" xml:space="preserve">
-    <value>The type is required</value>
+    <value>El tipo es obligatorio</value>
   </data>
   <data name="Process_ConnectionId_Required" xml:space="preserve">
-    <value>The connectionId is required</value>
+    <value>El connectionId es obligatorio</value>
   </data>
   <data name="Process_Objects_Required" xml:space="preserve">
     <value>El objeto es requerido</value>
   </data>
   <data name="Process_ProcessCode_Required" xml:space="preserve">
-    <value>The processCode is required</value>
+    <value>El código de proceso es obligatorio</value>
   </data>
   <data name="Process_Type_Required" xml:space="preserve">
-    <value>The type is required</value>
+    <value>El tipo es obligatorio</value>
   </data>
   <data name="Property_Code_Required" xml:space="preserve">
-    <value>The code is required</value>
+    <value>El código es obligatorio</value>
   </data>
   <data name="Property_Name_Required" xml:space="preserve">
-    <value>The name is required</value>
+    <value>El nombre es obligatorio</value>
   </data>
   <data name="Property_Type_Required" xml:space="preserve">
     <value>El tipo es obligatorio</value>
