@@ -22,7 +22,16 @@ switch (builder.Environment.EnvironmentName)
         builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
         break;
 };
-
+// Configurar CORS para permitir cualquier origen
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -52,6 +61,8 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 });
 
 var app = builder.Build();
+// Usar CORS
+app.UseCors("AllowAllOrigins");
 app.AddAppConfigurationsInAssembly(builder.Configuration);
 app.UseRouting();
 app.MapControllers();
