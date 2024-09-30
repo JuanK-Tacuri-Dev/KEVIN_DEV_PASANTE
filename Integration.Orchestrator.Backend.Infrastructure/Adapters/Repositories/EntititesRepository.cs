@@ -23,6 +23,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             var update = Builders<EntitiesEntity>.Update
                 .Set(m => m.entity_name, entity.entity_name)
                 .Set(m => m.type_id, entity.type_id)
+                .Set(m => m.repository_id, entity.repository_id)
                 .Set(m => m.status_id, entity.status_id)
                 .Set(m => m.updated_at, entity.updated_at);
             return _collection.UpdateOneAsync(filter, update);

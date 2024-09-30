@@ -1,14 +1,9 @@
-BackOffice.Backend.Integrations.Orchestrator.Api.Tests/bin/Debug/net8.0/BackOffice.Backend.Integrations.Orchestrator.Api.Tests.deps.json
-BackOffice.Backend.Integrations.Orchestrator.Api.Tests/bin/Debug/net8.0/BackOffice.Backend.Integrations.Orchestrator.Api.Tests.dll
-BackOffice.Backend.Integrations.Orchestrator.Api.Tests/bin/Debug/net8.0/BackOffice.Backend.Integrations.Orchestrator.Api.Tests.pdb
-*.json
 BackOffice.Backend.Integrations.Orchestrator.Api.Tests/bin/
 BackOffice.Backend.Integrations.Orchestrator.Api.Tests/obj/
 BackOffice.Backend.Integrations.Orchestrator.Api/bin/
 BackOffice.Backend.Integrations.Orchestrator.Api/obj/
 BackOffice.Backend.Integrations.Orchestrator.Application.Tests/bin/
 BackOffice.Backend.Integrations.Orchestrator.Application.Tests/obj/
-BackOffice.Backend.Integrations.Orchestrator.Application/bin/Debug/net8.0/BackOffice.Backend.Integrations.Orchestrator.Application.dll
 BackOffice.Backend.Integrations.Orchestrator.Application/bin/
 BackOffice.Backend.Integrations.Orchestrator.Application/obj/
 BackOffice.Backend.Integrations.Orchestrator.Domain.Tests/bin/
@@ -29,10 +24,8 @@ Integration.Orchestrator.Backend.Api/bin/
 Integration.Orchestrator.Backend.Api/obj/
 Integration.Orchestrator.Backend.Application.Tests/bin/
 Integration.Orchestrator.Backend.Application.Tests/obj/
-Integration.Orchestrator.Backend.Application/bin/Debug/net8.0/Integration.Orchestrator.Backend.Domain.dll
 Integration.Orchestrator.Backend.Application/bin/
 Integration.Orchestrator.Backend.Application/obj/
-Integration.Orchestrator.Backend.Domain.Tests/bin/Debug/net8.0/Microsoft.TestPlatform.CommunicationUtilities.dll
 Integration.Orchestrator.Backend.Domain.Tests/bin/
 Integration.Orchestrator.Backend.Domain.Tests/obj/
 Integration.Orchestrator.Backend.Domain/bin/
@@ -50,8 +43,7 @@ Integration.Orchestrator.Backend.Infrastructure/bin/
 /.vs/Integration.Orchestrator.Backend/v17/.suo
 /.vs/Integration.Orchestrator.Backend/v17/TestStore/0
 /Integration.Orchestrator.Backend.Integration.Tests/obj
-/Integration.Orchestrator.Backend.Integration.Tests/bin/Debug/net8.0
+/Integration.Orchestrator.Backend.Integration.Tests/bin
 .idea/
-/Integration.Orchestrator.Backend.Integration.Tests/bin/Debug/net8.0
-/Integration.Orchestrator.Backend.Integration.Tests/obj/Debug/net8.0
-/Integration.Orchestrator.Backend.Integration.Tests/obj
+/.vs/Integration.Orchestrator.Backend/v17
+/.vs

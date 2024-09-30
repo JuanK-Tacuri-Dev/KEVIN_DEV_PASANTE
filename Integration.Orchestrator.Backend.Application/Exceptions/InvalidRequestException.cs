@@ -13,7 +13,7 @@ namespace Integration.Orchestrator.Backend.Application.Exceptions
 
     public class DetailsErrors
     {
-        public List<Dictionary<string, string>> Messages { get; set; }
+        public List<string> Messages { get; set; }
         public object Data { get; set; }
     }
 

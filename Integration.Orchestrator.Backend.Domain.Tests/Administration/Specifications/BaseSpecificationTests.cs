@@ -1,7 +1,7 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Specifications;
 using System.Linq.Expressions;
 
-namespace Integration.Orchestrator.Backend.Domain.Tests.Specification
+namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifications
 {
     public class BaseSpecificationTests
     {

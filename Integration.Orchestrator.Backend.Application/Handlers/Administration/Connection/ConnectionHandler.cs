@@ -286,7 +286,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
             {
                 id = id,
                 connection_code = create == true
-                    ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Connection)
+                    ? await _codeConfiguratorService.GenerateCodeAsync(Prefix.Connection)
                     : null,
                 server_id = request.ServerId,
                 adapter_id = request.AdapterId,

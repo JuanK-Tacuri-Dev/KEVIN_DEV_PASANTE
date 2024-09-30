@@ -340,7 +340,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             {
                 id = id,
                 synchronization_code = create == true
-                ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Synchronization)
+                ? await _codeConfiguratorService.GenerateCodeAsync(Prefix.Synchronyzation)
                 : null,
                 synchronization_name = request.Name,
                 franchise_id = request.FranchiseId,
