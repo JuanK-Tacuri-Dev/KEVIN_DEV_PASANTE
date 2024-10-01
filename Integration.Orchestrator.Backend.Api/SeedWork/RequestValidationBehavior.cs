@@ -3,6 +3,7 @@ using Integration.Orchestrator.Backend.Application.Exceptions;
 using Integration.Orchestrator.Backend.Application.Models;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using MediatR;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Api.SeedWork
@@ -40,18 +41,17 @@ namespace Integration.Orchestrator.Backend.Api.SeedWork
 
             if (errors.Any())
             {
-                var errorMessages = new  List<Dictionary<string, string>>()
+                var errorMessages = new  List<string>()
                 {
-                    new Dictionary<string, string>(){{ "object", ResponseMessageValues.GetResponseMessage(ResponseCode.NotValidationSuccessfully) } }
+                    $"{"Object:"} {ResponseMessageValues.GetResponseMessage(ResponseCode.NotValidationSuccessfully)}" 
                 };
                 errorMessages.AddRange( errors.Select(error =>
                 {
                     var obj = error.PropertyName.Split(".");
-                    var errorDetail = new Dictionary<string, string>
-                    {
-                        { obj[obj.Length - 1], error.ErrorMessage}
-                    };
-                    return errorDetail;
+                    
+                        
+                    
+                    return $"{obj[obj.Length - 1]}: {error.ErrorMessage}";
                 }).ToList());
 
                 throw new InvalidRequestException(string.Empty, new DetailsErrors()

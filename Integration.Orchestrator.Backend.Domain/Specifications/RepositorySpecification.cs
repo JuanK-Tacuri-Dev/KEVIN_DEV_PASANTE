@@ -29,7 +29,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             { nameof(RepositoryEntity.repository_code).Split("_")[1], x => x.repository_code },
             { nameof(RepositoryEntity.repository_port).Split("_")[1], x => x.repository_port },
-            { nameof(RepositoryEntity.repository_user).Split("_")[1], x => x.repository_user },
+            { nameof(RepositoryEntity.repository_userName).Split("_")[1], x => x.repository_userName },
             { nameof(RepositoryEntity.repository_password).Split("_")[1], x => x.repository_password },
             { nameof(RepositoryEntity.repository_databaseName).Split("_")[1], x => x.repository_databaseName },
             { nameof(RepositoryEntity.created_at).Split("_")[0], x => x.created_at }

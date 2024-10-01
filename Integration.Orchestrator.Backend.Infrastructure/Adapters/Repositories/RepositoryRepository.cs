@@ -21,7 +21,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             var filter = Builders<RepositoryEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<RepositoryEntity>.Update
                 .Set(m => m.repository_port, entity.repository_port)
-                .Set(m => m.repository_user, entity.repository_user)
+                .Set(m => m.repository_userName, entity.repository_userName)
                 .Set(m => m.repository_password, entity.repository_password)
                 .Set(m => m.repository_databaseName, entity.repository_databaseName)
                 .Set(m => m.auth_type_id, entity.auth_type_id)

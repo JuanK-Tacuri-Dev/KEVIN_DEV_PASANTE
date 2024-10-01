@@ -20,6 +20,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             var filter = Builders<CatalogEntity>.Filter.Eq("_id", entity.id);
             var update = Builders<CatalogEntity>.Update
+                .Set(m => m.catalog_code, entity.catalog_code)
                 .Set(m => m.catalog_name, entity.catalog_name)
                 .Set(m => m.catalog_value, entity.catalog_value)
                 .Set(m => m.catalog_detail, entity.catalog_detail)

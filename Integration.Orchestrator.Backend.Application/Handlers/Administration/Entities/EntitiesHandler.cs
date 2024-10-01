@@ -359,7 +359,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                 id = id,
                 entity_name = request.Name,
                 entity_code = create == true
-                ? await _codeConfiguratorService.GenerateCodeAsync(Modules.Entity)
+                ? await _codeConfiguratorService.GenerateCodeAsync(Prefix.Entity)
                 : null,
                 type_id = request.TypeId,
                 repository_id = request.RepositoryId,

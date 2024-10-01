@@ -9,7 +9,7 @@ resources:
 - repo: self
 
 variables:
-  tag: 1.0.9 #'$(Build.BuildId)'
+  tag: 1.0.11 #'$(Build.BuildId)'
 
 stages:
 - stage: buildAndPush

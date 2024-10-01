@@ -6,7 +6,7 @@ using Integration.Orchestrator.Backend.Domain.Specifications;
 using Moq;
 using System.Linq.Expressions;
 
-namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
+namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
 {
     public class ConnectionServiceTest
     {
@@ -23,7 +23,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
             var connection = new ConnectionEntity()
             {
                 connection_code = "code",
-                connection_name= "name",
+                connection_name = "name",
                 server_id = Guid.NewGuid(),
                 adapter_id = Guid.NewGuid(),
                 repository_id = Guid.NewGuid(),
@@ -68,7 +68,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
         [Fact]
         public async Task GetByIdAsync()
         {
-            var id= Guid.NewGuid();
+            var id = Guid.NewGuid();
             var connection = new ConnectionEntity()
             {
                 connection_code = "code",
@@ -79,11 +79,11 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
                 connection_description = "description",
                 status_id = id
             };
-            var expression= ConnectionSpecification.GetByIdExpression(id);
+            var expression = ConnectionSpecification.GetByIdExpression(id);
             _mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<ConnectionEntity, bool>>>()))
                 .ReturnsAsync(connection);
             var result = await _service.GetByIdAsync(id);
-            
+
             Assert.Equal(connection, result);
             /*_mockRepo.Verify(repo => repo.GetByIdAsync(It.Is<Expression<Func<ConnectionEntity, bool>>>(expr =>
                 expr.Compile()(connection))), Times.Once);*/
@@ -135,7 +135,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration
                 connection_description = "description",
                 status_id = Guid.NewGuid()
             };
-            var connections= new List<ConnectionEntity> { connection };
+            var connections = new List<ConnectionEntity> { connection };
             var spec = new ConnectionSpecification(paginatedModel);
             _mockRepo.Setup(repo => repo.GetAllAsync(It.IsAny<ISpecification<ConnectionEntity>>())).ReturnsAsync(connections);
 
