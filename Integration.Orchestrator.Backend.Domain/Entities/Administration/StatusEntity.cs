@@ -8,7 +8,5 @@
         public string status_background { get; set; }
         public DateTime created_at { get; private set; } = DateTime.UtcNow;
         public DateTime updated_at { get; private set; } = DateTime.UtcNow;
-        
-
     }
 }
