@@ -64,6 +64,16 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         private async Task ValidateBussinesLogic(RepositoryEntity repository, bool create = false) 
         {
+            var validateDbPortUser = await _repositoryRepository.ValidateDbPortUser(repository);
+            if (validateDbPortUser)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Domain_RepositoryExists
+                        });
+            }
             if (create)
             {
                 var repositoryByCode = await GetByCodeAsync(repository.repository_code);

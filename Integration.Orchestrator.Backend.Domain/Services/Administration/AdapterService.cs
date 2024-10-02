@@ -11,7 +11,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     [DomainService]
     public class AdapterService(
-        IAdapterRepository<AdapterEntity> adapterRepository) 
+        IAdapterRepository<AdapterEntity> adapterRepository)
         : IAdapterService<AdapterEntity>
     {
         private readonly IAdapterRepository<AdapterEntity> _adapterRepository = adapterRepository;
@@ -68,12 +68,22 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _adapterRepository.GetTotalRows(spec);
         }
 
-        private async Task ValidateBussinesLogic(AdapterEntity adapter, bool create = false) 
+        private async Task ValidateBussinesLogic(AdapterEntity adapter, bool create = false)
         {
+            var validateNameVersion = await _adapterRepository.ValidateAdapterNameVersion(adapter);
+            if (validateNameVersion)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Domain_AdapterExists
+                        });
+            }
             if (create)
             {
                 var adapterByCode = await GetByCodeAsync(adapter.adapter_code);
-                if (adapterByCode != null) 
+                if (adapterByCode != null)
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()

@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 
 namespace Integration.Orchestrator.Backend.Domain.Ports.Administration
@@ -12,5 +13,6 @@ namespace Integration.Orchestrator.Backend.Domain.Ports.Administration
         Task<T> GetByCodeAsync(Expression<Func<T, bool>> specification);
         Task<IEnumerable<T>> GetAllAsync(ISpecification<T> specification);
         public Task<long> GetTotalRows(ISpecification<T> specification);
+        Task<bool> ValidateDbPortUser(RepositoryEntity entity);
     }
 }

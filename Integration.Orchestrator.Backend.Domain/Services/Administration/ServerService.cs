@@ -70,6 +70,16 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         private async Task ValidateBussinesLogic(ServerEntity server, bool create = false) 
         {
+            var validateNameURL = await _serverRepository.ValidateNameURL(server);
+            if (validateNameURL)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Domain_ServerExists
+                        });
+            }
             if (create) 
             {
                 var serverByCode = await GetByCodeAsync(server.server_code);
