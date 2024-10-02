@@ -72,7 +72,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
 
             var specification = new SynchronizationStatesSpecification(paginatedModel);
 
-            Assert.Equal(10, specification.Skip);
+            Assert.Equal(2, specification.Skip);
             Assert.Equal(10, specification.Limit);
         }
 
@@ -106,8 +106,8 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Specifica
 
             var specification = new SynchronizationStatesSpecification(paginatedModel);
 
-            Assert.Null(specification.OrderBy);
-            Assert.NotNull(specification.OrderByDescending);
+            Assert.NotNull(specification.OrderBy);
+            Assert.Null(specification.OrderByDescending);
         }        
     }
 }
