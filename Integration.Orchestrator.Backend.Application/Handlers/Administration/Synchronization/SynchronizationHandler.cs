@@ -328,8 +328,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 synchronization_name = request.Name,
                 franchise_id = request.FranchiseId,
                 status_id = request.StatusId,
-                synchronization_observations = request.Observations,
-                synchronization_hour_to_execute = DateTimeOffset.Parse(request.HourToExecute).UtcDateTime,
+                synchronization_hour_to_execute = request.HourToExecute != null ? DateTimeOffset.Parse(request.HourToExecute).UtcDateTime : DateTime.Now,
                 integrations = request.Integrations.Select(i => i.Id).ToList(),
                 user_id = request.UserId
             };
@@ -369,7 +368,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Data = request
                             });
                 entity.synchronization_observations = $"Sincronización {entity.synchronization_code} ejecutada correctamente";
-                entity.synchronization_hour_to_execute = DateTime.Now;
             }
         }
 
