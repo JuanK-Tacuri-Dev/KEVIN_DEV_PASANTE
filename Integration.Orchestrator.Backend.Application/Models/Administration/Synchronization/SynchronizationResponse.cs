@@ -10,7 +10,7 @@
         public List<IntegrationResponse> Integrations { get; set; }
 
         public string? HourToExecute { get; set; }
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
     }
     
     public class IntegrationResponse

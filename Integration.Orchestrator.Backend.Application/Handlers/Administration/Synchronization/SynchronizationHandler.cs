@@ -328,7 +328,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 synchronization_name = request.Name,
                 franchise_id = request.FranchiseId,
                 status_id = request.StatusId,
-                synchronization_observations = request.Observations,
                 synchronization_hour_to_execute = DateTimeOffset.Parse(request.HourToExecute).UtcDateTime,
                 integrations = request.Integrations.Select(i => i.Id).ToList(),
                 user_id = request.UserId
