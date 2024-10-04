@@ -77,18 +77,19 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             await EnsureStatusExists(server.status_id);
 
-            var validateNameURL = await _serverRepository.ValidateNameURL(server);
-            if (validateNameURL)
-            {
-                throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
-                        {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = AppMessages.Domain_ServerExists
-                        });
-            }
             if (create)
             {
+                var validateNameURL = await _serverRepository.ValidateNameURL(server);
+                if (validateNameURL)
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors()
+                            {
+                                Code = (int)ResponseCode.NotFoundSuccessfully,
+                                Description = AppMessages.Domain_ServerExists
+                            });
+                }
+
                 var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Server);
                 await EnsureCodeIsUnique(codeFound);
                 server.server_code = codeFound;
