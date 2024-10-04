@@ -1,6 +1,8 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
+using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Resources;
@@ -10,10 +12,14 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     [DomainService]
     public class PropertyService(
-        IPropertyRepository<PropertyEntity> propertyRepository) 
+        IPropertyRepository<PropertyEntity> propertyRepository,
+        ICodeConfiguratorService codeConfiguratorService,
+        IStatusService<StatusEntity> statusService) 
         : IPropertyService<PropertyEntity>
     {
         private readonly IPropertyRepository<PropertyEntity> _propertyRepository = propertyRepository;
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
+        private readonly IStatusService<StatusEntity> _statusService = statusService;
 
         public async Task InsertAsync(PropertyEntity property)
         {
@@ -75,20 +81,19 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         private async Task ValidateBussinesLogic(PropertyEntity property, bool create = false) 
         {
+            await EnsureStatusExists(property.status_id);
+
             if (create)
             {
-                var propertyByCode = await GetByCodeAsync(property.property_code);
                 var numPropertiesByNameAndEntityId = await CountPropertiesByNameAndEntityIdAsync(property);
-                
-                if (propertyByCode != null) 
-                {
-                    throw new ArgumentException(AppMessages.Domain_PropertyExists);
-                }
-                
                 if (numPropertiesByNameAndEntityId > 0)
                 {
                     throw new ArgumentException(AppMessages.Domain_PropertyEntityExists);
                 }
+
+                var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Property);
+                await EnsureCodeIsUnique(codeFound);
+                property.property_code = codeFound;
             }
         }
         
@@ -102,6 +107,36 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             var specification = PropertySpecification.GetByNameAndEntityIdExpression(name, entityId);
             return await _propertyRepository.GetByNameAndEntityIdAsync(specification);
-        }        
+        }
+
+        private async Task EnsureStatusExists(Guid statusId)
+        {
+            var statusFound = await _statusService.GetByIdAsync(statusId);
+            if (statusFound == null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Application_StatusNotFound,
+                            Data = statusId
+                        });
+            }
+        }
+
+        private async Task EnsureCodeIsUnique(string code)
+        {
+            var codeFound = await GetByCodeAsync(code);
+            if (codeFound != null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors()
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = AppMessages.Domain_Response_CodeInUse,
+                        Data = code
+                    });
+            }
+        }
     }
 }

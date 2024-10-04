@@ -1,4 +1,5 @@
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Services.Administration;
@@ -10,12 +11,14 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
 {
     public class IntegrationServiceTests
     {
-        private readonly Mock<IIntegrationRepository<IntegrationEntity>> _mockRepo;
-        private readonly IntegrationService _service;
+        private readonly Mock<IIntegrationRepository<IntegrationEntity>> _mockIntegrationRepo;
+        private readonly IntegrationService _integrationService;
+        private readonly Mock<IStatusService<StatusEntity>> _statusService;
         public IntegrationServiceTests()
         {
-            _mockRepo = new Mock<IIntegrationRepository<IntegrationEntity>>();
-            _service = new IntegrationService(_mockRepo.Object);
+            _mockIntegrationRepo = new Mock<IIntegrationRepository<IntegrationEntity>>();
+            _statusService = new Mock<IStatusService<StatusEntity>>();
+            _integrationService = new IntegrationService(_mockIntegrationRepo.Object, _statusService.Object);
         }
 
         [Fact]
@@ -35,9 +38,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
                 }
             };
 
-            await _service.InsertAsync(integration);
+            await _integrationService.InsertAsync(integration);
 
-            _mockRepo.Verify(repo => repo.InsertAsync(integration), Times.Once);
+            _mockIntegrationRepo.Verify(repo => repo.InsertAsync(integration), Times.Once);
         }
 
         [Fact]
@@ -57,9 +60,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
                 }
             };
 
-            await _service.UpdateAsync(integration);
+            await _integrationService.UpdateAsync(integration);
 
-            _mockRepo.Verify(repo => repo.UpdateAsync(integration), Times.Once);
+            _mockIntegrationRepo.Verify(repo => repo.UpdateAsync(integration), Times.Once);
         }
 
         [Fact]
@@ -82,12 +85,12 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
 
             var expression = IntegrationSpecification.GetByIdExpression(id);
 
-            _mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<IntegrationEntity, bool>>>())).ReturnsAsync(integration);
+            _mockIntegrationRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<IntegrationEntity, bool>>>())).ReturnsAsync(integration);
 
-            var result = await _service.GetByIdAsync(id);
+            var result = await _integrationService.GetByIdAsync(id);
 
             Assert.Equal(integration, result);
-            _mockRepo.Verify(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<IntegrationEntity, bool>>>()), Times.Once);
+            _mockIntegrationRepo.Verify(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<IntegrationEntity, bool>>>()), Times.Once);
         }
 
         [Fact]
@@ -107,9 +110,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
                 }
             };
 
-            await _service.DeleteAsync(integration);
+            await _integrationService.DeleteAsync(integration);
 
-            _mockRepo.Verify(repo => repo.DeleteAsync(integration), Times.Once);
+            _mockIntegrationRepo.Verify(repo => repo.DeleteAsync(integration), Times.Once);
         }
 
         [Fact]
@@ -139,12 +142,12 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             };
             var integrations = new List<IntegrationEntity> { integration };
             var spec = new IntegrationSpecification(paginatedModel);
-            _mockRepo.Setup(repo => repo.GetAllAsync(It.IsAny<ISpecification<IntegrationEntity>>())).ReturnsAsync(integrations);
+            _mockIntegrationRepo.Setup(repo => repo.GetAllAsync(It.IsAny<ISpecification<IntegrationEntity>>())).ReturnsAsync(integrations);
 
-            var result = await _service.GetAllPaginatedAsync(paginatedModel);
+            var result = await _integrationService.GetAllPaginatedAsync(paginatedModel);
             List<IntegrationEntity> r = result.ToList();
             Assert.Equal(integrations, result);
-            _mockRepo.Verify(repo => repo.GetAllAsync(It.IsAny<IntegrationSpecification>()), Times.Once);
+            _mockIntegrationRepo.Verify(repo => repo.GetAllAsync(It.IsAny<IntegrationSpecification>()), Times.Once);
         }
 
         [Fact]
@@ -160,12 +163,12 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             };
             var totalRows = 10L;
             var spec = new IntegrationSpecification(paginatedModel);
-            _mockRepo.Setup(repo => repo.GetTotalRows(It.IsAny<ISpecification<IntegrationEntity>>())).ReturnsAsync(totalRows);
+            _mockIntegrationRepo.Setup(repo => repo.GetTotalRows(It.IsAny<ISpecification<IntegrationEntity>>())).ReturnsAsync(totalRows);
 
-            var result = await _service.GetTotalRowsAsync(paginatedModel);
+            var result = await _integrationService.GetTotalRowsAsync(paginatedModel);
 
             Assert.Equal(totalRows, result);
-            _mockRepo.Verify(repo => repo.GetTotalRows(It.IsAny<IntegrationSpecification>()), Times.Once);
+            _mockIntegrationRepo.Verify(repo => repo.GetTotalRows(It.IsAny<IntegrationSpecification>()), Times.Once);
         }
     }
 }

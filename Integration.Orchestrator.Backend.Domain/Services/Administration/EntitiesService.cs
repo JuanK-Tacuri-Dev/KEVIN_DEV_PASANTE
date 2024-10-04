@@ -1,6 +1,8 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
+using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Resources;
@@ -10,10 +12,14 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     [DomainService]
     public class EntitiesService(
-        IEntitiesRepository<EntitiesEntity> entitiesRepository) 
+        IEntitiesRepository<EntitiesEntity> entitiesRepository,
+        ICodeConfiguratorService codeConfiguratorService,
+        IStatusService<StatusEntity> statusService) 
         : IEntitiesService<EntitiesEntity>
     {
         private readonly IEntitiesRepository<EntitiesEntity> _entitiesRepository = entitiesRepository;
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
+        private readonly IStatusService<StatusEntity> _statusService = statusService;
 
         public async Task InsertAsync(EntitiesEntity entities)
         {
@@ -77,20 +83,19 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         private async Task ValidateBussinesLogic(EntitiesEntity entities, bool create = false) 
         {
+            await EnsureStatusExists(entities.status_id);
+
             if (create)
             {
-                var entitiesByCode = await GetByCodeAsync(entities.entity_code);
                 var numEntitiesByNameAndRepositoryId = await CountEntitiesByNameAndRepositoryIdAsync(entities);
-
-                if (entitiesByCode != null)
-                {
-                    throw new ArgumentException(AppMessages.Domain_EntitiesExists);
-                }
-                
                 if (numEntitiesByNameAndRepositoryId > 0)
                 {
                     throw new ArgumentException(AppMessages.Domain_EntityRepositoryExists);
                 }
+
+                var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Entity);
+                await EnsureCodeIsUnique(codeFound);
+                entities.entity_code = codeFound;
             }
         }
 
@@ -104,6 +109,36 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             var specification = EntitiesSpecification.GetByNameAndRepositoryIdExpression(name, repositoryId);
             return await _entitiesRepository.GetByNameAndRepositoryIdAsync(specification);
+        }
+
+        private async Task EnsureStatusExists(Guid statusId)
+        {
+            var statusFound = await _statusService.GetByIdAsync(statusId);
+            if (statusFound == null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Application_StatusNotFound,
+                            Data = statusId
+                        });
+            }
+        }
+
+        private async Task EnsureCodeIsUnique(string code)
+        {
+            var codeFound = await GetByCodeAsync(code);
+            if (codeFound != null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors()
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = AppMessages.Domain_Response_CodeInUse,
+                        Data = code
+                    });
+            }
         }
     }
 }

@@ -7,7 +7,8 @@ using System.Linq.Expressions;
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
     [Repository]
-    public class SynchronizationRepository(IMongoCollection<SynchronizationEntity> collection) : ISynchronizationRepository<SynchronizationEntity>
+    public class SynchronizationRepository(IMongoCollection<SynchronizationEntity> collection) 
+        : ISynchronizationRepository<SynchronizationEntity>
     {
         private readonly IMongoCollection<SynchronizationEntity> _collection = collection;
         public Task InsertAsync(SynchronizationEntity entity)
@@ -43,6 +44,15 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .Find(filter)
                 .FirstOrDefaultAsync();
             return synchronizationEntity;
+        }
+
+        public async Task<SynchronizationEntity> GetByCodeAsync(Expression<Func<SynchronizationEntity, bool>> specification)
+        {
+            var filter = Builders<SynchronizationEntity>.Filter.Where(specification);
+            var entityFound = await _collection
+                .Find(filter)
+                .FirstOrDefaultAsync();
+            return entityFound;
         }
 
         public async Task<IEnumerable<SynchronizationEntity>> GetByFranchiseIdAsync(Expression<Func<SynchronizationEntity, bool>> specification)

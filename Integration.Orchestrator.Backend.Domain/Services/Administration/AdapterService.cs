@@ -1,6 +1,7 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
@@ -11,11 +12,14 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     [DomainService]
     public class AdapterService(
-        IAdapterRepository<AdapterEntity> adapterRepository)
+        IAdapterRepository<AdapterEntity> adapterRepository,
+        ICodeConfiguratorService codeConfiguratorService,
+        IStatusService<StatusEntity> statusService)
         : IAdapterService<AdapterEntity>
     {
         private readonly IAdapterRepository<AdapterEntity> _adapterRepository = adapterRepository;
-
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
+        private readonly IStatusService<StatusEntity> _statusService = statusService;
         public async Task InsertAsync(AdapterEntity adapter)
         {
             await ValidateBussinesLogic(adapter, true);
@@ -70,6 +74,49 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         private async Task ValidateBussinesLogic(AdapterEntity adapter, bool create = false)
         {
+            await EnsureStatusExists(adapter.status_id);
+            await EnsureVersionAndNameExist(adapter);
+
+            if (create)
+            {
+                var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Adapter);
+                await EnsureCodeIsUnique(codeFound);
+                adapter.adapter_code = codeFound;
+            }
+        }
+
+        private async Task EnsureStatusExists(Guid statusId)
+        {
+            var statusFound = await _statusService.GetByIdAsync(statusId);
+            if (statusFound == null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Application_StatusNotFound,
+                            Data = statusId
+                        });
+            }
+        }
+        
+        private async Task EnsureCodeIsUnique(string code)
+        {
+            var codeFound = await GetByCodeAsync(code);
+            if (codeFound != null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors()
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = AppMessages.Domain_Response_CodeInUse,
+                        Data = code
+                    });
+            }
+        }
+        
+        private async Task EnsureVersionAndNameExist(AdapterEntity adapter)
+        {
             var validateNameVersion = await _adapterRepository.ValidateAdapterNameVersion(adapter);
             if (validateNameVersion)
             {
@@ -79,19 +126,6 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
                             Code = (int)ResponseCode.NotFoundSuccessfully,
                             Description = AppMessages.Domain_AdapterExists
                         });
-            }
-            if (create)
-            {
-                var adapterByCode = await GetByCodeAsync(adapter.adapter_code);
-                if (adapterByCode != null)
-                {
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
-                        {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = AppMessages.Domain_Response_CodeInUse
-                        });
-                }
             }
         }
     }

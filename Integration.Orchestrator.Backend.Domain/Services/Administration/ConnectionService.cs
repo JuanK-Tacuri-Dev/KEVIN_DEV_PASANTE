@@ -1,6 +1,7 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
@@ -11,10 +12,14 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     [DomainService]
     public class ConnectionService(
-        IConnectionRepository<ConnectionEntity> connectionRepository) 
+        IConnectionRepository<ConnectionEntity> connectionRepository,
+        ICodeConfiguratorService codeConfiguratorService,
+        IStatusService<StatusEntity> statusService) 
         : IConnectionService<ConnectionEntity>
     {
         private readonly IConnectionRepository<ConnectionEntity> _connectionRepository = connectionRepository;
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
+        private readonly IStatusService<StatusEntity> _statusService = statusService;
 
         public async Task InsertAsync(ConnectionEntity connection)
         {
@@ -64,18 +69,43 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         private async Task ValidateBussinesLogic(ConnectionEntity connection, bool create = false) 
         {
+            await EnsureStatusExists(connection.status_id);
+
             if (create) 
             {
-                var connectionByCode = await GetByCodeAsync(connection.connection_code);
-                if (connectionByCode != null) 
-                {
-                    throw new OrchestratorArgumentException(string.Empty,
+                var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Connection);
+                await EnsureCodeIsUnique(codeFound);
+                connection.connection_code = codeFound;
+            }
+        }
+
+        private async Task EnsureStatusExists(Guid statusId)
+        {
+            var statusFound = await _statusService.GetByIdAsync(statusId);
+            if (statusFound == null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
                             Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = AppMessages.Domain_Response_CodeInUse
+                            Description = AppMessages.Application_StatusNotFound,
+                            Data = statusId
                         });
-                }
+            }
+        }
+
+        private async Task EnsureCodeIsUnique(string code)
+        {
+            var codeFound = await GetByCodeAsync(code);
+            if (codeFound != null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors()
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = AppMessages.Domain_Response_CodeInUse,
+                        Data = code
+                    });
             }
         }
     }

@@ -12,8 +12,7 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Administratio
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Connection
 {
     public class ConnectionHandler(
-        IConnectionService<ConnectionEntity> connectionService,
-        ICodeConfiguratorService codeConfiguratorService)
+        IConnectionService<ConnectionEntity> connectionService)
         :
         IRequestHandler<CreateConnectionCommandRequest, CreateConnectionCommandResponse>,
         IRequestHandler<UpdateConnectionCommandRequest, UpdateConnectionCommandResponse>,
@@ -23,13 +22,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
         IRequestHandler<GetAllPaginatedConnectionCommandRequest, GetAllPaginatedConnectionCommandResponse>
     {
         private readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
-        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateConnectionCommandResponse> Handle(CreateConnectionCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var connectionMap = await MapConnection(request.Connection.ConnectionRequest, Guid.NewGuid(), true);
+                var connectionMap = MapConnection(request.Connection.ConnectionRequest, Guid.NewGuid());
                 await _connectionService.InsertAsync(connectionMap);
 
                 return new CreateConnectionCommandResponse(
@@ -74,7 +72,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
                             Data = request.Connection.ConnectionRequest
                         });
 
-                var connectionMap = await MapConnection(request.Connection.ConnectionRequest, request.Id);
+                var connectionMap = MapConnection(request.Connection.ConnectionRequest, request.Id);
                 await _connectionService.UpdateAsync(connectionMap);
 
                 return new UpdateConnectionCommandResponse(
@@ -280,14 +278,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.C
             }
         }
 
-        private async Task<ConnectionEntity> MapConnection(ConnectionCreateRequest request, Guid id, bool? create = null)
+        private ConnectionEntity MapConnection(ConnectionCreateRequest request, Guid id)
         {
             return new ConnectionEntity()
             {
                 id = id,
-                connection_code = create == true
-                    ? await _codeConfiguratorService.GenerateCodeAsync(Prefix.Connection)
-                    : null,
                 server_id = request.ServerId,
                 adapter_id = request.AdapterId,
                 repository_id = request.RepositoryId,

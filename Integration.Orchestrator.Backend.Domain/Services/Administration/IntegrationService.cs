@@ -1,6 +1,7 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Resources;
@@ -10,10 +11,12 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     [DomainService]
     public class IntegrationService(
-        IIntegrationRepository<IntegrationEntity> integrationRepository)
+        IIntegrationRepository<IntegrationEntity> integrationRepository,
+        IStatusService<StatusEntity> statusService)
         : IIntegrationService<IntegrationEntity>
     {
         private readonly IIntegrationRepository<IntegrationEntity> _integrationRepository = integrationRepository;
+        private readonly IStatusService<StatusEntity> _statusService = statusService;
 
         public async Task InsertAsync(IntegrationEntity integration)
         {
@@ -56,6 +59,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         private async Task ValidateBussinesLogic(IntegrationEntity integration, bool create = false)
         {
+            await EnsureStatusExists(integration.status_id);
             if (await validateProcessMinTwo(integration))
             {
                 throw new ArgumentException(AppMessages.Domain_IntegrationMinTwoRequired);
@@ -64,5 +68,20 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         private async Task<bool> validateProcessMinTwo(IntegrationEntity integration)
             => await Task.Run(() => integration.process.Count() < 2);
+
+        private async Task EnsureStatusExists(Guid statusId)
+        {
+            var statusFound = await _statusService.GetByIdAsync(statusId);
+            if (statusFound == null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Application_StatusNotFound,
+                            Data = statusId
+                        });
+            }
+        }
     }
 }

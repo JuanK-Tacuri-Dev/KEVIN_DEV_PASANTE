@@ -2,7 +2,6 @@
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
-using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
@@ -12,8 +11,7 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Administratio
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities
 {
     public class EntitiesHandler(
-        IEntitiesService<EntitiesEntity> entitiesService,
-        ICodeConfiguratorService codeConfiguratorService)
+        IEntitiesService<EntitiesEntity> entitiesService)
         :
         IRequestHandler<CreateEntitiesCommandRequest, CreateEntitiesCommandResponse>,
         IRequestHandler<UpdateEntitiesCommandRequest, UpdateEntitiesCommandResponse>,
@@ -25,13 +23,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
         IRequestHandler<GetAllPaginatedEntitiesCommandRequest, GetAllPaginatedEntitiesCommandResponse>
     {
         public readonly IEntitiesService<EntitiesEntity> _entitiesService = entitiesService;
-        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateEntitiesCommandResponse> Handle(CreateEntitiesCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var entitiesMap = await MapEntities(request.Entities.EntitiesRequest, Guid.NewGuid(), true);
+                var entitiesMap = MapEntities(request.Entities.EntitiesRequest, Guid.NewGuid());
                 await _entitiesService.InsertAsync(entitiesMap);
 
                 return new CreateEntitiesCommandResponse(
@@ -74,7 +71,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
                             Data = request.Entities.EntitiesRequest
                         });
 
-                var entitiesMap = await MapEntities(request.Entities.EntitiesRequest, request.Id);
+                var entitiesMap = MapEntities(request.Entities.EntitiesRequest, request.Id);
                 await _entitiesService.UpdateAsync(entitiesMap);
 
                 return new UpdateEntitiesCommandResponse(
@@ -352,15 +349,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.E
             }
         }
 
-        private async Task<EntitiesEntity> MapEntities(EntitiesCreateRequest request, Guid id, bool? create = null)
+        private EntitiesEntity MapEntities(EntitiesCreateRequest request, Guid id)
         {
             return new EntitiesEntity()
             {
                 id = id,
                 entity_name = request.Name,
-                entity_code = create == true
-                ? await _codeConfiguratorService.GenerateCodeAsync(Prefix.Entity)
-                : null,
                 type_id = request.TypeId,
                 repository_id = request.RepositoryId,
                 status_id = request.StatusId

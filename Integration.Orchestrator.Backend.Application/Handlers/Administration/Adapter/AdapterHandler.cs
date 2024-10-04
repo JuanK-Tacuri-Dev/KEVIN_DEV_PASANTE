@@ -1,21 +1,17 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Adapter;
-using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
-using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Adapter.AdapterCommands;
-using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities.EntitiesCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Adapter
 {
     public class AdapterHandler(
-        IAdapterService<AdapterEntity> adapterService,
-        ICodeConfiguratorService codeConfiguratorService)
+        IAdapterService<AdapterEntity> adapterService)
         :
         IRequestHandler<CreateAdapterCommandRequest, CreateAdapterCommandResponse>,
         IRequestHandler<UpdateAdapterCommandRequest, UpdateAdapterCommandResponse>,
@@ -26,13 +22,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
         IRequestHandler<GetAllPaginatedAdapterCommandRequest, GetAllPaginatedAdapterCommandResponse>
     {
         private readonly IAdapterService<AdapterEntity> _adapterService = adapterService;
-        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateAdapterCommandResponse> Handle(CreateAdapterCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var adapterMap = await MapAdapter(request.Adapter.AdapterRequest, Guid.NewGuid(), true);
+                var adapterMap = MapAdapter(request.Adapter.AdapterRequest, Guid.NewGuid());
                 await _adapterService.InsertAsync(adapterMap);
 
                 return new CreateAdapterCommandResponse(
@@ -75,7 +70,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
                             Data = request.Adapter.AdapterRequest
                         });
 
-                var adapterMap = await MapAdapter(request.Adapter.AdapterRequest, request.Id);
+                var adapterMap = MapAdapter(request.Adapter.AdapterRequest, request.Id);
                 await _adapterService.UpdateAsync(adapterMap);
 
                 return new UpdateAdapterCommandResponse(
@@ -319,14 +314,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
             }
         }
 
-        private async Task<AdapterEntity> MapAdapter(AdapterCreateRequest request, Guid id, bool? create = null)
+        private AdapterEntity MapAdapter(AdapterCreateRequest request, Guid id)
         {
             return new AdapterEntity()
             {
                 id = id,
-                adapter_code = create == true
-                ? await _codeConfiguratorService.GenerateCodeAsync(Prefix.Adapter)
-                : null,
                 adapter_name = request.Name,
                 type_id = request.TypeAdapterId,
                 status_id = request.StatusId,

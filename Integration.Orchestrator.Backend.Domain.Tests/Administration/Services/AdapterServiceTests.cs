@@ -1,27 +1,27 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Services.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
 {
     public class AdapterServiceTests
     {
         private readonly Mock<IAdapterRepository<AdapterEntity>> _mockRepo;
+        private readonly Mock<ICodeConfiguratorService> _mockCodeConfiguratorService;
+        private readonly Mock<IStatusService<StatusEntity>> _mockStatusService;
         private readonly AdapterService _service;
 
         public AdapterServiceTests()
         {
             _mockRepo = new Mock<IAdapterRepository<AdapterEntity>>();
-            _service = new AdapterService(_mockRepo.Object);
+            _mockCodeConfiguratorService = new Mock<ICodeConfiguratorService>();
+            _mockStatusService = new Mock<IStatusService<StatusEntity>>();
+            _service = new AdapterService(_mockRepo.Object, _mockCodeConfiguratorService.Object, _mockStatusService.Object);
         }
         [Fact]
         public async Task InsertAsync_ShouldCallRepositoryInsertAsync()

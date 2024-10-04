@@ -1,4 +1,6 @@
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Services.Administration;
@@ -12,10 +14,14 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
     {
         private readonly Mock<ISynchronizationRepository<SynchronizationEntity>> _mockRepo;
         private readonly SynchronizationService _service;
+        private readonly Mock<ICodeConfiguratorService> _mockCodeConfiguratorService;
+        private readonly Mock<ISynchronizationStatesService<SynchronizationStatusEntity>> _mockSynchronizationStatus;
         public SynchronizationServiceTests()
         {
             _mockRepo = new Mock<ISynchronizationRepository<SynchronizationEntity>>();
-            _service = new SynchronizationService(_mockRepo.Object);
+            _mockCodeConfiguratorService = new Mock<ICodeConfiguratorService>();
+            _mockSynchronizationStatus = new Mock<ISynchronizationStatesService<SynchronizationStatusEntity>>();
+            _service = new SynchronizationService(_mockRepo.Object, _mockCodeConfiguratorService.Object, _mockSynchronizationStatus.Object);
         }
 
         [Fact]

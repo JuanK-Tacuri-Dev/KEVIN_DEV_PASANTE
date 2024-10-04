@@ -1,6 +1,8 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
+using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Resources;
@@ -10,10 +12,14 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     [DomainService]
     public class ProcessService(
-        IProcessRepository<ProcessEntity> processRepository)
+        IProcessRepository<ProcessEntity> processRepository,
+         ICodeConfiguratorService codeConfiguratorService,
+        IStatusService<StatusEntity> statusService)
         : IProcessService<ProcessEntity>
     {
         private readonly IProcessRepository<ProcessEntity> _processRepository = processRepository;
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
+        private readonly IStatusService<StatusEntity> _statusService = statusService;
 
         public async Task InsertAsync(ProcessEntity process)
         {
@@ -70,13 +76,43 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         private async Task ValidateBussinesLogic(ProcessEntity process, bool create = false)
         {
+            await EnsureStatusExists(process.status_id);
+
             if (create)
             {
-                var processByCode = await GetByCodeAsync(process.process_code);
-                if (processByCode != null)
-                {
-                    throw new ArgumentException(AppMessages.Domain_ProcessExists);
-                }
+                var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Process);
+                await EnsureCodeIsUnique(codeFound);
+                process.process_code = codeFound;
+            }
+        }
+
+        private async Task EnsureStatusExists(Guid statusId)
+        {
+            var statusFound = await _statusService.GetByIdAsync(statusId);
+            if (statusFound == null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Application_StatusNotFound,
+                            Data = statusId
+                        });
+            }
+        }
+
+        private async Task EnsureCodeIsUnique(string code)
+        {
+            var codeFound = await GetByCodeAsync(code);
+            if (codeFound != null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors()
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = AppMessages.Domain_Response_CodeInUse,
+                        Data = code
+                    });
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
@@ -11,10 +12,14 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     [DomainService]
     public class RepositoryService(
-        IRepositoryRepository<RepositoryEntity> repositoryRepository) 
+        IRepositoryRepository<RepositoryEntity> repositoryRepository,
+         ICodeConfiguratorService codeConfiguratorService,
+        IStatusService<StatusEntity> statusService) 
         : IRepositoryService<RepositoryEntity>
     {
         private readonly IRepositoryRepository<RepositoryEntity> _repositoryRepository = repositoryRepository;
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
+        private readonly IStatusService<StatusEntity> _statusService = statusService;
 
         public async Task InsertAsync(RepositoryEntity repository)
         {
@@ -64,6 +69,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 
         private async Task ValidateBussinesLogic(RepositoryEntity repository, bool create = false) 
         {
+            await EnsureStatusExists(repository.status_id);
             var validateDbPortUser = await _repositoryRepository.ValidateDbPortUser(repository);
             if (validateDbPortUser)
             {
@@ -76,16 +82,39 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             }
             if (create)
             {
-                var repositoryByCode = await GetByCodeAsync(repository.repository_code);
-                if (repositoryByCode != null)
-                {
-                    throw new OrchestratorArgumentException(string.Empty,
+                var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Repository);
+                await EnsureCodeIsUnique(codeFound);
+                repository.repository_code = codeFound;
+            }
+        }
+
+        private async Task EnsureStatusExists(Guid statusId)
+        {
+            var statusFound = await _statusService.GetByIdAsync(statusId);
+            if (statusFound == null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
                             Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = AppMessages.Domain_Response_CodeInUse
+                            Description = AppMessages.Application_StatusNotFound,
+                            Data = statusId
                         });
-                }
+            }
+        }
+
+        private async Task EnsureCodeIsUnique(string code)
+        {
+            var codeFound = await GetByCodeAsync(code);
+            if (codeFound != null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors()
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = AppMessages.Domain_Response_CodeInUse,
+                        Data = code
+                    });
             }
         }
     }

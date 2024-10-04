@@ -3,7 +3,6 @@ using Integration.Orchestrator.Backend.Application.Models.Administration.Synchro
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
-using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
@@ -15,8 +14,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 {
     public class SynchronizationHandler(
         ISynchronizationService<SynchronizationEntity> synchronizationService,
-        ISynchronizationStatesService<SynchronizationStatusEntity> synchronizationStatesService,
-        ICodeConfiguratorService codeConfiguratorService)
+        ISynchronizationStatesService<SynchronizationStatusEntity> synchronizationStatesService)
         :
         IRequestHandler<CreateSynchronizationCommandRequest, CreateSynchronizationCommandResponse>,
         IRequestHandler<UpdateSynchronizationCommandRequest, UpdateSynchronizationCommandResponse>,
@@ -28,7 +26,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         private protected string dateFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
         private readonly ISynchronizationService<SynchronizationEntity> _synchronizationService = synchronizationService;
         private readonly ISynchronizationStatesService<SynchronizationStatusEntity> _synchronizationStatesService = synchronizationStatesService;
-        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateSynchronizationCommandResponse> Handle(CreateSynchronizationCommandRequest request, CancellationToken cancellationToken)
         {
@@ -40,7 +37,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var currentSyncStatus = await ValidateSyncStatus(synchronizationRequest.StatusId);
 
                 // Mapeo de la entidad de sincronización
-                var synchronizationEntity = await MapSynchronizer(synchronizationRequest, Guid.NewGuid(), true);
+                var synchronizationEntity = MapSynchronizer(synchronizationRequest, Guid.NewGuid());
 
                 // Configuración de observaciones y estado según el tipo de sincronización
                 ConfigureSynchronizationObservations(synchronizationRequest, synchronizationEntity, currentSyncStatus);
@@ -50,7 +47,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
                 // Retorno de respuesta
                 return CreateSynchronizationResponse(synchronizationEntity);
-                
+
             }
             catch (OrchestratorArgumentException ex)
             {
@@ -76,7 +73,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Data = request.Synchronization.SynchronizationRequest
                             });
 
-                var synchronizationMap = await MapSynchronizer(request.Synchronization.SynchronizationRequest, request.Id);
+                var synchronizationMap = MapSynchronizer(request.Synchronization.SynchronizationRequest, request.Id);
                 var currentSyncStatus = await ValidateSyncStatus(request.Synchronization.SynchronizationRequest.StatusId);
                 if (currentSyncStatus != SyncStatus.programmed)
                 {
@@ -317,14 +314,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             }
         }
 
-        private async Task<SynchronizationEntity> MapSynchronizer(SynchronizationCreateRequest request, Guid id, bool? create = null)
+        private SynchronizationEntity MapSynchronizer(SynchronizationCreateRequest request, Guid id)
         {
             return new SynchronizationEntity()
             {
                 id = id,
-                synchronization_code = create == true
-                ? await _codeConfiguratorService.GenerateCodeAsync(Prefix.Synchronyzation)
-                : null,
                 synchronization_name = request.Name,
                 franchise_id = request.FranchiseId,
                 status_id = request.StatusId,
@@ -340,7 +334,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
             if (synchronizationStatusFound == null)
             {
-                throw new ArgumentException(AppMessages.Application_StatusNotFound);
+                throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors()
+                            {
+                                Code = (int)ResponseCode.NotFoundSuccessfully,
+                                Description = AppMessages.Application_StatusNotFound,
+                                Data = id
+                            });
             }
 
             if (Enum.TryParse<SyncStatus>(synchronizationStatusFound.synchronization_status_key, out var status))
@@ -351,7 +351,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             return SyncStatus.error;
         }
 
-        private void ConfigureSynchronizationObservations(SynchronizationCreateRequest request, SynchronizationEntity entity, SyncStatus currentStatus)
+        private async void ConfigureSynchronizationObservations(SynchronizationCreateRequest request, SynchronizationEntity entity, SyncStatus currentStatus)
         {
             if (currentStatus == SyncStatus.programmed)
             {
@@ -359,38 +359,23 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             }
             else
             {
-                entity.status_id = _synchronizationStatesService.GetByCodeAsync(SyncStatus.success.ToString())?.Result?.id 
-                    ?? throw new OrchestratorArgumentException(string.Empty,
-                            new DetailsArgumentErrors()
-                            {
-                                Code = (int)ResponseCode.NotFoundSuccessfully,
-                                Description = "Estado no encontrado",
-                                Data = request
-                            });
+                entity.status_id = await GetStatusByCodeAsync(SyncStatus.success.ToString());
                 entity.synchronization_observations = $"Sincronización {entity.synchronization_code} ejecutada correctamente";
             }
         }
 
-        private async Task<SyncStatus> ValidateSyncStatus(SynchronizationCreateRequest request)
+        private async Task<Guid> GetStatusByCodeAsync(string code)
         {
-            var syncStatus = await _synchronizationStatesService.GetByIdAsync(request.StatusId);
-            if (syncStatus == null)
-            {
-                throw new OrchestratorArgumentException(string.Empty,
+            var entityFound = await _synchronizationStatesService.GetByCodeAsync(SyncStatus.success.ToString())
+                    ?? throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {
                                 Code = (int)ResponseCode.NotFoundSuccessfully,
-                                Description = "Estado no encontrado",
-                                Data = request
+                                Description = AppMessages.Application_StatusNotFound,
+                                Data = code
                             });
-            }
 
-            if (!Enum.TryParse<SyncStatus>(syncStatus.synchronization_status_key, out var status))
-            {
-                return SyncStatus.error;
-            }
-
-            return status;
+            return entityFound.id;
         }
 
         private CreateSynchronizationCommandResponse CreateSynchronizationResponse(SynchronizationEntity entity)
