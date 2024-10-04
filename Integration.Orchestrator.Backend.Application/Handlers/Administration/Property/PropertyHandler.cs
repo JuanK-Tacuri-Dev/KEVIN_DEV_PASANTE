@@ -2,7 +2,6 @@
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
-using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
@@ -11,8 +10,7 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Administratio
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Property
 {
-    public class PropertyHandler(IPropertyService<PropertyEntity> propertyService,
-        ICodeConfiguratorService codeConfiguratorService)
+    public class PropertyHandler(IPropertyService<PropertyEntity> propertyService)
         :
         IRequestHandler<CreatePropertyCommandRequest, CreatePropertyCommandResponse>,
         IRequestHandler<UpdatePropertyCommandRequest, UpdatePropertyCommandResponse>,
@@ -24,13 +22,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
         IRequestHandler<GetAllPaginatedPropertyCommandRequest, GetAllPaginatedPropertyCommandResponse>
     {
         public readonly IPropertyService<PropertyEntity> _propertyService = propertyService;
-        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreatePropertyCommandResponse> Handle(CreatePropertyCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var propertyMap = await MapProperty(request.Property.PropertyRequest, Guid.NewGuid(), true);
+                var propertyMap = MapProperty(request.Property.PropertyRequest, Guid.NewGuid());
                 await _propertyService.InsertAsync(propertyMap);
 
                 return new CreatePropertyCommandResponse(
@@ -73,7 +70,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
                                 Data = request.Property.PropertyRequest
                             });
 
-                var propertyMap = await MapProperty(request.Property.PropertyRequest, request.Id);
+                var propertyMap = MapProperty(request.Property.PropertyRequest, request.Id);
                 await _propertyService.UpdateAsync(propertyMap);
 
                 return new UpdatePropertyCommandResponse(
@@ -351,15 +348,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.P
             }
         }
 
-        private async Task<PropertyEntity> MapProperty(PropertyCreateRequest request, Guid id, bool? create = null)
+        private PropertyEntity MapProperty(PropertyCreateRequest request, Guid id)
         {
             return new PropertyEntity()
             {
                 id = id,
                 property_name = request.Name,
-                property_code = create == true
-                ? await _codeConfiguratorService.GenerateCodeAsync(Prefix.Property)
-                : null,
                 type_id = request.TypeId,
                 entity_id = request.EntityId,
                 status_id = request.StatusId

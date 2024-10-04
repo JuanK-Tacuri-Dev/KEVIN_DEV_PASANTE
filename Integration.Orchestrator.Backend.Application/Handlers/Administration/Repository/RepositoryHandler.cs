@@ -2,7 +2,6 @@
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
-using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
@@ -12,8 +11,7 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Administratio
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Repository
 {
     public class RepositoryHandler(
-        IRepositoryService<RepositoryEntity> repositoryService,
-        ICodeConfiguratorService codeConfiguratorService)
+        IRepositoryService<RepositoryEntity> repositoryService)
         :
         IRequestHandler<CreateRepositoryCommandRequest, CreateRepositoryCommandResponse>,
         IRequestHandler<UpdateRepositoryCommandRequest, UpdateRepositoryCommandResponse>,
@@ -23,13 +21,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
         IRequestHandler<GetAllPaginatedRepositoryCommandRequest, GetAllPaginatedRepositoryCommandResponse>
     {
         private readonly IRepositoryService<RepositoryEntity> _repositoryService = repositoryService;
-        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateRepositoryCommandResponse> Handle(CreateRepositoryCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var repositoryMap = await MapRepository(request.Repository.RepositoryRequest, Guid.NewGuid(), true);
+                var repositoryMap = MapRepository(request.Repository.RepositoryRequest, Guid.NewGuid());
                 await _repositoryService.InsertAsync(repositoryMap);
 
                 return new CreateRepositoryCommandResponse(
@@ -74,7 +71,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
                             Data = request.Repository.RepositoryRequest
                         });
 
-                var repositoryMap = await MapRepository(request.Repository.RepositoryRequest, request.Id);
+                var repositoryMap = MapRepository(request.Repository.RepositoryRequest, request.Id);
                 await _repositoryService.UpdateAsync(repositoryMap);
 
                 return new UpdateRepositoryCommandResponse(
@@ -281,14 +278,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.R
             }
         }
 
-        private async Task<RepositoryEntity> MapRepository(RepositoryCreateRequest request, Guid id, bool? create = null)
+        private RepositoryEntity MapRepository(RepositoryCreateRequest request, Guid id, bool? create = null)
         {
             return new RepositoryEntity()
             {
                 id = id,
-                repository_code = create == true
-                    ? await _codeConfiguratorService.GenerateCodeAsync(Prefix.Repository)
-                    : null,
                 repository_port = request.Port,
                 repository_userName = request.UserName,
                 repository_password = request.Password,

@@ -2,7 +2,6 @@
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
-using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
@@ -12,8 +11,7 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Administratio
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Process
 {
     public class ProcessHandler(
-        IProcessService<ProcessEntity> processService,
-        ICodeConfiguratorService codeConfiguratorService)
+        IProcessService<ProcessEntity> processService)
         :
         IRequestHandler<CreateProcessCommandRequest, CreateProcessCommandResponse>,
         IRequestHandler<UpdateProcessCommandRequest, UpdateProcessCommandResponse>,
@@ -24,13 +22,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
         IRequestHandler<GetAllPaginatedProcessCommandRequest, GetAllPaginatedProcessCommandResponse>
     {
         public readonly IProcessService<ProcessEntity> _processService = processService;
-        public readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateProcessCommandResponse> Handle(CreateProcessCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var processMap = await MapProcess(request.Process.ProcessRequest, Guid.NewGuid(), true);
+                var processMap = MapProcess(request.Process.ProcessRequest, Guid.NewGuid());
                 await _processService.InsertAsync(processMap);
 
                 return new CreateProcessCommandResponse(
@@ -90,7 +87,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 Data = request.Process.ProcessRequest
                             });
 
-                var processMap = await MapProcess(request.Process.ProcessRequest, request.Id);
+                var processMap = MapProcess(request.Process.ProcessRequest, request.Id);
                 await _processService.UpdateAsync(processMap);
 
                 return new UpdateProcessCommandResponse(
@@ -415,14 +412,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
             }
         }
 
-        private async Task<ProcessEntity> MapProcess(ProcessCreateRequest request, Guid id, bool? create = null)
+        private ProcessEntity MapProcess(ProcessCreateRequest request, Guid id)
         {
             return new ProcessEntity()
             {
                 id = id,
-                process_code = create == true
-                    ? await _codeConfiguratorService.GenerateCodeAsync(Prefix.Process)
-                    : null,
                 process_name = request.Name,
                 process_description = request.Description,
                 process_type_id = request.TypeId,

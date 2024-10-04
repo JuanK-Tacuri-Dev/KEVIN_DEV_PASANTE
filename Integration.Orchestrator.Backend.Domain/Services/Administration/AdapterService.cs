@@ -102,8 +102,8 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         
         private async Task EnsureCodeIsUnique(string code)
         {
-            var adapterByCode = await GetByCodeAsync(code);
-            if (adapterByCode != null)
+            var codeFound = await GetByCodeAsync(code);
+            if (codeFound != null)
             {
                 throw new OrchestratorArgumentException(string.Empty,
                     new DetailsArgumentErrors()

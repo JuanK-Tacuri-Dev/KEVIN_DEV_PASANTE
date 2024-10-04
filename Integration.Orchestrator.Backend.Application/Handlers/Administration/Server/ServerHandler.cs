@@ -1,21 +1,17 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
-using Integration.Orchestrator.Backend.Application.Models.Administration.Server;
+﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Server;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
-using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
-using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities.EntitiesCommands;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Server.ServerCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.Server
 {
     public class ServerHandler(
-        IServerService<ServerEntity> serverService,
-        ICodeConfiguratorService codeConfiguratorService)
+        IServerService<ServerEntity> serverService)
         :
         IRequestHandler<CreateServerCommandRequest, CreateServerCommandResponse>,
         IRequestHandler<UpdateServerCommandRequest, UpdateServerCommandResponse>,
@@ -26,13 +22,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
         IRequestHandler<GetAllPaginatedServerCommandRequest, GetAllPaginatedServerCommandResponse>
     {
         private readonly IServerService<ServerEntity> _serverService = serverService;
-        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
 
         public async Task<CreateServerCommandResponse> Handle(CreateServerCommandRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var serverMap = await MapServer(request.Server.ServerRequest, Guid.NewGuid(), true);
+                var serverMap = MapServer(request.Server.ServerRequest, Guid.NewGuid());
                 await _serverService.InsertAsync(serverMap);
 
                 return new CreateServerCommandResponse(
@@ -75,7 +70,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
                             Data = request.Server.ServerRequest
                         });
 
-                var serverMap = await MapServer(request.Server.ServerRequest, request.Id);
+                var serverMap = MapServer(request.Server.ServerRequest, request.Id);
                 await _serverService.UpdateAsync(serverMap);
 
                 return new UpdateServerCommandResponse(
@@ -316,14 +311,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
             }
         }
 
-        private async Task<ServerEntity> MapServer(ServerCreateRequest request, Guid id, bool? create = null)
+        private ServerEntity MapServer(ServerCreateRequest request, Guid id)
         {
             return new ServerEntity()
             {
                 id = id,
-                server_code = create == true
-                    ? await _codeConfiguratorService.GenerateCodeAsync(Prefix.Server)
-                    : null,
                 server_name = request.Name,
                 type_id = request.TypeServerId,
                 server_url = request.Url,

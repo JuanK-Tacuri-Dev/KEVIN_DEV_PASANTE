@@ -1,26 +1,35 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
+using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
+using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     [DomainService]
     public class SynchronizationService(
-        ISynchronizationRepository<SynchronizationEntity> synchronizationRepository) : 
+        ISynchronizationRepository<SynchronizationEntity> synchronizationRepository,
+        ICodeConfiguratorService codeConfiguratorService,
+        ISynchronizationStatesService<SynchronizationStatusEntity> synchronizationStatesService) : 
         ISynchronizationService<SynchronizationEntity>
     {
         private readonly ISynchronizationRepository<SynchronizationEntity> _synchronizationRepository = synchronizationRepository;
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
+        private readonly ISynchronizationStatesService<SynchronizationStatusEntity> _synchronizationStatesService = synchronizationStatesService;
 
         public async Task InsertAsync(SynchronizationEntity synchronization)
         {
+            await ValidateBussinesLogic(synchronization, true);
             await _synchronizationRepository.InsertAsync(synchronization);
         }
 
         public async Task UpdateAsync(SynchronizationEntity synchronization)
         {
+            await ValidateBussinesLogic(synchronization);
             await _synchronizationRepository.UpdateAsync(synchronization);
         }
 
@@ -33,6 +42,12 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             var specification = SynchronizationSpecification.GetByIdExpression(id);
             return await _synchronizationRepository.GetByIdAsync(specification);
+        }
+
+        public async Task<SynchronizationEntity> GetByCodeAsync(string code) 
+        {
+            var specification = SynchronizationSpecification.GetByCodeExpression(code);
+            return await _synchronizationRepository.GetByCodeAsync(specification);
         }
 
         public async Task<IEnumerable<SynchronizationEntity>> GetByFranchiseIdAsync(Guid franchiseId)
@@ -56,6 +71,47 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             var spec = new SynchronizationSpecification(paginatedModel);
             return await _synchronizationRepository.GetTotalRows(spec);
+        }
+
+        private async Task ValidateBussinesLogic(SynchronizationEntity synchronization, bool create = false)
+        {
+            await EnsureStatusExists(synchronization.status_id);
+
+            if (create)
+            {
+                var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Synchronyzation);
+                await EnsureCodeIsUnique(codeFound);
+                synchronization.synchronization_code = codeFound;
+            }
+        }
+        private async Task EnsureStatusExists(Guid statusId)
+        {
+            var statusFound = await _synchronizationStatesService.GetByIdAsync(statusId);
+            if (statusFound == null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Application_StatusNotFound,
+                            Data = statusId
+                        });
+            }
+        }
+
+        private async Task EnsureCodeIsUnique(string code)
+        {
+            var codeFound = await GetByCodeAsync(code);
+            if (codeFound != null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors()
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = AppMessages.Domain_Response_CodeInUse,
+                        Data = code
+                    });
+            }
         }
     }
 }

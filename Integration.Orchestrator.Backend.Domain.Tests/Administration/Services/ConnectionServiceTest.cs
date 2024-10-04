@@ -1,4 +1,6 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Services.Administration;
@@ -11,11 +13,15 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
     public class ConnectionServiceTest
     {
         private readonly Mock<IConnectionRepository<ConnectionEntity>> _mockRepo;
+        private readonly Mock<ICodeConfiguratorService> _mockCodeConfiguratorService;
+        private readonly Mock<IStatusService<StatusEntity>> _mockStatusService;
         private readonly ConnectionService _service;
         public ConnectionServiceTest()
         {
             _mockRepo = new Mock<IConnectionRepository<ConnectionEntity>>();
-            _service = new ConnectionService(_mockRepo.Object);
+            _mockCodeConfiguratorService = new Mock<ICodeConfiguratorService>();
+            _mockStatusService = new Mock<IStatusService<StatusEntity>>();
+            _service = new ConnectionService(_mockRepo.Object,_mockCodeConfiguratorService.Object, _mockStatusService.Object);
         }
         [Fact]
         public async Task InsertAsync()

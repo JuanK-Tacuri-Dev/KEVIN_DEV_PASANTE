@@ -1,6 +1,7 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
@@ -11,10 +12,14 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
 {
     [DomainService]
     public class ServerService(
-        IServerRepository<ServerEntity> serverRepository) 
+        IServerRepository<ServerEntity> serverRepository,
+        ICodeConfiguratorService codeConfiguratorService,
+        IStatusService<StatusEntity> statusService)
         : IServerService<ServerEntity>
     {
         private readonly IServerRepository<ServerEntity> _serverRepository = serverRepository;
+        private readonly ICodeConfiguratorService _codeConfiguratorService = codeConfiguratorService;
+        private readonly IStatusService<StatusEntity> _statusService = statusService;
 
         public async Task InsertAsync(ServerEntity server)
         {
@@ -68,8 +73,10 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _serverRepository.GetTotalRows(spec);
         }
 
-        private async Task ValidateBussinesLogic(ServerEntity server, bool create = false) 
+        private async Task ValidateBussinesLogic(ServerEntity server, bool create = false)
         {
+            await EnsureStatusExists(server.status_id);
+
             var validateNameURL = await _serverRepository.ValidateNameURL(server);
             if (validateNameURL)
             {
@@ -80,18 +87,41 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
                             Description = AppMessages.Domain_ServerExists
                         });
             }
-            if (create) 
+            if (create)
             {
-                var serverByCode = await GetByCodeAsync(server.server_code);
-                if (serverByCode != null) 
-                {
-                    throw new OrchestratorArgumentException(string.Empty,
+                var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Server);
+                await EnsureCodeIsUnique(codeFound);
+                server.server_code = codeFound;
+            }
+        }
+
+        private async Task EnsureStatusExists(Guid statusId)
+        {
+            var statusFound = await _statusService.GetByIdAsync(statusId);
+            if (statusFound == null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
                             Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = AppMessages.Domain_Response_CodeInUse
+                            Description = AppMessages.Application_StatusNotFound,
+                            Data = statusId
                         });
-                }
+            }
+        }
+
+        private async Task EnsureCodeIsUnique(string code)
+        {
+            var codeFound = await GetByCodeAsync(code);
+            if (codeFound != null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors()
+                    {
+                        Code = (int)ResponseCode.NotFoundSuccessfully,
+                        Description = AppMessages.Domain_Response_CodeInUse,
+                        Data = code
+                    });
             }
         }
     }

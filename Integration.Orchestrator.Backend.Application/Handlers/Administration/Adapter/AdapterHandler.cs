@@ -27,7 +27,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
         {
             try
             {
-                var adapterMap = MapAdapter(request.Adapter.AdapterRequest, Guid.NewGuid(), true);
+                var adapterMap = MapAdapter(request.Adapter.AdapterRequest, Guid.NewGuid());
                 await _adapterService.InsertAsync(adapterMap);
 
                 return new CreateAdapterCommandResponse(
@@ -314,7 +314,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.A
             }
         }
 
-        private AdapterEntity MapAdapter(AdapterCreateRequest request, Guid id, bool? create = null)
+        private AdapterEntity MapAdapter(AdapterCreateRequest request, Guid id)
         {
             return new AdapterEntity()
             {
