@@ -75,10 +75,10 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         private async Task ValidateBussinesLogic(AdapterEntity adapter, bool create = false)
         {
             await EnsureStatusExists(adapter.status_id);
-            await EnsureVersionAndNameExist(adapter);
-
+            
             if (create)
             {
+                await EnsureVersionAndNameExist(adapter);
                 var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Adapter);
                 await EnsureCodeIsUnique(codeFound);
                 adapter.adapter_code = codeFound;

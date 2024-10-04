@@ -73,15 +73,19 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         private async Task ValidateBussinesLogic(CatalogEntity entity, bool create = false)
         {
             await EnsureStatusExists(entity.status_id);
-            var catalogList = await GetByNameAndFatherCodeAsync(entity.catalog_name, entity.father_code);
-
-            switch (create)
+            if (create) 
             {
-                case true when catalogList.ToList().Count > 0:
-                    throw new ArgumentException(AppMessages.Domain_CatalogFatherCodeExists);
-                case false when catalogList.ToList().Exists(catalogEntity => catalogEntity.id != entity.id):
-                    throw new ArgumentException(AppMessages.Domain_CatalogFatherCodeExists);
+                var catalogList = await GetByNameAndFatherCodeAsync(entity.catalog_name, entity.father_code);
+
+                switch (create)
+                {
+                    case true when catalogList.ToList().Count > 0:
+                        throw new ArgumentException(AppMessages.Domain_CatalogFatherCodeExists);
+                    case false when catalogList.ToList().Exists(catalogEntity => catalogEntity.id != entity.id):
+                        throw new ArgumentException(AppMessages.Domain_CatalogFatherCodeExists);
+                }
             }
+            
         }
         
         public async Task<IEnumerable<CatalogEntity>> GetByNameAndFatherCodeAsync(string name, int? fatherCode)
