@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
+﻿using Integration.Orchestrator.Backend.Api.Filter;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Entities.EntitiesCommands;
@@ -7,6 +8,7 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
 {
     [Route("api/v1/entities/[action]")]
     [ApiController]
+    [ServiceFilter(typeof(ErrorHandlingRest))]
     public class EntityController(IMediator mediator) : Controller
     {
         private readonly IMediator _mediator = mediator;

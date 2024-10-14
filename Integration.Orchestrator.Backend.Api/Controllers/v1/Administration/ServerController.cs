@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Server;
+﻿using Integration.Orchestrator.Backend.Api.Filter;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Server;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Server.ServerCommands;
@@ -7,6 +8,7 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
 {
     [Route("api/v1/servers/[action]")]
     [ApiController]
+    [ServiceFilter(typeof(ErrorHandlingRest))]
     public class ServerController(IMediator mediator) : Controller
     {
 
