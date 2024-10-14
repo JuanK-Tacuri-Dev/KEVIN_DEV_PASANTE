@@ -33,6 +33,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controllers\v1\Administration\AdapterController.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="appsettings.TestIntegrations.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

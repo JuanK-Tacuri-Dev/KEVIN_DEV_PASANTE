@@ -1,0 +1,14 @@
+[
+  {
+    "id": "b979dfcf-bcc1-48a5-ab38-9e866dc282c9",
+    "repository_code": "R000",
+    "repository_databaseName": "demo_repositorio_0",
+    "repository_port": 8080,
+    "repository_userName": "admin_0",
+    "repository_password": "1234_0",
+    "auth_type_id": "6eb593cb-31bb-49da-a847-1bddb1a20766",
+    "status_id": "34c25c17-a5b5-48e1-9862-7f275f376698",
+    "created_at": "2024-10-12T01:18:27.656+00:00",
+    "updated_at": "2024-10-12T01:18:27.656+00:00"
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "Name": "demo_integración_{0}",
+  "Observations": "demo_integración_observación_{0}",
+  "UserId": "811a4e9e-046c-4d1b-b1f7-4bbfd22ec598",
+  "StatusId": "34c25c17-a5b5-48e1-9862-7f275f376698",
+  "Process": [
+    {
+      "Id": "814b8861-efda-460e-b99a-e6fd85bdae01"
+    }
+  ]
+}

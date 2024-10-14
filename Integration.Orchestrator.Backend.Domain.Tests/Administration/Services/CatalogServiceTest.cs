@@ -1,4 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Services.Administration;
@@ -11,11 +12,13 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
     public class CatalogServiceTest
     {
         private readonly Mock<ICatalogRepository<CatalogEntity>> _mockRepo;
+        private readonly Mock<IStatusService<StatusEntity>> _mockStatusService;
         private readonly CatalogService _service;
         public CatalogServiceTest()
         {
             _mockRepo = new Mock<ICatalogRepository<CatalogEntity>>();
-            _service = new CatalogService(_mockRepo.Object);
+            _mockStatusService = new Mock<IStatusService<StatusEntity>>();
+            _service = new CatalogService(_mockRepo.Object, _mockStatusService.Object);
         }
         [Fact]
         public async Task DeleteAsync()

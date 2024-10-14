@@ -1,0 +1,14 @@
+[
+  {
+    "id": "8781ef39-73c6-4922-a4ae-262c50badebd",
+    "connection_code": "C000",
+    "connection_name": "demo_conexión_0",
+    "connection_description": "demo_conexión_descripcion_0",
+    "server_id": "1d49911e-6d4d-4311-ac4b-aa7ce256de2d",
+    "adapter_id": "7a478a64-b83a-46cf-ae74-b5596d7fc2b1",
+    "repository_id": "b979dfcf-bcc1-48a5-ab38-9e866dc282c9",
+    "status_id": "34c25c17-a5b5-48e1-9862-7f275f376698",
+    "created_at": "2024-10-07T16:51:42.160+00:00",
+    "updated_at": "2024-10-07T16:51:42.160+00:00"
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "7a478a64-b83a-46cf-ae74-b5596d7fc2b1",
+    "adapter_code": "A000",
+    "adapter_name": "demo_adaptador_0",
+    "adapter_version": "2.0",
+    "status_id": "34c25c17-a5b5-48e1-9862-7f275f376698",
+    "type_id": "9a3944c4-93f5-4549-a7e7-b08c60fdf2a7",
+    "created_at": "2024-10-07T16:51:42.160+00:00",
+    "updated_at": "2024-10-07T16:51:42.160+00:00"
+  }
+]

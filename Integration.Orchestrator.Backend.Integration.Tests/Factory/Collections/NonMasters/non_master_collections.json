@@ -1,0 +1,13 @@
+{
+  "collections": [
+    "Integration_Server",
+    "Integration_Adapter",
+    "Integration_Repository",
+    "Integration_Connection",
+    "Integration_Entity",
+    "Integration_Property",
+    "Integration_Process",
+    "Integration_Integration",
+    "Integration_Synchronization"
+  ]
+}

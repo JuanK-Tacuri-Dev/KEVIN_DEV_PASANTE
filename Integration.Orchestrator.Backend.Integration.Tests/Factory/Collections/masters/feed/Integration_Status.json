@@ -1,0 +1,20 @@
+[
+  {
+    "id": "34c25c17-a5b5-48e1-9862-7f275f376698",
+    "status_key": "active",
+    "status_text": "Activo",
+    "status_color": "#1B3E19",
+    "status_background": "#E2F7E2",
+    "created_at": "2024-08-28T16:36:01.562Z",
+    "updated_at": "2024-08-28T16:36:01.562Z"
+  },
+  {
+    "id": "491d55a2-e2d8-4a89-a46b-dcae9c469bc3",
+    "status_key": "inactive",
+    "status_text": "Inactivo",
+    "status_color": "#810C22",
+    "status_background": "#FBD5DC",
+    "created_at": "2024-08-28T16:37:16.422Z",
+    "updated_at": "2024-08-28T16:37:16.422Z"
+  }
+]
