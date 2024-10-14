@@ -1,0 +1,8 @@
+{
+  "DatabaseName": "demo_repositorio_{0}",
+  "Port": 8080,
+  "UserName": "admin_{0}",
+  "Password": "1234_{0}",
+  "AuthTypeId": "6eb593cb-31bb-49da-a847-1bddb1a20766",
+  "StatusId": "34c25c17-a5b5-48e1-9862-7f275f376698"
+}

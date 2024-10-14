@@ -19,8 +19,7 @@
         }
         public bool is_father { get; set; } = false;
         public Guid status_id { get; set; }
-        public Guid father_id { get; set; }
-        public DateTime created_at { get; private set; } = DateTime.UtcNow;
-        public DateTime updated_at { get; private set; } = DateTime.UtcNow;
+        public DateTime created_at { get; set; } = DateTime.UtcNow;
+        public DateTime updated_at { get; set; } = DateTime.UtcNow;
     }
 }

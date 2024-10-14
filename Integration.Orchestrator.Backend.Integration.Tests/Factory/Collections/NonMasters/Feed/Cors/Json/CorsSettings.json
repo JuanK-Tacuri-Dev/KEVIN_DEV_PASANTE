@@ -1,0 +1,20 @@
+{
+  "status": "34c25c17-a5b5-48e1-9862-7f275f376698",
+  "synchronizationState": "4ca51a92-fa22-4e4f-8108-51370ac5550e",
+  "server": "1d49911e-6d4d-4311-ac4b-aa7ce256de2d",
+  "typeAdapter": "9a3944c4-93f5-4549-a7e7-b08c60fdf2a7",
+  "adapter": "7a478a64-b83a-46cf-ae74-b5596d7fc2b1",
+  "authType": "6eb593cb-31bb-49da-a847-1bddb1a20766",
+  "repository": "b979dfcf-bcc1-48a5-ab38-9e866dc282c9",
+  "connection": "8781ef39-73c6-4922-a4ae-262c50badebd",
+  "entityDataType": "2d52b4ca-eba5-43fe-8e7d-30e557cb40dc",
+  "entity": "16c08b49-a6f3-464f-9eaf-b3ecfae44886",
+  "propertyDataType": "2d52b4ca-eba5-43fe-8e7d-30e557cb40dc",
+  "property": "04e6cdc9-f7b8-4a9b-922d-01d7bca31c9a",
+  "processDataType": "f8855e94-d69c-4a29-a5f5-9efa692da7f2",
+  "process": "814b8861-efda-460e-b99a-e6fd85bdae01",
+  "user": "811a4e9e-046c-4d1b-b1f7-4bbfd22ec598",
+  "franchise": "622dccee-0359-4067-bec4-62ef63a785b1",
+  "integration": "51b1d371-01d5-4e85-b9dd-1118192b62eb",
+  "synchronization": "dd73e792-414a-4562-b675-7c5ddf904f1c"
+}

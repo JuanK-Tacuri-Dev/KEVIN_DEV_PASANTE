@@ -1,0 +1,47 @@
+[
+  {
+    "id": "932f2c50-d36d-40ac-bac5-0b95ec8dbfd2",
+    "synchronization_status_key": "success",
+    "synchronization_status_text": "Exitoso",
+    "synchronization_status_color": "#1B3E19",
+    "synchronization_status_background": "#E2F7E2",
+    "created_at": "2024-08-27T21:37:25.108Z",
+    "updated_at": "2024-08-27T21:37:25.108Z"
+  },
+  {
+    "id": "08f363c9-7ffb-4220-9941-db6a56a7177d",
+    "synchronization_status_key": "error",
+    "synchronization_status_text": "Error",
+    "synchronization_status_color": "#810C22",
+    "synchronization_status_background": "#FBD5DC",
+    "created_at": "2024-08-29T14:27:53.407Z",
+    "updated_at": "2024-08-29T14:27:53.407Z"
+  },
+  {
+    "id": "b08e997f-3c27-4288-8db3-c4ee29ecb9d3",
+    "synchronization_status_key": "running",
+    "synchronization_status_text": "Ejecutando",
+    "synchronization_status_color": "#1D1819",
+    "synchronization_status_background": "#DFDEDE",
+    "created_at": "2024-08-29T14:28:27.228Z",
+    "updated_at": "2024-08-29T14:28:27.228Z"
+  },
+  {
+    "id": "602737c1-7c38-4df1-9bfa-c5233a2cec29",
+    "synchronization_status_key": "canceled",
+    "synchronization_status_text": "Cancelado",
+    "synchronization_status_color": "#810C22",
+    "synchronization_status_background": "#FBECD5",
+    "created_at": "2024-08-29T14:28:51.254Z",
+    "updated_at": "2024-08-29T14:28:51.254Z"
+  },
+  {
+    "id": "4ca51a92-fa22-4e4f-8108-51370ac5550e",
+    "synchronization_status_key": "programmed",
+    "synchronization_status_text": "Programado",
+    "synchronization_status_color": "#0040B0",
+    "synchronization_status_background": "#EBF8FF",
+    "created_at": "2024-08-29T14:29:17.294Z",
+    "updated_at": "2024-08-29T14:29:17.294Z"
+  }
+]
