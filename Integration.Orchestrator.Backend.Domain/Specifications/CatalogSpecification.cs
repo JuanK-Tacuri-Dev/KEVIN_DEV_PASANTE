@@ -31,6 +31,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { nameof(CatalogEntity.catalog_name).Split("_")[1], x => x.catalog_name },
             { nameof(CatalogEntity.catalog_detail).Split("_")[1], x => x.catalog_detail },
             { nameof(CatalogEntity.catalog_value).Split("_")[1], x => x.catalog_value },
+            { nameof(CatalogEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(CatalogEntity.created_at).Split("_")[0], x => x.created_at },
         };
         private void SetupPagination(PaginatedModel model)

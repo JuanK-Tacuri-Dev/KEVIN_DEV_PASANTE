@@ -30,6 +30,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { nameof(ServerEntity.server_code).Split("_")[1], x => x.server_code },
             { nameof(ServerEntity.server_name).Split("_")[1], x => x.server_name },
             { nameof(ServerEntity.server_url).Split("_")[1], x => x.server_url },
+            { nameof(ServerEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(ServerEntity.created_at).Split("_")[0], x => x.created_at }
         };
         private void SetupPagination(PaginatedModel model)

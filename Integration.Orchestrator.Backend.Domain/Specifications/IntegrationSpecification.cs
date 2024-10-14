@@ -30,6 +30,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { nameof(IntegrationEntity.integration_name).Split("_")[1], x => x.integration_name },
             { nameof(IntegrationEntity.integration_observations).Split("_")[1], x => x.integration_observations },
             { nameof(IntegrationEntity.updated_at).Split("_")[0], x => x.updated_at },
+            { nameof(IntegrationEntity.created_at).Split("_")[0], x => x.created_at },
         };
         private void SetupPagination(PaginatedModel model)
         {

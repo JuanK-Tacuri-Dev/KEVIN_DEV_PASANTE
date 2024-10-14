@@ -32,6 +32,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { nameof(RepositoryEntity.repository_userName).Split("_")[1], x => x.repository_userName },
             { nameof(RepositoryEntity.repository_password).Split("_")[1], x => x.repository_password },
             { nameof(RepositoryEntity.repository_databaseName).Split("_")[1], x => x.repository_databaseName },
+            { nameof(RepositoryEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(RepositoryEntity.created_at).Split("_")[0], x => x.created_at }
         };
         private void SetupPagination(PaginatedModel model)
