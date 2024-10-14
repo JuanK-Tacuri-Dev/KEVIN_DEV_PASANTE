@@ -31,6 +31,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { nameof(StatusEntity.status_text).Split("_")[1], x => x.status_text },
             { nameof(StatusEntity.status_color).Split("_")[1], x => x.status_color },
             { nameof(StatusEntity.status_background).Split("_")[1], x => x.status_background },
+            { nameof(StatusEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(StatusEntity.created_at).Split("_")[0], x => x.created_at }
         };
         private void SetupPagination(PaginatedModel model)

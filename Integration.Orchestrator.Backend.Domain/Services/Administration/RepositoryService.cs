@@ -54,7 +54,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         {
             if (string.IsNullOrEmpty(paginatedModel.Sort_field))
             {
-                paginatedModel.Sort_field = nameof(RepositoryEntity.created_at).Split("_")[0];
+                paginatedModel.Sort_field = nameof(RepositoryEntity.updated_at).Split("_")[0];
                 paginatedModel.Sort_order = SortOrdering.Descending;
             }
             var spec = new RepositorySpecification(paginatedModel);

@@ -30,6 +30,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { nameof(ProcessEntity.process_code).Split("_")[1], x => x.process_code },
             { nameof(ProcessEntity.process_name).Split("_")[1], x => x.process_name },
             { nameof(ProcessEntity.process_description).Split("_")[1], x => x.process_description },
+            { nameof(ProcessEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(ProcessEntity.created_at).Split("_")[0], x => x.created_at }
         };
         private void SetupPagination(PaginatedModel model)
