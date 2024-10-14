@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStatus;
+﻿using Integration.Orchestrator.Backend.Api.Filter;
+using Integration.Orchestrator.Backend.Application.Models.Administration.SynchronizationStatus;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization.SynchronizationStatusCommands;
@@ -7,6 +8,7 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Administration
 {
     [Route("api/v1/synchronizationStates/[action]")]
     [ApiController]
+    [ServiceFilter(typeof(ErrorHandlingRest))]
     public class SynchronizationStatusController(IMediator mediator) : Controller
     {
         private readonly IMediator _mediator = mediator;

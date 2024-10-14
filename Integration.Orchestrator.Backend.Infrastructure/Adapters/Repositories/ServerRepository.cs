@@ -90,7 +90,8 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             var filter = Builders<ServerEntity>.Filter.And(
                 Builders<ServerEntity>.Filter.Eq(e => e.server_name, entity.server_name),
-                Builders<ServerEntity>.Filter.Eq(e => e.server_url, entity.server_url)
+                Builders<ServerEntity>.Filter.Eq(e => e.server_url, entity.server_url),
+                Builders<ServerEntity>.Filter.Ne(e => e.id, entity.id)
             );
 
             var count = await _collection.Find(filter).CountDocumentsAsync();
