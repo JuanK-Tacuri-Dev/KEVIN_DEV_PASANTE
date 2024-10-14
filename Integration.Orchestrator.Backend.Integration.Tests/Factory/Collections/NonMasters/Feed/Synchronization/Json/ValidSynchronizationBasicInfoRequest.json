@@ -1,0 +1,12 @@
+{
+  "Name": "demo_sincronización_0",
+  "HourToExecute": "2024-10-04T23:24:02.562+00:00",
+  "Integrations": [
+    {
+      "Id": "51b1d371-01d5-4e85-b9dd-1118192b62eb"
+    }
+  ],
+  "UserId": "811a4e9e-046c-4d1b-b1f7-4bbfd22ec598",
+  "FranchiseId": "622dccee-0359-4067-bec4-62ef63a785b1",
+  "StatusId": "4ca51a92-fa22-4e4f-8108-51370ac5550e"
+}

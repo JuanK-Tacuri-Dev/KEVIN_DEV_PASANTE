@@ -1,0 +1,25 @@
+[
+  {
+    "id": "7a478a64-b83a-46cf-ae74-b5596d7fc2b1",
+    "process_code": "P000",
+    "process_name": "demo_proceso_0",
+    "process_description": "demo_proceso_descripción_0",
+    "process_type_id": "f8855e94-d69c-4a29-a5f5-9efa692da7f2",
+    "connection_id": "8781ef39-73c6-4922-a4ae-262c50badebd",
+    "status_id": "34c25c17-a5b5-48e1-9862-7f275f376698",
+    "entities": [
+      {
+        "id": "16c08b49-a6f3-464f-9eaf-b3ecfae44886",
+        "properties": [
+          {
+            "property_id": "04e6cdc9-f7b8-4a9b-922d-01d7bca31c9a",
+            "internal_status_id": "34c25c17-a5b5-48e1-9862-7f275f376698"
+          }
+        ],
+        "filters": []
+      }
+    ],
+    "created_at": "2024-10-07T16:51:42.160+00:00",
+    "updated_at": "2024-10-07T16:51:42.160+00:00"
+  }
+]

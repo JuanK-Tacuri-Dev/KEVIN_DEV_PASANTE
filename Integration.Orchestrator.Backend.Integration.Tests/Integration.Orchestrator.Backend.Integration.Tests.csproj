@@ -10,6 +10,109 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Factory\Collections\Masters\Feed\Integration_Adapter.json" />
+    <None Remove="Factory\Collections\masters\feed\Integration_Catalog.json" />
+    <None Remove="Factory\Collections\masters\feed\Integration_Connection.json" />
+    <None Remove="Factory\Collections\masters\feed\Integration_Entity.json" />
+    <None Remove="Factory\Collections\Masters\Feed\Integration_Integration.json" />
+    <None Remove="Factory\Collections\Masters\Feed\Integration_Process.json" />
+    <None Remove="Factory\Collections\Masters\Feed\Integration_Property.json" />
+    <None Remove="Factory\Collections\masters\feed\Integration_Repository.json" />
+    <None Remove="Factory\Collections\masters\feed\Integration_Server.json" />
+    <None Remove="Factory\Collections\masters\feed\Integration_Status.json" />
+    <None Remove="Factory\Collections\Masters\Feed\Integration_Synchronization.json" />
+    <None Remove="Factory\Collections\masters\feed\Integration_SynchronizationStates.json" />
+    <None Remove="Factory\Collections\masters\master_collections.json" />
+    <None Remove="Factory\Collections\NonMasters\Feed\Connection\Json\ValidConnectionBasicInfoRequest.json" />
+    <None Remove="Factory\Collections\NonMasters\Feed\Cors\Json\CorsSettings.json" />
+    <None Remove="Factory\Collections\NonMasters\Feed\Entity\Json\ValidEntityBasicInfoRequest.json" />
+    <None Remove="Factory\Collections\NonMasters\Feed\Integration\Json\ValidIntegrationBasicInfoRequest.json" />
+    <None Remove="Factory\Collections\NonMasters\Feed\Process\Json\ValidProcessBasicInfoRequest.json" />
+    <None Remove="Factory\Collections\NonMasters\Feed\Property\Json\ValidPropertyBasicInfoRequest.json" />
+    <None Remove="Factory\Collections\NonMasters\Feed\Repository\Json\ValidRepositoryBasicInfoRequest.json" />
+    <None Remove="Factory\Collections\NonMasters\Feed\Synchronization\Json\ValidSynchronizationBasicInfoRequest.json" />
+    <None Remove="Factory\Collections\NonMasters\non_master_collections.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Factory\Collections\Masters\Feed\Integration_Integration.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\Masters\Feed\Integration_Synchronization.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\Masters\Feed\Integration_Process.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\Masters\Feed\Integration_Property.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\masters\feed\Integration_Catalog.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\masters\feed\Integration_Connection.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\masters\feed\Integration_Entity.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\masters\feed\Integration_Repository.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\masters\feed\Integration_Server.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\masters\feed\Integration_Status.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\masters\feed\Integration_SynchronizationStates.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\Masters\Feed\Integration_Adapter.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\masters\master_collections.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\NonMasters\Feed\Adapter\Json\ValidAdapterBasicInfoRequest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\NonMasters\Feed\Connection\Json\ValidConnectionBasicInfoRequest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\NonMasters\Feed\Cors\Json\CorsSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\NonMasters\Feed\Entity\Json\ValidEntityBasicInfoRequest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\NonMasters\Feed\Integration\Json\ValidIntegrationBasicInfoRequest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\NonMasters\Feed\Process\Json\ValidProcessBasicInfoRequest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\NonMasters\Feed\Property\Json\ValidPropertyBasicInfoRequest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\NonMasters\Feed\Repository\Json\ValidRepositoryBasicInfoRequest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\NonMasters\Feed\Server\Json\ValidServerBasicInfoRequest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\NonMasters\Feed\GetAllPaginated\Json\ValidGetAllPaginated.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\NonMasters\Feed\Synchronization\Json\ValidSynchronizationBasicInfoRequest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Factory\Collections\NonMasters\non_master_collections.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="8.0.0" />
@@ -24,11 +127,6 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Factory\Collections\Masters\Feed\" />
   </ItemGroup>
 
 </Project>

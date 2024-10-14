@@ -1,0 +1,12 @@
+[
+  {
+    "id": "1d49911e-6d4d-4311-ac4b-aa7ce256de2d",
+    "server_code": "S000",
+    "server_name": "demo_servidor_0",
+    "type_id": "4ac97fd4-b6b6-4b88-87f7-a3e70b26135f",
+    "server_url": "https://www.demo_servidor_0:9090",
+    "status_id": "34c25c17-a5b5-48e1-9862-7f275f376698",
+    "created_at": "2024-10-12T01:18:27.656+00:00",
+    "updated_at": "2024-10-12T01:18:27.656+00:00"
+  }
+]

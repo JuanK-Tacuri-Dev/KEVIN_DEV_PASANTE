@@ -1,0 +1,19 @@
+{
+  "Name": "demo_proceso_{0}",
+  "Description": "demo_proceso_descripción_{0}",
+  "TypeId": "f8855e94-d69c-4a29-a5f5-9efa692da7f2",
+  "ConnectionId": "8781ef39-73c6-4922-a4ae-262c50badebd",
+  "StatusId": "34c25c17-a5b5-48e1-9862-7f275f376698",
+  "Entities": [
+    {
+      "Id": "16c08b49-a6f3-464f-9eaf-b3ecfae44886",
+      "Properties": [
+        {
+          "Id": "04e6cdc9-f7b8-4a9b-922d-01d7bca31c9a",
+          "InternalStatusId": "34c25c17-a5b5-48e1-9862-7f275f376698"
+        }
+      ],
+      "Filters": []
+    }
+  ]
+}

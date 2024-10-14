@@ -1,7 +1,19 @@
-﻿using Integration.Orchestrator.Backend.Integration.Tests.Factory.Collections.NonMasters.Feed.Cross.Model;
-using Integration.Orchestrator.Backend.Integration.Tests.Factory.Collections.NonMasters.Feed.Cross.Request;
+﻿using Integration.Orchestrator.Backend.Application.Commons;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Adapter;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Connection;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Entities;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Integration;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Process;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Property;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Repository;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Server;
+using Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Integration.Tests.Factory.Collections.NonMasters.Feed;
+using Integration.Orchestrator.Backend.Integration.Tests.Factory.Collections.NonMasters.Feed.Cors.Model;
+using Integration.Orchestrator.Backend.Integration.Tests.Factory.Collections.NonMasters.Feed.GetAllPaginated.Request;
+using Integration.Orchestrator.Backend.Integration.Tests.Factory.DataInsertion;
 using Integration.Orchestrator.Backend.Integration.Tests.Factory.Helpers;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Text.Json;
@@ -12,13 +24,33 @@ namespace Integration.Orchestrator.Backend.Integration.Tests.Factory
     {
         public const string NonMasterCollectionsPath = "Factory/Collections/NonMasters/non_master_collections.json";
         public const string MasterCollectionsPath = "Factory/Collections/Masters/master_collections.json";
-        public const string CrossHeadersJsonPath = "Factory/Collections/NonMasters/Feed/Cross/Json/CrossHeadersSettings.json";
+        public const string CorsJsonPath = "Factory/Collections/NonMasters/Feed/Cors/Json/CorsSettings.json";
+        public const string GetAllPaginatedJsonPath = "Factory/Collections/NonMasters/Feed/GetAllPaginated/Json/ValidGetAllPaginated.json";
+        public const string ServerJsonPath = "Factory/Collections/NonMasters/Feed/Server/Json/ValidServerBasicInfoRequest.json";
+        public const string AdapterJsonPath = "Factory/Collections/NonMasters/Feed/Adapter/Json/ValidAdapterBasicInfoRequest.json";
+        public const string RepositoryJsonPath = "Factory/Collections/NonMasters/Feed/Repository/Json/ValidRepositoryBasicInfoRequest.json";
+        public const string ConnectionJsonPath = "Factory/Collections/NonMasters/Feed/Connection/Json/ValidConnectionBasicInfoRequest.json";
+        public const string EntityJsonPath = "Factory/Collections/NonMasters/Feed/Entity/Json/ValidEntityBasicInfoRequest.json";
+        public const string PropertyJsonPath = "Factory/Collections/NonMasters/Feed/Property/Json/ValidPropertyBasicInfoRequest.json";
+        public const string ProcessJsonPath = "Factory/Collections/NonMasters/Feed/Process/Json/ValidProcessBasicInfoRequest.json";
+        public const string IntegrationJsonPath = "Factory/Collections/NonMasters/Feed/Integration/Json/ValidIntegrationBasicInfoRequest.json";
+        public const string SynchronizationJsonPath = "Factory/Collections/NonMasters/Feed/Synchronization/Json/ValidSynchronizationBasicInfoRequest.json";
         public const string FeedDirectory = "Factory/Collections/Masters/Feed";
 
         public CustomWebApplicationFactory<Program> Factory { get; private set; }
         private HttpClient _client;
         public IMongoDatabase Database => Factory.Database;
-        public CrossHeadersSettings CrossHeadersSettings { get; private set; }
+        public CorsSettings corsSettings {  get; private set; }
+        public PaginatedDefinition ValidGetAllPaginated { get; private set; }
+        public ServerCreateRequest ValidServerCreateRequest { get; private set; }
+        public AdapterCreateRequest ValidAdapterCreateRequest { get; private set; }
+        public RepositoryCreateRequest ValidRepositoryCreateRequest { get; private set; }
+        public ConnectionCreateRequest ValidConnectionCreateRequest { get; private set; }
+        public EntitiesCreateRequest ValidEntityCreateRequest { get; private set; }
+        public PropertyCreateRequest ValidPropertyCreateRequest { get; private set; }
+        public ProcessCreateRequest ValidProcessCreateRequest { get; private set; }
+        public IntegrationCreateRequest ValidIntegrationCreateRequest { get; private set; }
+        public SynchronizationCreateRequest ValidSynchronizationCreateRequest { get; private set; }
 
         private List<string> nonMasterCollections;
         private List<string> masterCollections;
@@ -119,18 +151,42 @@ namespace Integration.Orchestrator.Backend.Integration.Tests.Factory
 
                     switch (collectionName)
                     {
-                        //case "Franchise":
-                        //    if (database != null) DataInserter.InsertFranchiseData(database, jsonString);
-                        //    break;
-                        //case "InternalClients_Restaurant":
-                        //    if (database != null) DataInserter.InsertRestaurantsData(database, jsonString);
-                        //    break;
-                        //case "InternalClients_Users":
-                        //    if (database != null) DataInserter.InsertUserData(database, jsonString);
-                        //    break;
-                        //case "InternalClients_Franchise_Configurations":
-                        //    if (database != null) DataInserter.InsertConfigurationFranchiseData(database, jsonString);
-                        //    break;
+                        case "Integration_Status":
+                            if (database != null) DataInserter<StatusEntity>.InsertEntity(database, collectionName, jsonString);
+                            break;
+                        case "Integration_SynchronizationStates":
+                            if (database != null) DataInserter<SynchronizationStatusEntity>.InsertEntity(database, collectionName, jsonString);
+                            break;
+                        case "Integration_Catalog":
+                            if (database != null) DataInserter<CatalogEntity>.InsertEntity(database, collectionName, jsonString);
+                            break;
+                        case "Integration_Server":
+                            if (database != null) DataInserter<ServerEntity>.InsertEntity(database, collectionName, jsonString);
+                            break;
+                        case "Integration_Adapter":
+                            if (database != null) DataInserter<AdapterEntity>.InsertEntity(database, collectionName, jsonString);
+                            break;
+                        case "Integration_Repository":
+                            if (database != null) DataInserter<RepositoryEntity>.InsertEntity(database, collectionName, jsonString);
+                            break;
+                        case "Integration_Connection":
+                            if (database != null) DataInserter<ConnectionEntity>.InsertEntity(database, collectionName, jsonString);
+                            break;
+                        case "Integration_Entity":
+                            if (database != null) DataInserter<EntitiesEntity>.InsertEntity(database, collectionName, jsonString);
+                            break;
+                        case "Integration_Property":
+                            if (database != null) DataInserter<PropertyEntity>.InsertEntity(database, collectionName, jsonString);
+                            break;
+                        case "Integration_Process":
+                            if (database != null) DataInserter<ProcessEntity>.InsertEntity(database, collectionName, jsonString);
+                            break;
+                        case "Integration_Integration":
+                            if (database != null) DataInserter<IntegrationEntity>.InsertEntity(database, collectionName, jsonString);
+                            break;
+                        case "Integration_Synchronization":
+                            if (database != null) DataInserter<SynchronizationEntity>.InsertEntity(database, collectionName, jsonString);
+                            break;
                         default:
                             throw new Exception($"No method found to handle collection {collectionName}");
                     }
@@ -144,8 +200,18 @@ namespace Integration.Orchestrator.Backend.Integration.Tests.Factory
 
         private void InitializeObjects()
         {
-            CrossHeadersSettings = CrossHeadersJsonReader.ReadValidCrossHeadersSettings(CrossHeadersJsonPath);
             // Aquí se deben inicializar más objetos según sea necesario
+            corsSettings = JsonReader<CorsSettings>.ReadBasicInfoRequest(CorsJsonPath);
+            ValidGetAllPaginated = GetAllPaginatedJsonReader.ReadValidGetAllPaginated(GetAllPaginatedJsonPath);
+            ValidServerCreateRequest = JsonReader<ServerCreateRequest>.ReadBasicInfoRequest(ServerJsonPath);
+            ValidAdapterCreateRequest = JsonReader<AdapterCreateRequest>.ReadBasicInfoRequest(AdapterJsonPath);
+            ValidRepositoryCreateRequest = JsonReader<RepositoryCreateRequest>.ReadBasicInfoRequest(RepositoryJsonPath);
+            ValidConnectionCreateRequest = JsonReader<ConnectionCreateRequest>.ReadBasicInfoRequest(ConnectionJsonPath);
+            ValidEntityCreateRequest = JsonReader<EntitiesCreateRequest>.ReadBasicInfoRequest(EntityJsonPath);
+            ValidPropertyCreateRequest = JsonReader<PropertyCreateRequest>.ReadBasicInfoRequest(PropertyJsonPath);
+            ValidProcessCreateRequest = JsonReader<ProcessCreateRequest>.ReadBasicInfoRequest(ProcessJsonPath);
+            ValidIntegrationCreateRequest = JsonReader<IntegrationCreateRequest>.ReadBasicInfoRequest(IntegrationJsonPath);
+            ValidSynchronizationCreateRequest = JsonReader<SynchronizationCreateRequest>.ReadBasicInfoRequest(SynchronizationJsonPath);
         }
 
         private void CleanUpNonMasterCollections(List<string> collections)
@@ -171,6 +237,7 @@ namespace Integration.Orchestrator.Backend.Integration.Tests.Factory
             _client.Dispose();
             Factory.Dispose();
         }
+
         public void DisposeMethod(List<string> collections)
         {
             CleanUpNonMasterCollections(collections);

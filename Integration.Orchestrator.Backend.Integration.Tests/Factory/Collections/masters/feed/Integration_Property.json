@@ -1,0 +1,12 @@
+[
+  {
+    "id": "814b8861-efda-460e-b99a-e6fd85bdae01",
+    "property_code": "Y000",
+    "property_name": "demo_propiedad_0",
+    "type_id": "2d52b4ca-eba5-43fe-8e7d-30e557cb40dc",
+    "entity_id": "16c08b49-a6f3-464f-9eaf-b3ecfae44886",
+    "status_id": "34c25c17-a5b5-48e1-9862-7f275f376698",
+    "created_at": "2024-10-07T16:51:42.160+00:00",
+    "updated_at": "2024-10-07T16:51:42.160+00:00"
+  }
+]

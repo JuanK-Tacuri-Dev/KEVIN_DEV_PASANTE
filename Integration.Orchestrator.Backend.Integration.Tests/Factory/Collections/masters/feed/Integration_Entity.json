@@ -1,0 +1,12 @@
+[
+  {
+    "id": "8781ef39-73c6-4922-a4ae-262c50badebd",
+    "entity_code": "N000",
+    "entity_name": "demo_entidad_0",
+    "type_id": "2d52b4ca-eba5-43fe-8e7d-30e557cb40dc",
+    "repository_id": "b979dfcf-bcc1-48a5-ab38-9e866dc282c9",
+    "status_id": "34c25c17-a5b5-48e1-9862-7f275f376698",
+    "created_at": "2024-10-07T16:51:42.160+00:00",
+    "updated_at": "2024-10-07T16:51:42.160+00:00"
+  }
+]

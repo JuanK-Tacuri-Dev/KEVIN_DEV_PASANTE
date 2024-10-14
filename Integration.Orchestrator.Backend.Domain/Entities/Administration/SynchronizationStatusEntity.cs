@@ -7,7 +7,7 @@
         public string synchronization_status_text { get; set; }
         public string synchronization_status_color { get; set; }
         public string synchronization_status_background { get; set; }
-        public DateTime created_at { get; private set; } = DateTime.UtcNow;
-        public DateTime updated_at { get; private set; } = DateTime.UtcNow;
+        public DateTime created_at { get; set; } = DateTime.UtcNow;
+        public DateTime updated_at { get; set; } = DateTime.UtcNow;
     }
 }
