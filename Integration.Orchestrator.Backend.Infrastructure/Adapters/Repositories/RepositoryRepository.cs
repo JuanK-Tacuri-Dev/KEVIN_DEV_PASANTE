@@ -83,7 +83,8 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             var filter = Builders<RepositoryEntity>.Filter.And(
                 Builders<RepositoryEntity>.Filter.Eq(e => e.repository_databaseName, entity.repository_databaseName),
                 Builders<RepositoryEntity>.Filter.Eq(e => e.repository_port, entity.repository_port),
-                Builders<RepositoryEntity>.Filter.Eq(e => e.repository_userName, entity.repository_userName)
+                Builders<RepositoryEntity>.Filter.Eq(e => e.repository_userName, entity.repository_userName),
+                Builders<RepositoryEntity>.Filter.Ne(e => e.id, entity.id)
             );
 
             var count = await _collection.Find(filter).CountDocumentsAsync();

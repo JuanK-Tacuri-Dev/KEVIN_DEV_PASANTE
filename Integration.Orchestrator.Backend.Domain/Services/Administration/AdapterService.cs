@@ -75,10 +75,9 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         private async Task ValidateBussinesLogic(AdapterEntity adapter, bool create = false)
         {
             await EnsureStatusExists(adapter.status_id);
-            
+            await IsDuplicateVersionAndName(adapter);
             if (create)
             {
-                await EnsureVersionAndNameExist(adapter);
                 var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Adapter);
                 await EnsureCodeIsUnique(codeFound);
                 adapter.adapter_code = codeFound;
@@ -115,7 +114,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             }
         }
         
-        private async Task EnsureVersionAndNameExist(AdapterEntity adapter)
+        private async Task IsDuplicateVersionAndName(AdapterEntity adapter)
         {
             var validateNameVersion = await _adapterRepository.ValidateAdapterNameVersion(adapter);
             if (validateNameVersion)

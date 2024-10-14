@@ -76,20 +76,9 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         private async Task ValidateBussinesLogic(ServerEntity server, bool create = false)
         {
             await EnsureStatusExists(server.status_id);
-
+            await IsDuplicateNameAndUrl(server);
             if (create)
             {
-                var validateNameURL = await _serverRepository.ValidateNameURL(server);
-                if (validateNameURL)
-                {
-                    throw new OrchestratorArgumentException(string.Empty,
-                            new DetailsArgumentErrors()
-                            {
-                                Code = (int)ResponseCode.NotFoundSuccessfully,
-                                Description = AppMessages.Domain_ServerExists
-                            });
-                }
-
                 var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Server);
                 await EnsureCodeIsUnique(codeFound);
                 server.server_code = codeFound;
@@ -123,6 +112,20 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
                         Description = AppMessages.Domain_Response_CodeInUse,
                         Data = code
                     });
+            }
+        }
+
+        private async Task IsDuplicateNameAndUrl(ServerEntity server)
+        {
+            var validateNameURL = await _serverRepository.ValidateNameURL(server);
+            if (validateNameURL)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Domain_ServerExists
+                        });
             }
         }
     }

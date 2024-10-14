@@ -14,7 +14,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
     public class RepositoryService(
         IRepositoryRepository<RepositoryEntity> repositoryRepository,
          ICodeConfiguratorService codeConfiguratorService,
-        IStatusService<StatusEntity> statusService) 
+        IStatusService<StatusEntity> statusService)
         : IRepositoryService<RepositoryEntity>
     {
         private readonly IRepositoryRepository<RepositoryEntity> _repositoryRepository = repositoryRepository;
@@ -67,23 +67,12 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _repositoryRepository.GetTotalRows(spec);
         }
 
-        private async Task ValidateBussinesLogic(RepositoryEntity repository, bool create = false) 
+        private async Task ValidateBussinesLogic(RepositoryEntity repository, bool create = false)
         {
             await EnsureStatusExists(repository.status_id);
-            
+            await IsDuplicateDbPortUser(repository);
             if (create)
             {
-                var validateDbPortUser = await _repositoryRepository.ValidateDbPortUser(repository);
-                if (validateDbPortUser)
-                {
-                    throw new OrchestratorArgumentException(string.Empty,
-                            new DetailsArgumentErrors()
-                            {
-                                Code = (int)ResponseCode.NotFoundSuccessfully,
-                                Description = AppMessages.Domain_RepositoryExists
-                            });
-                }
-
                 var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Repository);
                 await EnsureCodeIsUnique(codeFound);
                 repository.repository_code = codeFound;
@@ -117,6 +106,20 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
                         Description = AppMessages.Domain_Response_CodeInUse,
                         Data = code
                     });
+            }
+        }
+
+        private async Task IsDuplicateDbPortUser(RepositoryEntity repository)
+        {
+            var validateDbPortUser = await _repositoryRepository.ValidateDbPortUser(repository);
+            if (validateDbPortUser)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Domain_RepositoryExists
+                        });
             }
         }
     }
