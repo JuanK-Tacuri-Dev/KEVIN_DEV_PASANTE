@@ -9,13 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\v1\Adminitrations\**" />
-    <Content Remove="Controllers\v1\Adminitrations\**" />
-    <EmbeddedResource Remove="Controllers\v1\Adminitrations\**" />
-    <None Remove="Controllers\v1\Adminitrations\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="FluentValidation" Version="11.9.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
@@ -30,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\v1\Integration\" />
+    <Folder Include="Controllers\v1\Configurador\" />
   </ItemGroup>
 
   <ItemGroup>

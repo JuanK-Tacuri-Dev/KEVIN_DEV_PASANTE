@@ -1,5 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
-using Integration.Orchestrator.Backend.Domain.Ports.Administration;
+using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using MongoDB.Driver;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories

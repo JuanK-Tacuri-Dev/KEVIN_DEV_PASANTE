@@ -33,7 +33,7 @@
   <ItemGroup>
     <Folder Include="Entities\Integrations\" />
     <Folder Include="Ports\Integrations\" />
-    <Folder Include="Resources\Adminitrations\" />
+    <Folder Include="Resources\Configurador\" />
     <Folder Include="Resources\Integrations\" />
     <Folder Include="Services\Integrations\" />
   </ItemGroup>
