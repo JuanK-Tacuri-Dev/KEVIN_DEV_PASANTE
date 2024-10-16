@@ -94,21 +94,10 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             return Builders<PropertyEntity>.Filter.Where(specification);
         }
-        public async Task<bool> GetByExits(PropertyEntity property, bool create = false)
+        public async Task<bool> GetByExits(PropertyEntity property)
         {
             FilterDefinition<PropertyEntity> filters;
-            if (create)
-            {
-                filters = Builders<PropertyEntity>.Filter.And(
-                    Builders<PropertyEntity>.Filter.Eq(e => e.property_name, property.property_name),
-                    Builders<PropertyEntity>.Filter.Eq(e => e.property_code, property.property_code),
-                    Builders<PropertyEntity>.Filter.Eq(e => e.type_id, property.type_id),
-                    Builders<PropertyEntity>.Filter.Eq(e => e.status_id, property.status_id),
-                    Builders<PropertyEntity>.Filter.Eq(e => e.entity_id, property.entity_id)
-                );
-            }
-            else
-            {
+            
                 filters = Builders<PropertyEntity>.Filter.And(
                     Builders<PropertyEntity>.Filter.Eq(e => e.property_name, property.property_name),
                     Builders<PropertyEntity>.Filter.Eq(e => e.property_code, property.property_code),
@@ -116,7 +105,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                     Builders<PropertyEntity>.Filter.Eq(e => e.status_id, property.status_id),
                     Builders<PropertyEntity>.Filter.Ne(e => e.id, property.id)
                 );
-            }
 
             var count = await _collection.Find(filters).CountDocumentsAsync();
             return count >= 1;

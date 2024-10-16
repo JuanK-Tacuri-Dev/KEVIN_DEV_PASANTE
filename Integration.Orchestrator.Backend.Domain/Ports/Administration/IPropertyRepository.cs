@@ -16,6 +16,6 @@ namespace Integration.Orchestrator.Backend.Domain.Ports.Administration
         Task<IEnumerable<T>> GetAllAsync(ISpecification<T> specification);
         public Task<long> GetTotalRows(ISpecification<T> specification);
         Task<IEnumerable<T>> GetByNameAndEntityIdAsync(Expression<Func<T, bool>> specification);
-        Task<bool> GetByExits(PropertyEntity property, bool create = false);
+        Task<bool> GetByExits(PropertyEntity property);
     }
 }

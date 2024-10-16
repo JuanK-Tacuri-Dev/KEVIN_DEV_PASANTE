@@ -82,6 +82,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         private async Task ValidateBussinesLogic(PropertyEntity property, bool create = false)
         {
             await EnsureStatusExists(property.status_id);
+            await IsDuplicate(property);
 
             if (create)
             {
@@ -140,9 +141,9 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         }
 
 
-        private async Task IsDuplicate(PropertyEntity property, bool update = false)
+        private async Task IsDuplicate(PropertyEntity property)
         {
-            var exits = await _propertyRepository.GetByExits(property, update);
+            var exits = await _propertyRepository.GetByExits(property);
             if (exits)
             {
                 throw new OrchestratorArgumentException(string.Empty,

@@ -84,9 +84,9 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         private async Task ValidateBussinesLogic(EntitiesEntity entities, bool create = false)
         {
             await EnsureStatusExists(entities.status_id);
+            await IsDuplicate(entities);
             if (create)
             {
-                await IsDuplicate(entities);
                 var numEntitiesByNameAndRepositoryId = await CountEntitiesByNameAndRepositoryIdAsync(entities);
                 if (numEntitiesByNameAndRepositoryId > 0)
                 {
@@ -96,10 +96,6 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
                 var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Entity);
                 await EnsureCodeIsUnique(codeFound);
                 entities.entity_code = codeFound;
-            }
-            else
-            {
-                await IsDuplicate(entities, true);
             }
         }
 
@@ -144,9 +140,9 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
                     });
             }
         }
-        private async Task IsDuplicate(EntitiesEntity entity, bool update = false)
+        private async Task IsDuplicate(EntitiesEntity entity)
         {
-            var exits = await _entitiesRepository.GetByExits(entity, update);
+            var exits = await _entitiesRepository.GetByExits(entity);
             if (exits)
             {
                 throw new OrchestratorArgumentException(string.Empty,
