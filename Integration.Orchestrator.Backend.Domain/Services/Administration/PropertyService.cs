@@ -14,7 +14,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
     public class PropertyService(
         IPropertyRepository<PropertyEntity> propertyRepository,
         ICodeConfiguratorService codeConfiguratorService,
-        IStatusService<StatusEntity> statusService) 
+        IStatusService<StatusEntity> statusService)
         : IPropertyService<PropertyEntity>
     {
         private readonly IPropertyRepository<PropertyEntity> _propertyRepository = propertyRepository;
@@ -55,7 +55,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             var specification = PropertySpecification.GetByTypeExpression(typeId);
             return await _propertyRepository.GetByTypeAsync(specification);
         }
-        
+
         public async Task<IEnumerable<PropertyEntity>> GetByEntityIdAsync(Guid entityId)
         {
             var specification = PropertySpecification.GetByEntityExpression(entityId);
@@ -79,7 +79,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _propertyRepository.GetTotalRows(spec);
         }
 
-        private async Task ValidateBussinesLogic(PropertyEntity property, bool create = false) 
+        private async Task ValidateBussinesLogic(PropertyEntity property, bool create = false)
         {
             await EnsureStatusExists(property.status_id);
 
@@ -96,7 +96,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
                 property.property_code = codeFound;
             }
         }
-        
+
         private async Task<int> CountPropertiesByNameAndEntityIdAsync(PropertyEntity entity)
         {
             var entitiesByNameAndRepositoryId = await GetByNameAndEntityIdAsync(entity.property_name, entity.entity_id);
@@ -136,6 +136,21 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
                         Description = AppMessages.Domain_Response_CodeInUse,
                         Data = code
                     });
+            }
+        }
+
+
+        private async Task IsDuplicate(PropertyEntity property, bool update = false)
+        {
+            var exits = await _propertyRepository.GetByExits(property, update);
+            if (exits)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Domain_PropertyExists
+                        });
             }
         }
     }

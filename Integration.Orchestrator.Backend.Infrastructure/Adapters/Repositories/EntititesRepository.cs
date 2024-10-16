@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+﻿using Integration.Orchestrator.Backend.Domain.Entities;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Driver;
@@ -70,6 +71,32 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .ToListAsync();
             return entitiesEntity;
         }
+        public async Task<bool> GetByExits(EntitiesEntity entity, bool create = false)
+        {
+            FilterDefinition<EntitiesEntity> filters;
+            if (create)
+            {
+                filters = Builders<EntitiesEntity>.Filter.And(
+                    Builders<EntitiesEntity>.Filter.Eq(e => e.entity_name, entity.entity_name),
+                    Builders<EntitiesEntity>.Filter.Eq(e => e.type_id, entity.type_id),
+                    Builders<EntitiesEntity>.Filter.Eq(e => e.repository_id, entity.repository_id),
+                    Builders<EntitiesEntity>.Filter.Eq(e => e.status_id, entity.status_id)
+                );
+            }
+            else
+            {
+                filters = Builders<EntitiesEntity>.Filter.And(
+                    Builders<EntitiesEntity>.Filter.Eq(e => e.entity_name, entity.entity_name),
+                    Builders<EntitiesEntity>.Filter.Eq(e => e.type_id, entity.type_id),
+                    Builders<EntitiesEntity>.Filter.Eq(e => e.repository_id, entity.repository_id),
+                    Builders<EntitiesEntity>.Filter.Eq(e => e.status_id, entity.status_id),
+                    Builders<EntitiesEntity>.Filter.Ne(e => e.id, entity.id)
+                );
+            }
+
+            var count = await _collection.Find(filters).CountDocumentsAsync();
+            return count >= 1;
+        }
 
         public async Task<IEnumerable<EntitiesEntity>> GetAllAsync(ISpecification<EntitiesEntity> specification)
         {
@@ -96,7 +123,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .Find(specification.Criteria)
                 .CountDocumentsAsync();
         }
-        
+
         public async Task<IEnumerable<EntitiesEntity>> GetByNameAndRepositoryIdAsync(Expression<Func<EntitiesEntity, bool>> specification)
         {
             return await _collection
