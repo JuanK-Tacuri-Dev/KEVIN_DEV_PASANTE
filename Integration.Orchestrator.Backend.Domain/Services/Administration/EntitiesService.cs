@@ -14,7 +14,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
     public class EntitiesService(
         IEntitiesRepository<EntitiesEntity> entitiesRepository,
         ICodeConfiguratorService codeConfiguratorService,
-        IStatusService<StatusEntity> statusService) 
+        IStatusService<StatusEntity> statusService)
         : IEntitiesService<EntitiesEntity>
     {
         private readonly IEntitiesRepository<EntitiesEntity> _entitiesRepository = entitiesRepository;
@@ -81,10 +81,10 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             return await _entitiesRepository.GetTotalRows(spec);
         }
 
-        private async Task ValidateBussinesLogic(EntitiesEntity entities, bool create = false) 
+        private async Task ValidateBussinesLogic(EntitiesEntity entities, bool create = false)
         {
             await EnsureStatusExists(entities.status_id);
-
+            await IsDuplicate(entities);
             if (create)
             {
                 var numEntitiesByNameAndRepositoryId = await CountEntitiesByNameAndRepositoryIdAsync(entities);
@@ -138,6 +138,19 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
                         Description = AppMessages.Domain_Response_CodeInUse,
                         Data = code
                     });
+            }
+        }
+        private async Task IsDuplicate(EntitiesEntity entity)
+        {
+            var exits = await _entitiesRepository.GetByExits(entity);
+            if (exits)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Domain_EntitiesExists
+                        });
             }
         }
     }

@@ -4,5 +4,6 @@ namespace Integration.Orchestrator.Backend.Application.Models.Administration.Sta
 {
     public class StatusGetAllPaginatedRequest : PaginatedDefinition
     {
+        public bool ActiveOnly { get; set; }
     }
 }

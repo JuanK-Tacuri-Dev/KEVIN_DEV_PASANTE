@@ -107,5 +107,22 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return x => true && x.entity_name.ToUpper() == name.ToUpper() && x.repository_id == repositoryId;
         }
+
+        private Expression<Func<EntitiesEntity, bool>> ValidateEntityProperties(PaginatedModel paginatedModel)
+        {
+            var criteria = (Expression<Func<EntitiesEntity, bool>>)(x => true);
+
+            return criteria;
+        }
+
+        public static Expression<Func<EntitiesEntity, bool>> ValidateEntityProperties(EntitiesEntity input)
+        {
+            return x =>
+                        x.entity_name.ToUpper() == input.entity_name.ToUpper() &&
+                        x.entity_code.ToUpper() == input.entity_code.ToUpper() &&
+                        x.type_id == input.type_id &&
+                        x.repository_id == input.repository_id &&
+                        x.status_id == input.status_id;
+        }
     }
 }
