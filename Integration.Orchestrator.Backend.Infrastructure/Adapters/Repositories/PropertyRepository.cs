@@ -10,7 +10,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
     public class PropertyRepository(IMongoCollection<PropertyEntity> collection) : IPropertyRepository<PropertyEntity>
     {
         private readonly IMongoCollection<PropertyEntity> _collection = collection;
-        
+
         public Task InsertAsync(PropertyEntity entity)
         {
             return _collection.InsertOneAsync(entity);
@@ -48,7 +48,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             return await FindByFilter(specification).ToListAsync();
         }
-        
+
         public async Task<IEnumerable<PropertyEntity>> GetByEntityAsync(Expression<Func<PropertyEntity, bool>> specification)
         {
             return await FindByFilter(specification).ToListAsync();
@@ -85,7 +85,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return await FindByFilter(specification).ToListAsync();
         }
 
-        private IFindFluent<PropertyEntity,PropertyEntity> FindByFilter(Expression<Func<PropertyEntity, bool>> specification)
+        private IFindFluent<PropertyEntity, PropertyEntity> FindByFilter(Expression<Func<PropertyEntity, bool>> specification)
         {
             return _collection.Find(BuildFilter(specification));
         }
@@ -93,6 +93,21 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         private static FilterDefinition<PropertyEntity> BuildFilter(Expression<Func<PropertyEntity, bool>> specification)
         {
             return Builders<PropertyEntity>.Filter.Where(specification);
+        }
+        public async Task<bool> GetByExits(PropertyEntity property)
+        {
+            FilterDefinition<PropertyEntity> filters;
+            
+                filters = Builders<PropertyEntity>.Filter.And(
+                    Builders<PropertyEntity>.Filter.Eq(e => e.property_name, property.property_name),
+                    Builders<PropertyEntity>.Filter.Eq(e => e.property_code, property.property_code),
+                    Builders<PropertyEntity>.Filter.Eq(e => e.type_id, property.type_id),
+                    Builders<PropertyEntity>.Filter.Eq(e => e.status_id, property.status_id),
+                    Builders<PropertyEntity>.Filter.Ne(e => e.id, property.id)
+                );
+
+            var count = await _collection.Find(filters).CountDocumentsAsync();
+            return count >= 1;
         }
     }
 }
