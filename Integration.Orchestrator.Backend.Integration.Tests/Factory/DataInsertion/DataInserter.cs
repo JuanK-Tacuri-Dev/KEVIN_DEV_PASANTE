@@ -1,4 +1,4 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 

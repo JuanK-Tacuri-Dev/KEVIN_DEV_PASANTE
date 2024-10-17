@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\v1\Integration\" />
-    <Folder Include="Controllers\v1\Configurador\" />
+    <Folder Include="Controllers\v1\Administration\" />
   </ItemGroup>
 
   <ItemGroup>

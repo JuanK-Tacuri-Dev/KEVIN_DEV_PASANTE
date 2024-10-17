@@ -1,8 +1,8 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using System.Linq.Expressions;
 
-namespace Integration.Orchestrator.Backend.Domain.Ports.Configurador
+namespace Integration.Orchestrator.Backend.Domain.Ports.Administration
 {
     public interface IEntitiesRepository<T>
     {

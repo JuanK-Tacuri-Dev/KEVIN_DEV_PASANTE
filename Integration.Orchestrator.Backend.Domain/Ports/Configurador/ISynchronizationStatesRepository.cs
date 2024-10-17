@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 
-namespace Integration.Orchestrator.Backend.Domain.Ports.Configurador
+namespace Integration.Orchestrator.Backend.Domain.Ports.Administration
 {
     public interface ISynchronizationStatesRepository<T>
     {

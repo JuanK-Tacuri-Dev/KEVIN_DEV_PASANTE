@@ -1,0 +1,10 @@
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Integration.Orchestrator.Backend.Application.Models.Administration.Process
+{
+    [ExcludeFromCodeCoverage]
+    public class ProcessGetByCodeRequest
+    {
+        public string Code { get; set; }
+    }
+}
