@@ -1,4 +1,6 @@
-﻿namespace Integration.Orchestrator.Backend.Domain.Entities.Administration
+﻿using Integration.Orchestrator.Backend.Domain.Helper;
+
+namespace Integration.Orchestrator.Backend.Domain.Entities.Administration
 {
     [Serializable]
     public class CatalogEntity : Entity<Guid>
@@ -19,7 +21,7 @@
         }
         public bool is_father { get; set; } = false;
         public Guid status_id { get; set; }
-        public DateTime created_at { get; set; } = DateTime.UtcNow;
-        public DateTime updated_at { get; set; } = DateTime.UtcNow;
+        public string created_at { get; set; } = DateTime.UtcNow.ToLocalTime().ToString(ConfigurationSystem.DateTimeFormat);
+        public string updated_at { get; set; } = DateTime.UtcNow.ToLocalTime().ToString(ConfigurationSystem.DateTimeFormat);
     }
 }

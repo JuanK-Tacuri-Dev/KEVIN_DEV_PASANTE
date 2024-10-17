@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Integration.Orchestrator.Backend.Domain.Helper;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using System.Globalization;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization.SynchronizationCommands;
@@ -20,8 +21,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
 
         private bool BeAValidDateTime(string dateTimeString)
         {
-            const string dateTimeFormat = "yyyy-MM-ddTHH:mm:ss";
-            return DateTime.TryParseExact(dateTimeString, dateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
+            //const string dateTimeFormat = "yyyy-MM-ddTHH:mm:ss";
+            return DateTime.TryParseExact(dateTimeString, ConfigurationSystem.DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
         }
     }
 }
