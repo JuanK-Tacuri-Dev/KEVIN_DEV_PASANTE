@@ -98,7 +98,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
                         });
             }
         }
-        
+
         private async Task EnsureCodeIsUnique(string code)
         {
             var codeFound = await GetByCodeAsync(code);
@@ -113,7 +113,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
                     });
             }
         }
-        
+
         private async Task IsDuplicateVersionAndName(AdapterEntity adapter)
         {
             var validateNameVersion = await _adapterRepository.ValidateAdapterNameVersion(adapter);

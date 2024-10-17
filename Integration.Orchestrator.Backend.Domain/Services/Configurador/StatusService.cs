@@ -10,7 +10,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
 {
     [DomainService]
     public class StatusService(
-        IStatusRepository<StatusEntity> statusRepository) 
+        IStatusRepository<StatusEntity> statusRepository)
         : IStatusService<StatusEntity>
     {
         private readonly IStatusRepository<StatusEntity> _statusRepository = statusRepository;
@@ -63,7 +63,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
 
         private async Task ValidateBussinesLogic(StatusEntity status, bool create = false)
         {
-            if (create) 
+            if (create)
             {
                 var processByType = await GetByKeyAsync(status.status_key);
                 if (processByType != null)
