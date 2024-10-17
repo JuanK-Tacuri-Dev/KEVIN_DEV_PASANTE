@@ -1,8 +1,10 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Property;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Property
 {
+    [ExcludeFromCodeCoverage]
     public class PropertyCommands
     {
         public readonly record struct CreatePropertyCommandRequest(PropertyBasicInfoRequest<PropertyCreateRequest> Property) : IRequest<CreatePropertyCommandResponse>;

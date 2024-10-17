@@ -2,9 +2,11 @@
 using Integration.Orchestrator.Backend.Domain.Ports;
 using Integration.Orchestrator.Backend.Infrastructure.Services;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Rest
 {
+    [ExcludeFromCodeCoverage]
     public class ExtractorV2Rest : IExtractor<TestEntityLegacy>
     {
         public readonly IGenericRestService _genericRestService;

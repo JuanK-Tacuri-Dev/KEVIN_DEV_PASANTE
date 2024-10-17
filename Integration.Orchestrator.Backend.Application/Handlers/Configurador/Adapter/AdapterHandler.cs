@@ -6,10 +6,12 @@ using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Adapter.AdapterCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Adapter
 {
+    [ExcludeFromCodeCoverage]
     public class AdapterHandler(
         IAdapterService<AdapterEntity> adapterService)
         :

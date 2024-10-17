@@ -1,8 +1,10 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Entities;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Entities
 {
+    [ExcludeFromCodeCoverage]
     public class EntitiesCommands
     {
         public readonly record struct CreateEntitiesCommandRequest(EntitiesBasicInfoRequest<EntitiesCreateRequest> Entities) : IRequest<CreateEntitiesCommandResponse>;

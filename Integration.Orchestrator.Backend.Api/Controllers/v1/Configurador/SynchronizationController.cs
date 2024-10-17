@@ -2,10 +2,12 @@
 using Integration.Orchestrator.Backend.Application.Models.Configurador.Synchronization;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Synchronization.SynchronizationCommands;
 
 namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Configurador
 {
+    [ExcludeFromCodeCoverage]
     [Route("api/v1/Synchronizations/[action]")]
     [ApiController]
     [ServiceFilter(typeof(ErrorHandlingRest))]

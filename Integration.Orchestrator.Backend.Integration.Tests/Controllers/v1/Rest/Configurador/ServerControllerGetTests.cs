@@ -5,7 +5,7 @@ using Integration.Orchestrator.Backend.Integration.Tests.Factory;
 namespace Integration.Orchestrator.Backend.Integration.Tests.Controllers.v1.Rest.Configurador
 {
     [Collection("CustomWebApplicationFactory collection")]
-    public class ServerControllerTests(CustomWebApplicationFactoryFixture fixture) 
+    public class ServerControllerGetTests(CustomWebApplicationFactoryFixture fixture) 
         : BaseControllerTests(fixture, "/api/v1/servers")
     {
         private readonly CustomWebApplicationFactoryFixture _fixture = fixture;
@@ -13,27 +13,7 @@ namespace Integration.Orchestrator.Backend.Integration.Tests.Controllers.v1.Rest
         private const int RowsPerPage = 10;
 
         [Fact]
-        public async Task A_Add_WithBasicInfo_ShouldReturnNewServerResponse()
-        {
-            // Arrange
-            var serverAddWithBasicInfoRequest = _fixture.ValidServerCreateRequest;
-            var serverRequest = new ServerCreateRequest
-            {
-                Name = string.Format(serverAddWithBasicInfoRequest.Name, 1),
-                Url = string.Format(serverAddWithBasicInfoRequest.Url, 1),
-                TypeServerId = serverAddWithBasicInfoRequest.TypeServerId,
-                StatusId = serverAddWithBasicInfoRequest.StatusId
-            };
-            // Act
-            var result = await PostResponseAsync<ServerCreateResponse>("create", serverRequest);
-
-            // Assert
-            AssertResponse(result, ResponseCode.CreatedSuccessfully, ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully));
-            _fixture.DisposeMethod([CodeConfiguratorCollection]);
-        }
-
-        [Fact]
-        public async Task B_GetallPaginated_ShouldReturnPaginatedServers()
+        public async Task GetallPaginated_ShouldReturnPaginatedServers()
         {
             // Arrange
             var records = 11;

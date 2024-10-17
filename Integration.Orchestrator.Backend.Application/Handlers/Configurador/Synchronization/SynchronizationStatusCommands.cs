@@ -1,8 +1,10 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.SynchronizationStatus;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Synchronization
 {
+    [ExcludeFromCodeCoverage]
     public class SynchronizationStatusCommands
     {
         public readonly record struct CreateSynchronizationStatusCommandRequest(SynchronizationStatusBasicInfoRequest<SynchronizationStatusCreateRequest> SynchronizationStatus) : IRequest<CreateSynchronizationStatusCommandResponse>;

@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
 using Integration.Orchestrator.Backend.Domain.Resources;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Process.ProcessCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Process.Validators
 {
+    [ExcludeFromCodeCoverage]
     public class UpdateProcessCommandRequestValidator : AbstractValidator<UpdateProcessCommandRequest>
     {
         public UpdateProcessCommandRequestValidator()

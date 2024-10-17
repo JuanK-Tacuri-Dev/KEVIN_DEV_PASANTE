@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
 using Integration.Orchestrator.Backend.Domain.Resources;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Synchronization.SynchronizationStatusCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.SynchronizationStates.Validators
 {
+    [ExcludeFromCodeCoverage]
     public class CreateSynchronizationStatusCommandRequestValidator : AbstractValidator<CreateSynchronizationStatusCommandRequest>
     {
         public CreateSynchronizationStatusCommandRequestValidator()

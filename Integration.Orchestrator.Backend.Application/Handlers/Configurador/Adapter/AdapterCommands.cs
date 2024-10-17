@@ -1,8 +1,10 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Adapter;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Adapter
 {
+    [ExcludeFromCodeCoverage]
     public class AdapterCommands
     {
         public readonly record struct CreateAdapterCommandRequest(AdapterBasicInfoRequest<AdapterCreateRequest> Adapter) : IRequest<CreateAdapterCommandResponse>;

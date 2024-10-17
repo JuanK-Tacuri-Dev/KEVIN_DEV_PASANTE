@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
 using Integration.Orchestrator.Backend.Domain.Resources;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Status.StatusCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Status.Validators
 {
+    [ExcludeFromCodeCoverage]
     public class CreateStatusCommandRequestValidator : AbstractValidator<CreateStatusCommandRequest>
     {
         public CreateStatusCommandRequestValidator()

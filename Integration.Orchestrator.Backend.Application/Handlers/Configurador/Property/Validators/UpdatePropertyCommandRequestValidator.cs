@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
 using Integration.Orchestrator.Backend.Domain.Resources;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Property.PropertyCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Property.Validators
 {
+    [ExcludeFromCodeCoverage]
     public class UpdatePropertyCommandRequestValidator : AbstractValidator<UpdatePropertyCommandRequest>
     {
         public UpdatePropertyCommandRequestValidator()

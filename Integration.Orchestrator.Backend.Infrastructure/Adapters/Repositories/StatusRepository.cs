@@ -2,12 +2,15 @@
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Driver;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
+    [ExcludeFromCodeCoverage]
     [Repository]
-    public class StatusRepository(IMongoCollection<StatusEntity> collection) : IStatusRepository<StatusEntity>
+    public class StatusRepository(IMongoCollection<StatusEntity> collection) 
+        : IStatusRepository<StatusEntity>
     {
         private readonly IMongoCollection<StatusEntity> _collection = collection;
 

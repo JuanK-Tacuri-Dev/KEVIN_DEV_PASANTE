@@ -1,8 +1,10 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Connection;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Connection
 {
+    [ExcludeFromCodeCoverage]
     public class ConnectionCommands
     {
         public readonly record struct CreateConnectionCommandRequest(ConnectionBasicInfoRequest<ConnectionCreateRequest> Connection) : IRequest<CreateConnectionCommandResponse>;

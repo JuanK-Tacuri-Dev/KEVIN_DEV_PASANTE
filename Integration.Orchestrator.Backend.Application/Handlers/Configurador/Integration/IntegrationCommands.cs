@@ -1,8 +1,10 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Integration;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Integration
 {
+    [ExcludeFromCodeCoverage]
     public class IntegrationCommands
     {
         public readonly record struct CreateIntegrationCommandRequest(IntegrationBasicInfoRequest<IntegrationCreateRequest> Integration) : IRequest<CreateIntegrationCommandResponse>;

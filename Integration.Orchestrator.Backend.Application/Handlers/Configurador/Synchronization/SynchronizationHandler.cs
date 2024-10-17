@@ -8,10 +8,12 @@ using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Synchronization.SynchronizationCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Synchronization
 {
+    [ExcludeFromCodeCoverage]
     public class SynchronizationHandler(
         ISynchronizationService<SynchronizationEntity> synchronizationService,
         ISynchronizationStatesService<SynchronizationStatusEntity> synchronizationStatesService)

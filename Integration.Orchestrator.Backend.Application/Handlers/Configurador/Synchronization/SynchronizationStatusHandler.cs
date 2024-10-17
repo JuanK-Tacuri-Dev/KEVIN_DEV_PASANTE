@@ -1,5 +1,4 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Entities;
-using Integration.Orchestrator.Backend.Application.Models.Configurador.SynchronizationStatus;
+﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.SynchronizationStatus;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
@@ -7,11 +6,12 @@ using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
-using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Entities.EntitiesCommands;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Synchronization.SynchronizationStatusCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Synchronization
 {
+    [ExcludeFromCodeCoverage]
     public class SynchronizationStatusHandler(ISynchronizationStatesService<SynchronizationStatusEntity> SynchronizationStatesService)
         :
         IRequestHandler<CreateSynchronizationStatusCommandRequest, CreateSynchronizationStatusCommandResponse>,

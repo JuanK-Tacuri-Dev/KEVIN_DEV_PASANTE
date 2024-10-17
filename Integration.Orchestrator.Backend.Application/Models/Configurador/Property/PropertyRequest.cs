@@ -1,5 +1,8 @@
-﻿namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Property
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Property
 {
+    [ExcludeFromCodeCoverage]
     public class PropertyRequest
     {
         public string Name { get; set; }

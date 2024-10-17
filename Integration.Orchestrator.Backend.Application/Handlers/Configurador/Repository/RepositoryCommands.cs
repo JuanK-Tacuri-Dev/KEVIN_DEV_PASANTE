@@ -1,8 +1,10 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Repository;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Repository
 {
+    [ExcludeFromCodeCoverage]
     public class RepositoryCommands
     {
         public readonly record struct CreateRepositoryCommandRequest(RepositoryBasicInfoRequest<RepositoryCreateRequest> Repository) : IRequest<CreateRepositoryCommandResponse>;

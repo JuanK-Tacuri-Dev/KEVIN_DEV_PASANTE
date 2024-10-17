@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
 using Integration.Orchestrator.Backend.Domain.Resources;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Integration.IntegrationCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Integration.Validators
 {
+    [ExcludeFromCodeCoverage]
     public class UpdateIntegrationCommandRequestValidator : AbstractValidator<UpdateIntegrationCommandRequest>
     {
         public UpdateIntegrationCommandRequestValidator()

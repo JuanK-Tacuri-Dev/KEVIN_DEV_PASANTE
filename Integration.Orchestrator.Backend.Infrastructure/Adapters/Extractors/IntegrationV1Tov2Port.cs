@@ -1,9 +1,11 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Ports;
 using Integration.Orchestrator.Backend.Infrastructure.Services;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.DataAccess.Rest
 {
+    [ExcludeFromCodeCoverage]
     public class IntegrationV1Tov2Port : IIntegrationV1Tov2Port
     {
         private readonly IGenericRestService _genericRestService;

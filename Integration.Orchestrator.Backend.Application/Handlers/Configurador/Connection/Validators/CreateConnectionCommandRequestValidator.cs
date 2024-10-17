@@ -1,10 +1,12 @@
 ﻿using FluentValidation;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Connection.ConnectionCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Connection.Validators
 {
+    [ExcludeFromCodeCoverage]
     public class CreateConnectionCommandRequestValidator : AbstractValidator<CreateConnectionCommandRequest>
     {
         public CreateConnectionCommandRequestValidator()

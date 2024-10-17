@@ -1,8 +1,10 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Catalog;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Catalog
 {
+    [ExcludeFromCodeCoverage]
     public class CatalogCommands
     {
         public readonly record struct CreateCatalogCommandRequest(CatalogBasicInfoRequest<CatalogCreateRequest> Catalog) : IRequest<CreateCatalogCommandResponse>;

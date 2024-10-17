@@ -2,15 +2,16 @@
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
-using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Connection.ConnectionCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Connection
 {
+    [ExcludeFromCodeCoverage]
     public class ConnectionHandler(
         IConnectionService<ConnectionEntity> connectionService)
         :

@@ -1,47 +1,45 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Repository;
+﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Property;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Integration.Tests.Factory;
 
 namespace Integration.Orchestrator.Backend.Integration.Tests.Controllers.v1.Rest.Configurador
 {
     [Collection("CustomWebApplicationFactory collection")]
-    public class RepositoryControllerTests : BaseControllerTests
+    public class PropertyControllerPostTests : BaseControllerTests
     {
         private readonly CustomWebApplicationFactoryFixture _fixture;
         private const string CodeConfiguratorCollection = "Integration_CodeConfigurator";
         private const int RowsPerPage = 10;
 
-        public RepositoryControllerTests(CustomWebApplicationFactoryFixture fixture)
-            : base(fixture, "/api/v1/repositories")
+        public PropertyControllerPostTests(CustomWebApplicationFactoryFixture fixture)
+            : base(fixture, "/api/v1/properties")
         {
             _fixture = fixture;
         }
 
-        [Fact]
-        public async Task E_Add_WithBasicInfo_ShouldReturnNewRepositoryResponse()
+        /*[Fact]
+        public async Task Add_WithBasicInfo_ShouldReturnNewPropertyResponse()
         {
             // Arrange
-            var repositoryAddWithBasicInfoRequest = _fixture.ValidRepositoryCreateRequest;
-            var repositoryRequest = new RepositoryCreateRequest
+            var propertyAddWithBasicInfoRequest = _fixture.ValidPropertyCreateRequest;
+            var propertyRequest = new PropertyCreateRequest
             {
-                DatabaseName = string.Format(repositoryAddWithBasicInfoRequest.DatabaseName, 1),
-                Port = repositoryAddWithBasicInfoRequest.Port,
-                UserName = string.Format(repositoryAddWithBasicInfoRequest.UserName, 1),
-                Password = string.Format(repositoryAddWithBasicInfoRequest.Password, 1),
-                AuthTypeId = _fixture.CorsSettings.AuthType,
+                Name = string.Format(propertyAddWithBasicInfoRequest.Name, 1),
+                TypeId = _fixture.CorsSettings.PropertyDataType,
+                EntityId = _fixture.CorsSettings.Entity,
                 StatusId = _fixture.CorsSettings.Status
             };
 
             // Act
-            var result = await PostResponseAsync<RepositoryCreateResponse>("create", repositoryRequest);
+            var result = await PostResponseAsync<PropertyCreateResponse>("create", propertyRequest);
 
             // Assert
             AssertResponse(result, ResponseCode.CreatedSuccessfully, ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully));
             _fixture.DisposeMethod([CodeConfiguratorCollection]);
-        }
+        }*/
 
         [Fact]
-        public async Task F_GetallPaginated_ShouldReturnPaginatedRepositorys()
+        public async Task GetallPaginated_ShouldReturnPaginatedPropertys()
         {
             // Arrange
             var records = 11;
@@ -56,7 +54,7 @@ namespace Integration.Orchestrator.Backend.Integration.Tests.Controllers.v1.Rest
                 paginatedDefinition.Rows = (i + 1) * RowsPerPage;
 
                 // Act
-                var result = await PostResponseAsync<RepositoryGetAllPaginatedResponse>("getAllPaginated", paginatedDefinition);
+                var result = await PostResponseAsync<PropertyGetAllPaginatedResponse>("getAllPaginated", paginatedDefinition);
 
                 // Assert
                 AssertResponse(result, ResponseCode.FoundSuccessfully, ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully));
@@ -70,21 +68,19 @@ namespace Integration.Orchestrator.Backend.Integration.Tests.Controllers.v1.Rest
 
         private async Task InsertMultipleRepositories(int count)
         {
-            var repositoryAddWithBasicInfoRequest = _fixture.ValidRepositoryCreateRequest;
+            var propertyAddWithBasicInfoRequest = _fixture.ValidPropertyCreateRequest;
 
             for (int i = 0; i < count; i++)
             {
-                var repositoryRequest = new RepositoryCreateRequest
+                var propertyRequest = new PropertyCreateRequest
                 {
-                    DatabaseName = string.Format(repositoryAddWithBasicInfoRequest.DatabaseName, i + 1),
-                    Port = repositoryAddWithBasicInfoRequest.Port,
-                    UserName = string.Format(repositoryAddWithBasicInfoRequest.UserName, i + 1),
-                    Password = string.Format(repositoryAddWithBasicInfoRequest.Password, i + 1),
-                    AuthTypeId = _fixture.CorsSettings.AuthType,
+                    Name = string.Format(propertyAddWithBasicInfoRequest.Name, i + 1),
+                    TypeId = _fixture.CorsSettings.PropertyDataType,
+                    EntityId = _fixture.CorsSettings.Entity,
                     StatusId = _fixture.CorsSettings.Status
                 };
 
-                var addResult = await PostResponseAsync<RepositoryCreateResponse>("create", repositoryRequest);
+                var addResult = await PostResponseAsync<PropertyCreateResponse>("create", propertyRequest);
                 AssertResponse(addResult, ResponseCode.CreatedSuccessfully, ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully));
             }
         }

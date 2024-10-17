@@ -1,8 +1,10 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Server;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Server
 {
+    [ExcludeFromCodeCoverage]
     public class ServerCommands
     {
         public readonly record struct CreateServerCommandRequest(ServerBasicInfoRequest<ServerCreateRequest> Server) : IRequest<CreateServerCommandResponse>;

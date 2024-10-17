@@ -1,5 +1,8 @@
-﻿namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Connection
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Connection
 {
+    [ExcludeFromCodeCoverage]
     public class ConnectionResponse 
     {
         public Guid Id { get; set; }

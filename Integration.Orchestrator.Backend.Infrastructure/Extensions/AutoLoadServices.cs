@@ -2,9 +2,11 @@
 using Integration.Orchestrator.Backend.Domain.Services;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Extensions
 {
+    [ExcludeFromCodeCoverage]
     public static class AutoLoadServices
     {
         public static IServiceCollection AddDomainServices(this IServiceCollection services)

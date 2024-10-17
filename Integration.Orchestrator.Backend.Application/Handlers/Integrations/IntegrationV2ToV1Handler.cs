@@ -1,9 +1,11 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.V2ToV1;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Integrations.IntegrationV2ToV1Commands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Integrations
 {
+    [ExcludeFromCodeCoverage]
     public class IntegrationV2ToV1Handler : IRequestHandler<IntegrationV2toV1CommandRequest, IntegrationV2toV1CommandResponse>
     {
         private readonly IIntregrationV2ToV1Service _intregrationV2toV1Service;

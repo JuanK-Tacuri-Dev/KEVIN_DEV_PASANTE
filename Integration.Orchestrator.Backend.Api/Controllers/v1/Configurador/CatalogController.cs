@@ -2,10 +2,12 @@
 using Integration.Orchestrator.Backend.Application.Models.Configurador.Catalog;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Catalog.CatalogCommands;
 
 namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Configurador
 {
+    [ExcludeFromCodeCoverage]
     [Route("api/v1/catalogs/[action]")]
     [ApiController]
     [ServiceFilter(typeof(ErrorHandlingRest))]

@@ -1,5 +1,8 @@
-﻿namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Process
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Process
 {
+    [ExcludeFromCodeCoverage]
     public class ProcessRequest
     {
         public string Name { get; set; }
@@ -10,6 +13,7 @@
         public List<EntitiesRequest> Entities { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class EntitiesRequest
     {
         public Guid Id { get; set; }
@@ -17,12 +21,14 @@
         public List<FilterRequest> Filters { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class PropertiesRequest
     {
         public Guid Id { get; set; }
         public Guid InternalStatusId { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class FilterRequest
     {
         public Guid PropertyId { get; set; }

@@ -6,6 +6,7 @@ using Integration.Orchestrator.Backend.Application;
 using Integration.Orchestrator.Backend.Domain;
 using Integration.Orchestrator.Backend.Infrastructure;
 using Integration.Orchestrator.Backend.Infrastructure.Extensions;
+using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -68,4 +69,5 @@ app.UseRouting();
 app.MapControllers();
 app.Run();
 
+[ExcludeFromCodeCoverage]
 public partial class Program { }

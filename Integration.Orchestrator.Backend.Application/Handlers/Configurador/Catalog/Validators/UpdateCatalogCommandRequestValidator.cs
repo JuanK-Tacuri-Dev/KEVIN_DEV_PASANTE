@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
 using Integration.Orchestrator.Backend.Domain.Resources;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Catalog.CatalogCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Catalog.Validators
 {
+    [ExcludeFromCodeCoverage]
     public class UpdateCatalogCommandRequestValidator : AbstractValidator<UpdateCatalogCommandRequest>
     {
         public UpdateCatalogCommandRequestValidator()

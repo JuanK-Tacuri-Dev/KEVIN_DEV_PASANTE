@@ -1,5 +1,8 @@
-﻿namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Synchronization
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Synchronization
 {
+    [ExcludeFromCodeCoverage]
     public class SynchronizationBasicInfoRequest<T>
     {
         public T SynchronizationRequest { get; set; }

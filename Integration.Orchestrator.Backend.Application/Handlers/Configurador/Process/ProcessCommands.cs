@@ -1,8 +1,10 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Process;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Process
 {
+    [ExcludeFromCodeCoverage]
     public class ProcessCommands
     {
         public readonly record struct CreateProcessCommandRequest(ProcessBasicInfoRequest<ProcessCreateRequest> Process) : IRequest<CreateProcessCommandResponse>;

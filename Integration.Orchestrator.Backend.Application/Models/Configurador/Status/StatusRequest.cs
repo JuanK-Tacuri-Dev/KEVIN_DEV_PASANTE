@@ -1,5 +1,8 @@
-﻿namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Status
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Status
 {
+    [ExcludeFromCodeCoverage]
     public class StatusRequest
     {
         public string Key { get; set; }

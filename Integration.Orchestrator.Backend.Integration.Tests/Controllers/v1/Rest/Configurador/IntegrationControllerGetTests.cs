@@ -5,50 +5,20 @@ using Integration.Orchestrator.Backend.Integration.Tests.Factory;
 namespace Integration.Orchestrator.Backend.Integration.Tests.Controllers.v1.Rest.Configurador
 {
     [Collection("CustomWebApplicationFactory collection")]
-    public class IntegrationControllerTests : BaseControllerTests
+    public class IntegrationControllerGetTests : BaseControllerTests
     {
         private readonly CustomWebApplicationFactoryFixture _fixture;
         private const string CodeConfiguratorCollection = "Integration_CodeConfigurator";
         private const int RowsPerPage = 10;
 
-        public IntegrationControllerTests(CustomWebApplicationFactoryFixture fixture)
+        public IntegrationControllerGetTests(CustomWebApplicationFactoryFixture fixture)
             : base(fixture, "/api/v1/integrations")
         {
             _fixture = fixture;
         }
 
         [Fact]
-        public async Task O_Add_WithBasicInfo_ShouldReturnNewIntegrationResponse()
-        {
-            // Arrange
-            var integrationAddWithBasicInfoRequest = _fixture.ValidIntegrationCreateRequest;
-            var integrationRequest = new IntegrationCreateRequest
-            {
-                Name = string.Format(integrationAddWithBasicInfoRequest.Name, 1),
-                Observations = string.Format(integrationAddWithBasicInfoRequest.Observations, 1),
-                Process = [
-                    new ProcessRequest
-                    {
-                        Id = _fixture.CorsSettings.Process,
-                    },
-                    new ProcessRequest
-                    {
-                        Id = _fixture.CorsSettings.Process,
-                    }],
-                UserId = _fixture.CorsSettings.User,
-                StatusId = _fixture.CorsSettings.Status
-            };
-
-            // Act
-            var result = await PostResponseAsync<IntegrationCreateResponse>("create", integrationRequest);
-
-            // Assert
-            AssertResponse(result, ResponseCode.CreatedSuccessfully, ResponseMessageValues.GetResponseMessage(ResponseCode.CreatedSuccessfully));
-            _fixture.DisposeMethod([CodeConfiguratorCollection]);
-        }
-
-        [Fact]
-        public async Task P_GetallPaginated_ShouldReturnPaginatedIntegrations()
+        public async Task GetallPaginated_ShouldReturnPaginatedIntegrations()
         {
             // Arrange
             var records = 11;

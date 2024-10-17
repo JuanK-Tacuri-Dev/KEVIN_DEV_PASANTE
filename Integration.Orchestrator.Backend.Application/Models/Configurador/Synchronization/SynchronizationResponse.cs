@@ -1,5 +1,8 @@
-﻿namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Synchronization
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Synchronization
 {
+    [ExcludeFromCodeCoverage]
     public class SynchronizationResponse
     {
         public Guid Id { get; set; }
@@ -12,7 +15,8 @@
         public string? HourToExecute { get; set; }
         public Guid? UserId { get; set; }
     }
-    
+
+    [ExcludeFromCodeCoverage]
     public class IntegrationResponse
     {
         public Guid Id { get; set; }

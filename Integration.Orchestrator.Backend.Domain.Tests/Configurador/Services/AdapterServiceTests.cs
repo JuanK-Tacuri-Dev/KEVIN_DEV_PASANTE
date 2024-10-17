@@ -37,6 +37,8 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Configurador.Services
 
             };
 
+            _mockStatusService.Setup(repo => repo.GetByIdAsync(entity.status_id)).ReturnsAsync(new StatusEntity { });
+
             // Act
             await _service.InsertAsync(entity);
 

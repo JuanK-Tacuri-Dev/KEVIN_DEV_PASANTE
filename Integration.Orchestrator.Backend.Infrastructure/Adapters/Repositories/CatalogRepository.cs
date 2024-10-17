@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
@@ -6,8 +7,10 @@ using MongoDB.Driver;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
+    [ExcludeFromCodeCoverage]
     [Repository]
-    public class CatalogRepository(IMongoCollection<CatalogEntity> collection) : ICatalogRepository<CatalogEntity>
+    public class CatalogRepository(IMongoCollection<CatalogEntity> collection) 
+        : ICatalogRepository<CatalogEntity>
     {
         private readonly IMongoCollection<CatalogEntity> _collection = collection;
         

@@ -1,5 +1,8 @@
-﻿namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Integration
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Integration
 {
+    [ExcludeFromCodeCoverage]
     public class IntegrationResponse
     {
         public Guid Id { get; set; }
@@ -10,6 +13,7 @@
         public List<ProcessResponse> Process { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class ProcessResponse
     {
         public Guid Id { get; set; }

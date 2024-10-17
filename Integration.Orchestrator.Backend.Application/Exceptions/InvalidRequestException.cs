@@ -11,6 +11,7 @@ namespace Integration.Orchestrator.Backend.Application.Exceptions
         public DetailsErrors Details => DetailsError;
     }
 
+    [ExcludeFromCodeCoverage]
     public class DetailsErrors
     {
         public List<string> Messages { get; set; }

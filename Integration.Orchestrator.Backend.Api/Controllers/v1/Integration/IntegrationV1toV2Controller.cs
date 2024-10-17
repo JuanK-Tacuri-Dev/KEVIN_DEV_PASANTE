@@ -1,10 +1,12 @@
 ﻿using Integration.Orchestrator.Backend.Api.Filter;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Integrations.IntegrationV1ToV2Commands;
 
 namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Integration
 {
+    [ExcludeFromCodeCoverage]
     [Route("api/v1/[controller]/[action]")]
     [ApiController]
     [ServiceFilter(typeof(ErrorHandlingRest))]

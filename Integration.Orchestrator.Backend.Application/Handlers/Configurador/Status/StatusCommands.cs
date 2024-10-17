@@ -1,8 +1,10 @@
 ﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Status;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Status
 {
+    [ExcludeFromCodeCoverage]
     public class StatusCommands
     {
         public readonly record struct CreateStatusCommandRequest(StatusBasicInfoRequest<StatusCreateRequest> Status) : IRequest<CreateStatusCommandResponse>;

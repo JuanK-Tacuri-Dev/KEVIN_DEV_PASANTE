@@ -6,10 +6,12 @@ using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Entities.EntitiesCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Entities
 {
+    [ExcludeFromCodeCoverage]
     public class EntitiesHandler(
         IEntitiesService<EntitiesEntity> entitiesService)
         :

@@ -1,10 +1,13 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Ports;
 using Integration.Orchestrator.Backend.Infrastructure.Services;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Transformators
 {
-    public class TransformatorFromV1toV2Rest : ITransformator<string, string>
+    [ExcludeFromCodeCoverage]
+    public class TransformatorFromV1toV2Rest : 
+        ITransformator<string, string>
     {
         public readonly IGenericRestService _genericRestService;
         public TransformatorFromV1toV2Rest(IGenericRestService genericRestService)

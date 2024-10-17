@@ -1,10 +1,12 @@
 ﻿using FluentValidation;
 using Integration.Orchestrator.Backend.Domain.Resources;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Synchronization.SynchronizationCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Synchronization.Validators
 {
+    [ExcludeFromCodeCoverage]
     public class CreateSynchronizationCommandRequestValidator : AbstractValidator<CreateSynchronizationCommandRequest>
     {
         public CreateSynchronizationCommandRequestValidator()
