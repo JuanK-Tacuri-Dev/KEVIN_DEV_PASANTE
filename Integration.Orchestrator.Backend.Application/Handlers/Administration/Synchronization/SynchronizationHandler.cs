@@ -9,6 +9,7 @@ using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Mapster;
 using MediatR;
+using System.Runtime.Serialization;
 using static Integration.Orchestrator.Backend.Application.Handlers.Administration.Synchronization.SynchronizationCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.Synchronization
@@ -78,7 +79,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 var currentSyncStatus = await ValidateSyncStatus(request.Synchronization.SynchronizationRequest.StatusId);
                 if (currentSyncStatus != SyncStatus.programmed)
                 {
-                    synchronizationMap.synchronization_hour_to_execute = DateTime.Now.ToString(ConfigurationSystem.DateTimeFormat); ;
+                    synchronizationMap.synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault;
                 }
 
                 await _synchronizationService.UpdateAsync(synchronizationMap);
@@ -323,7 +324,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 synchronization_name = request.Name,
                 franchise_id = request.FranchiseId,
                 status_id = request.StatusId,
-                synchronization_hour_to_execute = request.HourToExecute != null ? DateTimeOffset.Parse(request.HourToExecute).UtcDateTime.ToLocalTime().ToString(ConfigurationSystem.DateTimeFormat) : DateTime.Now.ToString(ConfigurationSystem.DateTimeFormat),
+                synchronization_hour_to_execute = request.HourToExecute != null ? DateTimeOffset.Parse(request.HourToExecute).UtcDateTime.ToLocalTime().ToString(ConfigurationSystem.DateTimeFormat) : ConfigurationSystem.DateTimeDefault,
                 integrations = request.Integrations.Select(i => i.Id).ToList(),
                 user_id = request.UserId
             };
