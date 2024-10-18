@@ -78,11 +78,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .Find(specification.Criteria)
                 .CountDocumentsAsync();
         }
-
-        public async Task<IEnumerable<CatalogEntity>> GetByNameAndFatherCodeAsync(Expression<Func<CatalogEntity, bool>> specification)
-        {
-            return await FindByFilter(specification).ToListAsync();
-        }
         
         private IFindFluent<CatalogEntity,CatalogEntity> FindByFilter(Expression<Func<CatalogEntity, bool>> specification)
         {

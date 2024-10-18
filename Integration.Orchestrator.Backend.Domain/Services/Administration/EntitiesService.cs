@@ -90,7 +90,13 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
                 var numEntitiesByNameAndRepositoryId = await CountEntitiesByNameAndRepositoryIdAsync(entities);
                 if (numEntitiesByNameAndRepositoryId > 0)
                 {
-                    throw new ArgumentException(AppMessages.Domain_EntityRepositoryExists);
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Domain_EntityRepositoryExists,
+                            Data = entities
+                        });
                 }
 
                 var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Entity);

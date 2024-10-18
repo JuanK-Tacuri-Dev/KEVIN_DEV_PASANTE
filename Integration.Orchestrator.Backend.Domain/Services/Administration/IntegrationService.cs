@@ -62,7 +62,13 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             await EnsureStatusExists(integration.status_id);
             if (await validateProcessMinTwo(integration))
             {
-                throw new ArgumentException(AppMessages.Domain_IntegrationMinTwoRequired);
+                throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Domain_IntegrationMinTwoRequired,
+                            Data = integration
+                        });
             }
         }
 

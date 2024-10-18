@@ -5,13 +5,13 @@ using Integration.Orchestrator.Backend.Integration.Tests.Factory;
 namespace Integration.Orchestrator.Backend.Integration.Tests.Controllers.v1.Rest.Administration
 {
     [Collection("CustomWebApplicationFactory collection")]
-    public class PropertyControllerPostTests : BaseControllerTests
+    public class PropertyControllerTests : BaseControllerTests
     {
         private readonly CustomWebApplicationFactoryFixture _fixture;
         private const string CodeConfiguratorCollection = "Integration_CodeConfigurator";
         private const int RowsPerPage = 10;
 
-        public PropertyControllerPostTests(CustomWebApplicationFactoryFixture fixture)
+        public PropertyControllerTests(CustomWebApplicationFactoryFixture fixture)
             : base(fixture, "/api/v1/properties")
         {
             _fixture = fixture;

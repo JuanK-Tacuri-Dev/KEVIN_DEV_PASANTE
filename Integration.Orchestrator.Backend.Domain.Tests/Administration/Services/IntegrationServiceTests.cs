@@ -1,8 +1,11 @@
-using Integration.Orchestrator.Backend.Domain.Entities;
+using Autofac.Core;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
+using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using Moq;
@@ -174,6 +177,45 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
 
             Assert.Equal(totalRows, result);
             _mockIntegrationRepo.Verify(repo => repo.GetTotalRows(It.IsAny<IntegrationSpecification>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task ValidateProcessMinTwo_ShouldThrowArgumentException_WhenLessThanTwoProcesses()
+        {
+            // Arrange
+            var statusId = Guid.NewGuid(); // ID de estado existente
+            var integration = new IntegrationEntity
+            {
+                status_id = statusId,
+                process = new List<Guid> { Guid.NewGuid() } // Solo un proceso
+            };
+            // Simulamos que el estado existe
+            _mockStatusService.Setup(repo => repo.GetByIdAsync(statusId)).ReturnsAsync(new StatusEntity());
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<OrchestratorArgumentException>(() => _mockIntegrationService.InsertAsync(integration));
+            Assert.Equal((int)ResponseCode.NotFoundSuccessfully, exception.Details.Code);
+            Assert.Equal(AppMessages.Domain_IntegrationMinTwoRequired, exception.Details.Description);
+            Assert.Equal(integration, exception.Details.Data);
+        }
+
+        [Fact]
+        public async Task EnsureStatusExists_ShouldThrowOrchestratorArgumentException_WhenStatusDoesNotExist()
+        {
+            // Arrange
+            var integration = new IntegrationEntity
+            {
+                status_id = Guid.NewGuid() // ID de estado que no existe
+            };
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<OrchestratorArgumentException>(() => _mockIntegrationService.InsertAsync(integration));
+
+            // Verificar que se lanzó la excepción y que contiene los detalles correctos
+            Assert.Equal((int)ResponseCode.NotFoundSuccessfully, exception.Details.Code);
+            Assert.Equal(AppMessages.Application_StatusNotFound, exception.Details.Description);
+            Assert.Equal(integration.status_id, exception.Details.Data);
+            _mockStatusService.Verify(repo => repo.GetByIdAsync(integration.status_id), Times.Once);
         }
     }
 }

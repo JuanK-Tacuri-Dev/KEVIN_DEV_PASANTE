@@ -83,11 +83,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .CountDocumentsAsync();
         }
 
-        public async Task<IEnumerable<PropertyEntity>> GetByNameAndEntityIdAsync(Expression<Func<PropertyEntity, bool>> specification)
-        {
-            return await FindByFilter(specification).ToListAsync();
-        }
-
         private IFindFluent<PropertyEntity, PropertyEntity> FindByFilter(Expression<Func<PropertyEntity, bool>> specification)
         {
             return _collection.Find(BuildFilter(specification));
@@ -97,7 +92,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             return Builders<PropertyEntity>.Filter.Where(specification);
         }
-        public async Task<bool> GetByExits(PropertyEntity property)
+        public async Task<bool> ValidateNameAndEntity(PropertyEntity property)
         {
             FilterDefinition<PropertyEntity> filters;
             

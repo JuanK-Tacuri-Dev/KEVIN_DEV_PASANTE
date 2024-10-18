@@ -1,6 +1,9 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+﻿using Integration.Orchestrator.Backend.Domain.Commons;
+using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
+using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using Moq;
@@ -30,6 +33,53 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
 
             // Assert
             _mockRepo.Verify(repo => repo.InsertAsync(entity), Times.Once);
+        }
+
+        [Fact]
+        public async Task UpdateAsync_ShouldCallRepositoryUpdateAsync_WhenValidationPasses()
+        {
+            // Arrange
+            var existingEntity = new SynchronizationStatusEntity
+            {
+                id = Guid.NewGuid(),
+                synchronization_status_key = "EXISTING_KEY",
+                synchronization_status_text = "Existing Status",
+                synchronization_status_color = "#FFFFFF", // Por ejemplo, color blanco
+                synchronization_status_background = "#000000", // Por ejemplo, fondo negro
+                created_at = DateTime.UtcNow.AddDays(-1), // Simular que fue creado hace un día
+                updated_at = DateTime.UtcNow // Simular que fue actualizado ahora
+            };
+
+            // Simulamos que existe un estado con la misma clave
+            _mockRepo.Setup(repo => repo.GetByCodeAsync(It.IsAny<Expression<Func<SynchronizationStatusEntity, bool>>>())).ReturnsAsync(existingEntity);
+
+            // Act
+            await _service.UpdateAsync(existingEntity);
+
+            // Assert
+            _mockRepo.Verify(repo => repo.UpdateAsync(existingEntity), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteAsync_ShouldCallRepositoryDeleteAsync_WhenEntityExists()
+        {
+            // Arrange
+            var entityToDelete = new SynchronizationStatusEntity
+            {
+                id = Guid.NewGuid(),
+                synchronization_status_key = "DELETE_KEY",
+                synchronization_status_text = "Status to be deleted",
+                synchronization_status_color = "#FFFFFF",
+                synchronization_status_background = "#000000",
+                created_at = DateTime.UtcNow.AddDays(-1),
+                updated_at = DateTime.UtcNow
+            };
+
+            // Act
+            await _service.DeleteAsync(entityToDelete);
+
+            // Assert
+            _mockRepo.Verify(repo => repo.DeleteAsync(entityToDelete), Times.Once);
         }
 
         [Fact]
@@ -78,6 +128,47 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             // Assert
             Assert.Equal(expectedTotalRows, result);
             _mockRepo.Verify(repo => repo.GetTotalRows(It.IsAny<SynchronizationStatesSpecification>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task InsertAsync_ShouldThrowOrchestratorArgumentException_WhenCodeAlreadyExists()
+        {
+            // Arrange
+            var existingEntity = new SynchronizationStatusEntity
+            {
+                id = Guid.NewGuid(),
+                synchronization_status_key = "EXISTING_KEY",
+                synchronization_status_text = "Existing Status",
+                synchronization_status_color = "#FFFFFF",
+                synchronization_status_background = "#000000",
+                created_at = DateTime.UtcNow.AddDays(-1),
+                updated_at = DateTime.UtcNow
+            };
+
+            var newEntity = new SynchronizationStatusEntity
+            {
+                id = Guid.NewGuid(),
+                synchronization_status_key = "EXISTING_KEY", // Same key as existing entity
+                synchronization_status_text = "New Status",
+                synchronization_status_color = "#FF0000",
+                synchronization_status_background = "#000000",
+                created_at = DateTime.UtcNow,
+                updated_at = DateTime.UtcNow
+            };
+
+            // Simula que el método GetByCodeAsync devuelve una entidad existente
+            _mockRepo.Setup(repo => repo.GetByCodeAsync(It.IsAny<Expression<Func<SynchronizationStatusEntity, bool>>>()))
+                     .ReturnsAsync(existingEntity);
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<OrchestratorArgumentException>(() => _service.InsertAsync(newEntity));
+
+            // Verifica que el mensaje de error sea el esperado
+            Assert.Equal((int)ResponseCode.NotFoundSuccessfully, exception.Details.Code);
+            Assert.Equal(AppMessages.Domain_Response_CodeInUse, exception.Details.Description);
+
+            // Verifica que el repositorio no haya intentado insertar la entidad, ya que falló la validación
+            _mockRepo.Verify(repo => repo.InsertAsync(It.IsAny<SynchronizationStatusEntity>()), Times.Never);
         }
     }
 }

@@ -1,8 +1,10 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities;
+﻿using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
+using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Administration;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using Moq;
@@ -21,8 +23,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             _mockStatusService = new Mock<IStatusService<StatusEntity>>();
             _service = new CatalogService(_mockRepo.Object, _mockStatusService.Object);
         }
+
         [Fact]
-        public async Task DeleteAsync()
+        public async Task DeleteAsync_ShouldCallRepositoryDeleteAsync()
         {
             var entity = new CatalogEntity
             {
@@ -36,8 +39,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             await _service.DeleteAsync(entity);
             _mockRepo.Verify(repo => repo.DeleteAsync(entity), Times.Once);
         }
+
         [Fact]
-        public async Task GetAllPaginatedAsync()
+        public async Task GetAllPaginatedAsync_ShouldReturnPaginatedCatalogEntities()
         {
             var paginatedModel = new PaginatedModel()
             {
@@ -65,8 +69,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             Assert.Equal(catalogs, result);
             _mockRepo.Verify(repo => repo.GetAllAsync(It.IsAny<CatalogSpecification>()), Times.Once);
         }
+
         [Fact]
-        public async Task GetByFatherAsync()
+        public async Task GetByFatherAsync_ShouldReturnCatalogEntitiesByFatherCode()
         {
             var father_code = 1;
             var catalog = new CatalogEntity
@@ -91,8 +96,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             _mockRepo.Verify(repo => repo.GetByFatherAsync(It.IsAny<Expression<Func<CatalogEntity, bool>>>()), Times.Once);
 
         }
+        
         [Fact]
-        public async Task GetByIdAsync()
+        public async Task GetByIdAsync_ShouldReturnCatalogEntity_WhenIdExists()
         {
             var id = Guid.NewGuid();
             var catalog = new CatalogEntity
@@ -114,8 +120,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             _mockRepo.Verify(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<CatalogEntity, bool>>>()),
                 Times.Once);
         }
+        
         [Fact]
-        public async Task GetTotalRowsAsync()
+        public async Task GetTotalRowsAsync_ShouldReturnTotalNumberOfRows()
         {
             var paginatedModel = new PaginatedModel()
             {
@@ -132,8 +139,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             Assert.Equal(totalRows, result);
             _mockRepo.Verify(repo => repo.GetTotalRows(It.IsAny<CatalogSpecification>()), Times.Once);
         }
+        
         [Fact]
-        public async Task InsertAsync()
+        public async Task InsertAsync_ShouldInsertCatalogEntity_WhenStatusExists()
         {
             var catalog = new CatalogEntity
             {
@@ -149,8 +157,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
 
             _mockRepo.Verify(repo => repo.InsertAsync(catalog), Times.Once);
         }
+        
         [Fact]
-        public async Task UpdateAsync()
+        public async Task UpdateAsync_ShouldUpdateCatalogEntity_WhenStatusExists()
         {
             var catalog = new CatalogEntity
             {
@@ -166,5 +175,59 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             await _service.UpdateAsync(catalog);
             _mockRepo.Verify(repo => repo.UpdateAsync(catalog), Times.Once);
         }
+
+        [Fact]
+        public async Task GetByCodeAsync_ShouldReturnCatalogEntity_WhenCodeExists()
+        {
+            // Arrange
+            var catalogCode = 10;
+            var catalog = new CatalogEntity
+            {
+                catalog_code = catalogCode,
+                catalog_name = "CatalogName",
+                catalog_value = "CatalogValue",
+                father_code = 1,
+                catalog_detail = "Catalog details",
+                status_id = Guid.NewGuid()
+            };
+
+            // Configura el mock para que retorne la entidad de catálogo cuando se busca por código
+            _mockRepo.Setup(repo => repo.GetByCodeAsync(It.IsAny<Expression<Func<CatalogEntity, bool>>>()))
+                     .ReturnsAsync(catalog);
+
+            // Act
+            var result = await _service.GetByCodeAsync(catalogCode);
+
+            // Assert
+            Assert.Equal(catalog, result);
+            _mockRepo.Verify(repo => repo.GetByCodeAsync(It.IsAny<Expression<Func<CatalogEntity, bool>>>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task EnsureStatusExists_ShouldThrowOrchestratorArgumentException_WhenStatusDoesNotExist()
+        {
+            // Arrange
+            var nonExistentStatusId = Guid.NewGuid(); // ID de estado que no existe
+            var catalogEntity = new CatalogEntity
+            {
+                catalog_code = 10,
+                catalog_name = "CatalogName",
+                catalog_value = "CatalogValue",
+                father_code = 1,
+                catalog_detail = "Catalog details",
+                status_id = nonExistentStatusId // Asignamos un ID de estado no existente
+            };
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<OrchestratorArgumentException>(() => _service.InsertAsync(catalogEntity));
+
+            // Verificar que se lanzó la excepción y que contiene los detalles correctos
+            Assert.Equal((int)ResponseCode.NotFoundSuccessfully, exception.Details.Code);
+            Assert.Equal(AppMessages.Application_StatusNotFound, exception.Details.Description);
+            Assert.Equal(nonExistentStatusId, exception.Details.Data);
+
+            _mockStatusService.Verify(repo => repo.GetByIdAsync(nonExistentStatusId), Times.Once);
+        }
+
     }
 }

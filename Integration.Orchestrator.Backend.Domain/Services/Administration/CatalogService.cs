@@ -69,31 +69,11 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             var spec = new CatalogSpecification(paginatedModel);
             return await _processRepository.GetTotalRows(spec);
         }
-        
+
         private async Task ValidateBussinesLogic(CatalogEntity entity, bool create = false)
         {
             await EnsureStatusExists(entity.status_id);
-            if (create) 
-            {
-                var catalogList = await GetByNameAndFatherCodeAsync(entity.catalog_name, entity.father_code);
-
-                switch (create)
-                {
-                    case true when catalogList.ToList().Count > 0:
-                        throw new ArgumentException(AppMessages.Domain_CatalogFatherCodeExists);
-                    case false when catalogList.ToList().Exists(catalogEntity => catalogEntity.id != entity.id):
-                        throw new ArgumentException(AppMessages.Domain_CatalogFatherCodeExists);
-                }
-            }
-            
         }
-        
-        public async Task<IEnumerable<CatalogEntity>> GetByNameAndFatherCodeAsync(string name, int? fatherCode)
-        {
-            var specification = CatalogSpecification.GetByNameAndFatherCodeExpression(name, fatherCode);
-            return await _processRepository.GetByNameAndFatherCodeAsync(specification);
-        }
-
         private async Task EnsureStatusExists(Guid statusId)
         {
             var statusFound = await _statusService.GetByIdAsync(statusId);

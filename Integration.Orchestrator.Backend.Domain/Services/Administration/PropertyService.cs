@@ -82,32 +82,14 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
         private async Task ValidateBussinesLogic(PropertyEntity property, bool create = false)
         {
             await EnsureStatusExists(property.status_id);
-            await IsDuplicate(property);
+            await IsDuplicateNameAndEntity(property);
 
             if (create)
             {
-                var numPropertiesByNameAndEntityId = await CountPropertiesByNameAndEntityIdAsync(property);
-                if (numPropertiesByNameAndEntityId > 0)
-                {
-                    throw new ArgumentException(AppMessages.Domain_PropertyEntityExists);
-                }
-
                 var codeFound = await _codeConfiguratorService.GenerateCodeAsync(Prefix.Property);
                 await EnsureCodeIsUnique(codeFound);
                 property.property_code = codeFound;
             }
-        }
-
-        private async Task<int> CountPropertiesByNameAndEntityIdAsync(PropertyEntity entity)
-        {
-            var entitiesByNameAndRepositoryId = await GetByNameAndEntityIdAsync(entity.property_name, entity.entity_id);
-            return entitiesByNameAndRepositoryId.ToList().Count;
-        }
-
-        public async Task<IEnumerable<PropertyEntity>> GetByNameAndEntityIdAsync(string name, Guid entityId)
-        {
-            var specification = PropertySpecification.GetByNameAndEntityIdExpression(name, entityId);
-            return await _propertyRepository.GetByNameAndEntityIdAsync(specification);
         }
 
         private async Task EnsureStatusExists(Guid statusId)
@@ -140,11 +122,10 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
             }
         }
 
-
-        private async Task IsDuplicate(PropertyEntity property)
+        private async Task IsDuplicateNameAndEntity(PropertyEntity property)
         {
-            var exits = await _propertyRepository.GetByExits(property);
-            if (exits)
+            var validate = await _propertyRepository.ValidateNameAndEntity(property);
+            if (validate)
             {
                 throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
