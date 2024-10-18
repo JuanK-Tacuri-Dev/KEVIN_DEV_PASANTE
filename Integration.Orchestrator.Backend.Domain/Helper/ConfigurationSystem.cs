@@ -2,7 +2,6 @@
 {
     public static class ConfigurationSystem
     {
-        //public static string DateTimeFormat { get; set; } = "dd/MM/yyyy HH:mm:ss";
         public static string DateTimeFormat { get; set; } = "yyyy-MM-ddTHH:mm:ss.fffZ";
     }
 }

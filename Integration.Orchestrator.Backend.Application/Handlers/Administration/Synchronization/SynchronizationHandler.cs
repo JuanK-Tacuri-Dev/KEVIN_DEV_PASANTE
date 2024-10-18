@@ -96,7 +96,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                                 FranchiseId = synchronizationMap.franchise_id,
                                 StatusId = synchronizationMap.status_id,
                                 Observations = synchronizationMap.synchronization_observations,
-                                HourToExecute = synchronizationMap.synchronization_hour_to_execute,//.ToString(dateFormat),
+                                HourToExecute = synchronizationMap.synchronization_hour_to_execute,
                                 Integrations = synchronizationMap.integrations.Select(i => new IntegrationResponse
                                 {
                                     Id = i
@@ -180,7 +180,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             FranchiseId = synchronizationFound.franchise_id,
                             StatusId = synchronizationFound.status_id,
                             Observations = synchronizationFound.synchronization_observations,
-                            HourToExecute = synchronizationFound.synchronization_hour_to_execute,//.ToString(dateFormat),
+                            HourToExecute = synchronizationFound.synchronization_hour_to_execute,
                             Integrations = synchronizationFound.integrations.Select(i => new IntegrationResponse { Id = i }).ToList(),
                             UserId = synchronizationFound.user_id
                         }
@@ -224,7 +224,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                             FranchiseId = synchronization.franchise_id,
                             StatusId = synchronization.status_id,
                             Observations = synchronization.synchronization_observations,
-                            HourToExecute = synchronization.synchronization_hour_to_execute,//.ToString(dateFormat),
+                            HourToExecute = synchronization.synchronization_hour_to_execute,
                             Integrations = synchronization.integrations.Select(i => new IntegrationResponse { Id = i }).ToList(),
                             UserId = synchronization.user_id
                         }).ToList()
@@ -289,7 +289,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                     {
                         Id = i
                     }).ToList(),
-                    HourToExecute = synchronization.synchronization_hour_to_execute,//.ToString(dateFormat),
+                    HourToExecute = synchronization.synchronization_hour_to_execute,
                     UserId = synchronization.user_id
                 }).ToList();
 
@@ -317,7 +317,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
 
         private SynchronizationEntity MapSynchronizer(SynchronizationCreateRequest request, Guid id)
         {
-            var model= new SynchronizationEntity()
+            return new SynchronizationEntity()
             {
                 id = id,
                 synchronization_name = request.Name,
@@ -327,9 +327,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                 integrations = request.Integrations.Select(i => i.Id).ToList(),
                 user_id = request.UserId
             };
-
-            var fecha=request.HourToExecute != null ? DateTimeOffset.Parse(request.HourToExecute).UtcDateTime.ToLocalTime() : DateTime.Now;
-            return model;
         }
 
         private async Task<SyncStatus> ValidateSyncStatus(Guid id)
@@ -397,7 +394,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administrations.
                         FranchiseId = entity.franchise_id,
                         StatusId = entity.status_id,
                         Observations = entity.synchronization_observations,
-                        HourToExecute = entity.synchronization_hour_to_execute,//.ToString(dateFormat),
+                        HourToExecute = entity.synchronization_hour_to_execute,
                         Integrations = entity.integrations.Select(i => new IntegrationResponse { Id = i }).ToList(),
                         UserId = entity.user_id
                     }

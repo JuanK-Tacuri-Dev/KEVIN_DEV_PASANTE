@@ -23,7 +23,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Administration.S
 
         private bool BeAValidDateTime(string dateTimeString)
         {
-            //const string dateTimeFormat = "yyyy-MM-ddTHH:mm:ss";
             return DateTime.TryParseExact(dateTimeString, ConfigurationSystem.DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
         }
     }
