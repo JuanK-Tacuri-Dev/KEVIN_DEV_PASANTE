@@ -2,6 +2,7 @@ using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
+using Integration.Orchestrator.Backend.Domain.Helper;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
@@ -39,7 +40,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
                 synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
                 integrations = new List<Guid> { },
-                synchronization_hour_to_execute = DateTime.Now
+                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault
             };
             _mockSynchronizationStatus.Setup(repo => repo.GetByIdAsync(synchronization.status_id)).ReturnsAsync(new SynchronizationStatusEntity { });
 
@@ -59,7 +60,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
                 status_id = Guid.NewGuid(),
                 synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                synchronization_hour_to_execute = DateTime.Now
+                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault
             };
             _mockSynchronizationStatus.Setup(repo => repo.GetByIdAsync(synchronization.status_id)).ReturnsAsync(new SynchronizationStatusEntity { });
             await _service.UpdateAsync(synchronization);
@@ -78,7 +79,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
                 status_id = Guid.NewGuid(),
                 synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                synchronization_hour_to_execute = DateTime.Now
+                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault
             };
 
             var expression = SynchronizationSpecification.GetByIdExpression(id);
@@ -102,7 +103,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
                 status_id = Guid.NewGuid(),
                 synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                synchronization_hour_to_execute = DateTime.Now
+                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault
             };
 
             await _service.DeleteAsync(synchronization);
@@ -122,7 +123,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
                 status_id = Guid.NewGuid(),
                 synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                synchronization_hour_to_execute = DateTime.Now
+                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault,
             };
 
             var synchronizations = new List<SynchronizationEntity> { synchronization };
@@ -159,7 +160,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
                 status_id = Guid.NewGuid(),
                 synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                synchronization_hour_to_execute = DateTime.Now
+                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault
             };
             var synchronizations = new List<SynchronizationEntity> { synchronization };
             var spec = new SynchronizationSpecification(paginatedModel);

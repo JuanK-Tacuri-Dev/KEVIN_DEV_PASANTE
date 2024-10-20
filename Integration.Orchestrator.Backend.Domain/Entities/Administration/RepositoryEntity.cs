@@ -1,4 +1,5 @@
-﻿namespace Integration.Orchestrator.Backend.Domain.Entities.Administration
+﻿using Integration.Orchestrator.Backend.Domain.Helper;
+namespace Integration.Orchestrator.Backend.Domain.Entities.Administration
 {
     public class RepositoryEntity : Entity<Guid>
     {
@@ -9,7 +10,7 @@
         public string repository_password { get; set; }
         public Guid? auth_type_id { get; set; }
         public Guid status_id { get; set; }
-        public DateTime created_at { get; private set; } = DateTime.UtcNow;
-        public DateTime updated_at { get; private set; } = DateTime.UtcNow;
+        public string created_at { get; private set; } = ConfigurationSystem.DateTimeDefault;
+        public string updated_at { get; private set; } = ConfigurationSystem.DateTimeDefault;
     }
 }
