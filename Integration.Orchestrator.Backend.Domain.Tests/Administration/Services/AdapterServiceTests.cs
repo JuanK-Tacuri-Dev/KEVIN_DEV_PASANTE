@@ -33,11 +33,15 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
             // Arrange
             var entity = new AdapterEntity
             {
+                id = Guid.NewGuid(),
                 adapter_code = "A001",
                 adapter_name = "mongo",
                 adapter_version = "1",
                 type_id = Guid.NewGuid(),
-                status_id = Guid.NewGuid()
+                status_id = Guid.NewGuid(),
+                //created_at = DateTime.Now,
+                //updated_at = DateTime.Now
+                
 
             };
 

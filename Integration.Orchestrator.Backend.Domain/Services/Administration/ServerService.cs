@@ -124,7 +124,8 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
                         new DetailsArgumentErrors()
                         {
                             Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = AppMessages.Domain_ServerExists
+                            Description = AppMessages.Domain_ServerExists,
+                            Data = server
                         });
             }
         }

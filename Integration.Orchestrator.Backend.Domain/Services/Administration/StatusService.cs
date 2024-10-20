@@ -1,6 +1,7 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration;
 using Integration.Orchestrator.Backend.Domain.Entities.Administration.Interfaces;
+using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Administration;
 using Integration.Orchestrator.Backend.Domain.Resources;
@@ -68,7 +69,13 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
                 var processByType = await GetByKeyAsync(status.status_key);
                 if (processByType != null)
                 {
-                    throw new ArgumentException(AppMessages.Application_ResponseNotCreated);
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotFoundSuccessfully,
+                            Description = AppMessages.Domain_Response_CodeInUse,
+                            Data = status
+                        });
                 }
             }
         }

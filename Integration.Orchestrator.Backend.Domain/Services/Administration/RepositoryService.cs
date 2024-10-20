@@ -118,7 +118,8 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Administration
                         new DetailsArgumentErrors()
                         {
                             Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = AppMessages.Domain_RepositoryExists
+                            Description = AppMessages.Domain_RepositoryExists,
+                            Data = repository
                         });
             }
         }
