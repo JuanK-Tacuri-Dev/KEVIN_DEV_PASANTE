@@ -9,8 +9,8 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Administration
         public Guid type_id { get; set; }
         public Guid repository_id { get; set; }
         public Guid status_id { get; set; }
-        public string created_at { get; private set; } = ConfigurationSystem.DateTimeDefault;
-        public string updated_at { get; private set; } = ConfigurationSystem.DateTimeDefault;
+        public string created_at { get; private set; } = ConfigurationSystem.DateTimeDefault();
+        public string updated_at { get; private set; } = ConfigurationSystem.DateTimeDefault();
         
     }
 }

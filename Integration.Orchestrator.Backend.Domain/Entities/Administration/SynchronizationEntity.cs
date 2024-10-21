@@ -14,8 +14,8 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Administration
         public Guid? user_id { get; set; }
         public Guid? franchise_id { get; set; }
         public Guid status_id { get; set; }
-        public string created_at { get; private set; } = ConfigurationSystem.DateTimeDefault;
-        public string updated_at { get; private set; } = ConfigurationSystem.DateTimeFormat;
+        public string created_at { get; private set; } = ConfigurationSystem.DateTimeDefault();
+        public string updated_at { get; private set; } = ConfigurationSystem.DateTimeDefault();
 
     }
 

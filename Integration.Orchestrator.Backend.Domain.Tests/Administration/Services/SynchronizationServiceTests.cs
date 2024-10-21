@@ -37,7 +37,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
                 synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
                 integrations = new List<Guid> { },
-                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault
+                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault()
             };
 
             await _service.InsertAsync(synchronization);
@@ -55,7 +55,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
                 status_id = Guid.NewGuid(),
                 synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault
+                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault()
             };
 
             await _service.UpdateAsync(synchronization);
@@ -74,7 +74,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
                 status_id = Guid.NewGuid(),
                 synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault
+                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault()
             };
 
             var expression = SynchronizationSpecification.GetByIdExpression(id);
@@ -98,7 +98,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
                 status_id = Guid.NewGuid(),
                 synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault
+                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault()
             };
 
             await _service.DeleteAsync(synchronization);
@@ -118,7 +118,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
                 status_id = Guid.NewGuid(),
                 synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault,
+                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault(),
             };
 
             var synchronizations = new List<SynchronizationEntity> { synchronization };
@@ -155,7 +155,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Administration.Services
                 status_id = Guid.NewGuid(),
                 synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault
+                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault()
             };
             var synchronizations = new List<SynchronizationEntity> { synchronization };
             var spec = new SynchronizationSpecification(paginatedModel);

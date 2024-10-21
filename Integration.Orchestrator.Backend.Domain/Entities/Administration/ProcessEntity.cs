@@ -11,8 +11,8 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Administration
         public Guid connection_id { get; set; }
         public Guid status_id { get; set; }
         public List<ObjectEntity> entities { get; set; }
-        public string created_at { get; private set; } = ConfigurationSystem.DateTimeDefault;
-        public string updated_at { get; private set; } = ConfigurationSystem.DateTimeDefault;
+        public string created_at { get; private set; } = ConfigurationSystem.DateTimeDefault();
+        public string updated_at { get; private set; } = ConfigurationSystem.DateTimeDefault();
     }
 
     public class ObjectEntity

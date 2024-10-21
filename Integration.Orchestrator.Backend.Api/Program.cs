@@ -6,6 +6,7 @@ using Integration.Orchestrator.Backend.Application;
 using Integration.Orchestrator.Backend.Domain;
 using Integration.Orchestrator.Backend.Infrastructure;
 using Integration.Orchestrator.Backend.Infrastructure.Extensions;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -59,6 +60,11 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     containerBuilder.RegisterModule(new AddDomainModule());
     containerBuilder.RegisterModule(new AddApplicationModule());
 });
+
+var cultureInfo = new CultureInfo("es-EC");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
 
 var app = builder.Build();
 // Usar CORS

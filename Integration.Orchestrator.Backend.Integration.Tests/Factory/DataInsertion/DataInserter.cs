@@ -20,8 +20,8 @@ namespace Integration.Orchestrator.Backend.Integration.Tests.Factory.DataInserti
                     status_text = item["status_text"].ToString(),
                     status_color = item["status_color"].ToString(),
                     status_background = item["status_background"].ToString(),
-                    created_at = ConfigurationSystem.DateTimeDefault,
-                    updated_at = ConfigurationSystem.DateTimeDefault
+                    created_at = ConfigurationSystem.DateTimeDefault(),
+                    updated_at = ConfigurationSystem.DateTimeDefault()
                 })
                 .ToList();
             collection.InsertManyAsync(documentList);
@@ -38,8 +38,8 @@ namespace Integration.Orchestrator.Backend.Integration.Tests.Factory.DataInserti
                     synchronization_status_text = item["synchronization_status_text"].ToString(),
                     synchronization_status_color = item["synchronization_status_color"].ToString(),
                     synchronization_status_background = item["synchronization_status_background"].ToString(),
-                    created_at = ConfigurationSystem.DateTimeDefault,
-                    updated_at = ConfigurationSystem.DateTimeDefault
+                    created_at = ConfigurationSystem.DateTimeDefault(),
+                    updated_at = ConfigurationSystem.DateTimeDefault()
                 })
                 .ToList();
             collection.InsertManyAsync(documentList);
