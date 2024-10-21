@@ -32,6 +32,7 @@ namespace Integration.Orchestrator.Backend.Application.Options
     /// <summary>
     ///     This class contains the names of collections
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class Collection
     {
         public string Synchronization { get; set; }

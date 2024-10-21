@@ -1,5 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Commons;
-using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Models;
 using System.Linq.Expressions;
 
@@ -7,7 +7,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 {
     public class AdapterSpecification : ISpecification<AdapterEntity>
     {
-        public Expression<Func<AdapterEntity, bool>> Criteria { get; private set; }
+        public Expression<Func<AdapterEntity, bool>> Criteria { get;  set; }
 
         public Expression<Func<AdapterEntity, object>> OrderBy { get; private set; }
 
@@ -29,6 +29,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             { nameof(AdapterEntity.adapter_name).Split("_")[1], x => x.adapter_name },
             { nameof(AdapterEntity.adapter_code).Split("_")[1], x => x.adapter_code },
+             { nameof(AdapterEntity.adapter_version).Split("_")[1], x => x.adapter_version },
+            {"typeAdapterId", x => x.type_id },
+            { "statusId", x => x.status_id },
             { nameof(AdapterEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(AdapterEntity.created_at).Split("_")[0], x => x.created_at }
         };

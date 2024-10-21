@@ -1,7 +1,9 @@
 ﻿using System;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Domain.Helper
 {
+    [ExcludeFromCodeCoverage]
     public static class ConfigurationSystem
     {
         public static string DateTimeFormat { get; set; } = "yyyy-MM-ddTHH:mm:ss.fffZ";

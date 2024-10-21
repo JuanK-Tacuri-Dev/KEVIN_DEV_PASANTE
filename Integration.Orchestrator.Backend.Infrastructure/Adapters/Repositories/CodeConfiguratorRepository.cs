@@ -1,12 +1,13 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
-using Integration.Orchestrator.Backend.Domain.Ports.Administration;
+using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using MongoDB.Driver;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
+    [ExcludeFromCodeCoverage]
     [Repository]
-    public class CodeConfiguratorRepository(
-        IMongoCollection<CodeConfiguratorEntity> collection) 
+    public class CodeConfiguratorRepository(IMongoCollection<CodeConfiguratorEntity> collection) 
         : ICodeConfiguratorRepository<CodeConfiguratorEntity>
     {
         private readonly IMongoCollection<CodeConfiguratorEntity> _collection = collection;

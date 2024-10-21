@@ -1,13 +1,16 @@
-﻿using System.Linq.Expressions;
-using Integration.Orchestrator.Backend.Domain.Entities.Administration;
-using Integration.Orchestrator.Backend.Domain.Ports.Administration;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
+using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Driver;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
+    [ExcludeFromCodeCoverage]
     [Repository]
-    public class CatalogRepository(IMongoCollection<CatalogEntity> collection) : ICatalogRepository<CatalogEntity>
+    public class CatalogRepository(IMongoCollection<CatalogEntity> collection) 
+        : ICatalogRepository<CatalogEntity>
     {
         private readonly IMongoCollection<CatalogEntity> _collection = collection;
         
@@ -74,11 +77,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return await _collection
                 .Find(specification.Criteria)
                 .CountDocumentsAsync();
-        }
-
-        public async Task<IEnumerable<CatalogEntity>> GetByNameAndFatherCodeAsync(Expression<Func<CatalogEntity, bool>> specification)
-        {
-            return await FindByFilter(specification).ToListAsync();
         }
         
         private IFindFluent<CatalogEntity,CatalogEntity> FindByFilter(Expression<Func<CatalogEntity, bool>> specification)

@@ -1,13 +1,16 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
-using Integration.Orchestrator.Backend.Domain.Ports.Administration;
+﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Driver;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
+    [ExcludeFromCodeCoverage]
     [Repository]
-    public class SynchronizationStatesRepository(IMongoCollection<SynchronizationStatusEntity> collection) : ISynchronizationStatesRepository<SynchronizationStatusEntity>
+    public class SynchronizationStatesRepository(IMongoCollection<SynchronizationStatusEntity> collection) 
+        : ISynchronizationStatesRepository<SynchronizationStatusEntity>
     {
         private readonly IMongoCollection<SynchronizationStatusEntity> _collection = collection;
 
@@ -43,7 +46,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return synchronizationStatesEntity;
         }
 
-        public async Task<SynchronizationStatusEntity> GetByCodeAsync(Expression<Func<SynchronizationStatusEntity, bool>> specification)
+        public async Task<SynchronizationStatusEntity> GetByKeyAsync(Expression<Func<SynchronizationStatusEntity, bool>> specification)
         {
             var filter = Builders<SynchronizationStatusEntity>.Filter.Where(specification);
             var synchronizationStatesEntity = await _collection

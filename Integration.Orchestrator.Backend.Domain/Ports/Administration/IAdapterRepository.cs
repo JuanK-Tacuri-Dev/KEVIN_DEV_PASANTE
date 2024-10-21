@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
-using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 
-namespace Integration.Orchestrator.Backend.Domain.Ports.Administration
+namespace Integration.Orchestrator.Backend.Domain.Ports.Configurador
 {
     public interface IAdapterRepository<T>
     {

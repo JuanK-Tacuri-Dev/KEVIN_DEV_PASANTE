@@ -1,8 +1,8 @@
-﻿using System.Linq.Expressions;
-using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
+using System.Linq.Expressions;
 
-namespace Integration.Orchestrator.Backend.Domain.Ports.Administration
+namespace Integration.Orchestrator.Backend.Domain.Ports.Configurador
 {
     public interface IPropertyRepository<T>
     {
@@ -15,7 +15,6 @@ namespace Integration.Orchestrator.Backend.Domain.Ports.Administration
         Task<IEnumerable<T>> GetByEntityAsync(Expression<Func<T, bool>> specification);
         Task<IEnumerable<T>> GetAllAsync(ISpecification<T> specification);
         public Task<long> GetTotalRows(ISpecification<T> specification);
-        Task<IEnumerable<T>> GetByNameAndEntityIdAsync(Expression<Func<T, bool>> specification);
-        Task<bool> GetByExits(PropertyEntity property);
+        Task<bool> ValidateNameAndEntity(PropertyEntity property);
     }
 }
