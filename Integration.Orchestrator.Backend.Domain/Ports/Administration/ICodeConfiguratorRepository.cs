@@ -1,4 +1,4 @@
-﻿namespace Integration.Orchestrator.Backend.Domain.Ports.Administration
+﻿namespace Integration.Orchestrator.Backend.Domain.Ports.Configurador
 {
     public interface ICodeConfiguratorRepository<T>
     {

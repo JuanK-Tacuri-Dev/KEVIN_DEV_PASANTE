@@ -1,12 +1,13 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities;
-using Integration.Orchestrator.Backend.Domain.Entities.Administration;
-using Integration.Orchestrator.Backend.Domain.Ports.Administration;
+﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Driver;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
+    [ExcludeFromCodeCoverage]
     [Repository]
     public class EntitiesRepository(IMongoCollection<EntitiesEntity> collection)
         : IEntitiesRepository<EntitiesEntity>
@@ -71,14 +72,12 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .ToListAsync();
             return entitiesEntity;
         }
-        public async Task<bool> GetByExits(EntitiesEntity entity)
+        public async Task<bool> GetRepositoryAndNameExists(EntitiesEntity entity)
         {
             FilterDefinition<EntitiesEntity> filters;
             filters = Builders<EntitiesEntity>.Filter.And(
                 Builders<EntitiesEntity>.Filter.Eq(e => e.entity_name, entity.entity_name),
-                Builders<EntitiesEntity>.Filter.Eq(e => e.type_id, entity.type_id),
                 Builders<EntitiesEntity>.Filter.Eq(e => e.repository_id, entity.repository_id),
-                Builders<EntitiesEntity>.Filter.Eq(e => e.status_id, entity.status_id),
                 Builders<EntitiesEntity>.Filter.Ne(e => e.id, entity.id)
             );
 
@@ -110,13 +109,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return await _collection
                 .Find(specification.Criteria)
                 .CountDocumentsAsync();
-        }
-
-        public async Task<IEnumerable<EntitiesEntity>> GetByNameAndRepositoryIdAsync(Expression<Func<EntitiesEntity, bool>> specification)
-        {
-            return await _collection
-                .Find(Builders<EntitiesEntity>.Filter.Where(specification))
-                .ToListAsync();
         }
     }
 }

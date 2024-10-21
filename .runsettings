@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="Code Coverage">
+        <Configuration>
+          <Exclude>
+            <!-- Excluir un proyecto específico o carpeta -->
+            <ModulePath>.*\\Integration.Orchestrator.Backend\\Integration.Orchestrator.Backend.Api\\.*</ModulePath>
+            <ModulePath>.*\\Integration.Orchestrator.Backend\\Integration.Orchestrator.Backend.Application\\.*</ModulePath>
+            <ModulePath>.*\\Integration.Orchestrator.Backend\\Integration.Orchestrator.Backend.Infrastructure\\.*</ModulePath>
+            <ModulePath>.*\\Integration.Orchestrator.Backend\\Integration.Orchestrator.Backend.Domain.Tests\\.*</ModulePath>
+            <ModulePath>.*\\Integration.Orchestrator.Backend\\Integration.Orchestrator.Backend.Integration.Tests\\.*</ModulePath>
+            
+            <!-- Puedes añadir más exclusiones si es necesario -->
+            <!-- Ejemplo de exclusión por clase -->
+            <!--<Class>MyNamespace.MyClass</Class>-->
+          </Exclude>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

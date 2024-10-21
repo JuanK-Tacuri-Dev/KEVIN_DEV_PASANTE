@@ -1,13 +1,13 @@
 ﻿using System.Linq.Expressions;
 using Integration.Orchestrator.Backend.Domain.Commons;
-using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Models;
 
 namespace Integration.Orchestrator.Backend.Domain.Specifications
 {
     public class ProcessSpecification : ISpecification<ProcessEntity>
     {
-        public Expression<Func<ProcessEntity, bool>> Criteria { get; private set; }
+        public Expression<Func<ProcessEntity, bool>> Criteria { get; set; }
 
         public Expression<Func<ProcessEntity, object>> OrderBy { get; private set; }
         
@@ -30,6 +30,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { nameof(ProcessEntity.process_code).Split("_")[1], x => x.process_code },
             { nameof(ProcessEntity.process_name).Split("_")[1], x => x.process_name },
             { nameof(ProcessEntity.process_description).Split("_")[1], x => x.process_description },
+            { "typeId", x => x.process_type_id },
+            { "connectionId", x => x.connection_id },
+            { nameof(ProcessEntity.entities), x => x.entities },
+            { "statusId", x => x.status_id },
             { nameof(ProcessEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(ProcessEntity.created_at).Split("_")[0], x => x.created_at }
         };

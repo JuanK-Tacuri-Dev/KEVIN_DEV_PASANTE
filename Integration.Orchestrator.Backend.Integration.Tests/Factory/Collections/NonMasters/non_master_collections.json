@@ -7,7 +7,6 @@
     "Integration_Entity",
     "Integration_Property",
     "Integration_Process",
-    "Integration_Integration",
-    "Integration_Synchronization"
+    "Integration_Integration"
   ]
 }

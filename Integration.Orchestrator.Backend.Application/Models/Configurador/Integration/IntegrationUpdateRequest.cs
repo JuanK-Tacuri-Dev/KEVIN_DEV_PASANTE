@@ -1,0 +1,9 @@
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Integration
+{
+    [ExcludeFromCodeCoverage]
+    public class IntegrationUpdateRequest : IntegrationCreateRequest
+    {
+    }
+}

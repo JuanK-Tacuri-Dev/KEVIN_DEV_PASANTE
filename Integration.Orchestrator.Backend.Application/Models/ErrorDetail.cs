@@ -1,5 +1,8 @@
-﻿namespace Integration.Orchestrator.Backend.Application.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Integration.Orchestrator.Backend.Application.Models
 {
+    [ExcludeFromCodeCoverage]
     public class ErrorDetail
     {
         public string Params { get; set; }
