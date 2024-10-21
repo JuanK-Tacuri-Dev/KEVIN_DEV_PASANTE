@@ -25,7 +25,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Syn
 
         private bool BeAValidDateTime(string dateTimeString)
         {
-            return DateTime.TryParseExact(dateTimeString, ConfigurationSystem.DateTimeDefault, CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
+            return DateTime.TryParseExact(dateTimeString, ConfigurationSystem.DateTimeDefault(), CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
         }
     }
 }

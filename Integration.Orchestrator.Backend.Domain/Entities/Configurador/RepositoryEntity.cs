@@ -10,7 +10,7 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Configurador
         public string repository_password { get; set; }
         public Guid? auth_type_id { get; set; }
         public Guid status_id { get; set; }
-        public string created_at { get; private set; } = ConfigurationSystem.DateTimeDefault;
-        public string updated_at { get; private set; } = ConfigurationSystem.DateTimeDefault;
+        public string created_at { get; private set; } = ConfigurationSystem.DateTimeDefault();
+        public string updated_at { get; private set; } = ConfigurationSystem.DateTimeDefault();
     }
 }

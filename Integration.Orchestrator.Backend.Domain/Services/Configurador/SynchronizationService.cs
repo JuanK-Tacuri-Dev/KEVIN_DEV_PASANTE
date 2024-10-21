@@ -8,7 +8,6 @@ using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Maintainer;
 using Integration.Orchestrator.Backend.Domain.Specifications;
-using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
 {
@@ -62,7 +61,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
         {
             if (string.IsNullOrEmpty(paginatedModel.Sort_field))
             {
-                paginatedModel.Sort_field = nameof(SynchronizationEntity.updated_at).Split("_")[0];
+                paginatedModel.Sort_field = nameof(SynchronizationEntity.synchronization_code).Split("_")[0];
                 paginatedModel.Sort_order = SortOrdering.Descending;
             }
             var spec = new SynchronizationSpecification(paginatedModel);

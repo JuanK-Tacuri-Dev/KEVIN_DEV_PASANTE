@@ -81,7 +81,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
                 var currentSyncStatus = await ValidateSyncStatus(request.Synchronization.SynchronizationRequest.StatusId);
                 if (currentSyncStatus != SyncStatus.programmed)
                 {
-                    synchronizationMap.synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault;
+                    synchronizationMap.synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault();
                 }
 
                 await _synchronizationService.UpdateAsync(synchronizationMap);
@@ -326,7 +326,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
                 synchronization_name = request.Name,
                 franchise_id = request.FranchiseId,
                 status_id = request.StatusId,
-                synchronization_hour_to_execute = request.HourToExecute != null ? DateTimeOffset.Parse(request.HourToExecute).UtcDateTime.ToLocalTime().ToString(ConfigurationSystem.DateTimeFormat) : ConfigurationSystem.DateTimeDefault,
+                synchronization_hour_to_execute = request.HourToExecute != null ? DateTimeOffset.Parse(request.HourToExecute).UtcDateTime.ToLocalTime().ToString(ConfigurationSystem.DateTimeFormat) : ConfigurationSystem.DateTimeDefault(),
                 integrations = request.Integrations.Select(i => i.Id).ToList(),
                 user_id = request.UserId
             };
