@@ -61,7 +61,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
         {
             if (string.IsNullOrEmpty(paginatedModel.Sort_field))
             {
-                paginatedModel.Sort_field = nameof(SynchronizationEntity.synchronization_code).Split("_")[0];
+                paginatedModel.Sort_field = nameof(SynchronizationEntity.synchronization_code).Split("_")[1];
                 paginatedModel.Sort_order = SortOrdering.Descending;
             }
             var spec = new SynchronizationSpecification(paginatedModel);
