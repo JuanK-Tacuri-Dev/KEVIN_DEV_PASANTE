@@ -6,6 +6,5 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Statu
     [ExcludeFromCodeCoverage]
     public class StatusGetAllPaginatedRequest : PaginatedDefinition
     {
-        public bool ActiveOnly { get; set; }
     }
 }
