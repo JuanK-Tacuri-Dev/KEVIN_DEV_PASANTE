@@ -8,6 +8,7 @@ using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Maintainer;
 using Integration.Orchestrator.Backend.Domain.Specifications;
+using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
 {

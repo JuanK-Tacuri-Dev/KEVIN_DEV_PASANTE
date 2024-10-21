@@ -370,7 +370,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
 
         private async Task<Guid> GetStatusByCodeAsync(string code)
         {
-            var entityFound = await _synchronizationStatesService.GetByCodeAsync(SyncStatus.success.ToString())
+            var entityFound = await _synchronizationStatesService.GetByKeyAsync(SyncStatus.success.ToString())
                     ?? throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
                             {

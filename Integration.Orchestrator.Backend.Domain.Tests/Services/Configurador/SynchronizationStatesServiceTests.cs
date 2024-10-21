@@ -51,7 +51,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
             };
 
             // Simulamos que existe un estado con la misma clave
-            _mockRepo.Setup(repo => repo.GetByCodeAsync(It.IsAny<Expression<Func<SynchronizationStatusEntity, bool>>>())).ReturnsAsync(existingEntity);
+            _mockRepo.Setup(repo => repo.GetByKeyAsync(It.IsAny<Expression<Func<SynchronizationStatusEntity, bool>>>())).ReturnsAsync(existingEntity);
 
             // Act
             await _service.UpdateAsync(existingEntity);
@@ -157,7 +157,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
             };
 
             // Simula que el método GetByCodeAsync devuelve una entidad existente
-            _mockRepo.Setup(repo => repo.GetByCodeAsync(It.IsAny<Expression<Func<SynchronizationStatusEntity, bool>>>()))
+            _mockRepo.Setup(repo => repo.GetByKeyAsync(It.IsAny<Expression<Func<SynchronizationStatusEntity, bool>>>()))
                      .ReturnsAsync(existingEntity);
 
             // Act & Assert

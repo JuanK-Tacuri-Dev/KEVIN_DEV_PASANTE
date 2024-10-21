@@ -46,7 +46,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return synchronizationStatesEntity;
         }
 
-        public async Task<SynchronizationStatusEntity> GetByCodeAsync(Expression<Func<SynchronizationStatusEntity, bool>> specification)
+        public async Task<SynchronizationStatusEntity> GetByKeyAsync(Expression<Func<SynchronizationStatusEntity, bool>> specification)
         {
             var filter = Builders<SynchronizationStatusEntity>.Filter.Where(specification);
             var synchronizationStatesEntity = await _collection

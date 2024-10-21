@@ -8,6 +8,7 @@ using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Maintainer;
 using Integration.Orchestrator.Backend.Domain.Specifications;
+using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
 {
@@ -65,6 +66,10 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
             }
 
             var spec = new ProcessSpecification(paginatedModel);
+            if (paginatedModel.activeOnly == true)
+            {
+                spec.Criteria = await ActiveStatusCriteria(spec.Criteria);
+            }
             return await _processRepository.GetAllAsync(spec);
         }
 
@@ -72,7 +77,17 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
         {
             
             var spec = new ProcessSpecification(paginatedModel);
+            if (paginatedModel.activeOnly == true)
+            {
+                spec.Criteria = await ActiveStatusCriteria(spec.Criteria);
+            }
             return await _processRepository.GetTotalRows(spec);
+        }
+
+        private async Task<Expression<Func<ProcessEntity, bool>>> ActiveStatusCriteria(Expression<Func<ProcessEntity, bool>> criteria)
+        {
+            var entityFound = await _statusService.GetByKeyAsync(Status.active.ToString());
+            return criteria = criteria.And(x => x.status_id == entityFound.id);
         }
 
         private async Task ValidateBussinesLogic(ProcessEntity process, bool create = false)

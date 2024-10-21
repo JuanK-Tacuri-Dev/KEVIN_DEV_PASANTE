@@ -8,6 +8,7 @@ using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Maintainer;
 using Integration.Orchestrator.Backend.Domain.Specifications;
+using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
 {
@@ -59,13 +60,29 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
                 paginatedModel.Sort_order = SortOrdering.Descending;
             }
             var spec = new ConnectionSpecification(paginatedModel);
+
+            if (paginatedModel.activeOnly == true)
+            {
+                spec.Criteria = await ActiveStatusCriteria(spec.Criteria);
+            }
             return await _connectionRepository.GetAllAsync(spec);
         }
 
         public async Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel)
         {
             var spec = new ConnectionSpecification(paginatedModel);
+
+            if (paginatedModel.activeOnly == true)
+            {
+                spec.Criteria = await ActiveStatusCriteria(spec.Criteria);
+            }
             return await _connectionRepository.GetTotalRows(spec);
+        }
+
+        private async Task<Expression<Func<ConnectionEntity, bool>>> ActiveStatusCriteria(Expression<Func<ConnectionEntity, bool>> criteria)
+        {
+            var entityFound = await _statusService.GetByKeyAsync(Status.active.ToString());
+            return criteria = criteria.And(x => x.status_id == entityFound.id);
         }
 
         private async Task ValidateBussinesLogic(ConnectionEntity connection, bool create = false) 

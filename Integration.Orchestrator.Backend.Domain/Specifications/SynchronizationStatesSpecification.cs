@@ -89,9 +89,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return BaseSpecification<SynchronizationStatusEntity>.GetByUuid(x => x.id, id);
         }
 
-        public static Expression<Func<SynchronizationStatusEntity, bool>> GetByCodeExpression(string code)
+        public static Expression<Func<SynchronizationStatusEntity, bool>> GetByKeyExpression(string key)
         {
-            return x => true && x.synchronization_status_key == code;
+            return x => true && x.synchronization_status_key == key;
         }
 
     }

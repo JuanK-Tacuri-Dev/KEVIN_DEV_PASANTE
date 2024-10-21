@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Integration.Orchestrator.Backend.Domain.Commons
+﻿namespace Integration.Orchestrator.Backend.Domain.Commons
 {
     public enum Status
     {
-        active,
-        inactive
+        active = 1,
+        inactive = 2
     }
 }

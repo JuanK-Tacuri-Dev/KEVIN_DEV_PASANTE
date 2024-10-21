@@ -40,10 +40,10 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
             return await _synchronizationStatesStatesRepository.GetByIdAsync(specification);
         }
 
-        public async Task<SynchronizationStatusEntity> GetByCodeAsync(string code)
+        public async Task<SynchronizationStatusEntity> GetByKeyAsync(string key)
         {
-            var specification = SynchronizationStatesSpecification.GetByCodeExpression(code);
-            return await _synchronizationStatesStatesRepository.GetByCodeAsync(specification);
+            var specification = SynchronizationStatesSpecification.GetByKeyExpression(key);
+            return await _synchronizationStatesStatesRepository.GetByKeyAsync(specification);
         }
 
         public async Task<IEnumerable<SynchronizationStatusEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
@@ -67,7 +67,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
         {
             if (create)
             {
-                var codeFound = await GetByCodeAsync(synchronizationStatesEntity.synchronization_status_key);
+                var codeFound = await GetByKeyAsync(synchronizationStatesEntity.synchronization_status_key);
                 if (codeFound != null)
                 {
                     throw new OrchestratorArgumentException(string.Empty,

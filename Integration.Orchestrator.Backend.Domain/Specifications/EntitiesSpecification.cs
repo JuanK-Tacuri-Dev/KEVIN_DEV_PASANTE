@@ -7,7 +7,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 {
     public class EntitiesSpecification : ISpecification<EntitiesEntity>
     {
-        public Expression<Func<EntitiesEntity, bool>> Criteria { get; private set; }
+        public Expression<Func<EntitiesEntity, bool>> Criteria { get; set; }
 
         public Expression<Func<EntitiesEntity, object>> OrderBy { get; private set; }
         
