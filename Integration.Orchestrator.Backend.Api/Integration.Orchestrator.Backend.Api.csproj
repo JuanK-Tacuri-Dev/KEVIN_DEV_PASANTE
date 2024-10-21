@@ -23,13 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\v1\Integration\" />
-    <Folder Include="Controllers\v1\Administration\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Controllers\v1\Administration\AdapterController.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>

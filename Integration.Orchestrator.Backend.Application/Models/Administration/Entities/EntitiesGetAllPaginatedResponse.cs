@@ -1,7 +1,7 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Administration.Synchronization;
+﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Synchronization;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Integration.Orchestrator.Backend.Application.Models.Administration.Entities
+namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Entities
 {
     [ExcludeFromCodeCoverage]
     public class EntitiesGetAllPaginatedResponse : ModelResponseGetAll<EntitiesGetAllRows> { }

@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Integration.Orchestrator.Backend.Domain.Commons;
-using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Models;
 
 namespace Integration.Orchestrator.Backend.Domain.Specifications
@@ -30,6 +30,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { nameof(ServerEntity.server_code).Split("_")[1], x => x.server_code },
             { nameof(ServerEntity.server_name).Split("_")[1], x => x.server_name },
             { nameof(ServerEntity.server_url).Split("_")[1], x => x.server_url },
+            { "typeServerId", x => x.type_id },
+            { "statusId", x => x.status_id },
             { nameof(ServerEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(ServerEntity.created_at).Split("_")[0], x => x.created_at }
         };

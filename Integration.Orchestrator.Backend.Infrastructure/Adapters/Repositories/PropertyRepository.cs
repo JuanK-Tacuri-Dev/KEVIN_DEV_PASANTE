@@ -1,5 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
-using Integration.Orchestrator.Backend.Domain.Ports.Administration;
+﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Driver;
 using System.Diagnostics.CodeAnalysis;
@@ -98,9 +98,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             
                 filters = Builders<PropertyEntity>.Filter.And(
                     Builders<PropertyEntity>.Filter.Eq(e => e.property_name, property.property_name),
-                    Builders<PropertyEntity>.Filter.Eq(e => e.property_code, property.property_code),
-                    Builders<PropertyEntity>.Filter.Eq(e => e.type_id, property.type_id),
-                    Builders<PropertyEntity>.Filter.Eq(e => e.status_id, property.status_id),
+                    Builders<PropertyEntity>.Filter.Eq(e => e.entity_id, property.entity_id),
                     Builders<PropertyEntity>.Filter.Ne(e => e.id, property.id)
                 );
 

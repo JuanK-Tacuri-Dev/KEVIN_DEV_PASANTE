@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using Integration.Orchestrator.Backend.Domain.Services;
+using Integration.Orchestrator.Backend.Domain.Services.Maintainer;
 using Integration.Orchestrator.Backend.Infrastructure.Adapters;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;

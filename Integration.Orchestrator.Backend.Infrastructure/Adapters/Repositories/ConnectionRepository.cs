@@ -1,5 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Administration;
-using Integration.Orchestrator.Backend.Domain.Ports.Administration;
+﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Driver;
 using System.Diagnostics.CodeAnalysis;

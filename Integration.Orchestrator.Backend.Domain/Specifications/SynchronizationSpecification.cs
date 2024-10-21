@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Integration.Orchestrator.Backend.Domain.Commons;
-using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Models;
 
 namespace Integration.Orchestrator.Backend.Domain.Specifications
@@ -28,8 +28,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             = new Dictionary<string, Expression<Func<SynchronizationEntity, object>>>
         {
             { nameof(SynchronizationEntity.synchronization_name).Split("_")[1], x => x.synchronization_name },
+            { nameof(SynchronizationEntity.synchronization_code).Split("_")[1], x => x.synchronization_code },
             { nameof(SynchronizationEntity.synchronization_observations).Split("_")[1], x => x.synchronization_observations },
-            { nameof(SynchronizationEntity.synchronization_hour_to_execute).Split("_")[1], x => x.synchronization_hour_to_execute },
+            { "hourToExecute", x => x.synchronization_hour_to_execute },
+            { nameof(SynchronizationEntity.integrations), x => x.integrations },
+            { "statusId", x => x.status_id },
             { nameof(SynchronizationEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(SynchronizationEntity.created_at).Split("_")[0], x => x.created_at },
         };

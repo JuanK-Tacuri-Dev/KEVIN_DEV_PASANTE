@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Integration.Orchestrator.Backend.Application.Models.Administration.Catalog
+namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Catalog
 {
     [ExcludeFromCodeCoverage]
     public class CatalogGetByIdResponse : ModelResponse<CatalogGetById>

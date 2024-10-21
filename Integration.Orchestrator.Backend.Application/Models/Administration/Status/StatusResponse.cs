@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Integration.Orchestrator.Backend.Application.Models.Administration.Status
+namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Status
 {
     [ExcludeFromCodeCoverage]
     public class StatusResponse

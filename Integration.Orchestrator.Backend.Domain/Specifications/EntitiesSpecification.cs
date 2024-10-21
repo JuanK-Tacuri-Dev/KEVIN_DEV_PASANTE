@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Integration.Orchestrator.Backend.Domain.Commons;
-using Integration.Orchestrator.Backend.Domain.Entities.Administration;
+using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Models;
 
 namespace Integration.Orchestrator.Backend.Domain.Specifications
@@ -27,9 +27,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private static readonly Dictionary<string, Expression<Func<EntitiesEntity, object>>> sortExpressions 
             = new Dictionary<string, Expression<Func<EntitiesEntity, object>>>
         {
-            { nameof(EntitiesEntity.type_id).Split("_")[1], x => x.type_id },
             { nameof(EntitiesEntity.entity_code).Split("_")[1], x => x.entity_code },
             { nameof(EntitiesEntity.entity_name).Split("_")[1], x => x.entity_name },
+            { "typeId", x => x.type_id },
+            { "repositoryId", x => x.repository_id },
+            { "statusId", x => x.status_id },
             { nameof(EntitiesEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(EntitiesEntity.created_at).Split("_")[0], x => x.created_at }
         };
