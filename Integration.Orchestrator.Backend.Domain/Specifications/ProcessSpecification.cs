@@ -98,9 +98,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return x => true && x.process_code == code;
         }
 
-        public static Expression<Func<ProcessEntity, bool>> GetByTypeExpression(Guid typeId)
+        public static Expression<Func<ProcessEntity, bool>> GetByTypeExpression(Guid typeId, Guid statusId)
         {
-            return x => true && x.process_type_id == typeId;
+            return x => true && x.process_type_id == typeId && x.status_id == statusId;
         }
 
 
