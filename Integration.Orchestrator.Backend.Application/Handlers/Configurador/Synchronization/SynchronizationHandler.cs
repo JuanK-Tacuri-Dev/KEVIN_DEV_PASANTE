@@ -322,11 +322,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
         {
             return new SynchronizationEntity()
             {
+
                 id = id,
                 synchronization_name = request.Name,
                 franchise_id = request.FranchiseId,
                 status_id = request.StatusId,
-                synchronization_hour_to_execute = request.HourToExecute != null ? DateTimeOffset.Parse(request.HourToExecute).UtcDateTime.ToLocalTime().ToString(ConfigurationSystem.DateTimeFormat) : ConfigurationSystem.DateTimeDefault(),
+                synchronization_hour_to_execute = request.HourToExecute != null ? DateTimeOffset.Parse(request.HourToExecute).ToString(ConfigurationSystem.DateTimeFormat) : ConfigurationSystem.DateTimeDefault(),
                 integrations = request.Integrations.Select(i => i.Id).ToList(),
                 user_id = request.UserId
             };
