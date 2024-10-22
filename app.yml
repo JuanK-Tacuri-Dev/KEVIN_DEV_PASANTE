@@ -14,6 +14,9 @@ spec:
     spec:
       containers:
       - name: mxpv2-orchestrator
-        image: kfcregistry.azurecr.io/mxpv2-orchestrator:1.0.27
+        image: kfcregistry.azurecr.io/mxpv2-orchestrator:1.0.28
         ports:
         - containerPort: 8080
+        env:
+        - name: TZ
+          value: "America/Guayaquil"
