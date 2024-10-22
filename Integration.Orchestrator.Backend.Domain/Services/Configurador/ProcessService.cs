@@ -53,7 +53,8 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
 
         public async Task<IEnumerable<ProcessEntity>> GetByTypeAsync(Guid typeId)
         {
-            var specification = ProcessSpecification.GetByTypeExpression(typeId);
+            var entityFound = await _statusService.GetByKeyAsync(Status.active.ToString());
+            var specification = ProcessSpecification.GetByTypeExpression(typeId, entityFound.id);
             return await _processRepository.GetByTypeAsync(specification);
         }
 
