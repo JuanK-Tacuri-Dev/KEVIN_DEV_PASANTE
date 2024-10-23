@@ -1,0 +1,34 @@
+trigger:
+- develop
+
+resources:
+- repo: self
+
+variables:
+  tag: 1.0.1 #'$(Build.BuildId)'
+
+stages:
+- stage: buildAndPush
+  displayName: Build image and Push in ACR
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    # Restore NuGet packages
+    - task: DotNetCoreCLI@2
+      displayName: Restore NuGet packages
+      inputs:
+        command: 'restore'
+        projects: '**/*.csproj'
+    
+    # Run unit tests
+    - task: DotNetCoreCLI@2
+      displayName: Run Unit Tests
+      inputs:
+        command: 'test'
+        projects: '**/*Tests/*Tests.csproj' # Ajusta la ruta según tu estructura de pruebas
+        arguments: '--configuration Release --no-build --collect:"Code Coverage"'
+
+   
