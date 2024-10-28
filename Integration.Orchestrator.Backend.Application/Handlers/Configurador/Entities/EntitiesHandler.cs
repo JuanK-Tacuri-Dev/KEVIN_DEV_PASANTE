@@ -356,7 +356,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
             return new EntitiesEntity()
             {
                 id = id,
-                entity_name = request.Name,
+                entity_name = request.Name?.Trim() ?? string.Empty,
                 type_id = request.TypeId,
                 repository_id = request.RepositoryId,
                 status_id = request.StatusId

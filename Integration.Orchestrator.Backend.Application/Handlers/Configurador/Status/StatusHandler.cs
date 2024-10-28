@@ -228,10 +228,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Sta
             return new StatusEntity()
             {
                 id = id,
-                status_key = request.Key,
-                status_text = request.Text,
-                status_color = request.Color,
-                status_background = request.Background
+                status_key = request.Key?.Trim() ?? string.Empty,
+                status_text = request.Text?.Trim() ?? string.Empty,
+                status_color = request.Color?.Trim() ?? string.Empty,
+                status_background = request.Background?.Trim() ?? string.Empty
             };
         }
     }

@@ -229,10 +229,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Syn
             return new SynchronizationStatusEntity()
             {
                 id = id,
-                synchronization_status_key = request.Key,
-                synchronization_status_text = request.Text,
-                synchronization_status_color = request.Color,
-                synchronization_status_background = request.Background
+                synchronization_status_key = request.Key?.Trim() ?? string.Empty,
+                synchronization_status_text = request.Text?.Trim() ?? string.Empty,
+                synchronization_status_color = request.Color?.Trim() ?? string.Empty,
+                synchronization_status_background = request.Background?.Trim() ?? string.Empty
             };
         }
     }

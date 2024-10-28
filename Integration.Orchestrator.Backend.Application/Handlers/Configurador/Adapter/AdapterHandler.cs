@@ -321,10 +321,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ada
             return new AdapterEntity()
             {
                 id = id,
-                adapter_name = request.Name,
+                adapter_name = request.Name?.Trim() ?? string.Empty,
                 type_id = request.TypeAdapterId,
                 status_id = request.StatusId,
-                adapter_version = request.Version
+                adapter_version = request.Version?.Trim() ?? string.Empty
             };
         }
     }
