@@ -238,9 +238,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.In
             return new IntegrationEntity()
             {
                 id = id,
-                integration_name = request.Name,
+                integration_name = request.Name?.Trim() ?? string.Empty,
                 status_id = request.StatusId,
-                integration_observations = request.Observations,
+                integration_observations = request.Observations?.Trim() ?? string.Empty,
                 process = request.Process.Select(i => i.Id).ToList(),
                 user_id = request.UserId
             };

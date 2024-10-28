@@ -318,21 +318,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
             }
         }
 
-        private SynchronizationEntity MapSynchronizer(SynchronizationCreateRequest request, Guid id)
-        {
-            return new SynchronizationEntity()
-            {
-
-                id = id,
-                synchronization_name = request.Name,
-                franchise_id = request.FranchiseId,
-                status_id = request.StatusId,
-                synchronization_hour_to_execute = request.HourToExecute != null ? DateTimeOffset.Parse(request.HourToExecute).ToString(ConfigurationSystem.DateTimeFormat) : ConfigurationSystem.DateTimeDefault(),
-                integrations = request.Integrations.Select(i => i.Id).ToList(),
-                user_id = request.UserId
-            };
-        }
-
         private async Task<SyncStatus> ValidateSyncStatus(Guid id)
         {
             var synchronizationStatusFound = await _synchronizationStatesService.GetByIdAsync(id);
@@ -404,6 +389,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
                     }
                 });
         }
+        private SynchronizationEntity MapSynchronizer(SynchronizationCreateRequest request, Guid id)
+        {
+            return new SynchronizationEntity()
+            {
 
+                id = id,
+                synchronization_name = request.Name?.Trim() ?? string.Empty,
+                franchise_id = request.FranchiseId,
+                status_id = request.StatusId,
+                synchronization_hour_to_execute = request.HourToExecute != null ? DateTimeOffset.Parse(request.HourToExecute).ToString(ConfigurationSystem.DateTimeFormat) : ConfigurationSystem.DateTimeDefault(),
+                integrations = request.Integrations.Select(i => i.Id).ToList(),
+                user_id = request.UserId
+            };
+        }
     }
 }

@@ -355,7 +355,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
             return new PropertyEntity()
             {
                 id = id,
-                property_name = request.Name,
+                property_name = request.Name?.Trim() ?? string.Empty,
                 type_id = request.TypeId,
                 entity_id = request.EntityId,
                 status_id = request.StatusId

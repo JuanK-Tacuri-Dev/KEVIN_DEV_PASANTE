@@ -318,9 +318,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
             return new ServerEntity()
             {
                 id = id,
-                server_name = request.Name,
+                server_name = request.Name?.Trim() ?? string.Empty,
                 type_id = request.TypeServerId,
-                server_url = request.Url,
+                server_url = request.Url?.Trim() ?? string.Empty,
                 status_id = request.StatusId
             };
         }

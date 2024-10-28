@@ -287,8 +287,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Con
                 server_id = request.ServerId,
                 adapter_id = request.AdapterId,
                 repository_id = request.RepositoryId,
-                connection_name = request.Name,
-                connection_description = request.Description,
+                connection_name = request.Name?.Trim() ?? string.Empty,
+                connection_description = request.Description?.Trim() ?? string.Empty,
                 status_id = request.StatusId
             };
         }

@@ -327,9 +327,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Cat
             {
                 id = id,
                 catalog_code = request.Code,
-                catalog_name = request.Name,
-                catalog_value = request.Value,
-                catalog_detail = request.Detail,
+                catalog_name = request.Name?.Trim() ?? string.Empty,
+                catalog_value = request.Value?.Trim() ?? string.Empty,
+                catalog_detail = request.Detail?.Trim() ?? string.Empty,
                 father_code = request.FatherCode,
                 status_id = request.StatusId
             };

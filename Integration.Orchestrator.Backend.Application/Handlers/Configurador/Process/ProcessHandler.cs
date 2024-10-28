@@ -419,8 +419,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Pr
             return new ProcessEntity()
             {
                 id = id,
-                process_name = request.Name,
-                process_description = request.Description,
+                process_name = request.Name?.Trim() ?? string.Empty,
+                process_description = request.Description?.Trim() ?? string.Empty,
                 process_type_id = request.TypeId,
                 connection_id = request.ConnectionId,
                 status_id = request.StatusId,
@@ -436,7 +436,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Pr
                     {
                         property_id = f.PropertyId,
                         operator_id = f.OperatorId,
-                        value = f.Value
+                        value = f.Value?.Trim() ?? string.Empty
                     }).ToList()
                 }).ToList()
             };

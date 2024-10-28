@@ -286,9 +286,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
             {
                 id = id,
                 repository_port = request.Port,
-                repository_userName = request.UserName,
-                repository_password = request.Password,
-                repository_databaseName = request.DatabaseName,
+                repository_userName = request.UserName?.Trim() ?? string.Empty,
+                repository_password = request.Password?.Trim() ?? string.Empty,
+                repository_databaseName = request.DatabaseName?.Trim() ?? string.Empty,
                 auth_type_id = request.AuthTypeId,
                 status_id = request.StatusId
             };
