@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Server;
+﻿using AutoMapper;
+using Integration.Orchestrator.Backend.Application.Models.Configurador.Server;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
@@ -6,14 +7,14 @@ using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
 using MediatR;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Server.ServerCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Server
 {
     [ExcludeFromCodeCoverage]
-    public class ServerHandler(
-        IServerService<ServerEntity> serverService)
+    public class ServerHandler(IServerService<ServerEntity> serverService, IMapper mapper)
         :
         IRequestHandler<CreateServerCommandRequest, CreateServerCommandResponse>,
         IRequestHandler<UpdateServerCommandRequest, UpdateServerCommandResponse>,
@@ -24,6 +25,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
         IRequestHandler<GetAllPaginatedServerCommandRequest, GetAllPaginatedServerCommandResponse>
     {
         private readonly IServerService<ServerEntity> _serverService = serverService;
+        private readonly IMapper _mapper = mapper;
 
         public async Task<CreateServerCommandResponse> Handle(CreateServerCommandRequest request, CancellationToken cancellationToken)
         {
@@ -259,6 +261,95 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
             }
         }
 
+        //public async Task<GetAllPaginatedServerCommandResponse> Handle(GetAllPaginatedServerCommandRequest request, CancellationToken cancellationToken)
+        //{
+        //    try
+        //    {
+        //        var model = request.Server.Adapt<PaginatedModel>();
+        //        var rows = await _serverService.GetTotalRowsAsync(model);
+        //        if (rows == 0)
+        //        {
+        //            return new GetAllPaginatedServerCommandResponse( new ServerGetAllPaginatedResponse(
+        //                                                                        (int)ResponseCode.NotFoundSuccessfully, 
+        //                                                                        ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully), 
+        //                                                                        rows 
+        //                                                                        ));
+        //        }
+
+        //        Stopwatch stopwatch = Stopwatch.StartNew();
+        //        var serversFound = await _serverService.GetAllPaginatedAsync(model);
+        //        stopwatch.Stop();
+        //        TimeSpan tiempoTranscurrido = stopwatch.Elapsed;
+
+        //        Stopwatch stopwatch2 = Stopwatch.StartNew();
+        //        var resp = new GetAllPaginatedServerCommandResponse(new ServerGetAllPaginatedResponse(
+        //                                                                        (int)ResponseCode.FoundSuccessfully, 
+        //                                                                        ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully), 
+        //                                                                        rows,
+        //                                                                        _mapper.Map<IEnumerable<ServerGetAllPaginated>>(serversFound)
+        //                                                                        ));
+
+
+        //        stopwatch2.Stop();
+        //        TimeSpan tiempoTranscurrido2 = stopwatch2.Elapsed;
+
+        //        return resp;
+        //    }
+        //    catch (OrchestratorArgumentException ex)
+        //    {
+        //        throw new OrchestratorArgumentException(string.Empty, ex.Details);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new OrchestratorException(ex.Message);
+        //    }
+        //}
+
+
+        //public async Task<GetAllPaginatedServerCommandResponse> Handle(GetAllPaginatedServerCommandRequest request, CancellationToken cancellationToken)
+        //{
+        //    try
+        //    {
+        //        var model = request.Server.Adapt<PaginatedModel>();
+        //        var rows = await _serverService.GetTotalRowsAsync(model);
+        //        if (rows == 0)
+        //        {
+        //            return new GetAllPaginatedServerCommandResponse(new ServerGetAllPaginatedResponse(
+        //                                                                        (int)ResponseCode.NotFoundSuccessfully,
+        //                                                                        ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+        //                                                                        rows
+        //                                                                        ));
+        //        }
+
+        //        Stopwatch stopwatch = Stopwatch.StartNew();
+        //        var serversFound = await _serverService.GetAllPaginatedAsync(model);
+        //        stopwatch.Stop();
+        //        TimeSpan tiempoTranscurrido = stopwatch.Elapsed;
+
+        //        Stopwatch stopwatch2 = Stopwatch.StartNew();
+        //        var resp = new GetAllPaginatedServerCommandResponse(new ServerGetAllPaginatedResponse(
+        //                                                                        (int)ResponseCode.FoundSuccessfully,
+        //                                                                        ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully),
+        //                                                                        rows,
+        //                                                                        _mapper.Map<IEnumerable<ServerGetAllPaginated>>(serversFound)
+        //                                                                        ));
+
+
+        //        stopwatch2.Stop();
+        //        TimeSpan tiempoTranscurrido2 = stopwatch2.Elapsed;
+
+        //        return resp;
+        //    }
+        //    catch (OrchestratorArgumentException ex)
+        //    {
+        //        throw new OrchestratorArgumentException(string.Empty, ex.Details);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new OrchestratorException(ex.Message);
+        //    }
+        //}
+
         public async Task<GetAllPaginatedServerCommandResponse> Handle(GetAllPaginatedServerCommandRequest request, CancellationToken cancellationToken)
         {
             try
@@ -267,41 +358,31 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
                 var rows = await _serverService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {
-                    return new GetAllPaginatedServerCommandResponse(
-                    new ServerGetAllPaginatedResponse
-                    {
-                        Code = (int)ResponseCode.NotFoundSuccessfully,
-                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
-                        Data = new ServerGetAllRows
-                        {
-                            Total_rows = rows,
-                            Rows = Enumerable.Empty<ServerGetAllPaginated>()
-                        }
-                    });
+                    return new GetAllPaginatedServerCommandResponse(new ServerGetAllPaginatedResponse(
+                                                                                (int)ResponseCode.NotFoundSuccessfully,
+                                                                                ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
+                                                                                rows
+                                                                                ));
                 }
-                var serversFound = await _serverService.GetAllPaginatedAsync(model);
 
-                return new GetAllPaginatedServerCommandResponse(
-                    new ServerGetAllPaginatedResponse
-                    {
-                        Code = (int)ResponseCode.FoundSuccessfully,
-                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully),
-                        Data = new ServerGetAllRows
-                        {
-                            Total_rows = rows,
-                            Rows = serversFound.Select(server => new ServerGetAllPaginated
-                            {
-                                Id = server.id,
-                                Code = server.server_code,
-                                Name = server.server_name,
-                                TypeServerId = server.type_id,
-                                Url = server.server_url,
-                                StatusId = server.status_id
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                var serversFound = await _serverService.GetAllPaginatedAsyncTest(model);
+                stopwatch.Stop();
+                TimeSpan tiempoTranscurrido = stopwatch.Elapsed;
 
-                            }).ToList()
-                        }
+                Stopwatch stopwatch2 = Stopwatch.StartNew();
+                var resp = new GetAllPaginatedServerCommandResponse(new ServerGetAllPaginatedResponse(
+                                                                                (int)ResponseCode.FoundSuccessfully,
+                                                                                ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully),
+                                                                                rows,
+                                                                                serversFound
+                                                                                ));
 
-                    });
+
+                stopwatch2.Stop();
+                TimeSpan tiempoTranscurrido2 = stopwatch2.Elapsed;
+
+                return resp;
             }
             catch (OrchestratorArgumentException ex)
             {
