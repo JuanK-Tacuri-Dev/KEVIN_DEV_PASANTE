@@ -6,25 +6,25 @@ namespace Integration.Orchestrator.Backend.Domain.Models.Configurador.Server
 {
     public class ServerResponseTest
     {
-        [JsonPropertyName("Id")]
+        [JsonPropertyName("id")]
         public Guid id { get; set; }
 
-        [JsonPropertyName("StatusId")]
+        [JsonPropertyName("statusId")]
         public Guid status_id { get; set; }
 
-        [JsonPropertyName("Code")]
+        [JsonPropertyName("code")]
         public string server_code { get; set; }
 
-        [JsonPropertyName("Name")]
+        [JsonPropertyName("name")]
         public string server_name { get; set; }
 
-        [JsonPropertyName("TypeServerId")]
+        [JsonPropertyName("typeServerId")]
         public Guid? type_id { get; set; }
 
-        [JsonPropertyName("Url")]
+        [JsonPropertyName("url")]
         public string server_url { get; set; }
 
-        [JsonPropertyName("TypeServerName")]
+        [JsonPropertyName("typeServerName")]
         public string TypeServerName { get; set; }
         [JsonIgnore]
         public string created_at { get; private set; } = ConfigurationSystem.DateTimeDefault();
