@@ -12,8 +12,9 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Server
 {
     [ExcludeFromCodeCoverage]
-    public class ServerHandler(
-        IServerService<ServerEntity> serverService)
+    public class ServerHandler(IServerService<ServerEntity> serverService, IConnectionService<ConnectionEntity> connectionService, IStatusService<StatusEntity> statusService)
+
+        #region MediateR
         :
         IRequestHandler<CreateServerCommandRequest, CreateServerCommandResponse>,
         IRequestHandler<UpdateServerCommandRequest, UpdateServerCommandResponse>,
@@ -23,7 +24,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
         IRequestHandler<GetByTypeServerCommandRequest, GetByTypeServerCommandResponse>,
         IRequestHandler<GetAllPaginatedServerCommandRequest, GetAllPaginatedServerCommandResponse>
     {
+        #endregion
         private readonly IServerService<ServerEntity> _serverService = serverService;
+        private readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
+        public readonly IStatusService<StatusEntity> _statusService = statusService;
 
         public async Task<CreateServerCommandResponse> Handle(CreateServerCommandRequest request, CancellationToken cancellationToken)
         {
@@ -73,6 +77,22 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
                         });
 
                 var serverMap = MapServer(request.Server.ServerRequest, request.Id);
+                var StatusIsActive = await _statusService.GetStatusIsActive(serverMap.status_id);
+                var ExistRelationConection = _connectionService.GetByAdapterIdAsync(serverMap.id);
+
+                if (!StatusIsActive && ExistRelationConection != null)
+                {
+
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Data = request.Server
+                        });
+
+                }
+
                 await _serverService.UpdateAsync(serverMap);
 
                 return new UpdateServerCommandResponse(
@@ -114,6 +134,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
                             Data = request.Server
                         });
+
+                var ExistConection = _connectionService.GetByServerIdAsync(serverFound.id);
+                if (ExistConection != null)
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Data = request.Server
+                        });
+
+                }
 
                 await _serverService.DeleteAsync(serverFound);
 

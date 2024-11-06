@@ -189,4 +189,7 @@
   <data name="Domain_NonParameterizedPrefix" xml:space="preserve">
     <value>El prefijo {0} no está parametrizado</value>
   </data>
+  <data name="Domain_ResponseCode_CannotDeleteDueToRelationship" xml:space="preserve">
+    <value>No se puede eliminar el recurso porque está siendo referenciado por otra Entidad.</value>
+  </data>
 </root>

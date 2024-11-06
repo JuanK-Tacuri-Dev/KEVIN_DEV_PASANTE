@@ -74,7 +74,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
 
                 var propertyMap = MapProperty(request.Property.PropertyRequest, request.Id);
                 await _propertyService.UpdateAsync(propertyMap);
-
+              
                 return new UpdatePropertyCommandResponse(
                         new PropertyUpdateResponse
                         {

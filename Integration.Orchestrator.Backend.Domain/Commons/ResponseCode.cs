@@ -10,6 +10,8 @@
         NotFoundSuccessfully = 21,
         DeletedSuccessfully = 40,
         NotDeletedSuccessfully = 42,
-        NotValidationSuccessfully = 50 
+        NotValidationSuccessfully = 50,
+        CannotDeleteDueToRelationship = 51 // Indica que no se puede eliminar debido a una relación existente
+
     }
 }

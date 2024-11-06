@@ -12,8 +12,8 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Repository
 {
     [ExcludeFromCodeCoverage]
-    public class RepositoryHandler(
-        IRepositoryService<RepositoryEntity> repositoryService)
+    public class RepositoryHandler(IRepositoryService<RepositoryEntity> repositoryService, IConnectionService<ConnectionEntity> connectionService, IStatusService<StatusEntity> statusService, IEntitiesService<EntitiesEntity> entitiesService)
+        #region MediateR
         :
         IRequestHandler<CreateRepositoryCommandRequest, CreateRepositoryCommandResponse>,
         IRequestHandler<UpdateRepositoryCommandRequest, UpdateRepositoryCommandResponse>,
@@ -22,7 +22,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
         IRequestHandler<GetByCodeRepositoryCommandRequest, GetByCodeRepositoryCommandResponse>,
         IRequestHandler<GetAllPaginatedRepositoryCommandRequest, GetAllPaginatedRepositoryCommandResponse>
     {
+        #endregion
         private readonly IRepositoryService<RepositoryEntity> _repositoryService = repositoryService;
+        private readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
+        public readonly IStatusService<StatusEntity> _statusService = statusService;
+        public readonly IEntitiesService<EntitiesEntity> _entitiesService = entitiesService;
 
         public async Task<CreateRepositoryCommandResponse> Handle(CreateRepositoryCommandRequest request, CancellationToken cancellationToken)
         {
@@ -74,6 +78,23 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
                         });
 
                 var repositoryMap = MapRepository(request.Repository.RepositoryRequest, request.Id);
+                var StatusIsActive = await _statusService.GetStatusIsActive(repositoryMap.status_id);
+                var ExistRelationConection = _connectionService.GetByRepositoryIdAsync(repositoryMap.id);
+                var ExistRelationEntity = _entitiesService.GetByRepositoryIdAsync(repositoryMap.id);
+
+                if (!StatusIsActive && ExistRelationConection != null && ExistRelationEntity != null)
+                {
+
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Data = request.Repository
+                        });
+
+                }
+
                 await _repositoryService.UpdateAsync(repositoryMap);
 
                 return new UpdateRepositoryCommandResponse(
@@ -118,6 +139,20 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
                             Data = request.Repository
                         });
+
+
+                var ExistConection = _connectionService.GetByAdapterIdAsync(repositoryFound.id);
+                if (ExistConection != null)
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Data = request.Repository
+                        });
+
+                }
 
                 await _repositoryService.DeleteAsync(repositoryFound);
 

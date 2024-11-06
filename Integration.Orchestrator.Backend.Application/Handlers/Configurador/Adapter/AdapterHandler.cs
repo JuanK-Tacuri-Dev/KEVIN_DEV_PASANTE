@@ -12,8 +12,8 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Adapter
 {
     [ExcludeFromCodeCoverage]
-    public class AdapterHandler(
-        IAdapterService<AdapterEntity> adapterService)
+    public class AdapterHandler(IAdapterService<AdapterEntity> adapterService, IConnectionService<ConnectionEntity> connectionService, IStatusService<StatusEntity> statusService)
+    #region MediateR
         :
         IRequestHandler<CreateAdapterCommandRequest, CreateAdapterCommandResponse>,
         IRequestHandler<UpdateAdapterCommandRequest, UpdateAdapterCommandResponse>,
@@ -23,7 +23,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ada
         IRequestHandler<GetByTypeAdapterCommandRequest, GetByTypeAdapterCommandResponse>,
         IRequestHandler<GetAllPaginatedAdapterCommandRequest, GetAllPaginatedAdapterCommandResponse>
     {
+        #endregion
         private readonly IAdapterService<AdapterEntity> _adapterService = adapterService;
+        private readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
+        public readonly IStatusService<StatusEntity> _statusService = statusService;
 
         public async Task<CreateAdapterCommandResponse> Handle(CreateAdapterCommandRequest request, CancellationToken cancellationToken)
         {
@@ -73,6 +76,25 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ada
                         });
 
                 var adapterMap = MapAdapter(request.Adapter.AdapterRequest, request.Id);
+
+                var StatusIsActive = await _statusService.GetStatusIsActive(adapterMap.status_id);
+                var ExistRelationConection = _connectionService.GetByAdapterIdAsync(adapterMap.id);
+
+                if (!StatusIsActive && ExistRelationConection != null)
+                {
+
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Data = request.Adapter
+                        });
+
+                }
+
+
+
                 await _adapterService.UpdateAsync(adapterMap);
 
                 return new UpdateAdapterCommandResponse(
@@ -116,6 +138,20 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ada
                             Data = request.Adapter
                         });
                 }
+
+                var ExistConection = _connectionService.GetByAdapterIdAsync(adapterFound.id);
+                if (ExistConection != null)
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Data = request.Adapter
+                        });
+
+                }
+
 
                 await _adapterService.DeleteAsync(adapterFound);
 

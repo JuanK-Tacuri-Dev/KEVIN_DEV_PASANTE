@@ -104,7 +104,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return x => true && x.repository_id == repositoryId;
         }
-        
+                
         public static Expression<Func<EntitiesEntity, bool>> GetByNameAndRepositoryIdExpression(string name, Guid repositoryId)
         {
             return x => true && x.entity_name.ToUpper() == name.ToUpper() && x.repository_id == repositoryId;

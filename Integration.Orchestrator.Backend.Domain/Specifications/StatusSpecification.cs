@@ -88,6 +88,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return BaseSpecification<StatusEntity>.GetByUuid(x => x.id, id);
         }
+        public static Expression<Func<StatusEntity, bool>> GetStatusIsActive(Guid id, string code)
+        {
+            return x => x.id == id && x.status_key == code;
+        }
 
         public static Expression<Func<StatusEntity, bool>> GetByCodeExpression(string code)
         {

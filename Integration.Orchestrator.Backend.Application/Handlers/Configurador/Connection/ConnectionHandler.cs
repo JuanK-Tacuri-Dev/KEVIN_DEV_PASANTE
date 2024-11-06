@@ -13,7 +13,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Con
 {
     [ExcludeFromCodeCoverage]
     public class ConnectionHandler(
-        IConnectionService<ConnectionEntity> connectionService)
+        IConnectionService<ConnectionEntity> connectionService, IProcessService<ProcessEntity> processService, IStatusService<StatusEntity> statusService)
+        #region MediateR
         :
         IRequestHandler<CreateConnectionCommandRequest, CreateConnectionCommandResponse>,
         IRequestHandler<UpdateConnectionCommandRequest, UpdateConnectionCommandResponse>,
@@ -22,7 +23,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Con
         IRequestHandler<GetByCodeConnectionCommandRequest, GetByCodeConnectionCommandResponse>,
         IRequestHandler<GetAllPaginatedConnectionCommandRequest, GetAllPaginatedConnectionCommandResponse>
     {
+        #endregion
         private readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
+        public readonly IProcessService<ProcessEntity> _processService = processService;
+        public readonly IStatusService<StatusEntity> _statusService = statusService;
 
         public async Task<CreateConnectionCommandResponse> Handle(CreateConnectionCommandRequest request, CancellationToken cancellationToken)
         {
@@ -74,6 +78,27 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Con
                         });
 
                 var connectionMap = MapConnection(request.Connection.ConnectionRequest, request.Id);
+
+                var StatusIsActive = await _statusService.GetStatusIsActive(connectionMap.status_id);
+                var ExistRelationProcess = _processService.GetByConnectionIdAsync(connectionMap.id);
+
+                if (!StatusIsActive && ExistRelationProcess != null)
+                {
+
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Data = request.Connection
+                        });
+
+                }
+
+
+
+
+
                 await _connectionService.UpdateAsync(connectionMap);
 
                 return new UpdateConnectionCommandResponse(
