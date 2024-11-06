@@ -39,6 +39,14 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return _collection.DeleteOneAsync(filter);
         }
 
+        public async Task<ConnectionEntity> GetByExpressionIdAsync(Expression<Func<ConnectionEntity, bool>> specification)
+        {
+            var filter = Builders<ConnectionEntity>.Filter.Where(specification);
+            var connectionEntity = await _collection
+                .Find(filter)
+                .FirstOrDefaultAsync();
+            return connectionEntity;
+        }
         public async Task<ConnectionEntity> GetByIdAsync(Expression<Func<ConnectionEntity, bool>> specification)
         {
             var filter = Builders<ConnectionEntity>.Filter.Where(specification);

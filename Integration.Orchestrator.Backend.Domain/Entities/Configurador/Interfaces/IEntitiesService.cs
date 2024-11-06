@@ -13,5 +13,6 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfac
         Task<IEnumerable<T>> GetByRepositoryIdAsync(Guid repositoryId);
         Task<IEnumerable<T>> GetAllPaginatedAsync(PaginatedModel paginatedModel);
         Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel);
+
     }
 }

@@ -91,6 +91,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return BaseSpecification<ConnectionEntity>.GetByUuid(x => x.id, id);
         }
+        public static Expression<Func<ConnectionEntity, bool>> GetByServerIdExpression(Guid id) => BaseSpecification<ConnectionEntity>.GetByUuid(x => x.server_id, id);
+        public static Expression<Func<ConnectionEntity, bool>> GetByAdapterIdExpression(Guid id) => BaseSpecification<ConnectionEntity>.GetByUuid(x => x.adapter_id, id);
+        public static Expression<Func<ConnectionEntity, bool>> GetByRepositoryIdExpression(Guid id) => BaseSpecification<ConnectionEntity>.GetByUuid(x => x.repository_id, id);        
 
         public static Expression<Func<ConnectionEntity, bool>> GetByCodeExpression(string code)
         {

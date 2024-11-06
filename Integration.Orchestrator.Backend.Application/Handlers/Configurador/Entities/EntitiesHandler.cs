@@ -13,7 +13,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
 {
     [ExcludeFromCodeCoverage]
     public class EntitiesHandler(
-        IEntitiesService<EntitiesEntity> entitiesService)
+        IEntitiesService<EntitiesEntity> entitiesService, IPropertyService<PropertyEntity> propertyService, IStatusService<StatusEntity> statusService)
+        #region MediateR
         :
         IRequestHandler<CreateEntitiesCommandRequest, CreateEntitiesCommandResponse>,
         IRequestHandler<UpdateEntitiesCommandRequest, UpdateEntitiesCommandResponse>,
@@ -24,7 +25,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
         IRequestHandler<GetByRepositoryIdEntitiesCommandRequest, GetByRepositoryIdEntitiesCommandResponse>,
         IRequestHandler<GetAllPaginatedEntitiesCommandRequest, GetAllPaginatedEntitiesCommandResponse>
     {
+        #endregion
         public readonly IEntitiesService<EntitiesEntity> _entitiesService = entitiesService;
+        public readonly IPropertyService<PropertyEntity> _propertyService = propertyService;
+        public readonly IStatusService<StatusEntity> _statusService = statusService;
 
         public async Task<CreateEntitiesCommandResponse> Handle(CreateEntitiesCommandRequest request, CancellationToken cancellationToken)
         {
@@ -74,6 +78,23 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
                         });
 
                 var entitiesMap = MapEntities(request.Entities.EntitiesRequest, request.Id);
+                var StatusIsActive = await _statusService.GetStatusIsActive(entitiesMap.status_id);
+                var ExistRelationProperty = _propertyService.GetByEntityIdAsync(entitiesMap.id);
+
+
+                if (!StatusIsActive && ExistRelationProperty != null)
+                {
+
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Data = request.Entities
+                        });
+
+                }
+
                 await _entitiesService.UpdateAsync(entitiesMap);
 
                 return new UpdateEntitiesCommandResponse(
