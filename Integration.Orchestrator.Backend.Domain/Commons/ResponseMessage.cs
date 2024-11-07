@@ -21,7 +21,8 @@ namespace Integration.Orchestrator.Backend.Domain.Commons
             new ResponseMessage { Key = ResponseCode.DeletedSuccessfully, Value = AppMessages.Domain_ResponseCode_DeletedSuccessfully },
             new ResponseMessage { Key = ResponseCode.NotDeletedSuccessfully, Value = AppMessages.Domain_ResponseCode_NotDeletedSuccessfully },
             new ResponseMessage { Key = ResponseCode.NotValidationSuccessfully, Value = AppMessages.Domain_ResponseCode_NotValidationSuccessfully },
-            new ResponseMessage { Key = ResponseCode.CannotDeleteDueToRelationship, Value = AppMessages.Domain_ResponseCode_CannotDeleteDueToRelationship }
+            new ResponseMessage { Key = ResponseCode.CannotDeleteDueToRelationship, Value = AppMessages.Domain_ResponseCode_CannotDeleteDueToRelationship },
+            new ResponseMessage { Key = ResponseCode.CannotDeleteDueToRelationship2, Value = AppMessages.Domain_ResponseCode_CannotDeleteDueToRelationship }
         ];
 
         // Método que devuelve el mensaje correspondiente a un código

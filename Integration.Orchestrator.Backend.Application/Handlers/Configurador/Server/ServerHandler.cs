@@ -78,18 +78,24 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
 
                 var serverMap = MapServer(request.Server.ServerRequest, request.Id);
                 var StatusIsActive = await _statusService.GetStatusIsActive(serverMap.status_id);
-                var ExistRelationConection = _connectionService.GetByAdapterIdAsync(serverMap.id);
+                var ExistRelationConection = await _connectionService.GetByAdapterIdAsync(serverMap.id);
+                
 
                 if (!StatusIsActive && ExistRelationConection != null)
                 {
-
-                    throw new OrchestratorArgumentException(string.Empty,
+                    var StatusConectionActive = await _statusService.GetStatusIsActive(ExistRelationConection.status_id);
+                    if (StatusConectionActive)
+                    {
+                        throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
                             Code = (int)ResponseCode.CannotDeleteDueToRelationship,
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
                             Data = request.Server
                         });
+                    }
+
+                    
 
                 }
 

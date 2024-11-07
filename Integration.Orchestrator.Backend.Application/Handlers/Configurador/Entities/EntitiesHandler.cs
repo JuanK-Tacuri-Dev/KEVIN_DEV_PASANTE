@@ -79,20 +79,22 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
 
                 var entitiesMap = MapEntities(request.Entities.EntitiesRequest, request.Id);
                 var StatusIsActive = await _statusService.GetStatusIsActive(entitiesMap.status_id);
-                var ExistRelationProperty = _propertyService.GetByEntityIdAsync(entitiesMap.id);
+                var ExistRelationProperty = await _propertyService.GetByEntityIdAsync(entitiesMap.id);
 
 
                 if (!StatusIsActive && ExistRelationProperty != null)
                 {
-
-                    throw new OrchestratorArgumentException(string.Empty,
+                    var StatusConectionActive = await _statusService.GetStatusIsActive(ExistRelationProperty.status_id);
+                    if (StatusConectionActive)
+                    {
+                        throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
                             Code = (int)ResponseCode.CannotDeleteDueToRelationship,
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
                             Data = request.Entities
                         });
-
+                    }
                 }
 
                 await _entitiesService.UpdateAsync(entitiesMap);

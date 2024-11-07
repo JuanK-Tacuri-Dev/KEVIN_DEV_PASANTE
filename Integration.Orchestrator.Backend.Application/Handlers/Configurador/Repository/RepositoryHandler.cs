@@ -76,22 +76,42 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
                             Data = request.Repository.RepositoryRequest
                         });
-
+                var ExistRelationConection = new ConnectionEntity();
+                var ExistRelationEntity = new EntitiesEntity;
                 var repositoryMap = MapRepository(request.Repository.RepositoryRequest, request.Id);
                 var StatusIsActive = await _statusService.GetStatusIsActive(repositoryMap.status_id);
-                var ExistRelationConection = _connectionService.GetByRepositoryIdAsync(repositoryMap.id);
-                var ExistRelationEntity = _entitiesService.GetByRepositoryIdAsync(repositoryMap.id);
+                 ExistRelationConection = await _connectionService.GetByRepositoryIdAsync(repositoryMap.id);
+                ExistRelationEntity = (await _entitiesService.GetByRepositoryIdAsync(repositoryMap.id))?.Where(x=>x.repository_id== repositoryMap.id).FirstOrDefault();
 
-                if (!StatusIsActive && ExistRelationConection != null && ExistRelationEntity != null)
+                if (!StatusIsActive && (ExistRelationConection != null || ExistRelationEntity != null))
                 {
-
-                    throw new OrchestratorArgumentException(string.Empty,
+                    var StatusConectionActive = await _statusService.GetStatusIsActive(ExistRelationConection.status_id);
+                    var StatusEntityActive = await _statusService.GetStatusIsActive(ExistRelationEntity.status_id);
+                    if (StatusConectionActive || StatusEntityActive)
+                    {
+                        throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
                             Code = (int)ResponseCode.CannotDeleteDueToRelationship,
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
                             Data = request.Repository
                         });
+                    }
+                }
+                else
+                {
+                    var StatusConectionActive = await _statusService.GetStatusIsActive(ExistRelationConection.status_id);
+                    var StatusEntityActive = await _statusService.GetStatusIsActive(ExistRelationEntity.status_id);
+                    if (StatusConectionActive || StatusEntityActive)
+                    {
+                        throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Data = request.Repository
+                        });
+                    }
 
                 }
 

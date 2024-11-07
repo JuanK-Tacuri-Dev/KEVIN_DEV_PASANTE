@@ -262,7 +262,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
         {
             try
             {
-                var propertyFound = await _propertyService.GetByEntityIdAsync(request.Property.EntityId);
+                var propertyFound = await _propertyService.GetByEntitysIdAsync(request.Property.EntityId);
                 if (propertyFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()
