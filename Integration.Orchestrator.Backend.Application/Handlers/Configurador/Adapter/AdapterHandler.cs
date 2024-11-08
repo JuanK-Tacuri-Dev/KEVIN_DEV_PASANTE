@@ -78,22 +78,22 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ada
                 var adapterMap = MapAdapter(request.Adapter.AdapterRequest, request.Id);
 
                 var StatusIsActive = await _statusService.GetStatusIsActive(adapterMap.status_id);
-                var ExistRelationConection = _connectionService.GetByAdapterIdAsync(adapterMap.id);
+                var ExistRelationConection = await _connectionService.GetByAdapterIdAsync(adapterMap.id);
 
                 if (!StatusIsActive && ExistRelationConection != null)
                 {
-
-                    throw new OrchestratorArgumentException(string.Empty,
+                    var StatusConectionActive = await _statusService.GetStatusIsActive(ExistRelationConection.status_id);
+                    if (StatusConectionActive)
+                    {
+                        throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
-                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
                             Data = request.Adapter
                         });
-
+                    }
                 }
-
-
 
                 await _adapterService.UpdateAsync(adapterMap);
 
@@ -139,14 +139,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ada
                         });
                 }
 
-                var ExistConection = _connectionService.GetByAdapterIdAsync(adapterFound.id);
+                var ExistConection = await _connectionService.GetByAdapterIdAsync(adapterFound.id);
                 if (ExistConection != null)
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
-                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
                             Data = request.Adapter
                         });
 

@@ -7,29 +7,29 @@ namespace Integration.Orchestrator.Backend.Domain.Commons
         public ResponseCode Key { get; set; }
         public string Value { get; set; }
     }
-
     public static class ResponseMessageValues
     {
-        public static List<ResponseMessage> ResponseMessages { get; } =
-        [
-            new ResponseMessage { Key = ResponseCode.CreatedSuccessfully, Value = AppMessages.Domain_ResponseCode_CreatedSuccessfully },
-            new ResponseMessage { Key = ResponseCode.NotCreatedSuccessfully, Value = AppMessages.Domain_ResponseCode_NotCreatedSuccessfully },
-            new ResponseMessage { Key = ResponseCode.UpdatedSuccessfully, Value = AppMessages.Domain_ResponseCode_UpdatedSuccessfully },
-            new ResponseMessage { Key = ResponseCode.NotUpdatedSuccessfully, Value = AppMessages.Domain_ResponseCode_NotUpdatedSuccessfully },
-            new ResponseMessage { Key = ResponseCode.FoundSuccessfully, Value = AppMessages.Domain_ResponseCode_FoundSuccessfully },
-            new ResponseMessage { Key = ResponseCode.NotFoundSuccessfully, Value = AppMessages.Domain_ResponseCode_NotFoundSuccessfully },
-            new ResponseMessage { Key = ResponseCode.DeletedSuccessfully, Value = AppMessages.Domain_ResponseCode_DeletedSuccessfully },
-            new ResponseMessage { Key = ResponseCode.NotDeletedSuccessfully, Value = AppMessages.Domain_ResponseCode_NotDeletedSuccessfully },
-            new ResponseMessage { Key = ResponseCode.NotValidationSuccessfully, Value = AppMessages.Domain_ResponseCode_NotValidationSuccessfully },
-            new ResponseMessage { Key = ResponseCode.CannotDeleteDueToRelationship, Value = AppMessages.Domain_ResponseCode_CannotDeleteDueToRelationship }
-        ];
 
-        // Método que devuelve el mensaje correspondiente a un código
-        public static string GetResponseMessage(ResponseCode code)
+        public static string GetResponseMessage(ResponseCode code, params object[] descMessage)
         {
-            var message = ResponseMessages.FirstOrDefault(m => m.Key == code);
-            return message != null ? message.Value : AppMessages.Domain_ResponseCode_NotFoundCodeSuccessfully;
+            var message = code switch
+            {
+                ResponseCode.CreatedSuccessfully => AppMessages.Domain_ResponseCode_CreatedSuccessfully,
+                ResponseCode.NotCreatedSuccessfully => AppMessages.Domain_ResponseCode_NotCreatedSuccessfully,
+                ResponseCode.UpdatedSuccessfully => AppMessages.Domain_ResponseCode_UpdatedSuccessfully,
+                ResponseCode.NotUpdatedSuccessfully => AppMessages.Domain_ResponseCode_NotUpdatedSuccessfully,
+                ResponseCode.FoundSuccessfully => AppMessages.Domain_ResponseCode_FoundSuccessfully,
+                ResponseCode.NotFoundSuccessfully => AppMessages.Domain_ResponseCode_NotFoundSuccessfully,
+                ResponseCode.DeletedSuccessfully => AppMessages.Domain_ResponseCode_DeletedSuccessfully,
+                ResponseCode.NotDeletedSuccessfully => AppMessages.Domain_ResponseCode_NotDeletedSuccessfully,
+                ResponseCode.NotValidationSuccessfully => AppMessages.Domain_ResponseCode_NotValidationSuccessfully,
+                ResponseCode.NotDeleteDueToRelationship => AppMessages.Domain_ResponseCode_NotDeleteDueToRelationship,
+                ResponseCode.NotActivatedDueToInactiveRelationship => AppMessages.Domain_ResponseCode_NotActivatedDueToInactiveRelationship,
+                _ => AppMessages.Domain_ResponseCode_NotFoundCodeSuccessfully
+            };
+
+            return descMessage != null && descMessage.Length > 0 ? string.Format(message, descMessage) : message;
         }
     }
-    
+
 }

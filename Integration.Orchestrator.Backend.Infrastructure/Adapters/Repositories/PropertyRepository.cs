@@ -52,9 +52,18 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return await FindByFilter(specification).ToListAsync();
         }
 
-        public async Task<IEnumerable<PropertyEntity>> GetByEntityAsync(Expression<Func<PropertyEntity, bool>> specification)
+        public async Task<IEnumerable<PropertyEntity>> GetByEntitysAsync(Expression<Func<PropertyEntity, bool>> specification)
         {
             return await FindByFilter(specification).ToListAsync();
+        }
+
+        public async Task<PropertyEntity> GetByEntityAsync(Expression<Func<PropertyEntity, bool>> specification)
+        {
+            var filter = Builders<PropertyEntity>.Filter.Where(specification);
+            var processEntity = await _collection
+                .Find(filter)
+                .FirstOrDefaultAsync();
+            return processEntity;
         }
 
         public async Task<IEnumerable<PropertyEntity>> GetAllAsync(ISpecification<PropertyEntity> specification)
@@ -105,5 +114,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             var count = await _collection.Find(filters).CountDocumentsAsync();
             return count >= 1;
         }
+
+
     }
 }
