@@ -88,21 +88,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Con
                 var connectionMap = MapConnection(request.Connection.ConnectionRequest, request.Id);
 
                 var StatusIsActive = await _statusService.GetStatusIsActive(connectionMap.status_id);
-                var RelationProcess = await _processService.GetByConnectionIdAsync(connectionMap.id);
+                var RelationProcessActive = await _processService.GetByConnectionIdAsync(connectionMap.id, await _statusService.GetIdActiveStatus());
 
-                if (!StatusIsActive && RelationProcess != null)
+                if (!StatusIsActive && RelationProcessActive != null)
                 {
-                    var StatusConectionActive = await _statusService.GetStatusIsActive(RelationProcess.status_id);
-                    if (StatusConectionActive)
-                    {
-                        throw new OrchestratorArgumentException(string.Empty,
-                      new DetailsArgumentErrors()
-                      {
-                          Code = (int)ResponseCode.NotDeleteDueToRelationship,
-                          Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
-                          Data = request.Connection
-                      });
-                    }
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
+                            Data = request.Connection
+                        });
                 }
                 if (StatusIsActive)
                 {

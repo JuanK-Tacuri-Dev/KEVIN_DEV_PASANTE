@@ -91,6 +91,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         public static Expression<Func<StatusEntity, bool>> GetStatusIsActive(Guid id, string code)
         {
             return x => x.id == id && x.status_key == code;
+        } 
+        public static Expression<Func<StatusEntity, bool>> GetIdActiveStatus(string code)
+        {
+            return x =>x.status_key == code;
         }
 
         public static Expression<Func<StatusEntity, bool>> GetByCodeExpression(string code)

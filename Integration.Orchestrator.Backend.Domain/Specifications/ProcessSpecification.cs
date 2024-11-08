@@ -101,9 +101,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return x => true && x.process_code == code;
         }
 
-        public static Expression<Func<ProcessEntity, bool>> GetByConnectionIdAsync(Guid connectionid)
+        public static Expression<Func<ProcessEntity, bool>> GetByConnectionIdAsync(Guid connectionid,Guid idStatusActive)
         {
-            return x => x.connection_id == connectionid;
+            return x => x.connection_id == connectionid && x.status_id== idStatusActive;
         }
 
 

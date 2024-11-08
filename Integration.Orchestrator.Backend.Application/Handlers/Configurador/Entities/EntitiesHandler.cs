@@ -83,13 +83,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
 
                 var entitiesMap = MapEntities(request.Entities.EntitiesRequest, request.Id);
                 var StatusIsActive = await _statusService.GetStatusIsActive(entitiesMap.status_id);
-                var RelationProperty = await _propertyService.GetByEntityIdAsync(entitiesMap.id);
-                bool? StatusConectionActive = null;
+                var RelationPropertyActive = await _propertyService.GetByEntityIdAsync(entitiesMap.id, await _statusService.GetIdActiveStatus());
 
-                if (RelationProperty != null)
-                    StatusConectionActive = await _statusService.GetStatusIsActive(RelationProperty.status_id);
-
-                if (!StatusIsActive && (StatusConectionActive.HasValue && StatusConectionActive == true))
+                if (!StatusIsActive && RelationPropertyActive!=null)
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                     new DetailsArgumentErrors()
