@@ -13,8 +13,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Con
 {
     [ExcludeFromCodeCoverage]
     public class ConnectionHandler(
-        IConnectionService<ConnectionEntity> connectionService, IProcessService<ProcessEntity> processService, IStatusService<StatusEntity> statusService)
-        #region MediateR
+        IConnectionService<ConnectionEntity> connectionService,
+        IProcessService<ProcessEntity> processService,
+        IAdapterService<AdapterEntity> adapterService,
+        IServerService<ServerEntity> serverService,
+        IRepositoryService<RepositoryEntity> repositoryService,
+        IStatusService<StatusEntity> statusService)
+    #region MediateR
         :
         IRequestHandler<CreateConnectionCommandRequest, CreateConnectionCommandResponse>,
         IRequestHandler<UpdateConnectionCommandRequest, UpdateConnectionCommandResponse>,
@@ -25,8 +30,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Con
     {
         #endregion
         private readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
-        public readonly IProcessService<ProcessEntity> _processService = processService;
-        public readonly IStatusService<StatusEntity> _statusService = statusService;
+        private readonly IProcessService<ProcessEntity> _processService = processService;
+        private readonly IAdapterService<AdapterEntity> _adapterService = adapterService;
+        private readonly IServerService<ServerEntity> _serverService = serverService;
+        private readonly IRepositoryService<RepositoryEntity> _repositoryService = repositoryService;
+        private readonly IStatusService<StatusEntity> _statusService = statusService;
 
         public async Task<CreateConnectionCommandResponse> Handle(CreateConnectionCommandRequest request, CancellationToken cancellationToken)
         {
@@ -80,28 +88,49 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Con
                 var connectionMap = MapConnection(request.Connection.ConnectionRequest, request.Id);
 
                 var StatusIsActive = await _statusService.GetStatusIsActive(connectionMap.status_id);
-                var ExistRelationProcess =await _processService.GetByConnectionIdAsync(connectionMap.id);
+                var RelationProcess = await _processService.GetByConnectionIdAsync(connectionMap.id);
 
-                if (!StatusIsActive && ExistRelationProcess != null)
+                if (!StatusIsActive && RelationProcess != null)
                 {
-                    var StatusConectionActive = await _statusService.GetStatusIsActive(ExistRelationProcess.status_id);
+                    var StatusConectionActive = await _statusService.GetStatusIsActive(RelationProcess.status_id);
                     if (StatusConectionActive)
                     {
                         throw new OrchestratorArgumentException(string.Empty,
                       new DetailsArgumentErrors()
                       {
-                          Code = (int)ResponseCode.CannotDeleteDueToRelationship,
-                          Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                          Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                          Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
                           Data = request.Connection
                       });
                     }
-
-                  
-
                 }
+                if (StatusIsActive)
+                {
+                    var entityMessage = new List<string>();
 
+                    var serverFound = await _serverService.GetByIdAsync(connectionMap.server_id);
+                    if (serverFound != null && !await _statusService.GetStatusIsActive(serverFound.status_id))
+                        entityMessage.Add("Server");
 
+                    var adapterFound = await _adapterService.GetByIdAsync(connectionMap.adapter_id);
+                    if (adapterFound != null && !await _statusService.GetStatusIsActive(adapterFound.status_id))
+                        entityMessage.Add("Adapter");
 
+                    var repositoryFound = await _repositoryService.GetByIdAsync(connectionMap.repository_id);
+                    if (adapterFound != null && !await _statusService.GetStatusIsActive(repositoryFound.status_id))
+                        entityMessage.Add("Repository");
+
+                    if (entityMessage.Count > 0)
+                    {
+                        throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors
+                            {
+                                Code = (int)ResponseCode.NotActivatedDueToInactiveRelationship,
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotActivatedDueToInactiveRelationship, string.Join(", ", entityMessage)),
+                                Data = request.Connection
+                            });
+                    }
+                }
 
 
                 await _connectionService.UpdateAsync(connectionMap);

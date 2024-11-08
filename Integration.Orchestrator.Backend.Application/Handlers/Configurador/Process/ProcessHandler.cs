@@ -4,6 +4,7 @@ using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
+using Integration.Orchestrator.Backend.Domain.Services.Configurador;
 using Mapster;
 using MediatR;
 using System.Diagnostics.CodeAnalysis;
@@ -13,7 +14,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Pr
 {
     [ExcludeFromCodeCoverage]
     public class ProcessHandler(
-        IProcessService<ProcessEntity> processService)
+        IProcessService<ProcessEntity> processService,
+        IConnectionService<ConnectionEntity> connectionService,
+        IStatusService<StatusEntity> statusService)
+    #region MediateR
         :
         IRequestHandler<CreateProcessCommandRequest, CreateProcessCommandResponse>,
         IRequestHandler<UpdateProcessCommandRequest, UpdateProcessCommandResponse>,
@@ -23,8 +27,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Pr
         IRequestHandler<GetByTypeProcessCommandRequest, GetByTypeProcessCommandResponse>,
         IRequestHandler<GetAllPaginatedProcessCommandRequest, GetAllPaginatedProcessCommandResponse>
     {
-        public readonly IProcessService<ProcessEntity> _processService = processService;
-
+        #endregion
+        private readonly IProcessService<ProcessEntity> _processService = processService;
+        private readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
+        private readonly IStatusService<StatusEntity> _statusService = statusService;
         public async Task<CreateProcessCommandResponse> Handle(CreateProcessCommandRequest request, CancellationToken cancellationToken)
         {
             try
@@ -90,6 +96,23 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Pr
                             });
 
                 var processMap = MapProcess(request.Process.ProcessRequest, request.Id);
+
+                var StatusIsActive = await _statusService.GetStatusIsActive(processMap.status_id);
+                if (StatusIsActive)
+                {
+                    var connectionFound = await _connectionService.GetByIdAsync(processMap.connection_id);
+                    if (connectionFound != null && !await _statusService.GetStatusIsActive(connectionFound.status_id))
+                    {
+                        throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors
+                            {
+                                Code = (int)ResponseCode.NotActivatedDueToInactiveRelationship,
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotActivatedDueToInactiveRelationship, "Proceso"),
+                                Data = request.Process
+                            });
+                    }
+
+                }
                 await _processService.UpdateAsync(processMap);
 
                 return new UpdateProcessCommandResponse(
@@ -348,7 +371,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Pr
             try
             {
                 var model = request.Process.Adapt<PaginatedModel>();
-                
+
                 var rows = await _processService.GetTotalRowsAsync(model);
                 if (rows == 0)
                 {

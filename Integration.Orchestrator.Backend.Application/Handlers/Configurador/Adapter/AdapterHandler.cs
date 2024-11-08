@@ -88,8 +88,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ada
                         throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
-                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
                             Data = request.Adapter
                         });
                     }
@@ -139,14 +139,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ada
                         });
                 }
 
-                var ExistConection = _connectionService.GetByAdapterIdAsync(adapterFound.id);
+                var ExistConection = await _connectionService.GetByAdapterIdAsync(adapterFound.id);
                 if (ExistConection != null)
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
-                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
                             Data = request.Adapter
                         });
 

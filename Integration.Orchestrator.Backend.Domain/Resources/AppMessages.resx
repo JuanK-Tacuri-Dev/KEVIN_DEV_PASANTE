@@ -189,7 +189,10 @@
   <data name="Domain_NonParameterizedPrefix" xml:space="preserve">
     <value>El prefijo {0} no está parametrizado</value>
   </data>
-  <data name="Domain_ResponseCode_CannotDeleteDueToRelationship" xml:space="preserve">
-    <value>No se puede eliminar el recurso porque está siendo referenciado por otra Entidad.</value>
+  <data name="Domain_ResponseCode_NotDeleteDueToRelationship" xml:space="preserve">
+    <value>No es posible inactivar el registro porque está siendo utilizado en otro módulo.</value>
+  </data>
+  <data name="Domain_ResponseCode_NotActivatedDueToInactiveRelationship" xml:space="preserve">
+    <value>El registro no se puede activar porque el {0} no está activo.</value>
   </data>
 </root>

@@ -12,7 +12,10 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Server
 {
     [ExcludeFromCodeCoverage]
-    public class ServerHandler(IServerService<ServerEntity> serverService, IConnectionService<ConnectionEntity> connectionService, IStatusService<StatusEntity> statusService)
+    public class ServerHandler(
+        IServerService<ServerEntity> serverService, 
+        IConnectionService<ConnectionEntity> connectionService, 
+        IStatusService<StatusEntity> statusService)
 
         #region MediateR
         :
@@ -27,7 +30,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
         #endregion
         private readonly IServerService<ServerEntity> _serverService = serverService;
         private readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
-        public readonly IStatusService<StatusEntity> _statusService = statusService;
+        private readonly IStatusService<StatusEntity> _statusService = statusService;
 
         public async Task<CreateServerCommandResponse> Handle(CreateServerCommandRequest request, CancellationToken cancellationToken)
         {
@@ -89,8 +92,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
                         throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
-                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
                             Data = request.Server
                         });
                     }
@@ -147,8 +150,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
-                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
                             Data = request.Server
                         });
 

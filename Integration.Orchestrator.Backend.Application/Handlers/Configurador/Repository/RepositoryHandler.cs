@@ -12,7 +12,11 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Repository
 {
     [ExcludeFromCodeCoverage]
-    public class RepositoryHandler(IRepositoryService<RepositoryEntity> repositoryService, IConnectionService<ConnectionEntity> connectionService, IStatusService<StatusEntity> statusService, IEntitiesService<EntitiesEntity> entitiesService)
+    public class RepositoryHandler(
+        IRepositoryService<RepositoryEntity> repositoryService, 
+        IConnectionService<ConnectionEntity> connectionService, 
+        IStatusService<StatusEntity> statusService, 
+        IEntitiesService<EntitiesEntity> entitiesService)
         #region MediateR
         :
         IRequestHandler<CreateRepositoryCommandRequest, CreateRepositoryCommandResponse>,
@@ -69,6 +73,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
             {
                 var repositoryFound = await _repositoryService.GetByIdAsync(request.Id);
                 if (repositoryFound == null)
+                {
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -76,43 +81,25 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
                             Data = request.Repository.RepositoryRequest
                         });
-                var ExistRelationConection = new ConnectionEntity();
-                var ExistRelationEntity = new EntitiesEntity;
+                }
+
                 var repositoryMap = MapRepository(request.Repository.RepositoryRequest, request.Id);
                 var StatusIsActive = await _statusService.GetStatusIsActive(repositoryMap.status_id);
-                 ExistRelationConection = await _connectionService.GetByRepositoryIdAsync(repositoryMap.id);
-                ExistRelationEntity = (await _entitiesService.GetByRepositoryIdAsync(repositoryMap.id))?.Where(x=>x.repository_id== repositoryMap.id).FirstOrDefault();
+                var relationConnection = await _connectionService.GetByRepositoryIdAsync(repositoryMap.id);
+                var relationEntity = (await _entitiesService.GetByRepositoryIdAsync(repositoryMap.id))?.Where(x => x.repository_id == repositoryMap.id).FirstOrDefault();
 
-                if (!StatusIsActive && (ExistRelationConection != null || ExistRelationEntity != null))
+                var statusConnectionActive = relationConnection != null && await _statusService.GetStatusIsActive(relationConnection.status_id);
+                var statusEntityActive = relationEntity != null && await _statusService.GetStatusIsActive(relationEntity.status_id);
+
+                if (!StatusIsActive && (statusConnectionActive || statusEntityActive))
                 {
-                    var StatusConectionActive = await _statusService.GetStatusIsActive(ExistRelationConection.status_id);
-                    var StatusEntityActive = await _statusService.GetStatusIsActive(ExistRelationEntity.status_id);
-                    if (StatusConectionActive || StatusEntityActive)
-                    {
-                        throw new OrchestratorArgumentException(string.Empty,
+                    throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
-                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
                             Data = request.Repository
                         });
-                    }
-                }
-                else
-                {
-                    var StatusConectionActive = await _statusService.GetStatusIsActive(ExistRelationConection.status_id);
-                    var StatusEntityActive = await _statusService.GetStatusIsActive(ExistRelationEntity.status_id);
-                    if (StatusConectionActive || StatusEntityActive)
-                    {
-                        throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
-                        {
-                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
-                            Data = request.Repository
-                        });
-                    }
-
                 }
 
                 await _repositoryService.UpdateAsync(repositoryMap);
@@ -134,7 +121,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
                             StatusId = repositoryMap.status_id
                         }
                     });
-
             }
             catch (OrchestratorArgumentException ex)
             {
@@ -145,7 +131,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
                 throw new OrchestratorException(ex.Message);
             }
         }
-
         public async Task<DeleteRepositoryCommandResponse> Handle(DeleteRepositoryCommandRequest request, CancellationToken cancellationToken)
         {
             try
@@ -167,8 +152,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
-                            Code = (int)ResponseCode.CannotDeleteDueToRelationship,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.CannotDeleteDueToRelationship),
+                            Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
                             Data = request.Repository
                         });
 

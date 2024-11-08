@@ -169,15 +169,6 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a No se puede eliminar el recurso porque está siendo referenciado por otra Entidad..
-        /// </summary>
-        public static string Domain_ResponseCode_CannotDeleteDueToRelationship {
-            get {
-                return ResourceManager.GetString("Domain_ResponseCode_CannotDeleteDueToRelationship", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a Creado Correctamente.
         /// </summary>
         public static string Domain_ResponseCode_CreatedSuccessfully {
@@ -205,6 +196,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a El registro no se puede activar porque el {0} no está activo..
+        /// </summary>
+        public static string Domain_ResponseCode_NotActivatedDueToInactiveRelationship {
+            get {
+                return ResourceManager.GetString("Domain_ResponseCode_NotActivatedDueToInactiveRelationship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a No Creado Correctamente.
         /// </summary>
         public static string Domain_ResponseCode_NotCreatedSuccessfully {
@@ -219,6 +219,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         public static string Domain_ResponseCode_NotDeletedSuccessfully {
             get {
                 return ResourceManager.GetString("Domain_ResponseCode_NotDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No es posible inactivar el registro porque está siendo utilizado en otro módulo..
+        /// </summary>
+        public static string Domain_ResponseCode_NotDeleteDueToRelationship {
+            get {
+                return ResourceManager.GetString("Domain_ResponseCode_NotDeleteDueToRelationship", resourceCulture);
             }
         }
         
