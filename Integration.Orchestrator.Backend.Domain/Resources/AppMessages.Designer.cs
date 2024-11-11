@@ -196,7 +196,7 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a El registro no se puede activar porque el {0} no está activo..
+        ///   Busca una cadena traducida similar a El registro no se puede activar porque el/los {0} no está(n) activo(s)..
         /// </summary>
         public static string Domain_ResponseCode_NotActivatedDueToInactiveRelationship {
             get {

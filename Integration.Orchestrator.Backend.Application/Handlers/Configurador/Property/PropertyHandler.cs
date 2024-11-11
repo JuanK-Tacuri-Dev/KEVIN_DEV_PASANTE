@@ -91,7 +91,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
                             new DetailsArgumentErrors
                             {
                                 Code = (int)ResponseCode.NotActivatedDueToInactiveRelationship,
-                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotActivatedDueToInactiveRelationship, "Propiedad"),
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotActivatedDueToInactiveRelationship, "Entidad"),
                                 Data = request.Property
                             });
                     }

@@ -16,6 +16,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Pr
     public class ProcessHandler(
         IProcessService<ProcessEntity> processService,
         IConnectionService<ConnectionEntity> connectionService,
+        IIntegrationService<IntegrationEntity> integrationService,
         IStatusService<StatusEntity> statusService)
     #region MediateR
         :
@@ -30,6 +31,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Pr
         #endregion
         private readonly IProcessService<ProcessEntity> _processService = processService;
         private readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
+        private readonly IIntegrationService<IntegrationEntity> _integrationService = integrationService;
         private readonly IStatusService<StatusEntity> _statusService = statusService;
         public async Task<CreateProcessCommandResponse> Handle(CreateProcessCommandRequest request, CancellationToken cancellationToken)
         {
@@ -98,6 +100,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Pr
                 var processMap = MapProcess(request.Process.ProcessRequest, request.Id);
 
                 var StatusIsActive = await _statusService.GetStatusIsActive(processMap.status_id);
+                var RelationIntegrationActive = await _integrationService.GetByProcessIdAsync(processMap.id, await _statusService.GetIdActiveStatus());
+                if (!StatusIsActive && RelationIntegrationActive != null)
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                       new DetailsArgumentErrors()
+                       {
+                           Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                           Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
+                           Data = request.Process
+                       });
+
+                }
+
                 if (StatusIsActive)
                 {
                     var connectionFound = await _connectionService.GetByIdAsync(processMap.connection_id);
@@ -107,7 +122,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Pr
                             new DetailsArgumentErrors
                             {
                                 Code = (int)ResponseCode.NotActivatedDueToInactiveRelationship,
-                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotActivatedDueToInactiveRelationship, "Proceso"),
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotActivatedDueToInactiveRelationship, "Conexión"),
                                 Data = request.Process
                             });
                     }
