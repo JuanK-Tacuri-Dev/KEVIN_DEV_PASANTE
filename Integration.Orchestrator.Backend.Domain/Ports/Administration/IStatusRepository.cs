@@ -10,6 +10,7 @@ namespace Integration.Orchestrator.Backend.Domain.Ports.Configurador
         Task DeleteAsync(T entity);
         Task<T> GetByIdAsync(Expression<Func<T, bool>> specification);
         Task<bool> GetStatusIsActive(Expression<Func<T, bool>> specification);
+        Task<Guid> GetIdActiveStatus(Expression<Func<T, bool>> specification);
         Task<T> GetByKeyAsync(Expression<Func<T, bool>> specification);
         Task<IEnumerable<T>> GetAllAsync(ISpecification<T> specification);
         public Task<long> GetTotalRows(ISpecification<T> specification);

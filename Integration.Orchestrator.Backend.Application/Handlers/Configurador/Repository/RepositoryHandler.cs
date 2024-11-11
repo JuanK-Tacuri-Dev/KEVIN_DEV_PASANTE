@@ -84,14 +84,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
                 }
 
                 var repositoryMap = MapRepository(request.Repository.RepositoryRequest, request.Id);
-                var StatusIsActive = await _statusService.GetStatusIsActive(repositoryMap.status_id);
-                var relationConnection = await _connectionService.GetByRepositoryIdAsync(repositoryMap.id);
-                var relationEntity = (await _entitiesService.GetByRepositoryIdAsync(repositoryMap.id))?.Where(x => x.repository_id == repositoryMap.id).FirstOrDefault();
+                var idstatusActive = await _statusService.GetIdActiveStatus();
+                var statusIsActive = await _statusService.GetStatusIsActive(repositoryMap.status_id);
 
-                var statusConnectionActive = relationConnection != null && await _statusService.GetStatusIsActive(relationConnection.status_id);
-                var statusEntityActive = relationEntity != null && await _statusService.GetStatusIsActive(relationEntity.status_id);
+                var relationConnectionActive = await _connectionService.GetByRepositoryIdAsync(repositoryMap.id, idstatusActive);
+                var relationEntitynActive = false;
 
-                if (!StatusIsActive && (statusConnectionActive || statusEntityActive))
+                var relationEntitys = await _entitiesService.GetByRepositoryIdAsync(repositoryMap.id);
+                if (relationEntitys != null && relationEntitys.Any())
+                    relationEntitynActive = relationEntitys.FirstOrDefault( x=>x.status_id == idstatusActive)!= null;
+
+                if (!statusIsActive && (relationConnectionActive != null || relationEntitynActive))
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
@@ -144,20 +147,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
                             Data = request.Repository
                         });
-
-
-                var ExistConection = _connectionService.GetByAdapterIdAsync(repositoryFound.id);
-                if (ExistConection != null)
-                {
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
-                        {
-                            Code = (int)ResponseCode.NotDeleteDueToRelationship,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
-                            Data = request.Repository
-                        });
-
-                }
 
                 await _repositoryService.DeleteAsync(repositoryFound);
 

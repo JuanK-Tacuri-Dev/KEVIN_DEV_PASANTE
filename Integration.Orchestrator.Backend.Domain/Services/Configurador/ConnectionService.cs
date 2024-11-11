@@ -46,19 +46,19 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
             return await _connectionRepository.GetByIdAsync(specification);
         }
 
-        public async Task<ConnectionEntity> GetByServerIdAsync(Guid serverid)
+        public async Task<ConnectionEntity> GetByServerIdAsync(Guid serverid, Guid idStatusActive)
         {
-            var specification = ConnectionSpecification.GetByServerIdExpression(serverid);
+            var specification = ConnectionSpecification.GetByServerIdExpression(serverid, idStatusActive);
             return await _connectionRepository.GetByExpressionIdAsync(specification);
         }
-        public async Task<ConnectionEntity> GetByAdapterIdAsync(Guid adapterid)
+        public async Task<ConnectionEntity> GetByAdapterIdAsync(Guid adapterid, Guid idStatusActive)
         {
-            var specification = ConnectionSpecification.GetByAdapterIdExpression(adapterid);
+            var specification = ConnectionSpecification.GetByAdapterIdExpression(adapterid, idStatusActive);
             return await _connectionRepository.GetByExpressionIdAsync(specification);
         }
-        public async Task<ConnectionEntity> GetByRepositoryIdAsync(Guid repositoryid)
+        public async Task<ConnectionEntity> GetByRepositoryIdAsync(Guid repositoryid, Guid idStatusActive)
         {
-            var specification = ConnectionSpecification.GetByRepositoryIdExpression(repositoryid);
+            var specification = ConnectionSpecification.GetByRepositoryIdExpression(repositoryid, idStatusActive);
             return await _connectionRepository.GetByExpressionIdAsync(specification);
         }
 

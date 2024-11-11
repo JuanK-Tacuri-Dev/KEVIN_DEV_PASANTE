@@ -13,11 +13,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
 {
     [ExcludeFromCodeCoverage]
     public class ServerHandler(
-        IServerService<ServerEntity> serverService, 
-        IConnectionService<ConnectionEntity> connectionService, 
+        IServerService<ServerEntity> serverService,
+        IConnectionService<ConnectionEntity> connectionService,
         IStatusService<StatusEntity> statusService)
 
-        #region MediateR
+    #region MediateR
         :
         IRequestHandler<CreateServerCommandRequest, CreateServerCommandResponse>,
         IRequestHandler<UpdateServerCommandRequest, UpdateServerCommandResponse>,
@@ -81,25 +81,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
 
                 var serverMap = MapServer(request.Server.ServerRequest, request.Id);
                 var StatusIsActive = await _statusService.GetStatusIsActive(serverMap.status_id);
-                var ExistRelationConection = await _connectionService.GetByAdapterIdAsync(serverMap.id);
-                
+                var ExistRelationConectionActive = await _connectionService.GetByAdapterIdAsync(serverMap.id, await _statusService.GetIdActiveStatus());
 
-                if (!StatusIsActive && ExistRelationConection != null)
+                if (!StatusIsActive && ExistRelationConectionActive != null)
                 {
-                    var StatusConectionActive = await _statusService.GetStatusIsActive(ExistRelationConection.status_id);
-                    if (StatusConectionActive)
+                    throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors()
                     {
-                        throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
-                        {
-                            Code = (int)ResponseCode.NotDeleteDueToRelationship,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
-                            Data = request.Server
-                        });
-                    }
-
-                    
-
+                        Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
+                        Data = request.Server
+                    });
                 }
 
                 await _serverService.UpdateAsync(serverMap);
@@ -143,19 +135,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
                             Data = request.Server
                         });
-
-                var ExistConection = _connectionService.GetByServerIdAsync(serverFound.id);
-                if (ExistConection != null)
-                {
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
-                        {
-                            Code = (int)ResponseCode.NotDeleteDueToRelationship,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
-                            Data = request.Server
-                        });
-
-                }
 
                 await _serverService.DeleteAsync(serverFound);
 

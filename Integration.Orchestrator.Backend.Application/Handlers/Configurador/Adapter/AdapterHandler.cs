@@ -78,21 +78,17 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ada
                 var adapterMap = MapAdapter(request.Adapter.AdapterRequest, request.Id);
 
                 var StatusIsActive = await _statusService.GetStatusIsActive(adapterMap.status_id);
-                var ExistRelationConection = await _connectionService.GetByAdapterIdAsync(adapterMap.id);
+                var ExistRelationConectionActive = await _connectionService.GetByAdapterIdAsync(adapterMap.id, await _statusService.GetIdActiveStatus());
 
-                if (!StatusIsActive && ExistRelationConection != null)
+                if (!StatusIsActive && ExistRelationConectionActive != null)
                 {
-                    var StatusConectionActive = await _statusService.GetStatusIsActive(ExistRelationConection.status_id);
-                    if (StatusConectionActive)
+                    throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors()
                     {
-                        throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
-                        {
-                            Code = (int)ResponseCode.NotDeleteDueToRelationship,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
-                            Data = request.Adapter
-                        });
-                    }
+                        Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
+                        Data = request.Adapter
+                    });
                 }
 
                 await _adapterService.UpdateAsync(adapterMap);
@@ -138,20 +134,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ada
                             Data = request.Adapter
                         });
                 }
-
-                var ExistConection = await _connectionService.GetByAdapterIdAsync(adapterFound.id);
-                if (ExistConection != null)
-                {
-                    throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
-                        {
-                            Code = (int)ResponseCode.NotDeleteDueToRelationship,
-                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
-                            Data = request.Adapter
-                        });
-
-                }
-
 
                 await _adapterService.DeleteAsync(adapterFound);
 
