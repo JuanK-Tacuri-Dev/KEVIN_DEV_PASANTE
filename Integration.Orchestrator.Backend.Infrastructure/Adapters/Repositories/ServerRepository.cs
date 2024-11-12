@@ -122,6 +122,18 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             else if (orderByField == "status_id")
                 sortDefinition = specification.OrderBy != null ? sortDefinitionBuilder.Ascending("StatusData.status_text") :
                                                                  sortDefinitionBuilder.Descending("StatusData.status_text");
+            else if (orderByField != null)
+            {
+                // Ordenamiento para cualquier otro campo que no sea UUID
+                sortDefinition = specification.OrderBy != null ? sortDefinitionBuilder.Ascending(orderByField) :
+                                                                 sortDefinitionBuilder.Descending(orderByField);
+            }
+            else
+            {
+                // Ordenamiento por defecto si no se especifica ningún campo
+                sortDefinition = sortDefinitionBuilder.Ascending("updated_at");
+            }
+
 
             // Aplicamos el ordenamiento y la paginación
             query = query.Sort(sortDefinition);
