@@ -1,10 +1,8 @@
-﻿using Integration.Orchestrator.Backend.Domain.Dto.Configurador;
-using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Models.Configurador.Server;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
@@ -87,76 +85,96 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         }
 
 
-        public async Task<IEnumerable<ServerDto>> GetAllAsyncold2(ISpecification<ServerDto> specification)
+        public async Task<IEnumerable<ServerResponseModel>> GetAllAsync(ISpecification<ServerEntity> specification)
         {
-            var pipeline = new List<BsonDocument>();
+            var filterBuilder = Builders<ServerEntity>.Filter;
 
-            // 1. Filtro inicial basado en ServerDto
-            if (specification.Criteria != null)
+            // Filtro principal según la especificación
+            var filter = filterBuilder.Where(specification.Criteria);
+
+            // Configuración de la consulta de agregación
+            var query = _collection.Aggregate()
+                .Match(filter)
+                .Lookup(
+                    foreignCollectionName: "Integration_Catalog",
+                    localField: "type_id",
+                    foreignField: "_id",
+                    @as: "CatalogData"
+                )
+                .Lookup(
+                    foreignCollectionName: "Integration_Status",
+                    localField: "status_id",
+                    foreignField: "_id",
+                    @as: "StatusData"
+                )
+                .Unwind<BsonDocument>("CatalogData", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true });
+
+            // Definición de ordenamiento
+            var sortDefinitionBuilder = Builders<BsonDocument>.Sort;
+            SortDefinition<BsonDocument> sortDefinition = sortDefinitionBuilder.Ascending("updated_at");
+
+            string? orderByField = specification.OrderBy != null ? GetPropertyName(specification.OrderBy) :
+                                  specification.OrderByDescending != null ? GetPropertyName(specification.OrderByDescending) : null;
+
+            if (orderByField == "type_id")
+                sortDefinition = specification.OrderBy != null ? sortDefinitionBuilder.Ascending("CatalogData.catalog_name") :
+                                                                 sortDefinitionBuilder.Descending("CatalogData.catalog_name");
+            else if (orderByField == "status_id")
+                sortDefinition = specification.OrderBy != null ? sortDefinitionBuilder.Ascending("StatusData.status_text") :
+                                                                 sortDefinitionBuilder.Descending("StatusData.status_text");
+
+            // Aplicamos el ordenamiento y la paginación
+            query = query.Sort(sortDefinition);
+
+            if (specification.Skip >= 0)
+                query = query.Skip(specification.Skip).Limit(specification.Limit);
+
+            // Proyección
+            var projection = Builders<BsonDocument>.Projection
+                .Include("_id")
+                .Include("server_code")
+                .Include("server_name")
+                .Include("type_id")
+                .Include("server_url")
+                .Include("status_id")
+                .Include("CatalogData.catalog_name")
+                .Include("StatusData.status_text");
+
+            // Ejecutar y proyectar a `ServerResponseModel`
+            var result = await query.Project<BsonDocument>(projection).ToListAsync();
+            return result.Select(bson => new ServerResponseModel
             {
-                var filter = new BsonDocument("$match", new BsonDocument("$expr", specification.Criteria.ToBsonDocument()));
-                pipeline.Add(filter);
-            }
-
-            // 2. LEFT JOIN con la colección "Integration_Catalog"
-            pipeline.Add(new BsonDocument("$lookup", new BsonDocument
-             {
-                 { "from", "Integration_Catalog" },
-                 { "localField", "type_id" },
-                 { "foreignField", "id" },
-                 { "as", "catalogo" }
-             }));
-
-            // 3. Proyección para obtener ServerDto
-            pipeline.Add(new BsonDocument("$project", new BsonDocument
-             {
-                 { "Id", "$_id" },
-                 { "ServerName", "$name" },
-                 { "type_id", "$type_id" },
-                 { "typeServerName", new BsonDocument("$arrayElemAt", new BsonArray { "$catalogo.catalog_name", 0 }) }
-             }));
-
-            // 4. Ordenamiento
-            if (specification.OrderBy != null)
-            {
-                var orderByProperty = GetPropertyName(specification.OrderBy);
-                pipeline.Add(new BsonDocument("$sort", new BsonDocument(orderByProperty, 1)));  // Ascendente
-            }
-            else if (specification.OrderByDescending != null)
-            {
-                var orderByProperty = GetPropertyName(specification.OrderByDescending);
-                pipeline.Add(new BsonDocument("$sort", new BsonDocument(orderByProperty, -1)));  // Descendente
-            }
-
-            // 5. Paginación
-            if (specification.Skip > 0)
-            {
-                pipeline.Add(new BsonDocument("$skip", specification.Skip));
-            }
-            if (specification.Limit > 0)
-            {
-                pipeline.Add(new BsonDocument("$limit", specification.Limit));
-            }
-
-            // Ejecución del pipeline
-            var results = await _collection.Aggregate<BsonDocument>(pipeline).ToListAsync();
-
-            // Mapeo a ServerDto
-            //var serverDtos = results.Select(result =>
-            //{
-            //    var serverDto = new ServerDto
-            //    {
-            //        Id = result["Id"].AsObjectId,
-            //        ServerName = result["ServerName"].AsString,
-            //        type_id = result["type_id"].AsObjectId,
-            //        typeServerName = result["typeServerName"]?.AsString
-            //    };
-            //    return serverDto;
-            //});
-
-            return null;
+                id = bson["_id"].AsGuid,
+                server_code = bson["server_code"].AsString,
+                server_name = bson["server_name"].AsString,
+                type_id = bson["type_id"].IsBsonNull ? (Guid?)null : bson["type_id"].AsGuid,
+                server_url = bson["server_url"].AsString,
+                status_id = bson["status_id"].AsGuid,
+                type_name = bson.Contains("CatalogData") && bson["CatalogData"].IsBsonDocument
+                            ? bson["CatalogData"]["catalog_name"].AsString : null,
+                status_name = bson.Contains("StatusData") && bson["StatusData"].IsBsonArray
+                            ? bson["StatusData"].AsBsonArray.FirstOrDefault()?.AsBsonDocument?.GetValue("status_text", BsonNull.Value).AsString : null
+            });
         }
 
+        public async Task<long> GetTotalRows(ISpecification<ServerEntity> specification)
+        {
+            return await _collection
+                .Find(specification.Criteria)
+                .CountDocumentsAsync();
+        }
+
+        public async Task<bool> ValidateNameURL(ServerEntity entity)
+        {
+            var filter = Builders<ServerEntity>.Filter.And(
+                Builders<ServerEntity>.Filter.Eq(e => e.server_name, entity.server_name),
+                Builders<ServerEntity>.Filter.Eq(e => e.server_url, entity.server_url),
+                Builders<ServerEntity>.Filter.Ne(e => e.id, entity.id)
+            );
+
+            var count = await _collection.Find(filter).CountDocumentsAsync();
+            return count >= 1;
+        }
 
         public static string GetPropertyName<T>(Expression<Func<T, object>> expression)
         {
@@ -171,159 +189,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             }
 
             throw new ArgumentException("Invalid expression");
-        }
-
-
-
-
-        public async Task<IEnumerable<ServerDto>> GetAllAsync(ISpecification<ServerEntity> specification)
-        {
-
-
-            var filter = Builders<ServerEntity>.Filter.Where(specification.Criteria);
-
-
-            var aggregation = _collection.Aggregate().Match(filter).Lookup<CatalogEntity, BsonDocument>("Integration_Catalog", "type_id", "id", "catalogo");
-
-
-            var results = await aggregation.ToListAsync();
-
-            var serverDtos = results.Select(result =>
-            {
-                var server = BsonSerializer.Deserialize<ServerDto>(result);
-
-                var catalogEntities = result["catalogo"].AsBsonArray;
-
-                server.TypeServerName = catalogEntities.Count > 0
-                    ? catalogEntities[0]["catalog_name"].AsString
-                    : null;
-
-                return server;
-            }).AsQueryable();
-
-
-            IEnumerable<ServerDto> OrderedServerDtos;
-            if (specification.OrderBy != null)
-            {
-                var orderExpression = SortExpressionConfiguration<ServerDto>.ConvertOrderExpression(specification.OrderBy);
-                OrderedServerDtos = serverDtos.OrderBy(orderExpression);
-            }
-            else if (specification.OrderByDescending != null)
-            {
-                var orderExpression = SortExpressionConfiguration<ServerDto>.ConvertOrderExpression(specification.OrderByDescending);
-                OrderedServerDtos = serverDtos.OrderByDescending(orderExpression);
-            }
-            else
-            {
-                OrderedServerDtos = serverDtos;
-            }
-
-            if (specification.Skip > 0)
-            {
-                OrderedServerDtos = OrderedServerDtos.Skip(specification.Skip);
-            }
-
-            if (specification.Limit > 0)
-            {
-                OrderedServerDtos = OrderedServerDtos.Take(specification.Limit);
-            }
-
-            return OrderedServerDtos;
-
-        }
-
-           public async Task<IEnumerable<ServerResponseTest>> GetAllAsyncTest(ISpecification<ServerEntity> specification)
-        {
-
-
-            var filter = Builders<ServerEntity>.Filter.Where(specification.Criteria);
-
-
-            var aggregation = _collection.Aggregate().Match(filter).Lookup<CatalogEntity, BsonDocument>("Integration_Catalog", "type_id", "id", "catalogo");
-
-
-            var results = await aggregation.ToListAsync();
-
-            var serverDtos = results.Select(result =>
-            {
-                var server = BsonSerializer.Deserialize<ServerResponseTest>(result);
-
-                var catalogEntities = result["catalogo"].AsBsonArray;
-
-                server.TypeServerName = catalogEntities.Count > 0
-                    ? catalogEntities[0]["catalog_name"].AsString
-                    : null;
-
-                return server;
-            }).AsQueryable();
-
-
-            IEnumerable<ServerResponseTest> OrderedServerDtos;
-            if (specification.OrderBy != null)
-            {
-                var orderExpression = SortExpressionConfiguration<ServerResponseTest>.ConvertOrderExpression(specification.OrderBy);
-                OrderedServerDtos = serverDtos.OrderBy(orderExpression);
-            }
-            else if (specification.OrderByDescending != null)
-            {
-                var orderExpression = SortExpressionConfiguration<ServerResponseTest>.ConvertOrderExpression(specification.OrderByDescending);
-                OrderedServerDtos = serverDtos.OrderByDescending(orderExpression);
-            }
-            else
-            {
-                OrderedServerDtos = serverDtos;
-            }
-
-            if (specification.Skip > 0)
-            {
-                OrderedServerDtos = OrderedServerDtos.Skip(specification.Skip);
-            }
-
-            if (specification.Limit > 0)
-            {
-                OrderedServerDtos = OrderedServerDtos.Take(specification.Limit);
-            }
-
-            return OrderedServerDtos;
-
-        }
-
-
-        //public async Task<IEnumerable<ServerEntity>> GetAllAsync(ISpecification<ServerEntity> specification)
-        //{
-        //    var filter = Builders<ServerEntity>.Filter.Where(specification.Criteria);
-
-        //    var query = _collection
-        //        .Find(filter)
-        //        .Sort(specification.OrderBy != null
-        //            ? Builders<ServerEntity>.Sort.Ascending(specification.OrderBy)
-        //            : Builders<ServerEntity>.Sort.Descending(specification.OrderByDescending));
-
-        //    if (specification.Skip >= 0)
-        //    {
-        //        query = query
-        //            .Limit(specification.Limit)
-        //            .Skip(specification.Skip);
-        //    }
-        //    return await query.ToListAsync();
-        //}
-
-        public async Task<long> GetTotalRows(ISpecification<ServerEntity> specification)
-        {
-            return await _collection
-                .Find(specification.Criteria)
-                .CountDocumentsAsync();
-        }
-        public async Task<bool> ValidateNameURL(ServerEntity entity)
-        {
-            var filter = Builders<ServerEntity>.Filter.And(
-                Builders<ServerEntity>.Filter.Eq(e => e.server_name, entity.server_name),
-                Builders<ServerEntity>.Filter.Eq(e => e.server_url, entity.server_url),
-                Builders<ServerEntity>.Filter.Ne(e => e.id, entity.id)
-            );
-
-            var count = await _collection.Find(filter).CountDocumentsAsync();
-            return count >= 1;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         public static Expression<Func<T, object>> ConvertOrderExpression<M>(Expression<Func<M, object>> orderExpr)
         {
 
-            var parameter = Expression.Parameter(typeof(ServerResponseTest), "dto");
+            var parameter = Expression.Parameter(typeof(ServerResponseModel), "dto");
             MemberExpression memberExpression;
 
             if (orderExpr.Body is UnaryExpression unaryExpression)

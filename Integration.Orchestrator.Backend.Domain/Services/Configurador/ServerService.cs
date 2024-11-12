@@ -1,5 +1,4 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Commons;
-using Integration.Orchestrator.Backend.Domain.Dto.Configurador;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
@@ -60,7 +59,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
             return await _serverRepository.GetByTypeAsync(specification);
         }
 
-        public async Task<IEnumerable<ServerDto>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
+        public async Task<IEnumerable<ServerResponseModel>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
         {
             if (string.IsNullOrEmpty(paginatedModel.Sort_field))
             {
@@ -74,21 +73,6 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
                 spec.Criteria = await ActiveStatusCriteria(spec.Criteria);
             }
             return await _serverRepository.GetAllAsync(spec);
-        }
-        public async Task<IEnumerable<ServerResponseTest>> GetAllPaginatedAsyncTest(PaginatedModel paginatedModel)
-        {
-            if (string.IsNullOrEmpty(paginatedModel.Sort_field))
-            {
-                paginatedModel.Sort_field = nameof(ServerEntity.updated_at).Split("_")[0];
-                paginatedModel.Sort_order = SortOrdering.Descending;
-            }
-            var spec = new ServerSpecification(paginatedModel);
-
-            if (paginatedModel.activeOnly == true)
-            {
-                spec.Criteria = await ActiveStatusCriteria(spec.Criteria);
-            }
-            return await _serverRepository.GetAllAsyncTest(spec);
         }
 
         public async Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel)

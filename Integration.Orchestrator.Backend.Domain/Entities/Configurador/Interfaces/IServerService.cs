@@ -12,8 +12,7 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfac
         Task<T> GetByIdAsync(Guid id);
         Task<T> GetByCodeAsync(string code);
         Task<IEnumerable<T>> GetByTypeAsync(Guid typeId);
-        Task<IEnumerable<ServerDto>> GetAllPaginatedAsync(PaginatedModel paginatedModel);
-        Task<IEnumerable<ServerResponseTest>> GetAllPaginatedAsyncTest(PaginatedModel paginatedModel);
+        Task<IEnumerable<ServerResponseModel>> GetAllPaginatedAsync(PaginatedModel paginatedModel);
         Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel);
     }
 }
