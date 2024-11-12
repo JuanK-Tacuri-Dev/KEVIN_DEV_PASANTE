@@ -12,7 +12,8 @@ namespace Integration.Orchestrator.Backend.Domain.Ports.Configurador
         Task<T> GetByIdAsync(Expression<Func<T, bool>> specification);
         Task<T> GetByCodeAsync(Expression<Func<T, bool>> specification);
         Task<IEnumerable<T>> GetByTypeAsync(Expression<Func<T, bool>> specification);
-        Task<IEnumerable<T>> GetByEntityAsync(Expression<Func<T, bool>> specification);
+        Task<IEnumerable<T>> GetByEntitysAsync(Expression<Func<T, bool>> specification);
+        Task<T> GetByEntityAsync(Expression<Func<T, bool>> specification);
         Task<IEnumerable<T>> GetAllAsync(ISpecification<T> specification);
         public Task<long> GetTotalRows(ISpecification<T> specification);
         Task<bool> ValidateNameAndEntity(PropertyEntity property);

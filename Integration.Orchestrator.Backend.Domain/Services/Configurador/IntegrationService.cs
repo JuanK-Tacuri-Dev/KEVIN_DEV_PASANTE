@@ -69,6 +69,11 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
             return await _integrationRepository.GetTotalRows(spec);
         }
 
+        public async Task<IntegrationEntity> GetByProcessIdAsync(Guid idProcess, Guid idStatusActive)
+        {
+            var specification = IntegrationSpecification.GetByProcessIdExpression(idProcess, idStatusActive);
+            return await _integrationRepository.GetByIdAsync(specification);
+        }
         private async Task<Expression<Func<IntegrationEntity, bool>>> ActiveStatusCriteria(Expression<Func<IntegrationEntity, bool>> criteria)
         {
             var entityFound = await _statusService.GetByKeyAsync(Status.active.ToString());
@@ -107,5 +112,6 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
                         });
             }
         }
+
     }
 }

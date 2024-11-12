@@ -195,11 +195,11 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
                 new PropertyEntity { property_name = "Property2", entity_id = entityId }
             };
 
-            _mockPropertyRepository.Setup(r => r.GetByEntityAsync(It.IsAny<Expression<Func<PropertyEntity, bool>>>()))
+            _mockPropertyRepository.Setup(r => r.GetByEntitysAsync(It.IsAny<Expression<Func<PropertyEntity, bool>>>()))
                 .ReturnsAsync(properties); // Simulamos que hay propiedades encontradas
 
             // Act
-            var result = await _mockPropertyService.GetByEntityIdAsync(entityId);
+            var result = await _mockPropertyService.GetByEntitysIdAsync(entityId);
 
             // Assert
             Assert.NotNull(result);

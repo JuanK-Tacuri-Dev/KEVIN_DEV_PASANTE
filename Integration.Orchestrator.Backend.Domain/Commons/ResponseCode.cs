@@ -10,6 +10,9 @@
         NotFoundSuccessfully = 21,
         DeletedSuccessfully = 40,
         NotDeletedSuccessfully = 42,
-        NotValidationSuccessfully = 50 
+        NotValidationSuccessfully = 50,
+        NotDeleteDueToRelationship = 51, 
+        NotActivatedDueToInactiveRelationship = 52
+
     }
 }

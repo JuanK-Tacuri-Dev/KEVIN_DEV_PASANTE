@@ -40,6 +40,17 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
             return await _statusRepository.GetByIdAsync(specification);
         }
 
+        public async Task<bool> GetStatusIsActive(Guid id)
+        {
+            var specification = StatusSpecification.GetStatusIsActive(id, "active");
+            return await _statusRepository.GetStatusIsActive(specification);
+        }
+        public async Task<Guid> GetIdActiveStatus()
+        {
+            var specification = StatusSpecification.GetIdActiveStatus("active");
+            return await _statusRepository.GetIdActiveStatus(specification);
+        }
+
         public async Task<StatusEntity> GetByKeyAsync(string key)
         {
             var specification = StatusSpecification.GetByCodeExpression(key);

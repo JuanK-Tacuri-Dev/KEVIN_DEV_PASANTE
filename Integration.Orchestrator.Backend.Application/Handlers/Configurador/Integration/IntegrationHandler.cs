@@ -12,7 +12,12 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Integration
 {
     [ExcludeFromCodeCoverage]
-    public class IntegrationHandler(IIntegrationService<IntegrationEntity> integrationService)
+    public class IntegrationHandler(
+        IIntegrationService<IntegrationEntity> integrationService,
+        IProcessService<ProcessEntity> processService,
+        ISynchronizationService<SynchronizationEntity> synchronizationService,
+        IStatusService<StatusEntity> statusService)
+    #region MediateR
         :
         IRequestHandler<CreateIntegrationCommandRequest, CreateIntegrationCommandResponse>,
         IRequestHandler<UpdateIntegrationCommandRequest, UpdateIntegrationCommandResponse>,
@@ -20,8 +25,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.In
         IRequestHandler<GetByIdIntegrationCommandRequest, GetByIdIntegrationCommandResponse>,
         IRequestHandler<GetAllPaginatedIntegrationCommandRequest, GetAllPaginatedIntegrationCommandResponse>
     {
-        public readonly IIntegrationService<IntegrationEntity> _integrationService = integrationService;
-
+        #endregion
+        private readonly IIntegrationService<IntegrationEntity> _integrationService = integrationService;
+        private readonly IProcessService<ProcessEntity> _processService = processService;
+        private readonly ISynchronizationService<SynchronizationEntity> _synchronizationService = synchronizationService;
+        private readonly IStatusService<StatusEntity> _statusService = statusService;
         public async Task<CreateIntegrationCommandResponse> Handle(CreateIntegrationCommandRequest request, CancellationToken cancellationToken)
         {
             try
@@ -73,6 +81,39 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.In
                             });
 
                 var integrationMap = MapIntegration(request.Integration.IntegrationRequest, request.Id);
+                var StatusIsActive = await _statusService.GetStatusIsActive(integrationMap.status_id);
+                var RelationConectionActive = await _synchronizationService.GetByIntegrationIdAsync(integrationMap.id, await _statusService.GetIdActiveStatus());
+
+
+                if (!StatusIsActive && RelationConectionActive!= null)
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors()
+                    {
+                        Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
+                        Data = request.Integration
+                    });
+                }
+
+                if (StatusIsActive)
+                {
+                    foreach (var process in integrationMap.process)
+                    {
+                        var processFound = await _processService.GetByIdAsync(process);
+
+                        if (processFound != null && !await _statusService.GetStatusIsActive(processFound.status_id))
+                        {
+                            throw new OrchestratorArgumentException(string.Empty,
+                                new DetailsArgumentErrors
+                                {
+                                    Code = (int)ResponseCode.NotActivatedDueToInactiveRelationship,
+                                    Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotActivatedDueToInactiveRelationship, "Proceso"),
+                                    Data = request.Integration
+                                });
+                        }
+                    }
+                }
                 await _integrationService.UpdateAsync(integrationMap);
 
                 return new UpdateIntegrationCommandResponse(

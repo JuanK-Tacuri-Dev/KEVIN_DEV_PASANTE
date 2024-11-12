@@ -28,6 +28,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
         IRequestHandler<GetByTypeServerCommandRequest, GetByTypeServerCommandResponse>,
         IRequestHandler<GetAllPaginatedServerCommandRequest, GetAllPaginatedServerCommandResponse>
     {
+        #endregion
         private readonly IServerService<ServerEntity> _serverService = serverService;
         private readonly IMapper _mapper = mapper;
 
@@ -79,6 +80,20 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
                         });
 
                 var serverMap = MapServer(request.Server.ServerRequest, request.Id);
+                var StatusIsActive = await _statusService.GetStatusIsActive(serverMap.status_id);
+                var RelationConectionActive = await _connectionService.GetByServerIdAsync(serverMap.id, await _statusService.GetIdActiveStatus());
+
+                if (!StatusIsActive && RelationConectionActive != null)
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors()
+                    {
+                        Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
+                        Data = request.Server
+                    });
+                }
+
                 await _serverService.UpdateAsync(serverMap);
 
                 return new UpdateServerCommandResponse(

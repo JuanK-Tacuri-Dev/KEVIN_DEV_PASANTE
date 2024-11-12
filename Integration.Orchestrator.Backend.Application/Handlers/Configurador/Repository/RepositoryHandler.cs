@@ -13,7 +13,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
 {
     [ExcludeFromCodeCoverage]
     public class RepositoryHandler(
-        IRepositoryService<RepositoryEntity> repositoryService)
+        IRepositoryService<RepositoryEntity> repositoryService, 
+        IConnectionService<ConnectionEntity> connectionService, 
+        IStatusService<StatusEntity> statusService, 
+        IEntitiesService<EntitiesEntity> entitiesService)
+        #region MediateR
         :
         IRequestHandler<CreateRepositoryCommandRequest, CreateRepositoryCommandResponse>,
         IRequestHandler<UpdateRepositoryCommandRequest, UpdateRepositoryCommandResponse>,
@@ -22,7 +26,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
         IRequestHandler<GetByCodeRepositoryCommandRequest, GetByCodeRepositoryCommandResponse>,
         IRequestHandler<GetAllPaginatedRepositoryCommandRequest, GetAllPaginatedRepositoryCommandResponse>
     {
+        #endregion
         private readonly IRepositoryService<RepositoryEntity> _repositoryService = repositoryService;
+        private readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
+        public readonly IStatusService<StatusEntity> _statusService = statusService;
+        public readonly IEntitiesService<EntitiesEntity> _entitiesService = entitiesService;
 
         public async Task<CreateRepositoryCommandResponse> Handle(CreateRepositoryCommandRequest request, CancellationToken cancellationToken)
         {
@@ -65,6 +73,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
             {
                 var repositoryFound = await _repositoryService.GetByIdAsync(request.Id);
                 if (repositoryFound == null)
+                {
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
                         {
@@ -72,8 +81,30 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
                             Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
                             Data = request.Repository.RepositoryRequest
                         });
+                }
 
                 var repositoryMap = MapRepository(request.Repository.RepositoryRequest, request.Id);
+                var idstatusActive = await _statusService.GetIdActiveStatus();
+                var statusIsActive = await _statusService.GetStatusIsActive(repositoryMap.status_id);
+
+                var relationConnectionActive = await _connectionService.GetByRepositoryIdAsync(repositoryMap.id, idstatusActive);
+                
+                var relationEntitynActive = false;
+                var relationEntitys = await _entitiesService.GetByRepositoryIdAsync(repositoryMap.id);
+                if (relationEntitys != null && relationEntitys.Any())
+                    relationEntitynActive = relationEntitys.FirstOrDefault( x=>x.status_id == idstatusActive)!= null;
+
+                if (!statusIsActive && (relationConnectionActive != null || relationEntitynActive))
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors()
+                        {
+                            Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                            Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
+                            Data = request.Repository
+                        });
+                }
+
                 await _repositoryService.UpdateAsync(repositoryMap);
 
                 return new UpdateRepositoryCommandResponse(
@@ -93,7 +124,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
                             StatusId = repositoryMap.status_id
                         }
                     });
-
             }
             catch (OrchestratorArgumentException ex)
             {
@@ -104,7 +134,6 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
                 throw new OrchestratorException(ex.Message);
             }
         }
-
         public async Task<DeleteRepositoryCommandResponse> Handle(DeleteRepositoryCommandRequest request, CancellationToken cancellationToken)
         {
             try

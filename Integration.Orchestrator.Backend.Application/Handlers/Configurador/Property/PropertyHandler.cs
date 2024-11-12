@@ -4,6 +4,7 @@ using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
+using Integration.Orchestrator.Backend.Domain.Services.Configurador;
 using Mapster;
 using MediatR;
 using System.Diagnostics.CodeAnalysis;
@@ -12,7 +13,11 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Property
 {
     [ExcludeFromCodeCoverage]
-    public class PropertyHandler(IPropertyService<PropertyEntity> propertyService)
+    public class PropertyHandler(
+        IPropertyService<PropertyEntity> propertyService,
+        IEntitiesService<EntitiesEntity> entitiesService,
+        IStatusService<StatusEntity> statusService)
+    #region MediateR
         :
         IRequestHandler<CreatePropertyCommandRequest, CreatePropertyCommandResponse>,
         IRequestHandler<UpdatePropertyCommandRequest, UpdatePropertyCommandResponse>,
@@ -23,8 +28,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
         IRequestHandler<GetByEntityPropertyCommandRequest, GetByEntityPropertyCommandResponse>,
         IRequestHandler<GetAllPaginatedPropertyCommandRequest, GetAllPaginatedPropertyCommandResponse>
     {
-        public readonly IPropertyService<PropertyEntity> _propertyService = propertyService;
-
+        #endregion
+        private readonly IEntitiesService<EntitiesEntity> _entitiesService = entitiesService;
+        private readonly IPropertyService<PropertyEntity> _propertyService = propertyService;
+        private readonly IStatusService<StatusEntity> _statusService = statusService;
         public async Task<CreatePropertyCommandResponse> Handle(CreatePropertyCommandRequest request, CancellationToken cancellationToken)
         {
             try
@@ -73,8 +80,24 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
                             });
 
                 var propertyMap = MapProperty(request.Property.PropertyRequest, request.Id);
-                await _propertyService.UpdateAsync(propertyMap);
+                var StatusIsActive = await _statusService.GetStatusIsActive(propertyMap.status_id);
+                if (StatusIsActive)
+                {
+                    var entityFound = await _entitiesService.GetByIdAsync(propertyMap.entity_id);
 
+                    if (entityFound != null && !await _statusService.GetStatusIsActive(entityFound.status_id))
+                    {
+                        throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors
+                            {
+                                Code = (int)ResponseCode.NotActivatedDueToInactiveRelationship,
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotActivatedDueToInactiveRelationship, "Entidad"),
+                                Data = request.Property
+                            });
+                    }
+                }
+                await _propertyService.UpdateAsync(propertyMap);
+              
                 return new UpdatePropertyCommandResponse(
                         new PropertyUpdateResponse
                         {
@@ -262,7 +285,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
         {
             try
             {
-                var propertyFound = await _propertyService.GetByEntityIdAsync(request.Property.EntityId);
+                var propertyFound = await _propertyService.GetByEntitysIdAsync(request.Property.EntityId);
                 if (propertyFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()

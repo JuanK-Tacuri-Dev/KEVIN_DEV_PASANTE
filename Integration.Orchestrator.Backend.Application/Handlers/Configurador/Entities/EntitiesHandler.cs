@@ -4,6 +4,7 @@ using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
+using Integration.Orchestrator.Backend.Domain.Services.Configurador;
 using Mapster;
 using MediatR;
 using System.Diagnostics.CodeAnalysis;
@@ -13,7 +14,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
 {
     [ExcludeFromCodeCoverage]
     public class EntitiesHandler(
-        IEntitiesService<EntitiesEntity> entitiesService)
+        IEntitiesService<EntitiesEntity> entitiesService, 
+        IPropertyService<PropertyEntity> propertyService, 
+        IStatusService<StatusEntity> statusService, IRepositoryService<RepositoryEntity> repositoryService)
+    #region MediateR
         :
         IRequestHandler<CreateEntitiesCommandRequest, CreateEntitiesCommandResponse>,
         IRequestHandler<UpdateEntitiesCommandRequest, UpdateEntitiesCommandResponse>,
@@ -24,7 +28,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
         IRequestHandler<GetByRepositoryIdEntitiesCommandRequest, GetByRepositoryIdEntitiesCommandResponse>,
         IRequestHandler<GetAllPaginatedEntitiesCommandRequest, GetAllPaginatedEntitiesCommandResponse>
     {
-        public readonly IEntitiesService<EntitiesEntity> _entitiesService = entitiesService;
+        #endregion
+        private readonly IEntitiesService<EntitiesEntity> _entitiesService = entitiesService;
+        private readonly IPropertyService<PropertyEntity> _propertyService = propertyService;
+        private readonly IStatusService<StatusEntity> _statusService = statusService;
+        private readonly IRepositoryService<RepositoryEntity> _repositoryService = repositoryService;
 
         public async Task<CreateEntitiesCommandResponse> Handle(CreateEntitiesCommandRequest request, CancellationToken cancellationToken)
         {
@@ -74,6 +82,35 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
                         });
 
                 var entitiesMap = MapEntities(request.Entities.EntitiesRequest, request.Id);
+                var StatusIsActive = await _statusService.GetStatusIsActive(entitiesMap.status_id);
+                var RelationPropertyActive = await _propertyService.GetByEntityIdAsync(entitiesMap.id, await _statusService.GetIdActiveStatus());
+
+                if (!StatusIsActive && RelationPropertyActive!=null)
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors()
+                    {
+                        Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                        Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
+                        Data = request.Entities
+                    });
+                }
+                if (StatusIsActive)
+                {
+                    var repositoryFound = await _repositoryService.GetByIdAsync(entitiesMap.repository_id);
+
+                    if (repositoryFound != null && !await _statusService.GetStatusIsActive(repositoryFound.status_id))
+                    {
+                        throw new OrchestratorArgumentException(string.Empty,
+                            new DetailsArgumentErrors
+                            {
+                                Code = (int)ResponseCode.NotActivatedDueToInactiveRelationship,
+                                Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotActivatedDueToInactiveRelationship, "Repositorio"),
+                                Data = request.Entities
+                            });
+                    }
+                }
+
                 await _entitiesService.UpdateAsync(entitiesMap);
 
                 return new UpdateEntitiesCommandResponse(

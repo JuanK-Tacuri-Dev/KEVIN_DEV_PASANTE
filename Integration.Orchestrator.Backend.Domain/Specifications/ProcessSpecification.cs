@@ -87,7 +87,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
             return criteria;
         }
-
+        public static Expression<Func<ProcessEntity, bool>> GetByTypeExpression(Guid typeId, Guid statusId)
+        {
+            return x => true && x.process_type_id == typeId && x.status_id == statusId;
+        }
         public static Expression<Func<ProcessEntity, bool>> GetByIdExpression(Guid id)
         {
             return BaseSpecification<ProcessEntity>.GetByUuid(x => x.id, id);
@@ -98,9 +101,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return x => true && x.process_code == code;
         }
 
-        public static Expression<Func<ProcessEntity, bool>> GetByTypeExpression(Guid typeId, Guid statusId)
+        public static Expression<Func<ProcessEntity, bool>> GetByConnectionIdAsync(Guid connectionid,Guid idStatusActive)
         {
-            return x => true && x.process_type_id == typeId && x.status_id == statusId;
+            return x => x.connection_id == connectionid && x.status_id== idStatusActive;
         }
 
 

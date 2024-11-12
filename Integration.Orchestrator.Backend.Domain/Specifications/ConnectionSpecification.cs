@@ -10,13 +10,13 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         public Expression<Func<ConnectionEntity, bool>> Criteria { get; set; }
 
         public Expression<Func<ConnectionEntity, object>> OrderBy { get; private set; }
-        
+
         public Expression<Func<ConnectionEntity, object>> OrderByDescending { get; private set; }
 
         public int Skip { get; private set; }
 
         public int Limit { get; private set; }
-       
+
         public ConnectionSpecification(PaginatedModel paginatedModel)
         {
             Criteria = BuildCriteria(paginatedModel);
@@ -24,7 +24,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             SetupOrdering(paginatedModel);
         }
 
-        private static readonly Dictionary<string, Expression<Func<ConnectionEntity, object>>> sortExpressions 
+        private static readonly Dictionary<string, Expression<Func<ConnectionEntity, object>>> sortExpressions
             = new Dictionary<string, Expression<Func<ConnectionEntity, object>>>
         {
             { nameof(ConnectionEntity.connection_code).Split("_")[1], x => x.connection_code },
@@ -91,6 +91,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return BaseSpecification<ConnectionEntity>.GetByUuid(x => x.id, id);
         }
+        public static Expression<Func<ConnectionEntity, bool>> GetByServerIdExpression(Guid id, Guid idStatusActive) => x => x.server_id == id && x.status_id==idStatusActive;
+        public static Expression<Func<ConnectionEntity, bool>> GetByAdapterIdExpression(Guid id, Guid idStatusActive) => x => x.adapter_id == id && x.status_id == idStatusActive;
+        public static Expression<Func<ConnectionEntity, bool>> GetByRepositoryIdExpression(Guid id, Guid idStatusActive) => x => x.repository_id == id && x.status_id == idStatusActive;
 
         public static Expression<Func<ConnectionEntity, bool>> GetByCodeExpression(string code)
         {

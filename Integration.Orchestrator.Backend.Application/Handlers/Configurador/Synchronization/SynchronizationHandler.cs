@@ -7,9 +7,9 @@ using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Helper;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
+using Integration.Orchestrator.Backend.Domain.Services.Configurador;
 using Mapster;
 using MediatR;
-using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Synchronization.SynchronizationCommands;
 
@@ -18,7 +18,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
     [ExcludeFromCodeCoverage]
     public class SynchronizationHandler(
         ISynchronizationService<SynchronizationEntity> synchronizationService,
-        ISynchronizationStatesService<SynchronizationStatusEntity> synchronizationStatesService)
+        ISynchronizationStatesService<SynchronizationStatusEntity> synchronizationStatesService,
+        IStatusService<StatusEntity> statusService,
+        IIntegrationService<IntegrationEntity> integrationService)
+        #region MediateR
         :
         IRequestHandler<CreateSynchronizationCommandRequest, CreateSynchronizationCommandResponse>,
         IRequestHandler<UpdateSynchronizationCommandRequest, UpdateSynchronizationCommandResponse>,
@@ -27,9 +30,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
         IRequestHandler<GetByFranchiseIdSynchronizationCommandRequest, GetByFranchiseIdSynchronizationCommandResponse>,
         IRequestHandler<GetAllPaginatedSynchronizationCommandRequest, GetAllPaginatedSynchronizationCommandResponse>
     {
-        //private protected string dateFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
+        #endregion
         private readonly ISynchronizationService<SynchronizationEntity> _synchronizationService = synchronizationService;
         private readonly ISynchronizationStatesService<SynchronizationStatusEntity> _synchronizationStatesService = synchronizationStatesService;
+        public readonly IStatusService<StatusEntity> _statusService = statusService;
+        public readonly IIntegrationService<IntegrationEntity> _integrationService = integrationService;        
 
         public async Task<CreateSynchronizationCommandResponse> Handle(CreateSynchronizationCommandRequest request, CancellationToken cancellationToken)
         {
@@ -84,6 +89,25 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
                     synchronizationMap.synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault();
                 }
 
+                var SynchronizationIsActive = await _statusService.GetStatusIsActive(synchronizationMap.status_id);
+                if (SynchronizationIsActive)
+                {
+                    foreach (var integration in synchronizationMap.integrations)
+                    {
+                        var repositoryFound = await _integrationService.GetByIdAsync(integration);
+
+                        if (repositoryFound != null && !await _statusService.GetStatusIsActive(repositoryFound.status_id))
+                        {
+                            throw new OrchestratorArgumentException(string.Empty,
+                                new DetailsArgumentErrors
+                                {
+                                    Code = (int)ResponseCode.NotActivatedDueToInactiveRelationship,
+                                    Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotActivatedDueToInactiveRelationship, "Integración"),
+                                    Data = request.Synchronization
+                                });
+                        }
+                    }
+                }
                 await _synchronizationService.UpdateAsync(synchronizationMap);
 
                 return new UpdateSynchronizationCommandResponse(

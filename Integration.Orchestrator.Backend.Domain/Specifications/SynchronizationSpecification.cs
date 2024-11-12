@@ -97,6 +97,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         public static Expression<Func<SynchronizationEntity, bool>> GetByFranchiseIdExpression(Guid franchiseId)
         {
             return x => x.franchise_id == franchiseId;
+        } 
+        public static Expression<Func<SynchronizationEntity, bool>> GetByIntegrationIdExpression(Guid idIntegration, Guid idStatusActive)
+        {
+            return x => x.integrations.Contains(idIntegration) && x.status_id==idStatusActive;
         }
     }
 }

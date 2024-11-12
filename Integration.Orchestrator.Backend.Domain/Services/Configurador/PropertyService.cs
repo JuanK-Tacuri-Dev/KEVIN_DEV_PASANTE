@@ -58,10 +58,15 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
             return await _propertyRepository.GetByTypeAsync(specification);
         }
 
-        public async Task<IEnumerable<PropertyEntity>> GetByEntityIdAsync(Guid entityId)
+        public async Task<PropertyEntity> GetByEntityIdAsync(Guid entityId, Guid idStatusActive)
+        {
+            var specification = PropertySpecification.GetByEntityActiveExpression(entityId, idStatusActive);
+            return await _propertyRepository.GetByEntityAsync(specification);
+        }
+        public async Task<IEnumerable<PropertyEntity>> GetByEntitysIdAsync(Guid entityId)
         {
             var specification = PropertySpecification.GetByEntityExpression(entityId);
-            return await _propertyRepository.GetByEntityAsync(specification);
+            return await _propertyRepository.GetByEntitysAsync(specification);
         }
 
         public async Task<IEnumerable<PropertyEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
@@ -153,5 +158,6 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
                         });
             }
         }
+
     }
 }
