@@ -193,6 +193,6 @@
     <value>No es posible inactivar el registro porque está siendo utilizado en otro módulo.</value>
   </data>
   <data name="Domain_ResponseCode_NotActivatedDueToInactiveRelationship" xml:space="preserve">
-    <value>El registro no se puede activar porque el {0} no está activo.</value>
+    <value>El registro no se puede activar porque el/los {0} no está(n) activo(s).</value>
   </data>
 </root>

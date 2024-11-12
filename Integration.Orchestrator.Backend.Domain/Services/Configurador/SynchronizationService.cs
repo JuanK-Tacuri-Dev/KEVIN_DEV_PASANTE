@@ -74,6 +74,12 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
             return await _synchronizationRepository.GetTotalRows(spec);
         }
 
+        public async Task<SynchronizationEntity> GetByIntegrationIdAsync(Guid idIntegration, Guid idStatusActive)
+        {
+            var specification = SynchronizationSpecification.GetByIntegrationIdExpression(idIntegration,idStatusActive);
+            return await _synchronizationRepository.GetByIdAsync(specification);
+        }
+
         private async Task ValidateBussinesLogic(SynchronizationEntity synchronization, bool create = false)
         {
             await EnsureStatusExists(synchronization.status_id);
@@ -114,5 +120,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
                     });
             }
         }
+
+       
     }
 }

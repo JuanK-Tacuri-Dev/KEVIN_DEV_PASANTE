@@ -81,9 +81,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
 
                 var serverMap = MapServer(request.Server.ServerRequest, request.Id);
                 var StatusIsActive = await _statusService.GetStatusIsActive(serverMap.status_id);
-                var ExistRelationConectionActive = await _connectionService.GetByAdapterIdAsync(serverMap.id, await _statusService.GetIdActiveStatus());
+                var RelationConectionActive = await _connectionService.GetByServerIdAsync(serverMap.id, await _statusService.GetIdActiveStatus());
 
-                if (!StatusIsActive && ExistRelationConectionActive != null)
+                if (!StatusIsActive && RelationConectionActive != null)
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                     new DetailsArgumentErrors()

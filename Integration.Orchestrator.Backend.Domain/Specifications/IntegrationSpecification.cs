@@ -89,6 +89,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return BaseSpecification<IntegrationEntity>.GetByUuid(x => x.id, id);
         }
+        public static Expression<Func<IntegrationEntity, bool>> GetByProcessIdExpression(Guid id, Guid idStatus)
+        {
+            return x => x.process.Contains(id) && x.status_id == idStatus;
+        }
 
     }
 }

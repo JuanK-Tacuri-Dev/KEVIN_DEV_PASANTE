@@ -114,7 +114,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Con
 
                     var repositoryFound = await _repositoryService.GetByIdAsync(connectionMap.repository_id);
                     if (adapterFound != null && !await _statusService.GetStatusIsActive(repositoryFound.status_id))
-                        entityMessage.Add("Repository");
+                        entityMessage.Add("Repositorio");
 
                     if (entityMessage.Count > 0)
                     {

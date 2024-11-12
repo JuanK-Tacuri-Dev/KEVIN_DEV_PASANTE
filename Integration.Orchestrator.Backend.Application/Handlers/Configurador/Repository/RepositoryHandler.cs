@@ -88,8 +88,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
                 var statusIsActive = await _statusService.GetStatusIsActive(repositoryMap.status_id);
 
                 var relationConnectionActive = await _connectionService.GetByRepositoryIdAsync(repositoryMap.id, idstatusActive);
+                
                 var relationEntitynActive = false;
-
                 var relationEntitys = await _entitiesService.GetByRepositoryIdAsync(repositoryMap.id);
                 if (relationEntitys != null && relationEntitys.Any())
                     relationEntitynActive = relationEntitys.FirstOrDefault( x=>x.status_id == idstatusActive)!= null;
