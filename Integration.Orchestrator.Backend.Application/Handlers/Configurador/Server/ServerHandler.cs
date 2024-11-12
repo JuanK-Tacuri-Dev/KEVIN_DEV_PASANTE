@@ -1,24 +1,21 @@
-﻿using AutoMapper;
-using Integration.Orchestrator.Backend.Application.Models.Configurador.Repository;
-using Integration.Orchestrator.Backend.Application.Models.Configurador.Server;
+﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Server;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
-using Integration.Orchestrator.Backend.Domain.Services.Configurador;
 using Mapster;
-using Mapster.Models;
 using MediatR;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Repository.RepositoryCommands;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Server.ServerCommands;
 
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Server
 {
     [ExcludeFromCodeCoverage]
-    public class ServerHandler(IServerService<ServerEntity> serverService, IMapper mapper)
+    public class ServerHandler(
+        IServerService<ServerEntity> serverService,
+        IStatusService<StatusEntity> statusService,
+        IConnectionService<ConnectionEntity> connectionService)
         :
         IRequestHandler<CreateServerCommandRequest, CreateServerCommandResponse>,
         IRequestHandler<UpdateServerCommandRequest, UpdateServerCommandResponse>,
@@ -28,9 +25,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
         IRequestHandler<GetByTypeServerCommandRequest, GetByTypeServerCommandResponse>,
         IRequestHandler<GetAllPaginatedServerCommandRequest, GetAllPaginatedServerCommandResponse>
     {
-        #endregion
         private readonly IServerService<ServerEntity> _serverService = serverService;
-        private readonly IMapper _mapper = mapper;
+        private readonly IStatusService<StatusEntity> _statusService = statusService;
+        private readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
 
         public async Task<CreateServerCommandResponse> Handle(CreateServerCommandRequest request, CancellationToken cancellationToken)
         {
