@@ -6,6 +6,7 @@ using Integration.Orchestrator.Backend.Application;
 using Integration.Orchestrator.Backend.Domain;
 using Integration.Orchestrator.Backend.Infrastructure;
 using Integration.Orchestrator.Backend.Infrastructure.Extensions;
+using Integration.Orchestrator.Backend.Application.Helper;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +39,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddServicesInAssembly(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
+
+
+builder.Services.AddAutoMapper(configuration =>
+{
+    configuration.AddProfile<MappingServerProfile>();
+
+});
 //builder.Configuration.AddEnvironmentVariables()
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())

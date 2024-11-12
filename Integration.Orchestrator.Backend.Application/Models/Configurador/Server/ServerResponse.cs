@@ -9,8 +9,10 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Serve
         public string Code { get; set; }
         public string Name { get; set; }
         public Guid? TypeServerId { get; set; }
+        public string? TypeServerName { get; set; }
         public string Url { get; set; }
         public Guid StatusId { get; set; }
+        public string? StatusName { get; set; }
 
     }
 }

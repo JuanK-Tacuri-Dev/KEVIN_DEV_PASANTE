@@ -14,10 +14,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
     [ExcludeFromCodeCoverage]
     public class ServerHandler(
         IServerService<ServerEntity> serverService,
-        IConnectionService<ConnectionEntity> connectionService,
-        IStatusService<StatusEntity> statusService)
-
-    #region MediateR
+        IStatusService<StatusEntity> statusService,
+        IConnectionService<ConnectionEntity> connectionService)
         :
         IRequestHandler<CreateServerCommandRequest, CreateServerCommandResponse>,
         IRequestHandler<UpdateServerCommandRequest, UpdateServerCommandResponse>,
@@ -27,10 +25,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
         IRequestHandler<GetByTypeServerCommandRequest, GetByTypeServerCommandResponse>,
         IRequestHandler<GetAllPaginatedServerCommandRequest, GetAllPaginatedServerCommandResponse>
     {
-        #endregion
         private readonly IServerService<ServerEntity> _serverService = serverService;
-        private readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
         private readonly IStatusService<StatusEntity> _statusService = statusService;
+        private readonly IConnectionService<ConnectionEntity> _connectionService = connectionService;
 
         public async Task<CreateServerCommandResponse> Handle(CreateServerCommandRequest request, CancellationToken cancellationToken)
         {
@@ -300,7 +297,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
                         }
                     });
                 }
-                var serversFound = await _serverService.GetAllPaginatedAsync(model);
+                var repositoriesFound = await _serverService.GetAllPaginatedAsync(model);
 
                 return new GetAllPaginatedServerCommandResponse(
                     new ServerGetAllPaginatedResponse
@@ -310,18 +307,19 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
                         Data = new ServerGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = serversFound.Select(server => new ServerGetAllPaginated
+                            Rows = repositoriesFound.Select(server => new ServerGetAllPaginated
                             {
                                 Id = server.id,
                                 Code = server.server_code,
                                 Name = server.server_name,
                                 TypeServerId = server.type_id,
+                                TypeServerName = server.type_name,
                                 Url = server.server_url,
-                                StatusId = server.status_id
-
+                                StatusId = server.status_id,
+                                StatusName = server.status_name
+                                
                             }).ToList()
                         }
-
                     });
             }
             catch (OrchestratorArgumentException ex)
