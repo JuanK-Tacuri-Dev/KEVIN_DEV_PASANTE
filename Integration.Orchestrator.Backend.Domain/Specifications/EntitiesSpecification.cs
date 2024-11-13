@@ -100,9 +100,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return x => true && x.type_id == typeId;
         }
 
-        public static Expression<Func<EntitiesEntity, bool>> GetByRepositoryIdExpression(Guid repositoryId)
+        public static Expression<Func<EntitiesEntity, bool>> GetByRepositoryIdExpression(Guid repositoryId, Guid idStatusActive)
         {
-            return x => true && x.repository_id == repositoryId;
+            return x => true && x.repository_id == repositoryId && x.status_id== idStatusActive;
         }
                 
         public static Expression<Func<EntitiesEntity, bool>> GetByNameAndRepositoryIdExpression(string name, Guid repositoryId)

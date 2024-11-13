@@ -9,7 +9,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
     [ExcludeFromCodeCoverage]
     [Repository]
-    public class SynchronizationStatesRepository(IMongoCollection<SynchronizationStatusEntity> collection) 
+    public class SynchronizationStatesRepository(IMongoCollection<SynchronizationStatusEntity> collection)
         : ISynchronizationStatesRepository<SynchronizationStatusEntity>
     {
         private readonly IMongoCollection<SynchronizationStatusEntity> _collection = collection;
@@ -46,6 +46,14 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return synchronizationStatesEntity;
         }
 
+        public async Task<IEnumerable<SynchronizationStatusEntity>> GetByKeysAsync(Expression<Func<SynchronizationStatusEntity, bool>> specification)
+        {
+            var filter = Builders<SynchronizationStatusEntity>.Filter.Where(specification);
+            var synchronizationStatesEntity = await _collection
+                .Find(filter)
+                .ToListAsync();
+            return synchronizationStatesEntity;
+        }
         public async Task<SynchronizationStatusEntity> GetByKeyAsync(Expression<Func<SynchronizationStatusEntity, bool>> specification)
         {
             var filter = Builders<SynchronizationStatusEntity>.Filter.Where(specification);

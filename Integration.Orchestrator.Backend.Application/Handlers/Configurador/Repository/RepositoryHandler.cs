@@ -89,12 +89,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
 
                 var relationConnectionActive = await _connectionService.GetByRepositoryIdAsync(repositoryMap.id, idstatusActive);
                 
-                var relationEntitynActive = false;
-                var relationEntitys = await _entitiesService.GetByRepositoryIdAsync(repositoryMap.id);
-                if (relationEntitys != null && relationEntitys.Any())
-                    relationEntitynActive = relationEntitys.FirstOrDefault( x=>x.status_id == idstatusActive)!= null;
 
-                if (!statusIsActive && (relationConnectionActive != null || relationEntitynActive))
+                var relationEntitys = await _entitiesService.GetByRepositoryIdAsync(repositoryMap.id, await _statusService.GetIdActiveStatus());
+
+                if (!statusIsActive && (relationConnectionActive != null || relationEntitys!= null))
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()

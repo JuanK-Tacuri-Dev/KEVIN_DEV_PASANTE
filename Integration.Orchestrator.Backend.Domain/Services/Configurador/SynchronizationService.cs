@@ -74,9 +74,9 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
             return await _synchronizationRepository.GetTotalRows(spec);
         }
 
-        public async Task<SynchronizationEntity> GetByIntegrationIdAsync(Guid idIntegration, Guid idStatusActive)
+        public async Task<SynchronizationEntity> GetByIntegrationIdAsync(Guid idIntegration, Guid IdStatusCanceled)
         {
-            var specification = SynchronizationSpecification.GetByIntegrationIdExpression(idIntegration,idStatusActive);
+            var specification = SynchronizationSpecification.GetByIntegrationIdExpression(idIntegration, IdStatusCanceled);
             return await _synchronizationRepository.GetByIdAsync(specification);
         }
 

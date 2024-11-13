@@ -8,6 +8,7 @@ namespace Integration.Orchestrator.Backend.Domain.Ports.Configurador
         Task InsertAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
+        Task<IEnumerable<T>> GetByKeysAsync(Expression<Func<T, bool>> specification);
         Task<T> GetByIdAsync(Expression<Func<T, bool>> specification);
         Task<T> GetByKeyAsync(Expression<Func<T, bool>> specification);
         Task<IEnumerable<T>> GetAllAsync(ISpecification<T> specification);

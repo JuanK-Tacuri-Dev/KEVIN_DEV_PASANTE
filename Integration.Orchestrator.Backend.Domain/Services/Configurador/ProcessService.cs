@@ -44,6 +44,17 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
             var specification = ProcessSpecification.GetByIdExpression(id);
             return await _processRepository.GetByIdAsync(specification);
         }
+
+        public async Task<IEnumerable<ProcessEntity>> GetByEntityActiveIdAsync(Guid idEntity, Guid idStatusActive)
+        {
+            var specification = ProcessSpecification.GetByEntityIdAsync(idEntity,idStatusActive);
+            return await _processRepository.GetByEntitiesIdAsync(specification);
+        }
+        public async Task<IEnumerable<ProcessEntity>> GetByPropertyActiveIdAsync(Guid idProperty, Guid idStatusActive)
+        {
+            var specification = ProcessSpecification.GetByPropertyIdAsync(idProperty, idStatusActive);
+            return await _processRepository.GetByPropertiesIdAsync(specification);
+        }
         public async Task<ProcessEntity> GetByConnectionIdAsync(Guid connectionid, Guid idStatusActive)
         {
             var specification = ProcessSpecification.GetByConnectionIdAsync(connectionid, idStatusActive);

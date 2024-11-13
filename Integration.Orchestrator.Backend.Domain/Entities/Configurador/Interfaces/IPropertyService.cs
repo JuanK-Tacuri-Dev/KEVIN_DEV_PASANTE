@@ -10,7 +10,7 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfac
         Task<T> GetByIdAsync(Guid id);
         Task<T> GetByCodeAsync(string code);
         Task<IEnumerable<T>> GetByTypeIdAsync(Guid typeId);
-        Task<IEnumerable<T>> GetByEntitysIdAsync(Guid entityId);
+        Task<IEnumerable<T>> GetByEntitysIdAsync(Guid entityId, Guid idStatusActive);
         Task<T> GetByEntityIdAsync(Guid entityId,Guid idStatusActive);
         Task<IEnumerable<T>> GetAllPaginatedAsync(PaginatedModel paginatedModel);
         Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel);

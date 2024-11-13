@@ -92,5 +92,21 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .CountDocumentsAsync();
         }
 
+        public async Task<IEnumerable<ProcessEntity>> GetByEntitiesIdAsync(Expression<Func<ProcessEntity, bool>> specification)
+        {
+            var filter = Builders<ProcessEntity>.Filter.Where(specification);
+            var processEntity = await _collection
+                .Find(filter).ToListAsync();
+            return processEntity;
+        }
+
+        public async Task<IEnumerable<ProcessEntity>> GetByPropertiesIdAsync(Expression<Func<ProcessEntity, bool>> specification)
+        {
+            var filter = Builders<ProcessEntity>.Filter.Where(specification);
+            var processEntity = await _collection
+                .Find(filter)
+                .ToListAsync();
+            return processEntity;
+        }
     }
 }

@@ -63,9 +63,9 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
             var specification = PropertySpecification.GetByEntityActiveExpression(entityId, idStatusActive);
             return await _propertyRepository.GetByEntityAsync(specification);
         }
-        public async Task<IEnumerable<PropertyEntity>> GetByEntitysIdAsync(Guid entityId)
+        public async Task<IEnumerable<PropertyEntity>> GetByEntitysIdAsync(Guid entityId, Guid idStatusActive)
         {
-            var specification = PropertySpecification.GetByEntityExpression(entityId);
+            var specification = PropertySpecification.GetByEntityExpression(entityId, idStatusActive);
             return await _propertyRepository.GetByEntitysAsync(specification);
         }
 

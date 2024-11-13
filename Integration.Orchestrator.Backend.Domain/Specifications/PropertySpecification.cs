@@ -105,9 +105,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return x => true && x.entity_id == entityId && x.status_id==idStatusActive;
         }
-        public static Expression<Func<PropertyEntity, bool>> GetByEntityExpression(Guid entityId)
+        public static Expression<Func<PropertyEntity, bool>> GetByEntityExpression(Guid entityId, Guid idStatusActive)
         {
-            return x => true && x.entity_id == entityId;
+            return x => true && x.entity_id == entityId && x.status_id == idStatusActive;
         }
         public static Expression<Func<PropertyEntity, bool>> GetByNameAndEntityIdExpression(string name, Guid entityId)
         {
