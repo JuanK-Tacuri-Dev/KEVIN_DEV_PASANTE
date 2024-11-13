@@ -3,8 +3,10 @@
 namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Server
 {
     [ExcludeFromCodeCoverage]
-    public class ServerGetAllPaginatedResponse : ModelResponseGetAll<ServerGetAllRows> { }
+    public class ServerGetAllPaginatedResponse : ModelResponseGetAll<ServerGetAllRows>
+    {
 
+    }
 
     [ExcludeFromCodeCoverage]
     public class ServerGetAllRows

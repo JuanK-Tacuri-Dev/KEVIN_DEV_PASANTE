@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Application.Models.Configurador.Server;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Server.ServerCommands;
 
@@ -66,8 +67,12 @@ namespace Integration.Orchestrator.Backend.Api.Controllers.v1.Configurador
         [HttpPost]
         public async Task<IActionResult> GetAllPaginated(ServerGetAllPaginatedRequest request)
         {
-            return Ok((await _mediator.Send(
-                new GetAllPaginatedServerCommandRequest(request))).Message);
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            var response = (await _mediator.Send(
+                new GetAllPaginatedServerCommandRequest(request))).Message;
+            stopwatch.Stop();
+            TimeSpan tiempoTranscurrido = stopwatch.Elapsed;
+            return Ok(response);
         }
     }
 }
