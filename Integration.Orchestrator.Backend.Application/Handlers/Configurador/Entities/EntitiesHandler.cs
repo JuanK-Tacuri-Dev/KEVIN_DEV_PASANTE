@@ -15,8 +15,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
     [ExcludeFromCodeCoverage]
     public class EntitiesHandler(
         IEntitiesService<EntitiesEntity> entitiesService, 
-        IPropertyService<PropertyEntity> propertyService, 
-        IStatusService<StatusEntity> statusService, IRepositoryService<RepositoryEntity> repositoryService)
+        IPropertyService<PropertyEntity> propertyService,
+        IProcessService<ProcessEntity> processService,
+        IStatusService<StatusEntity> statusService, 
+        IRepositoryService<RepositoryEntity> repositoryService)
     #region MediateR
         :
         IRequestHandler<CreateEntitiesCommandRequest, CreateEntitiesCommandResponse>,
@@ -31,6 +33,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
         #endregion
         private readonly IEntitiesService<EntitiesEntity> _entitiesService = entitiesService;
         private readonly IPropertyService<PropertyEntity> _propertyService = propertyService;
+        private readonly IProcessService<ProcessEntity> _processService = processService;
         private readonly IStatusService<StatusEntity> _statusService = statusService;
         private readonly IRepositoryService<RepositoryEntity> _repositoryService = repositoryService;
 
@@ -85,7 +88,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
                 var StatusIsActive = await _statusService.GetStatusIsActive(entitiesMap.status_id);
                 var RelationPropertyActive = await _propertyService.GetByEntityIdAsync(entitiesMap.id, await _statusService.GetIdActiveStatus());
 
-                if (!StatusIsActive && RelationPropertyActive!=null)
+                var RelationProcessActive = await _processService.GetByEntityActiveIdAsync(entitiesMap.id, await _statusService.GetIdActiveStatus());
+
+
+
+                if (!StatusIsActive && (RelationPropertyActive!=null || RelationProcessActive!= null ))
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                     new DetailsArgumentErrors()
@@ -300,7 +307,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
         {
             try
             {
-                var entitiesFound = await _entitiesService.GetByRepositoryIdAsync(request.Entities.RepositoryId);
+                var entitiesFound = await _entitiesService.GetByRepositoryIdAsync(request.Entities.RepositoryId, await _statusService.GetIdActiveStatus());
                 if (entitiesFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()

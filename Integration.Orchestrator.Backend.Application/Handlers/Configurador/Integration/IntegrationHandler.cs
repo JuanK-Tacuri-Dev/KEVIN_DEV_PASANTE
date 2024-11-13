@@ -16,6 +16,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.In
         IIntegrationService<IntegrationEntity> integrationService,
         IProcessService<ProcessEntity> processService,
         ISynchronizationService<SynchronizationEntity> synchronizationService,
+        ISynchronizationStatesService<SynchronizationStatusEntity> synchronizationStatesService,
         IStatusService<StatusEntity> statusService)
     #region MediateR
         :
@@ -28,6 +29,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.In
         #endregion
         private readonly IIntegrationService<IntegrationEntity> _integrationService = integrationService;
         private readonly IProcessService<ProcessEntity> _processService = processService;
+        private readonly ISynchronizationStatesService<SynchronizationStatusEntity> _synchronizationStatesService = synchronizationStatesService;
         private readonly ISynchronizationService<SynchronizationEntity> _synchronizationService = synchronizationService;
         private readonly IStatusService<StatusEntity> _statusService = statusService;
         public async Task<CreateIntegrationCommandResponse> Handle(CreateIntegrationCommandRequest request, CancellationToken cancellationToken)
@@ -82,7 +84,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.In
 
                 var integrationMap = MapIntegration(request.Integration.IntegrationRequest, request.Id);
                 var StatusIsActive = await _statusService.GetStatusIsActive(integrationMap.status_id);
-                var RelationConectionActive = await _synchronizationService.GetByIntegrationIdAsync(integrationMap.id, await _statusService.GetIdActiveStatus());
+                var RelationConectionActive = await _synchronizationService.GetByIntegrationIdAsync(integrationMap.id, await _synchronizationStatesService.GetStatusIdSyncronization());
 
 
                 if (!StatusIsActive && RelationConectionActive!= null)

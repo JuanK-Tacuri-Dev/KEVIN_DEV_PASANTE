@@ -106,6 +106,15 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return x => x.connection_id == connectionid && x.status_id== idStatusActive;
         }
 
+        public static Expression<Func<ProcessEntity, bool>> GetByEntityIdAsync(Guid Entityid,Guid idStatusActive)
+        {
+            return x => x.entities.Any(e => e.id == Entityid) && x.status_id== idStatusActive;
+        }
+        public static Expression<Func<ProcessEntity, bool>> GetByPropertyIdAsync(Guid Propertyid,Guid idStatusActive)
+        {
+            return x => x.entities.Any(e => e.Properties.Any(p=>p.property_id == Propertyid)) && x.status_id== idStatusActive;
+        }
+
 
     }
 }

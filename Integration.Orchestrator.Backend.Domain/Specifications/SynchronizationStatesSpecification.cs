@@ -93,6 +93,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return x => true && x.synchronization_status_key == key;
         }
+        public static Expression<Func<SynchronizationStatusEntity, bool>> GetByStatusIdExpression(string [] CodeStatus)
+        {
+            return x => true && CodeStatus.Contains(x.synchronization_status_key);
+        }
+
 
     }
 }

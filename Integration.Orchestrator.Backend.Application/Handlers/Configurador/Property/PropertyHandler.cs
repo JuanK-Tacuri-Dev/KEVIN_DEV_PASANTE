@@ -4,7 +4,6 @@ using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
-using Integration.Orchestrator.Backend.Domain.Services.Configurador;
 using Mapster;
 using MediatR;
 using System.Diagnostics.CodeAnalysis;
@@ -16,6 +15,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
     public class PropertyHandler(
         IPropertyService<PropertyEntity> propertyService,
         IEntitiesService<EntitiesEntity> entitiesService,
+        IProcessService<ProcessEntity> processService,
         IStatusService<StatusEntity> statusService)
     #region MediateR
         :
@@ -31,6 +31,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
         #endregion
         private readonly IEntitiesService<EntitiesEntity> _entitiesService = entitiesService;
         private readonly IPropertyService<PropertyEntity> _propertyService = propertyService;
+        private readonly IProcessService<ProcessEntity> _processService = processService;
         private readonly IStatusService<StatusEntity> _statusService = statusService;
         public async Task<CreatePropertyCommandResponse> Handle(CreatePropertyCommandRequest request, CancellationToken cancellationToken)
         {
@@ -81,6 +82,20 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
 
                 var propertyMap = MapProperty(request.Property.PropertyRequest, request.Id);
                 var StatusIsActive = await _statusService.GetStatusIsActive(propertyMap.status_id);
+
+                var RelationProcessActive = await _processService.GetByPropertyActiveIdAsync(propertyMap.id, await _statusService.GetIdActiveStatus());
+
+                if (!StatusIsActive &&  RelationProcessActive!=null)
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                       new DetailsArgumentErrors()
+                       {
+                           Code = (int)ResponseCode.NotDeleteDueToRelationship,
+                           Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotDeleteDueToRelationship),
+                           Data = request.Property
+                       });
+                }
+
                 if (StatusIsActive)
                 {
                     var entityFound = await _entitiesService.GetByIdAsync(propertyMap.entity_id);
@@ -97,7 +112,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
                     }
                 }
                 await _propertyService.UpdateAsync(propertyMap);
-              
+
                 return new UpdatePropertyCommandResponse(
                         new PropertyUpdateResponse
                         {
@@ -285,7 +300,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
         {
             try
             {
-                var propertyFound = await _propertyService.GetByEntitysIdAsync(request.Property.EntityId);
+                var propertyFound = await _propertyService.GetByEntitysIdAsync(request.Property.EntityId, await _statusService.GetIdActiveStatus());
                 if (propertyFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()

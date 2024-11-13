@@ -80,5 +80,18 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
                 }
             }
         }
-    }
+
+        private async Task<IEnumerable<SynchronizationStatusEntity>> GetStatusIdSyncronization(string[] CodeStatus)
+        {
+            var specification = SynchronizationStatesSpecification.GetByStatusIdExpression(CodeStatus);
+            return await _synchronizationStatesStatesRepository.GetByKeysAsync(specification);
+        }
+
+        public async Task<Guid> GetStatusIdSyncronization()
+        {
+            var SytatusKey = await GetStatusIdSyncronization([Constants.SynchronizationStatesKey.Cancelado]);
+            return SytatusKey.FirstOrDefault().id;
+
+        }
+    }   
 }
