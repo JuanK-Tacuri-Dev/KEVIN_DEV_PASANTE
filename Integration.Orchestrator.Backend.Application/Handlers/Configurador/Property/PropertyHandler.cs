@@ -85,7 +85,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
 
                 var RelationProcessActive = await _processService.GetByPropertyActiveIdAsync(propertyMap.id, await _statusService.GetIdActiveStatus());
 
-                if (!StatusIsActive &&  RelationProcessActive!=null)
+                if (!StatusIsActive &&  (RelationProcessActive!=null && RelationProcessActive.Count()>0))
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                        new DetailsArgumentErrors()

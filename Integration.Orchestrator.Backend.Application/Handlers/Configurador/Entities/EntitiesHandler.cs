@@ -90,9 +90,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
 
                 var RelationProcessActive = await _processService.GetByEntityActiveIdAsync(entitiesMap.id, await _statusService.GetIdActiveStatus());
 
-
-
-                if (!StatusIsActive && (RelationPropertyActive!=null || RelationProcessActive!= null ))
+                if (!StatusIsActive && (RelationPropertyActive!=null || (RelationProcessActive!= null && RelationProcessActive.Count()>0)))
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                     new DetailsArgumentErrors()
