@@ -92,7 +92,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
 
                 var relationEntitys = await _entitiesService.GetByRepositoryIdAsync(repositoryMap.id, await _statusService.GetIdActiveStatus());
 
-                if (!statusIsActive && (relationConnectionActive != null || relationEntitys!= null))
+                if (!statusIsActive && (relationConnectionActive != null || (relationEntitys!= null && relationEntitys.Count()>0)))
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()
