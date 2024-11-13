@@ -101,13 +101,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                     foreignField: "_id",
                     @as: "CatalogData"
                 )
-                .Lookup(
-                    foreignCollectionName: "Integration_Status",
-                    localField: "status_id",
-                    foreignField: "_id",
-                    @as: "StatusData"
-                )
-                .Unwind<BsonDocument>("CatalogData", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true });
+                .Unwind("CatalogData", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true });
 
             // Definición de ordenamiento
             var sortDefinitionBuilder = Builders<BsonDocument>.Sort;
@@ -118,10 +112,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
             if (orderByField == "type_id")
                 sortDefinition = specification.OrderBy != null ? sortDefinitionBuilder.Ascending("CatalogData.catalog_name") :
-                                                                 sortDefinitionBuilder.Descending("CatalogData.catalog_name");
-            else if (orderByField == "status_id")
-                sortDefinition = specification.OrderBy != null ? sortDefinitionBuilder.Ascending("StatusData.status_text") :
-                                                                 sortDefinitionBuilder.Descending("StatusData.status_text");
+                                                               sortDefinitionBuilder.Descending("StatusData.status_text");
             else if (orderByField != null)
             {
                 // Ordenamiento para cualquier otro campo que no sea UUID
@@ -138,7 +129,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             // Aplicamos el ordenamiento y la paginación
             query = query.Sort(sortDefinition);
 
-            if (specification.Skip >= 0)
+            if (specification.Limit > 0)
                 query = query.Skip(specification.Skip).Limit(specification.Limit);
 
             // Proyección
@@ -149,8 +140,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .Include("type_id")
                 .Include("server_url")
                 .Include("status_id")
-                .Include("CatalogData.catalog_name")
-                .Include("StatusData.status_text");
+                .Include("CatalogData.catalog_name");
 
             // Ejecutar y proyectar a `ServerResponseModel`
             var result = await query.Project<BsonDocument>(projection).ToListAsync();
@@ -159,13 +149,11 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 id = bson["_id"].AsGuid,
                 server_code = bson["server_code"].AsString,
                 server_name = bson["server_name"].AsString,
-                type_id = bson["type_id"].IsBsonNull ? (Guid?)null : bson["type_id"].AsGuid,
+                type_id = bson["type_id"].IsBsonNull ? null : bson["type_id"].AsGuid,
                 server_url = bson["server_url"].AsString,
                 status_id = bson["status_id"].AsGuid,
                 type_name = bson.Contains("CatalogData") && bson["CatalogData"].IsBsonDocument
-                            ? bson["CatalogData"]["catalog_name"].AsString : null,
-                status_name = bson.Contains("StatusData") && bson["StatusData"].IsBsonArray
-                            ? bson["StatusData"].AsBsonArray.FirstOrDefault()?.AsBsonDocument?.GetValue("status_text", BsonNull.Value).AsString : null
+                            ? bson["CatalogData"]["catalog_name"].AsString : null
             });
         }
 

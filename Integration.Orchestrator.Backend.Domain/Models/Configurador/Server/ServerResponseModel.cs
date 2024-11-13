@@ -9,6 +9,5 @@
         public string? type_name { get; set; }
         public string server_url { get; set; }
         public Guid status_id { get; set; }
-        public string? status_name { get; set; }
     }
 }

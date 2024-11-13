@@ -315,8 +315,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
                                 TypeServerId = server.type_id,
                                 TypeServerName = server.type_name,
                                 Url = server.server_url,
-                                StatusId = server.status_id,
-                                StatusName = server.status_name
+                                StatusId = server.status_id
                                 
                             }).ToList()
                         }
