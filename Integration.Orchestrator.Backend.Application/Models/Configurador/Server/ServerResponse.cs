@@ -12,7 +12,6 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Serve
         public string? TypeServerName { get; set; }
         public string Url { get; set; }
         public Guid StatusId { get; set; }
-        public string? StatusName { get; set; }
 
     }
 }
