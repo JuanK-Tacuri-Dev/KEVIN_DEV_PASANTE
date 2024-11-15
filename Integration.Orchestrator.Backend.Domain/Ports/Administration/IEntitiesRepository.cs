@@ -1,4 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador.Entity;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using System.Linq.Expressions;
 
@@ -13,7 +14,7 @@ namespace Integration.Orchestrator.Backend.Domain.Ports.Configurador
         Task<T> GetByCodeAsync(Expression<Func<T, bool>> specification);
         Task<IEnumerable<T>> GetByTypeIdAsync(Expression<Func<T, bool>> specification);
         Task<IEnumerable<T>> GetByRepositoryIdAsync(Expression<Func<T, bool>> specification);
-        Task<IEnumerable<T>> GetAllAsync(ISpecification<T> specification);
+        Task<IEnumerable<EntityResponseModel>> GetAllAsync(ISpecification<T> specification);
         public Task<long> GetTotalRows(ISpecification<T> specification);
         Task<bool> GetRepositoryAndNameExists(EntitiesEntity entity);
     }
