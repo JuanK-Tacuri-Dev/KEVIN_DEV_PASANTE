@@ -76,6 +76,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .ToListAsync();
             return entitiesEntity;
         }
+        
         public async Task<bool> GetRepositoryAndNameExists(EntitiesEntity entity)
         {
             FilterDefinition<EntitiesEntity> filters;
@@ -124,7 +125,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
             if (orderByField == "type_id")
                 sortDefinition = specification.OrderBy != null ? sortDefinitionBuilder.Ascending("CatalogData.catalog_name") :
-                                                               sortDefinitionBuilder.Descending("StatusData.status_text");
+                                                               sortDefinitionBuilder.Descending("CatalogData.catalog_name");
             else if (orderByField != null)
             {
                 // Ordenamiento para cualquier otro campo que no sea UUID
@@ -180,6 +181,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .Find(specification.Criteria)
                 .CountDocumentsAsync();
         }
+        
         public static string GetPropertyName<T>(Expression<Func<T, object>> expression)
         {
             if (expression.Body is MemberExpression member)
@@ -195,6 +197,5 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             throw new ArgumentException("Invalid expression");
         }
 
-  
     }
 }
