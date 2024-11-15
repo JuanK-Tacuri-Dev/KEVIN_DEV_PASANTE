@@ -94,12 +94,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             var filter = Builders<EntitiesEntity>.Filter.Where(specification.Criteria);
 
-            /*  var query = _collection
-                  .Find(filter)
-                  .Sort(specification.OrderBy != null
-                      ? Builders<EntitiesEntity>.Sort.Ascending(specification.OrderBy)
-                      : Builders<EntitiesEntity>.Sort.Descending(specification.OrderByDescending));
-*/
             var query = _collection.Aggregate()
                  .Match(filter)
                  .Lookup(
@@ -126,6 +120,9 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             if (orderByField == "type_id")
                 sortDefinition = specification.OrderBy != null ? sortDefinitionBuilder.Ascending("CatalogData.catalog_name") :
                                                                sortDefinitionBuilder.Descending("CatalogData.catalog_name");
+            else if(orderByField == "repository_id")
+                sortDefinition = specification.OrderBy != null ? sortDefinitionBuilder.Ascending("RepositoryData.repository_databaseName") :
+                                                               sortDefinitionBuilder.Descending("RepositoryData.repository_databaseName");
             else if (orderByField != null)
             {
                 // Ordenamiento para cualquier otro campo que no sea UUID
