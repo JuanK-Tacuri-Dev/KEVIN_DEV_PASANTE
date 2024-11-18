@@ -10,31 +10,39 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         public Expression<Func<ServerEntity, bool>> Criteria { get; set; }
 
         public Expression<Func<ServerEntity, object>> OrderBy { get; private set; }
-        
+        public List<LookupSpecification<ServerEntity>> Includes { get; } = [];
+
         public Expression<Func<ServerEntity, object>> OrderByDescending { get; private set; }
 
         public int Skip { get; private set; }
 
         public int Limit { get; private set; }
-       
+
         public ServerSpecification(PaginatedModel paginatedModel)
         {
             Criteria = BuildCriteria(paginatedModel);
             SetupPagination(paginatedModel);
             SetupOrdering(paginatedModel);
+            SetupIncludes();
         }
 
-        private static readonly Dictionary<string, Expression<Func<ServerEntity, object>>> sortExpressions 
-            = new Dictionary<string, Expression<Func<ServerEntity, object>>>
+        private static readonly Dictionary<string, Expression<Func<ServerEntity, object>>> sortExpressions = new()
         {
-            { nameof(ServerEntity.server_code).Split("_")[1], x => x.server_code },
-            { nameof(ServerEntity.server_name).Split("_")[1], x => x.server_name },
-            { nameof(ServerEntity.server_url).Split("_")[1], x => x.server_url },
+            { GetSafeKey(nameof(ServerEntity.server_code), 1), x => x.server_code },
+            { GetSafeKey(nameof(ServerEntity.server_name), 1), x => x.server_name },
+            { GetSafeKey(nameof(ServerEntity.server_url), 1), x => x.server_url },
             { "typeServerId", x => x.type_id },
             { "statusId", x => x.status_id },
-            { nameof(ServerEntity.updated_at).Split("_")[0], x => x.updated_at },
-            { nameof(ServerEntity.created_at).Split("_")[0], x => x.created_at }
+            { GetSafeKey(nameof(ServerEntity.updated_at), 0), x => x.updated_at },
+            { GetSafeKey(nameof(ServerEntity.created_at), 0), x => x.created_at }
         };
+
+        private static string GetSafeKey(string propertyName, int index)
+        {
+            var parts = propertyName.Split('_');
+            return parts.Length > index ? parts[index] : propertyName;
+        }
+
         private void SetupPagination(PaginatedModel model)
         {
             if (model.Rows > 0)
@@ -72,6 +80,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             criteria = AddSearchCriteria(criteria, paginatedModel.Search);
 
             return criteria;
+        }
+
+        private void SetupIncludes()
+        {
+            Includes.Add(new LookupSpecification<ServerEntity> { Collection = "Integration_Catalog", LocalField = "type_id", ForeignField = "_id", As = "CatalogData" });
         }
 
         private Expression<Func<ServerEntity, bool>> AddSearchCriteria(Expression<Func<ServerEntity, bool>> criteria, string search)

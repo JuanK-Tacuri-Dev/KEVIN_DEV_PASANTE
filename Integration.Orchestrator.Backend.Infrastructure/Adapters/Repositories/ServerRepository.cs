@@ -4,8 +4,10 @@ using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
@@ -84,55 +86,43 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return await query.ToListAsync();
         }
 
-
         public async Task<IEnumerable<ServerResponseModel>> GetAllAsync(ISpecification<ServerEntity> specification)
         {
             var filterBuilder = Builders<ServerEntity>.Filter;
 
-            // Filtro principal según la especificación
+            // Construir filtro principal desde la especificación
             var filter = filterBuilder.Where(specification.Criteria);
 
-            // Configuración de la consulta de agregación
-            var query = _collection.Aggregate()
-                .Match(filter)
-                .Lookup(
-                    foreignCollectionName: "Integration_Catalog",
-                    localField: "type_id",
-                    foreignField: "_id",
-                    @as: "CatalogData"
-                )
-                .Unwind("CatalogData", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true });
+            // Configurar collation
+            var collation = new Collation("en", strength: CollationStrength.Secondary);
 
-            // Definición de ordenamiento
-            var sortDefinitionBuilder = Builders<BsonDocument>.Sort;
-            SortDefinition<BsonDocument> sortDefinition = sortDefinitionBuilder.Ascending("updated_at");
+            // Inicializar el pipeline de agregación con filtro y unwind
+            var aggregation = _collection.Aggregate(new AggregateOptions { Collation = collation })
+                                         .Match(filter)
+                                         .Unwind("CatalogData", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true });
 
-            string? orderByField = specification.OrderBy != null ? GetPropertyName(specification.OrderBy) :
-                                  specification.OrderByDescending != null ? GetPropertyName(specification.OrderByDescending) : null;
+            // Obtener el campo de ordenamiento según la especificación
+            string? orderByField = specification.OrderBy != null
+                ? SortExpressionConfiguration<ServerEntity>.GetPropertyName(specification.OrderBy)
+                : specification.OrderByDescending != null
+                    ? SortExpressionConfiguration<ServerEntity>.GetPropertyName(specification.OrderByDescending)
+                    : null;
 
-            if (orderByField == "type_id")
-                sortDefinition = specification.OrderBy != null ? sortDefinitionBuilder.Ascending("CatalogData.catalog_name") :
-                                                               sortDefinitionBuilder.Descending("StatusData.status_text");
-            else if (orderByField != null)
+            // Configurar el ordenamiento
+            var sortDefinition = GetSortDefinition(orderByField, specification.OrderBy != null);
+
+            // Aplicar joins si hay especificaciones de include
+            if (specification.Includes != null)
             {
-                // Ordenamiento para cualquier otro campo que no sea UUID
-                sortDefinition = specification.OrderBy != null ? sortDefinitionBuilder.Ascending(orderByField) :
-                                                                 sortDefinitionBuilder.Descending(orderByField);
-            }
-            else
-            {
-                // Ordenamiento por defecto si no se especifica ningún campo
-                sortDefinition = sortDefinitionBuilder.Ascending("updated_at");
+                foreach (var join in specification.Includes)
+                {
+                    aggregation = aggregation.Lookup(join.Collection, join.LocalField, join.ForeignField, join.As);
+                }
             }
 
+            aggregation = aggregation.Sort(sortDefinition);
 
-            // Aplicamos el ordenamiento y la paginación
-            query = query.Sort(sortDefinition);
-
-            if (specification.Limit > 0)
-                query = query.Skip(specification.Skip).Limit(specification.Limit);
-
-            // Proyección
+            // Configurar proyección
             var projection = Builders<BsonDocument>.Projection
                 .Include("_id")
                 .Include("server_code")
@@ -142,20 +132,15 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .Include("status_id")
                 .Include("CatalogData.catalog_name");
 
-            // Ejecutar y proyectar a `ServerResponseModel`
-            var result = await query.Project<BsonDocument>(projection).ToListAsync();
-            return result.Select(bson => new ServerResponseModel
-            {
-                id = bson["_id"].AsGuid,
-                server_code = bson["server_code"].AsString,
-                server_name = bson["server_name"].AsString,
-                type_id = bson["type_id"].IsBsonNull ? null : bson["type_id"].AsGuid,
-                server_url = bson["server_url"].AsString,
-                status_id = bson["status_id"].AsGuid,
-                type_name = bson.Contains("CatalogData") && bson["CatalogData"].IsBsonDocument
-                            ? bson["CatalogData"]["catalog_name"].AsString : null
-            });
+            // Ejecutar agregación y obtener resultados
+            var result = await aggregation.Project<BsonDocument>(projection).ToListAsync();
+
+            // Mapear resultados a ServerResponseModel
+            var data = result.Select(MapToServerResponseModel);
+
+            return data;
         }
+
 
         public async Task<long> GetTotalRows(ISpecification<ServerEntity> specification)
         {
@@ -176,19 +161,53 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return count >= 1;
         }
 
-        public static string GetPropertyName<T>(Expression<Func<T, object>> expression)
+
+        #region Metodos Privados
+
+        // Método para obtener la definición de ordenamiento si 
+        private SortDefinition<BsonDocument> GetSortDefinition(string? orderByField, bool isAscending)
         {
-            if (expression.Body is MemberExpression member)
+            var sortDefinitionBuilder = Builders<BsonDocument>.Sort;
+
+            // Diccionario para mapear campos de ordenamiento específicos
+            var sortMapping = new Dictionary<string, string>
             {
-                return member.Member.Name;
+                { "type_id", "CatalogData.catalog_name" }
+            };
+
+            // Si no se especifica un campo, usar el predeterminado
+            if (orderByField == null)
+            {
+                return sortDefinitionBuilder.Ascending("updated_at");
             }
 
-            if (expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression memberExpr)
-            {
-                return memberExpr.Member.Name;
-            }
+            // Intentar obtener el campo correspondiente del diccionario
+            var sortField = sortMapping.ContainsKey(orderByField) ? sortMapping[orderByField] : orderByField;
 
-            throw new ArgumentException("Invalid expression");
+            // Retornar la definición de orden
+            return isAscending
+                ? sortDefinitionBuilder.Ascending(sortField)
+                : sortDefinitionBuilder.Descending(sortField);
         }
+
+        // Método para mapear un BsonDocument a ServerResponseModel
+        private ServerResponseModel MapToServerResponseModel(BsonDocument bson)
+        {
+            return new ServerResponseModel
+            {
+                id = bson["_id"].AsGuid,
+                server_code = bson["server_code"].AsString,
+                server_name = bson["server_name"].AsString,
+                type_id = bson["type_id"].IsBsonNull ? null : bson["type_id"].AsGuid,
+                server_url = bson["server_url"].AsString,
+                status_id = bson["status_id"].AsGuid,
+                type_name = bson.TryGetValue("CatalogData", out var catalogData) && catalogData.IsBsonArray
+                    ? catalogData.AsBsonArray.FirstOrDefault()?["catalog_name"].AsString
+                    : null
+            };
+        }
+
+        #endregion
+
     }
 }

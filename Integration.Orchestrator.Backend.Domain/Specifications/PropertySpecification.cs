@@ -9,6 +9,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
     {
         public Expression<Func<PropertyEntity, bool>> Criteria { get; set; }
 
+        public List<LookupSpecification<PropertyEntity>> Includes { get; } = [];
         public Expression<Func<PropertyEntity, object>> OrderBy { get; private set; }
         
         public Expression<Func<PropertyEntity, object>> OrderByDescending { get; private set; }

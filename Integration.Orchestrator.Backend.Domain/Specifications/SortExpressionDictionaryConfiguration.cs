@@ -31,6 +31,19 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
         }
 
+        public static string GetPropertyName<T>(Expression<Func<T, object>> expression)
+        {
+            if (expression.Body is MemberExpression member)
+            {
+                return member.Member.Name;
+            }
 
+            if (expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression memberExpr)
+            {
+                return memberExpr.Member.Name;
+            }
+
+            throw new ArgumentException("Invalid expression");
+        }
     }
 }
