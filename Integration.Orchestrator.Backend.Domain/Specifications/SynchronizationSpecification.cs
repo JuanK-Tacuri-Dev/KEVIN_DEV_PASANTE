@@ -9,6 +9,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
     {
         public Expression<Func<SynchronizationEntity, bool>> Criteria { get; private set; }
 
+        public List<LookupSpecification<SynchronizationEntity>> Includes { get; } = [];
         public Expression<Func<SynchronizationEntity, object>> OrderBy { get; private set; }
         
         public Expression<Func<SynchronizationEntity, object>> OrderByDescending { get; private set; }

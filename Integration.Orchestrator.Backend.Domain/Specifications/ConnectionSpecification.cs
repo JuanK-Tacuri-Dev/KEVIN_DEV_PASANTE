@@ -8,6 +8,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
     public class ConnectionSpecification : ISpecification<ConnectionEntity>
     {
         public Expression<Func<ConnectionEntity, bool>> Criteria { get; set; }
+        public List<LookupSpecification<ConnectionEntity>> Includes { get; } = [];
 
         public Expression<Func<ConnectionEntity, object>> OrderBy { get; private set; }
 

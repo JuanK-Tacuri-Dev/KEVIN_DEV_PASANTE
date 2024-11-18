@@ -8,7 +8,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
     public class CatalogSpecification : ISpecification<CatalogEntity>
     {
         public Expression<Func<CatalogEntity, bool>> Criteria { get; private set; }
-
+        public List<LookupSpecification<CatalogEntity>> Includes { get; } = [];
         public Expression<Func<CatalogEntity, object>> OrderBy { get; private set; }
         
         public Expression<Func<CatalogEntity, object>> OrderByDescending { get; private set; }

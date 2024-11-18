@@ -5,6 +5,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
     public interface ISpecification<T>
     {
         Expression<Func<T, bool>> Criteria { get; }
+        List<LookupSpecification<T>> Includes { get; }
         Expression<Func<T, object>> OrderBy { get; }
         Expression<Func<T, object>> OrderByDescending { get; }
         

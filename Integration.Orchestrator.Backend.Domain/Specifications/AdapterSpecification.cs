@@ -9,6 +9,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
     {
         public Expression<Func<AdapterEntity, bool>> Criteria { get;  set; }
 
+        public List<LookupSpecification<AdapterEntity>> Includes { get; } = [];
         public Expression<Func<AdapterEntity, object>> OrderBy { get; private set; }
 
         public Expression<Func<AdapterEntity, object>> OrderByDescending { get; private set; }
@@ -16,7 +17,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         public int Skip { get; private set; }
 
         public int Limit { get; private set; }
-
+       
         public AdapterSpecification(PaginatedModel paginatedModel)
         {
             Criteria = BuildCriteria(paginatedModel);
