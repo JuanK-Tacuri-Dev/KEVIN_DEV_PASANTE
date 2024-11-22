@@ -120,28 +120,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return data;
         }
 
-
-
-
-        //public async Task<IEnumerable<AdapterEntity>> GetAllAsync(ISpecification<AdapterEntity> specification)
-        //{
-        //    var filter = Builders<AdapterEntity>.Filter.Where(specification.Criteria);
-
-        //    var query = _collection
-        //        .Find(filter)
-        //        .Sort(specification.OrderBy != null
-        //            ? Builders<AdapterEntity>.Sort.Ascending(specification.OrderBy)
-        //            : Builders<AdapterEntity>.Sort.Descending(specification.OrderByDescending));
-
-        //    if (specification.Skip >= 0)
-        //    {
-        //        query = query
-        //            .Limit(specification.Limit)
-        //            .Skip(specification.Skip);
-        //    }
-        //    return await query.ToListAsync();
-        //}
-
         public async Task<long> GetTotalRows(ISpecification<AdapterEntity> specification)
         {
             return await _collection

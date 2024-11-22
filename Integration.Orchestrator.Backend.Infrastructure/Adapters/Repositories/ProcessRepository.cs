@@ -68,25 +68,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return processEntity;
         }
 
-        //public async Task<IEnumerable<ProcessEntity>> GetAllAsync(ISpecification<ProcessEntity> specification)
-        //{
-        //    var filter = Builders<ProcessEntity>.Filter.Where(specification.Criteria);
-
-        //    var query = _collection
-        //        .Find(filter)
-        //        .Sort(specification.OrderBy != null
-        //            ? Builders<ProcessEntity>.Sort.Ascending(specification.OrderBy)
-        //            : Builders<ProcessEntity>.Sort.Descending(specification.OrderByDescending));
-
-        //    if (specification.Skip >= 0)
-        //    {
-        //        query = query
-        //            .Limit(specification.Limit)
-        //            .Skip(specification.Skip);
-        //    }
-        //    return await query.ToListAsync();
-        //}
-
         public async Task<IEnumerable<ProcessResponseModel>> GetAllAsync(ISpecification<ProcessEntity> specification)
         {
             var filterBuilder = Builders<ProcessEntity>.Filter;

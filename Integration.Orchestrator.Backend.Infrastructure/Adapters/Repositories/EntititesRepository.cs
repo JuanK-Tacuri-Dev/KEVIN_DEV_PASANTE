@@ -1,13 +1,12 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador;
 using Integration.Orchestrator.Backend.Domain.Models.Configurador.Entity;
-using Integration.Orchestrator.Backend.Domain.Models.Configurador.Server;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
@@ -157,20 +156,27 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
             
             var result = await query.Project<BsonDocument>(projection).ToListAsync();
-            return result.Select(bson => new EntityResponseModel
-            {
-                id = bson["_id"].AsGuid,
-                entity_code = bson["entity_code"].AsString,
-                entity_name = bson["entity_name"].AsString,
-                type_id = bson["type_id"].AsGuid,
-                repository_id = bson["repository_id"].AsGuid,
-                status_id = bson["status_id"].AsGuid,
-                typeEntityName = bson.Contains("CatalogData") && bson["CatalogData"].IsBsonDocument
-                            ? bson["CatalogData"]["catalog_name"].AsString : null,
-                repository_name = bson.Contains("RepositoryData") && bson["RepositoryData"].IsBsonDocument
-                            ? bson["RepositoryData"]["repository_databaseName"].AsString : null
-            });
+
+            // Mapear resultados a ServerResponseModel
+            var data = result.Select(MapToResponseModel);
+            return data;
         }
+
+        private EntityResponseModel MapToResponseModel(BsonDocument bson)
+        {
+            return new EntityResponseModel
+            {
+                id = bson.GetValueOrDefault("_id", Guid.Empty),
+                type_id = bson.GetValueOrDefault("type_id", Guid.Empty),
+                repository_id = bson.GetValueOrDefault("repository_id", Guid.Empty),
+                status_id = bson.GetValueOrDefault("status_id", Guid.Empty),
+                entity_code = bson.GetValueOrDefault("entity_code", string.Empty),
+                entity_name = bson.GetValueOrDefault("entity_name", string.Empty),
+                typeEntityName = bson.GetNestedValueOrDefault("CatalogData", "catalog_name"),
+                repository_name = bson.GetNestedValueOrDefault("RepositoryData", "repository_databaseName"),
+            };
+        }
+
 
         public async Task<long> GetTotalRows(ISpecification<EntitiesEntity> specification)
         {
