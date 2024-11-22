@@ -6,6 +6,7 @@ using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Services.Configurador;
 using Mapster;
+using Mapster.Models;
 using MediatR;
 using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Entities.EntitiesCommands;
@@ -377,7 +378,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
                                 Name = entity.entity_name,
                                 Code = entity.entity_code,
                                 TypeId = entity.type_id,
+                                TypeEntityName = entity.typeEntityName,
                                 RepositoryId = entity.repository_id,
+                                RepositoryName = entity.repository_name,
                                 StatusId = entity.status_id
                             }).ToList()
                         }
