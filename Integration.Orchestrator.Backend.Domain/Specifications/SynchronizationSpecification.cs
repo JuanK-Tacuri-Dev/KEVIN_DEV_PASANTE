@@ -23,11 +23,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             Criteria = BuildCriteria(paginatedModel);
             SetupPagination(paginatedModel);
             SetupOrdering(paginatedModel);
+            SetupIncludes();
         }
 
-        private static readonly Dictionary<string, Expression<Func<SynchronizationEntity, object>>> sortExpressions 
-            = new Dictionary<string, Expression<Func<SynchronizationEntity, object>>>
-        {
+        private static readonly Dictionary<string, Expression<Func<SynchronizationEntity, object>>> sortExpressions = new()
+            {
             { nameof(SynchronizationEntity.synchronization_name).Split("_")[1], x => x.synchronization_name },
             { nameof(SynchronizationEntity.synchronization_observations).Split("_")[1], x => x.synchronization_observations },
             { nameof(SynchronizationEntity.synchronization_code).Split("_")[1], x => x.synchronization_code },
@@ -85,6 +85,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return criteria;
         }
 
+        private void SetupIncludes()
+        {
+            Includes.Add(new LookupSpecification<SynchronizationEntity> { Collection = "Integration_Catalog", LocalField = "type_id", ForeignField = "_id", As = "CatalogData" });
+        }
         public static Expression<Func<SynchronizationEntity, bool>> GetByIdExpression(Guid id)
         {
             return BaseSpecification<SynchronizationEntity>.GetByUuid(x => x.id, id);

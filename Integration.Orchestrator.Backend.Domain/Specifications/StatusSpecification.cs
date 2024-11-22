@@ -23,11 +23,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             Criteria = BuildCriteria(paginatedModel);
             SetupPagination(paginatedModel);
             SetupOrdering(paginatedModel);
+            SetupIncludes();
         }
 
-        private static readonly Dictionary<string, Expression<Func<StatusEntity, object>>> sortExpressions 
-            = new Dictionary<string, Expression<Func<StatusEntity, object>>>
-        {
+        private static readonly Dictionary<string, Expression<Func<StatusEntity, object>>> sortExpressions = new()
+            {
             { nameof(StatusEntity.status_key).Split("_")[1], x => x.status_key },
             { nameof(StatusEntity.status_text).Split("_")[1], x => x.status_text },
             { nameof(StatusEntity.status_color).Split("_")[1], x => x.status_color },
@@ -85,6 +85,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return criteria;
         }
 
+        private void SetupIncludes()
+        {
+          
+        }
         public static Expression<Func<StatusEntity, bool>> GetByIdExpression(Guid id)
         {
             return BaseSpecification<StatusEntity>.GetByUuid(x => x.id, id);

@@ -422,6 +422,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Pr
                                 TypeId = process.process_type_id,
                                 ConnectionId = process.connection_id,
                                 StatusId = process.status_id,
+                                typeProcessName = process.typeProcessName,
+                                connectionName = process.connectionName,
+                                
                                 Entities = process.entities.Select(e =>
                                 new EntityResponse
                                 {

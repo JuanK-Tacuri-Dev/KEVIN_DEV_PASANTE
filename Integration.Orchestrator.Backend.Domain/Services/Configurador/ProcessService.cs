@@ -4,6 +4,7 @@ using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Maintainer;
@@ -73,7 +74,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
             return await _processRepository.GetByTypeAsync(specification);
         }
 
-        public async Task<IEnumerable<ProcessEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
+        public async Task<IEnumerable<ProcessResponseModel>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
         {
             if (string.IsNullOrEmpty(paginatedModel.Sort_field))
             {

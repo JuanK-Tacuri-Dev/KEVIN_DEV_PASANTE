@@ -10,6 +10,7 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Adapt
         public string Name { get; set; }
         public Guid TypeAdapterId { get; set; }
         public string Version { get; set; }
+        public string TypeAdapterName { get; set; }
         public Guid StatusId { get; set; }
     }
 }

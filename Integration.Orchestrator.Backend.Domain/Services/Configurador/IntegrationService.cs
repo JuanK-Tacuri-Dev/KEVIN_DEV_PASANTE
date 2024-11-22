@@ -3,6 +3,7 @@ using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Maintainer;
@@ -42,7 +43,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
             return await _integrationRepository.GetByIdAsync(specification);
         }
 
-        public async Task<IEnumerable<IntegrationEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
+        public async Task<IEnumerable<IntegrationResponseModel>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
         {
             if (string.IsNullOrEmpty(paginatedModel.Sort_field))
             {

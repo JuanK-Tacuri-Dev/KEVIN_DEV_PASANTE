@@ -17,6 +17,8 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Integ
     public class ProcessResponse
     {
         public Guid Id { get; set; }
+        public string name { get; set; }
 
     }
+
 }

@@ -1,5 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
-using Integration.Orchestrator.Backend.Domain.Models.Configurador.Server;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using System.Linq.Expressions;
 

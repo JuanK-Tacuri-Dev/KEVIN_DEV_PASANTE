@@ -23,11 +23,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             Criteria = BuildCriteria(paginatedModel);
             SetupPagination(paginatedModel);
             SetupOrdering(paginatedModel);
+            SetupIncludes();
         }
 
-        private static readonly Dictionary<string, Expression<Func<RepositoryEntity, object>>> sortExpressions 
-            = new Dictionary<string, Expression<Func<RepositoryEntity, object>>>
-        {
+        private static readonly Dictionary<string, Expression<Func<RepositoryEntity, object>>> sortExpressions = new()
+            {
             { nameof(RepositoryEntity.repository_code).Split("_")[1], x => x.repository_code },
             { nameof(RepositoryEntity.repository_port).Split("_")[1], x => x.repository_port },
             { nameof(RepositoryEntity.repository_userName).Split("_")[1], x => x.repository_userName },
@@ -76,7 +76,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
             return criteria;
         }
-
+        private void SetupIncludes()
+        {
+            Includes.Add(new LookupSpecification<RepositoryEntity> { Collection = "Integration_Catalog", LocalField = "auth_type_id", ForeignField = "_id", As = "CatalogData" });
+        }
         private Expression<Func<RepositoryEntity, bool>> AddSearchCriteria(Expression<Func<RepositoryEntity, bool>> criteria, string search)
         {
             if (!string.IsNullOrEmpty(search))

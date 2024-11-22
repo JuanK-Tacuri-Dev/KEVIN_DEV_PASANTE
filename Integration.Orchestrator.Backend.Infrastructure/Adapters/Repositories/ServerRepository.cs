@@ -1,13 +1,11 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
-using Integration.Orchestrator.Backend.Domain.Models.Configurador.Server;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
@@ -136,7 +134,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             var result = await aggregation.Project<BsonDocument>(projection).ToListAsync();
 
             // Mapear resultados a ServerResponseModel
-            var data = result.Select(MapToServerResponseModel);
+            var data = result.Select(MapToResponseModel);
 
             return data;
         }
@@ -191,21 +189,24 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         }
 
         // Método para mapear un BsonDocument a ServerResponseModel
-        private ServerResponseModel MapToServerResponseModel(BsonDocument bson)
+        private ServerResponseModel MapToResponseModel(BsonDocument bson)
         {
+
             return new ServerResponseModel
             {
-                id = bson["_id"].AsGuid,
-                server_code = bson["server_code"].AsString,
-                server_name = bson["server_name"].AsString,
-                type_id = bson["type_id"].IsBsonNull ? null : bson["type_id"].AsGuid,
-                server_url = bson["server_url"].AsString,
-                status_id = bson["status_id"].AsGuid,
-                type_name = bson.TryGetValue("CatalogData", out var catalogData) && catalogData.IsBsonArray
-                    ? catalogData.AsBsonArray.FirstOrDefault()?["catalog_name"].AsString
-                    : null
+                id = bson.GetValueOrDefault("_id", Guid.Empty),
+                status_id = bson.GetValueOrDefault("status_id", Guid.Empty),
+                type_id = bson.GetValueOrDefault("type_id", Guid.Empty),
+                server_code = bson.GetValueOrDefault("server_code", string.Empty),
+                server_name = bson.GetValueOrDefault("server_name", string.Empty),
+                server_url = bson.GetValueOrDefault("server_url", string.Empty),
+                type_name = bson.GetNestedValueOrDefault("CatalogData", "catalog_name")
             };
+
         }
+
+
+
 
         #endregion
 

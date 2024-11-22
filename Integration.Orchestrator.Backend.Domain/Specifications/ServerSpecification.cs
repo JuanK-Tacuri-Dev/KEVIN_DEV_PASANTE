@@ -3,6 +3,7 @@ using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Models;
 
+
 namespace Integration.Orchestrator.Backend.Domain.Specifications
 {
     public class ServerSpecification : ISpecification<ServerEntity>
@@ -28,20 +29,16 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
         private static readonly Dictionary<string, Expression<Func<ServerEntity, object>>> sortExpressions = new()
         {
-            { GetSafeKey(nameof(ServerEntity.server_code), 1), x => x.server_code },
-            { GetSafeKey(nameof(ServerEntity.server_name), 1), x => x.server_name },
-            { GetSafeKey(nameof(ServerEntity.server_url), 1), x => x.server_url },
+            { Utilities.GetSafeKey(nameof(ServerEntity.server_code), 1), x => x.server_code },
+            { Utilities.GetSafeKey(nameof(ServerEntity.server_name), 1), x => x.server_name },
+            { Utilities.GetSafeKey(nameof(ServerEntity.server_url), 1), x => x.server_url },
             { "typeServerId", x => x.type_id },
             { "statusId", x => x.status_id },
-            { GetSafeKey(nameof(ServerEntity.updated_at), 0), x => x.updated_at },
-            { GetSafeKey(nameof(ServerEntity.created_at), 0), x => x.created_at }
+            { Utilities.GetSafeKey(nameof(ServerEntity.updated_at), 0), x => x.updated_at },
+            { Utilities.GetSafeKey(nameof(ServerEntity.created_at), 0), x => x.created_at }
         };
 
-        private static string GetSafeKey(string propertyName, int index)
-        {
-            var parts = propertyName.Split('_');
-            return parts.Length > index ? parts[index] : propertyName;
-        }
+
 
         private void SetupPagination(PaginatedModel model)
         {

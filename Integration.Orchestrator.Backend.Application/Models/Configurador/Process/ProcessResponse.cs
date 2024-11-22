@@ -9,6 +9,8 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Proce
         public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string typeProcessName { get; set; }
+        public string connectionName { get; set; }
         public Guid TypeId { get; set; }
         public Guid ConnectionId { get; set; }
         public Guid StatusId { get; set; }
@@ -22,6 +24,7 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Proce
         public List<PropertiesResponse> Properties { get; set; }
         public List<FilterResponse> Filters { get; set; }
     }
+
 
     [ExcludeFromCodeCoverage]
     public class PropertiesResponse

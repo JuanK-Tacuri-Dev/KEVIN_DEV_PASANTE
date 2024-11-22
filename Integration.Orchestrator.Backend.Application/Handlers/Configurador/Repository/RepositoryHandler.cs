@@ -292,7 +292,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
                                 Password = repository.repository_password,
                                 DatabaseName = repository.repository_databaseName,
                                 AuthTypeId = repository.auth_type_id,
-                                StatusId = repository.status_id
+                                StatusId = repository.status_id,
+                                authTypeName=repository.authTypeName
                             }).ToList()
                         }
                     });

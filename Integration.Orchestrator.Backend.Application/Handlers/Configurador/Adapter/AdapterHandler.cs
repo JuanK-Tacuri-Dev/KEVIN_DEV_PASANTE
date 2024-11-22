@@ -318,7 +318,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ada
                                 Code = adapter.adapter_code,
                                 TypeAdapterId = adapter.type_id,
                                 Version = adapter.adapter_version,
-                                StatusId = adapter.status_id
+                                StatusId = adapter.status_id,
+                                TypeAdapterName=adapter.typeAdapterName
+                                
                             }).ToList()
                         }
 
