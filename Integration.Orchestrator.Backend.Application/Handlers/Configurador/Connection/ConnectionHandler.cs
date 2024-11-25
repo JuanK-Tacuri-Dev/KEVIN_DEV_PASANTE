@@ -319,7 +319,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Con
                                 RepositoryId = connection.repository_id,
                                 Name = connection.connection_name,
                                 Description = connection.connection_description,
-                                StatusId = connection.status_id
+                                StatusId = connection.status_id,
+                                serverName = connection.serverName,
+                                adapterName=connection.adapterName,
+                                repositoryName = connection.repositoryName
+
+                                
                             }).ToList()
                         }
                     });

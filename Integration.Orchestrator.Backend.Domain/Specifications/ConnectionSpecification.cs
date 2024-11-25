@@ -23,11 +23,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             Criteria = BuildCriteria(paginatedModel);
             SetupPagination(paginatedModel);
             SetupOrdering(paginatedModel);
+            SetupIncludes();
         }
 
-        private static readonly Dictionary<string, Expression<Func<ConnectionEntity, object>>> sortExpressions
-            = new Dictionary<string, Expression<Func<ConnectionEntity, object>>>
-        {
+        private static readonly Dictionary<string, Expression<Func<ConnectionEntity, object>>> sortExpressions = new()
+            {
             { nameof(ConnectionEntity.connection_code).Split("_")[1], x => x.connection_code },
             { nameof(ConnectionEntity.connection_name).Split("_")[1], x => x.connection_name },
             { nameof(ConnectionEntity.connection_description).Split("_")[1], x => x.connection_description },
@@ -77,6 +77,12 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return criteria;
         }
 
+        private void SetupIncludes()
+        {
+            Includes.Add(new LookupSpecification<ConnectionEntity> { Collection = "Integration_Server", LocalField = "server_id", ForeignField = "_id", As = "ServerData" });
+            Includes.Add(new LookupSpecification<ConnectionEntity> { Collection = "Integration_Adapter", LocalField = "adapter_id", ForeignField = "_id", As = "AdapterData" });
+            Includes.Add(new LookupSpecification<ConnectionEntity> { Collection = "Integration_Repository", LocalField = "repository_id", ForeignField = "_id", As = "RepositoryData" });
+        }
         private Expression<Func<ConnectionEntity, bool>> AddSearchCriteria(Expression<Func<ConnectionEntity, bool>> criteria, string search)
         {
             if (!string.IsNullOrEmpty(search))

@@ -22,17 +22,17 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             Criteria = BuildCriteria(paginatedModel);
             SetupPagination(paginatedModel);
             SetupOrdering(paginatedModel);
+            SetupIncludes();
         }
 
-        private static readonly Dictionary<string, Expression<Func<CatalogEntity, object>>> sortExpressions 
-            = new Dictionary<string, Expression<Func<CatalogEntity, object>>>
+        private static readonly Dictionary<string, Expression<Func<CatalogEntity, object>>> sortExpressions = new()
         {
-            { nameof(CatalogEntity.catalog_code).Split("_")[1], x => x.catalog_code },
-            { nameof(CatalogEntity.catalog_name).Split("_")[1], x => x.catalog_name },
-            { nameof(CatalogEntity.catalog_detail).Split("_")[1], x => x.catalog_detail },
-            { nameof(CatalogEntity.catalog_value).Split("_")[1], x => x.catalog_value },
-            { nameof(CatalogEntity.updated_at).Split("_")[0], x => x.updated_at },
-            { nameof(CatalogEntity.created_at).Split("_")[0], x => x.created_at },
+            { Utilities.GetSafeKey(nameof(CatalogEntity.catalog_code), 1), x => x.catalog_code },
+            { Utilities.GetSafeKey(nameof(CatalogEntity.catalog_name), 1), x => x.catalog_name },
+            { Utilities.GetSafeKey(nameof(CatalogEntity.catalog_detail), 1), x => x.catalog_detail },
+            { Utilities.GetSafeKey(nameof(CatalogEntity.catalog_value), 1), x => x.catalog_value },
+            { Utilities.GetSafeKey(nameof(CatalogEntity.updated_at), 0), x => x.updated_at },
+            { Utilities.GetSafeKey(nameof(CatalogEntity.created_at), 0), x => x.created_at }
         };
         private void SetupPagination(PaginatedModel model)
         {
@@ -86,6 +86,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return criteria;
         }
 
+        private void SetupIncludes()
+        {
+   
+        }
         public static Expression<Func<CatalogEntity, bool>> GetByIdExpression(Guid id)
         {
             return BaseSpecification<CatalogEntity>.GetByUuid(x => x.id, id);

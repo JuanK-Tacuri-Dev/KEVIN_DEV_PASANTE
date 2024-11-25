@@ -87,7 +87,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.In
                 var RelationConectionActive = await _synchronizationService.GetByIntegrationIdAsync(integrationMap.id, await _synchronizationStatesService.GetStatusIdSyncronization());
 
 
-                if (!StatusIsActive && RelationConectionActive!= null)
+                if (!StatusIsActive && RelationConectionActive != null)
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                     new DetailsArgumentErrors()
@@ -260,7 +260,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.In
                                 Name = integration.integration_name,
                                 Status = integration.status_id,
                                 Observations = integration.integration_observations,
-                                Process = integration.process.Select(i => new ProcessResponse { Id = i }).ToList(),
+                                Process = integration.process.Select(i => new ProcessResponse { Id = i.id, name = i.name }).ToList(),
                                 UserId = integration.user_id
                             }).ToList()
                         }

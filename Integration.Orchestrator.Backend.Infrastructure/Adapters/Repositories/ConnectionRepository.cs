@@ -1,6 +1,8 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
@@ -9,7 +11,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
     [ExcludeFromCodeCoverage]
     [Repository]
-    public class ConnectionRepository(IMongoCollection<ConnectionEntity> collection) 
+    public class ConnectionRepository(IMongoCollection<ConnectionEntity> collection)
         : IConnectionRepository<ConnectionEntity>
     {
         private readonly IMongoCollection<ConnectionEntity> _collection = collection;
@@ -74,23 +76,65 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return connectionEntity;
         }
 
-        public async Task<IEnumerable<ConnectionEntity>> GetAllAsync(ISpecification<ConnectionEntity> specification)
+        public async Task<IEnumerable<ConnectionResponseModel>> GetAllAsync(ISpecification<ConnectionEntity> specification)
         {
-            var filter = Builders<ConnectionEntity>.Filter.Where(specification.Criteria);
+            var filterBuilder = Builders<ConnectionEntity>.Filter;
 
-            var query = _collection
-                .Find(filter)
-                .Sort(specification.OrderBy != null
-                    ? Builders<ConnectionEntity>.Sort.Ascending(specification.OrderBy)
-                    : Builders<ConnectionEntity>.Sort.Descending(specification.OrderByDescending));
+            // Construir filtro principal desde la especificación
+            var filter = filterBuilder.Where(specification.Criteria);
 
-            if (specification.Skip >= 0)
+            // Configurar collation
+            var collation = new Collation("en", strength: CollationStrength.Secondary);
+
+            // Inicializar el pipeline de agregación con filtro y unwind
+            var aggregation = _collection.Aggregate(new AggregateOptions { Collation = collation })
+                                         .Match(filter)
+                                         .Unwind("ServerData", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true })
+                                         .Unwind("AdapterData", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true })
+                                         .Unwind("RepositoryData", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true });
+
+            // Obtener el campo de ordenamiento según la especificación
+            string? orderByField = specification.OrderBy != null
+                ? SortExpressionConfiguration<ConnectionEntity>.GetPropertyName(specification.OrderBy)
+                : specification.OrderByDescending != null
+                    ? SortExpressionConfiguration<ConnectionEntity>.GetPropertyName(specification.OrderByDescending)
+                    : null;
+
+            // Configurar el ordenamiento
+            var sortDefinition = GetSortDefinition(orderByField, specification.OrderBy != null);
+
+            // Aplicar joins si hay especificaciones de include
+            if (specification.Includes != null)
             {
-                query = query
-                    .Limit(specification.Limit)
-                    .Skip(specification.Skip);
+                foreach (var join in specification.Includes)
+                {
+                    aggregation = aggregation.Lookup(join.Collection, join.LocalField, join.ForeignField, join.As);
+                }
             }
-            return await query.ToListAsync();
+
+            aggregation = aggregation.Sort(sortDefinition);
+
+            // Configurar proyección
+            var projection = Builders<BsonDocument>.Projection
+                .Include("_id")
+                .Include("server_id")
+                .Include("adapter_id")
+                .Include("repository_id")
+                .Include("status_id")
+                .Include("connection_code")
+                .Include("connection_name")
+                .Include("connection_description")
+                .Include("ServerData.server_name")
+                .Include("AdapterData.adapter_name")
+                .Include("RepositoryData.repository_databaseName");
+
+            // Ejecutar agregación y obtener resultados
+            var result = await aggregation.Project<BsonDocument>(projection).ToListAsync();
+
+            // Mapear resultados a ServerResponseModel
+            var data = result.Select(MapToResponseModel);
+
+            return data;
         }
 
         public async Task<long> GetTotalRows(ISpecification<ConnectionEntity> specification)
@@ -99,6 +143,55 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .Find(specification.Criteria)
                 .CountDocumentsAsync();
         }
+        #region Metodos Privados
+        private SortDefinition<BsonDocument> GetSortDefinition(string? orderByField, bool isAscending)
+        {
+            var sortDefinitionBuilder = Builders<BsonDocument>.Sort;
+
+            // Diccionario para mapear campos de ordenamiento específicos
+
+            var sortMapping = new Dictionary<string, string>
+            {
+                { "server_id", "ServerData.server_name" },
+                { "adapter_id", "AdapterData.adapter_name" },
+                { "repository_id", "RepositoryData.repository_databaseName" },
+            };
+
+            // Si no se especifica un campo, usar el predeterminado
+            if (orderByField == null)
+            {
+                return sortDefinitionBuilder.Ascending("updated_at");
+            }
+
+            // Intentar obtener el campo correspondiente del diccionario
+            var sortField = sortMapping.ContainsKey(orderByField) ? sortMapping[orderByField] : orderByField;
+
+            // Retornar la definición de orden
+            return isAscending
+                ? sortDefinitionBuilder.Ascending(sortField)
+                : sortDefinitionBuilder.Descending(sortField);
+        }
+        private ConnectionResponseModel MapToResponseModel(BsonDocument bson)
+        {
+            return new ConnectionResponseModel
+            {
+                id = bson.GetValueOrDefault("_id", Guid.Empty),
+                server_id = bson.GetValueOrDefault("server_id", Guid.Empty),
+                adapter_id = bson.GetValueOrDefault("adapter_id", Guid.Empty),
+                repository_id = bson.GetValueOrDefault("repository_id", Guid.Empty),
+                status_id = bson.GetValueOrDefault("status_id", Guid.Empty),
+                connection_code = bson.GetValueOrDefault("connection_code", string.Empty),
+                connection_name = bson.GetValueOrDefault("connection_name", string.Empty),
+                connection_description = bson.GetValueOrDefault("connection_description", string.Empty),
+                adapterName = bson.GetNestedValueOrDefault("AdapterData", "adapter_name"),
+                repositoryName = bson.GetNestedValueOrDefault("RepositoryData", "repository_databaseName"),
+                serverName = bson.GetNestedValueOrDefault("ServerData", "server_name")
+            };
+
+        }
+
+        #endregion
+
 
     }
 }

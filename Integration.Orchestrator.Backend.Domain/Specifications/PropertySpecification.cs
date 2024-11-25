@@ -23,11 +23,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             Criteria = BuildCriteria(paginatedModel);
             SetupPagination(paginatedModel);
             SetupOrdering(paginatedModel);
+            SetupIncludes();
         }
 
-        private static readonly Dictionary<string, Expression<Func<PropertyEntity, object>>> sortExpressions 
-            = new Dictionary<string, Expression<Func<PropertyEntity, object>>>
-        {
+        private static readonly Dictionary<string, Expression<Func<PropertyEntity, object>>> sortExpressions = new()
+            {
             { nameof(PropertyEntity.property_name).Split("_")[1], x => x.property_name },
             { nameof(PropertyEntity.property_code).Split("_")[1], x => x.property_code },
             { "typeId", x => x.type_id },
@@ -73,6 +73,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             criteria = AddSearchCriteria(criteria, paginatedModel.Search);
 
             return criteria;
+        }
+
+        private void SetupIncludes()
+        {
+            Includes.Add(new LookupSpecification<PropertyEntity> { Collection = "Integration_Catalog", LocalField = "type_id", ForeignField = "_id", As = "CatalogData" });
         }
 
         private Expression<Func<PropertyEntity, bool>> AddSearchCriteria(Expression<Func<PropertyEntity, bool>> criteria, string search)

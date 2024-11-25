@@ -23,19 +23,20 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             Criteria = BuildCriteria(paginatedModel);
             SetupPagination(paginatedModel);
             SetupOrdering(paginatedModel);
+            SetupIncludes();
         }
-
-        private static readonly Dictionary<string, Expression<Func<AdapterEntity, object>>> sortExpressions
-            = new Dictionary<string, Expression<Func<AdapterEntity, object>>>
+        private static readonly Dictionary<string, Expression<Func<AdapterEntity, object>>> sortExpressions = new()
         {
-            { nameof(AdapterEntity.adapter_name).Split("_")[1], x => x.adapter_name },
-            { nameof(AdapterEntity.adapter_code).Split("_")[1], x => x.adapter_code },
-             { nameof(AdapterEntity.adapter_version).Split("_")[1], x => x.adapter_version },
-            {"typeAdapterId", x => x.type_id },
+            { Utilities.GetSafeKey(nameof(AdapterEntity.adapter_name), 1), x => x.adapter_name },
+            { Utilities.GetSafeKey(nameof(AdapterEntity.adapter_code), 1), x => x.adapter_code },
+            { Utilities.GetSafeKey(nameof(AdapterEntity.adapter_version), 1), x => x.adapter_version },
+            { "typeAdapterId", x => x.type_id },
             { "statusId", x => x.status_id },
-            { nameof(AdapterEntity.updated_at).Split("_")[0], x => x.updated_at },
-            { nameof(AdapterEntity.created_at).Split("_")[0], x => x.created_at }
+            { Utilities.GetSafeKey(nameof(AdapterEntity.updated_at), 0), x => x.updated_at },
+            { Utilities.GetSafeKey(nameof(AdapterEntity.created_at), 0), x => x.created_at }
         };
+
+
         private void SetupPagination(PaginatedModel model)
         {
             if (model.Rows > 0)
@@ -73,6 +74,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             criteria = AddSearchCriteria(criteria, paginatedModel.Search);
 
             return criteria;
+        }
+
+        private void SetupIncludes()
+        {
+            Includes.Add(new LookupSpecification<AdapterEntity> { Collection = "Integration_Catalog", LocalField = "type_id", ForeignField = "_id", As = "CatalogData" });
         }
 
         private Expression<Func<AdapterEntity, bool>> AddSearchCriteria(Expression<Func<AdapterEntity, bool>> criteria, string search)

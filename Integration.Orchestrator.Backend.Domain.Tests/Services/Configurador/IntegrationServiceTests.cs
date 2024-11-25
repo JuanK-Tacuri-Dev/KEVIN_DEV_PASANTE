@@ -211,7 +211,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
             // Act & Assert
             var exception = await Assert.ThrowsAsync<OrchestratorArgumentException>(() => _mockIntegrationService.InsertAsync(integration));
 
-            // Verificar que se lanzó la excepción y que contiene los detalles correctos
+            // Verificar que se lanzï¿½ la excepciï¿½n y que contiene los detalles correctos
             Assert.Equal((int)ResponseCode.NotFoundSuccessfully, exception.Details.Code);
             Assert.Equal(AppMessages.Application_StatusNotFound, exception.Details.Description);
             Assert.Equal(integration.status_id, exception.Details.Data);

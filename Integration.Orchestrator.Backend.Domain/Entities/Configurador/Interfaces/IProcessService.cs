@@ -1,4 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Models;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador;
 
 namespace Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces
 {
@@ -13,7 +14,7 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfac
         Task<T> GetByCodeAsync(string code);
         Task<IEnumerable<T>> GetByTypeAsync(Guid typeId);
         Task<T> GetByConnectionIdAsync(Guid connectionid, Guid idStatusActive);
-        Task<IEnumerable<T>> GetAllPaginatedAsync(PaginatedModel paginatedModel);
+        Task<IEnumerable<ProcessResponseModel>> GetAllPaginatedAsync(PaginatedModel paginatedModel);
         Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel);
     }
 }

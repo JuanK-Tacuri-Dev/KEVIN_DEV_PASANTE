@@ -23,10 +23,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             Criteria = BuildCriteria(paginatedModel);
             SetupPagination(paginatedModel);
             SetupOrdering(paginatedModel);
+            SetupIncludes();
         }
 
-        private static readonly Dictionary<string, Expression<Func<IntegrationEntity, object>>> sortExpressions
-            = new Dictionary<string, Expression<Func<IntegrationEntity, object>>>
+        private static readonly Dictionary<string, Expression<Func<IntegrationEntity, object>>> sortExpressions= new()
         {
             { nameof(IntegrationEntity.integration_name).Split("_")[1], x => x.integration_name },
             { nameof(IntegrationEntity.integration_observations).Split("_")[1], x => x.integration_observations },
@@ -73,7 +73,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
             return criteria;
         }
-
+        private void SetupIncludes()
+        {
+            Includes.Add(new LookupSpecification<IntegrationEntity> { Collection = "Integration_Catalog", LocalField = "type_id", ForeignField = "_id", As = "CatalogData" });
+        }
         private Expression<Func<IntegrationEntity, bool>> AddSearchCriteria(Expression<Func<IntegrationEntity, bool>> criteria, string search)
         {
             if (!string.IsNullOrEmpty(search))

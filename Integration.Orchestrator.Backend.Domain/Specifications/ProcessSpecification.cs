@@ -23,11 +23,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             Criteria = BuildCriteria(paginatedModel);
             SetupPagination(paginatedModel);
             SetupOrdering(paginatedModel);
+            SetupIncludes();
         }
 
-        private static readonly Dictionary<string, Expression<Func<ProcessEntity, object>>> sortExpressions 
-            = new Dictionary<string, Expression<Func<ProcessEntity, object>>>
-        {
+        private static readonly Dictionary<string, Expression<Func<ProcessEntity, object>>> sortExpressions = new()
+            {
             { nameof(ProcessEntity.process_code).Split("_")[1], x => x.process_code },
             { nameof(ProcessEntity.process_name).Split("_")[1], x => x.process_name },
             { nameof(ProcessEntity.process_description).Split("_")[1], x => x.process_description },
@@ -77,6 +77,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             return criteria;
         }
 
+        private void SetupIncludes()
+        {
+            Includes.Add(new LookupSpecification<ProcessEntity> { Collection = "Integration_Catalog", LocalField = "process_type_id", ForeignField = "_id", As = "CatalogData" });
+            Includes.Add(new LookupSpecification<ProcessEntity> { Collection = "Integration_Connection", LocalField = "connection_id", ForeignField = "_id", As = "ConnectionData" });
+        }
         private Expression<Func<ProcessEntity, bool>> AddSearchCriteria(Expression<Func<ProcessEntity, bool>> criteria, string search)
         {
             if (!string.IsNullOrEmpty(search))

@@ -13,6 +13,9 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Conne
         public string Name { get; set; }
         public string? Description { get; set; }
         public Guid StatusId { get; set; }
+        public string serverName { get; set; }
+        public string adapterName { get; set; }
+        public string repositoryName { get; set; }
 
     }
 }

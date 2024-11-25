@@ -1,4 +1,4 @@
-﻿namespace Integration.Orchestrator.Backend.Domain.Models.Configurador.Server
+﻿namespace Integration.Orchestrator.Backend.Domain.Models.Configurador
 {
     public class ServerResponseModel
     {

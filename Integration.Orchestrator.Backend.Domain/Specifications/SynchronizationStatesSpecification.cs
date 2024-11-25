@@ -23,11 +23,11 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             Criteria = BuildCriteria(paginatedModel);
             SetupPagination(paginatedModel);
             SetupOrdering(paginatedModel);
+            SetupIncludes();
         }
 
-        private static readonly Dictionary<string, Expression<Func<SynchronizationStatusEntity, object>>> sortExpressions 
-            = new Dictionary<string, Expression<Func<SynchronizationStatusEntity, object>>>
-        {
+        private static readonly Dictionary<string, Expression<Func<SynchronizationStatusEntity, object>>> sortExpressions = new()
+            {
             { nameof(SynchronizationStatusEntity.synchronization_status_key).Split("_")[2], x => x.synchronization_status_key },
             { nameof(SynchronizationStatusEntity.synchronization_status_text).Split("_")[2], x => x.synchronization_status_text },
             { nameof(SynchronizationStatusEntity.synchronization_status_color).Split("_")[2], x => x.synchronization_status_color },
@@ -84,7 +84,10 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
             return criteria;
         }
-
+        private void SetupIncludes()
+        {
+            
+        }
         public static Expression<Func<SynchronizationStatusEntity, bool>> GetByIdExpression(Guid id)
         {
             return BaseSpecification<SynchronizationStatusEntity>.GetByUuid(x => x.id, id);
