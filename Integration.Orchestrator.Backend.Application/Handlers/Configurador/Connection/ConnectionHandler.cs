@@ -322,6 +322,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Con
                                 StatusId = connection.status_id,
                                 serverName = connection.serverName,
                                 adapterName=connection.adapterName,
+                                serverUrl=connection.serverUrl,
                                 repositoryName = connection.repositoryName
 
                                 

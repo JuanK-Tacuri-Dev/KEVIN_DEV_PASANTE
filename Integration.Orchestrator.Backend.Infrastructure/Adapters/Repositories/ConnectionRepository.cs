@@ -125,6 +125,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .Include("connection_name")
                 .Include("connection_description")
                 .Include("ServerData.server_name")
+                .Include("ServerData.server_url")
                 .Include("AdapterData.adapter_name")
                 .Include("RepositoryData.repository_databaseName");
 
@@ -152,7 +153,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
             var sortMapping = new Dictionary<string, string>
             {
-                { "server_id", "ServerData.server_name" },
+                { "server_id", "ServerData.server_url" },
                 { "adapter_id", "AdapterData.adapter_name" },
                 { "repository_id", "RepositoryData.repository_databaseName" },
             };
@@ -185,7 +186,8 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 connection_description = bson.GetValueOrDefault("connection_description", string.Empty),
                 adapterName = bson.GetNestedValueOrDefault("AdapterData", "adapter_name"),
                 repositoryName = bson.GetNestedValueOrDefault("RepositoryData", "repository_databaseName"),
-                serverName = bson.GetNestedValueOrDefault("ServerData", "server_name")
+                serverName = bson.GetNestedValueOrDefault("ServerData", "server_name"),
+                serverUrl = bson.GetNestedValueOrDefault("ServerData", "server_url")
             };
 
         }

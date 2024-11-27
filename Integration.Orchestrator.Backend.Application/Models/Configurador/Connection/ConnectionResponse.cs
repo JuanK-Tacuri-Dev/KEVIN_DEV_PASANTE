@@ -16,6 +16,6 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Conne
         public string serverName { get; set; }
         public string adapterName { get; set; }
         public string repositoryName { get; set; }
-
+        public string serverUrl { get; set; }
     }
 }
