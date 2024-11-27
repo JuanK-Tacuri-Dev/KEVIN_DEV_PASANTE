@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Domain.Models.Configurador;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
+using Integration.Orchestrator.Backend.Infrastructure.Services;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Diagnostics.CodeAnalysis;
@@ -11,11 +12,14 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
     [ExcludeFromCodeCoverage]
     [Repository]
-    public class RepositoryRepository(IMongoCollection<RepositoryEntity> collection) 
+    public class RepositoryRepository(IMongoCollection<RepositoryEntity> collection)
         : IRepositoryRepository<RepositoryEntity>
     {
         private readonly IMongoCollection<RepositoryEntity> _collection = collection;
-        
+        private Dictionary<string, string> SortMapping = new()
+            {
+                { "auth_type_id", "CatalogData.catalog_name" }
+            };
         public Task InsertAsync(RepositoryEntity entity)
         {
             return _collection.InsertOneAsync(entity);
@@ -80,33 +84,29 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                     : null;
 
             // Configurar el ordenamiento
-            var sortDefinition = GetSortDefinition(orderByField, specification.OrderBy != null);
+            var sortDefinition = BsonDocumentExtensions.GetSortDefinition(orderByField, specification.OrderBy != null, this.SortMapping);
 
             // Aplicar joins si hay especificaciones de include
             if (specification.Includes != null)
-            {
+
                 foreach (var join in specification.Includes)
-                {
                     aggregation = aggregation.Lookup(join.Collection, join.LocalField, join.ForeignField, join.As);
-                }
+
+            if (specification.Skip >= 0)
+            {
+                aggregation = aggregation.Skip(specification.Skip);
             }
+
+            if (specification.Limit > 0)
+            {
+                aggregation = aggregation.Limit(specification.Limit);
+            }
+
 
             aggregation = aggregation.Sort(sortDefinition);
 
-            // Configurar proyección
-            var projection = Builders<BsonDocument>.Projection
-                .Include("_id")
-                .Include("auth_type_id")
-                .Include("status_id")
-                .Include("repository_port")
-                .Include("repository_code")
-                .Include("repository_databaseName")
-                .Include("repository_password")
-                .Include("repository_userName")
-                .Include("CatalogData.catalog_name");
+            var result = await aggregation.ToListAsync();
 
-            // Ejecutar agregación y obtener resultados
-            var result = await aggregation.Project<BsonDocument>(projection).ToListAsync();
 
             // Mapear resultados a ServerResponseModel
             var data = result.Select(MapToResponseModel);
@@ -136,30 +136,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
 
         #region Metodos Privados
-        private SortDefinition<BsonDocument> GetSortDefinition(string? orderByField, bool isAscending)
-        {
-            var sortDefinitionBuilder = Builders<BsonDocument>.Sort;
 
-            // Diccionario para mapear campos de ordenamiento específicos
-            var sortMapping = new Dictionary<string, string>
-            {
-                { "auth_type_id", "CatalogData.catalog_name" }
-            };
-
-            // Si no se especifica un campo, usar el predeterminado
-            if (orderByField == null)
-            {
-                return sortDefinitionBuilder.Ascending("updated_at");
-            }
-
-            // Intentar obtener el campo correspondiente del diccionario
-            var sortField = sortMapping.ContainsKey(orderByField) ? sortMapping[orderByField] : orderByField;
-
-            // Retornar la definición de orden
-            return isAscending
-                ? sortDefinitionBuilder.Ascending(sortField)
-                : sortDefinitionBuilder.Descending(sortField);
-        }
         private RepositoryResponseModel MapToResponseModel(BsonDocument bson)
         {
             return new RepositoryResponseModel

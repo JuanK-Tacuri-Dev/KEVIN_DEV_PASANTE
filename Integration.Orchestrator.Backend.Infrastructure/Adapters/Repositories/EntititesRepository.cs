@@ -3,6 +3,7 @@ using Integration.Orchestrator.Backend.Domain.Models.Configurador;
 using Integration.Orchestrator.Backend.Domain.Models.Configurador.Entity;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
+using Integration.Orchestrator.Backend.Infrastructure.Services;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Diagnostics.CodeAnalysis;
