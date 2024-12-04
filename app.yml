@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mxpv2-orchestrator
-        image: kfcregistry.azurecr.io/mxpv2-orchestrator:1.0.43
+        image: kfcregistry.azurecr.io/mxpv2-orchestrator:1.0.44
         ports:
         - containerPort: 8080
         env:
