@@ -78,6 +78,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         private void SetupIncludes()
         {
             Includes.Add(new LookupSpecification<EntitiesEntity> { Collection = "Integration_Catalog", LocalField = "type_id", ForeignField = "_id", As = "CatalogData" });
+            Includes.Add(new LookupSpecification<EntitiesEntity> { Collection = "Integration_Repository", LocalField = "repository_id", ForeignField = "_id", As = "RepositoryData" });
+
         }
         private Expression<Func<EntitiesEntity, bool>> AddSearchCriteria(Expression<Func<EntitiesEntity, bool>> criteria, string search)
         {
