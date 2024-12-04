@@ -18,6 +18,12 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
     {
         private readonly IMongoCollection<EntitiesEntity> _collection = collection;
 
+        private Dictionary<string, string> SortMapping = new()
+            {
+                { "type_id", "CatalogData.catalog_name" },
+                { "repository_id", "RepositoryData.repository_databaseName" }
+            };
+
         public Task InsertAsync(EntitiesEntity entity)
         {
             return _collection.InsertOneAsync(entity);
@@ -94,72 +100,67 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             var filter = Builders<EntitiesEntity>.Filter.Where(specification.Criteria);
 
-            var query = _collection.Aggregate()
-                 .Match(filter)
-                 .Lookup(
-                     foreignCollectionName: "Integration_Catalog",
-                     localField: "type_id",
-                     foreignField: "_id",
-                     @as: "CatalogData"
-                 ).Lookup(
-                     foreignCollectionName: "Integration_Repository",
-                     localField: "repository_id",
-                     foreignField: "_id",
-                     @as: "RepositoryData"
-                 )
-                 .Unwind("CatalogData", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true })
-                 .Unwind("RepositoryData", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true });
+            // Configurar collation
+            var collation = new Collation("en", strength: CollationStrength.Secondary);
+
+            // Inicializar el pipeline de agregación con filtro y unwind
+            var aggregation = _collection.Aggregate(new AggregateOptions { Collation = collation })
+                                         .Match(filter)
+                                         .Unwind("CatalogData", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true })
+                                         .Unwind("RepositoryData", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true });
+
+            /*   .Match(filter)
+               .Lookup(
+                   foreignCollectionName: "Integration_Catalog",
+                   localField: "type_id",
+                   foreignField: "_id",
+                   @as: "CatalogData"
+               ).Lookup(
+                   foreignCollectionName: "Integration_Repository",
+                   localField: "repository_id",
+                   foreignField: "_id",
+                   @as: "RepositoryData"
+               )*/
 
             // Definición de ordenamiento
-            var sortDefinitionBuilder = Builders<BsonDocument>.Sort;
-            SortDefinition<BsonDocument> sortDefinition = sortDefinitionBuilder.Ascending("updated_at");
+            // Obtener el campo de ordenamiento según la especificación
+            string? orderByField = specification.OrderBy != null
+                ? SortExpressionConfiguration<ServerEntity>.GetPropertyName(specification.OrderBy)
+                : specification.OrderByDescending != null
+                    ? SortExpressionConfiguration<ServerEntity>.GetPropertyName(specification.OrderByDescending)
+                    : null;
 
-            string? orderByField = specification.OrderBy != null ? GetPropertyName(specification.OrderBy) :
-                                  specification.OrderByDescending != null ? GetPropertyName(specification.OrderByDescending) : null;
+            // Configurar el ordenamiento
 
-            if (orderByField == "type_id")
-                sortDefinition = specification.OrderBy != null ? sortDefinitionBuilder.Ascending("CatalogData.catalog_name") :
-                                                               sortDefinitionBuilder.Descending("CatalogData.catalog_name");
-            else if(orderByField == "repository_id")
-                sortDefinition = specification.OrderBy != null ? sortDefinitionBuilder.Ascending("RepositoryData.repository_databaseName") :
-                                                               sortDefinitionBuilder.Descending("RepositoryData.repository_databaseName");
-            else if (orderByField != null)
+
+            var sortDefinition = BsonDocumentExtensions.GetSortDefinition(orderByField, specification.OrderBy != null, this.SortMapping);
+
+            // Aplicar joins si hay especificaciones de include
+            if (specification.Includes != null)
             {
-                // Ordenamiento para cualquier otro campo que no sea UUID
-                sortDefinition = specification.OrderBy != null ? sortDefinitionBuilder.Ascending(orderByField) :
-                                                                 sortDefinitionBuilder.Descending(orderByField);
-            }
-            else
-            {
-                // Ordenamiento por defecto si no se especifica ningún campo
-                sortDefinition = sortDefinitionBuilder.Ascending("updated_at");
+                foreach (var join in specification.Includes)
+                {
+                    aggregation = aggregation.Lookup(join.Collection, join.LocalField, join.ForeignField, join.As);
+                }
             }
 
-
-            // Aplicamos el ordenamiento y la paginación
-            query = query.Sort(sortDefinition);
             if (specification.Skip >= 0)
             {
-                query = query
-                    .Limit(specification.Limit)
-                    .Skip(specification.Skip);
+                aggregation = aggregation.Skip(specification.Skip);
             }
-            // Proyección
-            var projection = Builders<BsonDocument>.Projection
-                .Include("_id")
-                .Include("entity_code")
-                .Include("entity_name")
-                .Include("type_id")
-                .Include("repository_id")
-                .Include("status_id")
-                .Include("CatalogData.catalog_name")
-                .Include("RepositoryData.repository_databaseName");
 
-            
-            var result = await query.Project<BsonDocument>(projection).ToListAsync();
+            if (specification.Limit > 0)
+            {
+                aggregation = aggregation.Limit(specification.Limit);
+            }
 
-            // Mapear resultados a ServerResponseModel
+
+            aggregation = aggregation.Sort(sortDefinition);
+
+            var result = await aggregation.ToListAsync();
+
             var data = result.Select(MapToResponseModel);
+
             return data;
         }
 
