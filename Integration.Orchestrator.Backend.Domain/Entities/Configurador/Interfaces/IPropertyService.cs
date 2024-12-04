@@ -1,4 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Models;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador.Property;
 
 namespace Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces
 {
@@ -12,7 +13,7 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfac
         Task<IEnumerable<T>> GetByTypeIdAsync(Guid typeId);
         Task<IEnumerable<T>> GetByEntitysIdAsync(Guid entityId, Guid idStatusActive);
         Task<T> GetByEntityIdAsync(Guid entityId,Guid idStatusActive);
-        Task<IEnumerable<T>> GetAllPaginatedAsync(PaginatedModel paginatedModel);
+        Task<IEnumerable<PropertyResponseModel>> GetAllPaginatedAsync(PaginatedModel paginatedModel);
         Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel);
     }
 }

@@ -1,6 +1,10 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador.Entity;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador.Property;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
+using Integration.Orchestrator.Backend.Infrastructure.Services;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
@@ -14,6 +18,11 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
     {
         private readonly IMongoCollection<PropertyEntity> _collection = collection;
 
+        private Dictionary<string, string> SortMapping = new()
+        {
+            { "type_id", "CatalogData.catalog_name" },
+            { "entity_id", "EntityData.entity_name" }
+        };
         public Task InsertAsync(PropertyEntity entity)
         {
             return _collection.InsertOneAsync(entity);
@@ -66,23 +75,72 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return processEntity;
         }
 
-        public async Task<IEnumerable<PropertyEntity>> GetAllAsync(ISpecification<PropertyEntity> specification)
+        public async Task<IEnumerable<PropertyResponseModel>> GetAllAsync(ISpecification<PropertyEntity> specification)
         {
             var filter = Builders<PropertyEntity>.Filter.Where(specification.Criteria);
 
-            var query = _collection
-                .Find(filter)
-                .Sort(specification.OrderBy != null
-                    ? Builders<PropertyEntity>.Sort.Ascending(specification.OrderBy)
-                    : Builders<PropertyEntity>.Sort.Descending(specification.OrderByDescending));
+            var collation = new Collation("en", strength: CollationStrength.Secondary);
+
+            // Inicializar el pipeline de agregación con filtro y unwind
+            var aggregation = _collection.Aggregate(new AggregateOptions { Collation = collation })
+                                         .Match(filter)
+                                         .Unwind("CatalogData", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true })
+                                         .Unwind("EntityData", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true });
+
+            // Obtener el campo de ordenamiento según la especificación
+            string? orderByField = specification.OrderBy != null
+                ? SortExpressionConfiguration<PropertyEntity>.GetPropertyName(specification.OrderBy)
+                : specification.OrderByDescending != null
+                    ? SortExpressionConfiguration<PropertyEntity>.GetPropertyName(specification.OrderByDescending)
+                    : null;
+
+
+            // Configurar el ordenamiento
+            var sortDefinition = BsonDocumentExtensions.GetSortDefinition(orderByField, specification.OrderBy != null, this.SortMapping);
+
+            // Aplicar joins si hay especificaciones de include
+            if (specification.Includes != null)
+            {
+                foreach (var join in specification.Includes)
+                {
+                    aggregation = aggregation.Lookup(join.Collection, join.LocalField, join.ForeignField, join.As);
+                }
+            }
 
             if (specification.Skip >= 0)
             {
-                query = query
-                    .Limit(specification.Limit)
-                    .Skip(specification.Skip);
+                aggregation = aggregation.Skip(specification.Skip);
             }
-            return await query.ToListAsync();
+
+            if (specification.Limit > 0)
+            {
+                aggregation = aggregation.Limit(specification.Limit);
+            }
+
+
+            aggregation = aggregation.Sort(sortDefinition);
+
+            var result = await aggregation.ToListAsync();
+
+
+            // Mapear resultados a ServerResponseModel
+            var data = result.Select(MapToResponseModel);
+
+            return data;
+        }
+
+        private PropertyResponseModel MapToResponseModel(BsonDocument bson)
+        {
+            return new PropertyResponseModel
+            {
+                id = bson.GetValueOrDefault("_id", Guid.Empty),
+                property_code = bson.GetValueOrDefault("entity_code", string.Empty),
+                property_name = bson.GetValueOrDefault("property_name", string.Empty),
+                type_id = bson.GetValueOrDefault("type_id", Guid.Empty),
+                typePropertyName = bson.GetNestedValueOrDefault("CatalogData", "catalog_name"),
+                entity_id = bson.GetValueOrDefault("entity_id", Guid.Empty),
+                entityName = bson.GetNestedValueOrDefault("EntityData", "entity_name"),
+            };
         }
 
         public async Task<long> GetTotalRows(ISpecification<PropertyEntity> specification)
