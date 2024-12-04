@@ -5,6 +5,7 @@ using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Mapster;
+using Mapster.Models;
 using MediatR;
 using System.Diagnostics.CodeAnalysis;
 using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.Property.PropertyCommands;
@@ -372,8 +373,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
                                 Name = property.property_name,
                                 Code = property.property_code,
                                 TypeId = property.type_id,
+                                typePropertyName = property.typePropertyName,
                                 EntityId = property.entity_id,
-                                StatusId = property.status_id
+                                entityName = property.entityName
                             }).ToList()
                         }
                     });
