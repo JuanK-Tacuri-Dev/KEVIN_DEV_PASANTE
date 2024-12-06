@@ -134,12 +134,14 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return new PropertyResponseModel
             {
                 id = bson.GetValueOrDefault("_id", Guid.Empty),
-                property_code = bson.GetValueOrDefault("entity_code", string.Empty),
+                property_code = bson.GetValueOrDefault("property_code", string.Empty),
                 property_name = bson.GetValueOrDefault("property_name", string.Empty),
                 type_id = bson.GetValueOrDefault("type_id", Guid.Empty),
                 typePropertyName = bson.GetNestedValueOrDefault("CatalogData", "catalog_name"),
                 entity_id = bson.GetValueOrDefault("entity_id", Guid.Empty),
                 entityName = bson.GetNestedValueOrDefault("EntityData", "entity_name"),
+                statusId = bson.GetValueOrDefault("status_id", Guid.Empty),
+
             };
         }
 

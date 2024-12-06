@@ -375,6 +375,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
                                 TypeId = property.type_id,
                                 typePropertyName = property.typePropertyName,
                                 EntityId = property.entity_id,
+                                StatusId = property.statusId,
                                 entityName = property.entityName
                             }).ToList()
                         }
