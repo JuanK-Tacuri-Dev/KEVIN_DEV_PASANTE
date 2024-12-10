@@ -92,18 +92,14 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 foreach (var join in specification.Includes)
                     aggregation = aggregation.Lookup(join.Collection, join.LocalField, join.ForeignField, join.As);
 
+            aggregation = aggregation.Sort(sortDefinition);
+
             if (specification.Skip >= 0)
             {
-                aggregation = aggregation.Skip(specification.Skip);
+                aggregation = aggregation
+                   .Limit(specification.Limit)
+                   .Skip(specification.Skip);
             }
-
-            if (specification.Limit > 0)
-            {
-                aggregation = aggregation.Limit(specification.Limit);
-            }
-
-
-            aggregation = aggregation.Sort(sortDefinition);
 
             var result = await aggregation.ToListAsync();
 
