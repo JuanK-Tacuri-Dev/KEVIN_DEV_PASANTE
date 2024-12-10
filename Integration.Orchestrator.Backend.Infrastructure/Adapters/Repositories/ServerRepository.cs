@@ -134,9 +134,12 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
             if (specification.Skip >= 0)
             {
-                aggregation = aggregation
-                   .Limit(specification.Limit)
-                   .Skip(specification.Skip);
+                aggregation = aggregation.Skip(specification.Skip);
+            }
+
+            if (specification.Limit > 0)
+            {
+                aggregation = aggregation.Limit(specification.Limit);
             }
 
             var result = await aggregation.ToListAsync();
