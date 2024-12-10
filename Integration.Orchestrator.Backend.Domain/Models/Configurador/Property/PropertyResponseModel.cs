@@ -15,6 +15,7 @@ namespace Integration.Orchestrator.Backend.Domain.Models.Configurador.Property
         public string typePropertyName { get; set; }
         public Guid entity_id { get; set; }
         public string entityName { get; set; }
+        public Guid statusId { get; set; }
     }
 
 
