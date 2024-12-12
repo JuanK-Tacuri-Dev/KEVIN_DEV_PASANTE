@@ -18,7 +18,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         private readonly IMongoCollection<ConnectionEntity> _collection = collection;
         private Dictionary<string, string> SortMapping = new()
             {
-                 { "server_id", "ServerData.server_url" },
+                { "server_id", "ServerData.server_url" },
                 { "adapter_id", "AdapterData.adapter_name" },
                 { "repository_id", "RepositoryData.repository_databaseName" },
             };
