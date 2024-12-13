@@ -32,8 +32,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { Utilities.GetSafeKey(nameof(ServerEntity.server_code), 1), x => x.server_code },
             { Utilities.GetSafeKey(nameof(ServerEntity.server_name), 1), x => x.server_name },
             { Utilities.GetSafeKey(nameof(ServerEntity.server_url), 1), x => x.server_url },
-            { "typeServerId", x => x.type_id },
-            { "statusId", x => x.status_id },
+            { "typeServerName", x => x.type_id },
+            { "status", x => x.status_id },
             { Utilities.GetSafeKey(nameof(ServerEntity.updated_at), 0), x => x.updated_at },
             { Utilities.GetSafeKey(nameof(ServerEntity.created_at), 0), x => x.created_at }
         };

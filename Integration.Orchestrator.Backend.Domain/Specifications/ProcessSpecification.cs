@@ -34,7 +34,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { "typeId", x => x.process_type_id },
             { "connectionId", x => x.connection_id },
             { nameof(ProcessEntity.entities), x => x.entities },
-            { "statusId", x => x.status_id },
+            { "status", x => x.status_id },
             { nameof(ProcessEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(ProcessEntity.created_at).Split("_")[0], x => x.created_at }
         };
