@@ -31,7 +31,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { nameof(SynchronizationEntity.synchronization_name).Split("_")[1], x => x.synchronization_name },
             { nameof(SynchronizationEntity.synchronization_observations).Split("_")[1], x => x.synchronization_observations },
             { nameof(SynchronizationEntity.synchronization_code).Split("_")[1], x => x.synchronization_code },
-            { nameof(SynchronizationEntity.synchronization_hour_to_execute).Split("_")[1], x => x.synchronization_hour_to_execute },
+            { "hourToExecute", x => x.synchronization_hour_to_execute },
+            { "status.id", x => x.status_id },
             { nameof(SynchronizationEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(SynchronizationEntity.created_at).Split("_")[0], x => x.created_at },
         };
