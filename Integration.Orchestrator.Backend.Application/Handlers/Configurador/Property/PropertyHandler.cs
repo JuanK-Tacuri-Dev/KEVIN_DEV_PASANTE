@@ -82,9 +82,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
                             });
 
                 var propertyMap = MapProperty(request.Property.PropertyRequest, request.Id);
-                var StatusIsActive = await _statusService.GetStatusIsActive(propertyMap.status_id);
+                var StatusIsActive = await _statusService.GetStatusIsActiveAsync(propertyMap.status_id);
 
-                var RelationProcessActive = await _processService.GetByPropertyActiveIdAsync(propertyMap.id, await _statusService.GetIdActiveStatus());
+                var RelationProcessActive = await _processService.GetByPropertyActiveIdAsync(propertyMap.id, await _statusService.GetIdActiveStatusAsync());
 
                 if (!StatusIsActive &&  (RelationProcessActive!=null && RelationProcessActive.Count()>0))
                 {
@@ -101,7 +101,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
                 {
                     var entityFound = await _entitiesService.GetByIdAsync(propertyMap.entity_id);
 
-                    if (entityFound != null && !await _statusService.GetStatusIsActive(entityFound.status_id))
+                    if (entityFound != null && !await _statusService.GetStatusIsActiveAsync(entityFound.status_id))
                     {
                         throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors
@@ -301,7 +301,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Pro
         {
             try
             {
-                var propertyFound = await _propertyService.GetByEntitysIdAsync(request.Property.EntityId, await _statusService.GetIdActiveStatus());
+                var propertyFound = await _propertyService.GetByEntitysIdAsync(request.Property.EntityId, await _statusService.GetIdActiveStatusAsync());
                 if (propertyFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors()

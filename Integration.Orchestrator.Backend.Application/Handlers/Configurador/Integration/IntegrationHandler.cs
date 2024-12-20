@@ -83,8 +83,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.In
                             });
 
                 var integrationMap = MapIntegration(request.Integration.IntegrationRequest, request.Id);
-                var StatusIsActive = await _statusService.GetStatusIsActive(integrationMap.status_id);
-                var RelationConectionActive = await _synchronizationService.GetByIntegrationIdAsync(integrationMap.id, await _synchronizationStatesService.GetStatusIdSyncronization());
+                var StatusIsActive = await _statusService.GetStatusIsActiveAsync(integrationMap.status_id);
+                var RelationConectionActive = await _synchronizationService.GetByIntegrationIdAsync(integrationMap.id, await _synchronizationStatesService.GetStatusIdSyncronizationAsync());
 
 
                 if (!StatusIsActive && RelationConectionActive != null)
@@ -104,7 +104,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.In
                     {
                         var processFound = await _processService.GetByIdAsync(process);
 
-                        if (processFound != null && !await _statusService.GetStatusIsActive(processFound.status_id))
+                        if (processFound != null && !await _statusService.GetStatusIsActiveAsync(processFound.status_id))
                         {
                             throw new OrchestratorArgumentException(string.Empty,
                                 new DetailsArgumentErrors

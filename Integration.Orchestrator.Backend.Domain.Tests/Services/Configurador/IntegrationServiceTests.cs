@@ -4,6 +4,7 @@ using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Configurador;
@@ -102,6 +103,34 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
         }
 
         [Fact]
+        public async Task GetByProcessIdAsync_ShouldReturnEntityFromRepository()
+        {
+            var processId = Guid.NewGuid();
+            var statusId = Guid.NewGuid();
+            var integration = new IntegrationEntity
+            {
+                id = Guid.NewGuid(),
+                integration_name = "Integration",
+                status_id = Guid.NewGuid(),
+                integration_observations = "Observation",
+                user_id = Guid.NewGuid(),
+                process = new List<Guid>
+                {
+                    processId,
+                    Guid.NewGuid()
+                }
+            };
+
+            _mockIntegrationRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<IntegrationEntity, bool>>>()))
+                .ReturnsAsync(integration);
+
+            var result = await _mockIntegrationService.GetByProcessIdAsync(processId, statusId);
+
+            Assert.Equal(integration, result);
+            _mockIntegrationRepo.Verify(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<IntegrationEntity, bool>>>()), Times.Once);
+        }
+
+        [Fact]
         public async Task DeleteAsync_ShouldCallDeleteOnRepository()
         {
             var integration = new IntegrationEntity
@@ -132,28 +161,32 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
                 Rows = 1,
                 Search = "",
                 Sort_field = "",
-                Sort_order = SortOrdering.Ascending
+                Sort_order = SortOrdering.Ascending,
+                activeOnly = true
             };
 
-            var integration = new IntegrationEntity
+            var integration = new IntegrationResponseModel
             {
                 id = Guid.NewGuid(),
                 integration_name = "Integration",
                 status_id = Guid.NewGuid(),
                 integration_observations = "Observation",
                 user_id = Guid.NewGuid(),
-                process = new List<Guid>
+                process = new List<IntegrationProcess>
                 {
-                    Guid.NewGuid(),
-                    Guid.NewGuid()
+                    new IntegrationProcess
+                    {
+                        id = Guid.NewGuid(),
+                        name = "Test"
+                    }
                 }
             };
-            var integrations = new List<IntegrationEntity> { integration };
+            var integrations = new List<IntegrationResponseModel> { integration };
             var spec = new IntegrationSpecification(paginatedModel);
             _mockIntegrationRepo.Setup(repo => repo.GetAllAsync(It.IsAny<ISpecification<IntegrationEntity>>())).ReturnsAsync(integrations);
 
             var result = await _mockIntegrationService.GetAllPaginatedAsync(paginatedModel);
-            List<IntegrationEntity> r = result.ToList();
+            List<IntegrationResponseModel> r = result.ToList();
             Assert.Equal(integrations, result);
             _mockIntegrationRepo.Verify(repo => repo.GetAllAsync(It.IsAny<IntegrationSpecification>()), Times.Once);
         }
@@ -167,7 +200,8 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
                 Rows = 1,
                 Search = "",
                 Sort_field = "",
-                Sort_order = SortOrdering.Ascending
+                Sort_order = SortOrdering.Ascending,
+                activeOnly = true
             };
             var totalRows = 10L;
             var spec = new IntegrationSpecification(paginatedModel);

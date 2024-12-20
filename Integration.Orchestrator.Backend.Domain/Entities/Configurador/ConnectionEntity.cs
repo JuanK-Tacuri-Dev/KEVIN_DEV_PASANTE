@@ -7,7 +7,7 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Configurador
     {
         public string connection_code { get; set; }
         public string connection_name { get; set; }
-        public string? connection_description { get; set; }
+        public string connection_description { get; set; } = string.Empty;
         public Guid server_id { get; set; }
         public Guid adapter_id { get; set; }
         public Guid repository_id { get; set; }

@@ -1,14 +1,18 @@
-﻿using Integration.Orchestrator.Backend.Domain.Commons;
+﻿using Autofac.Core;
+using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador;
+using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Configurador;
-using Integration.Orchestrator.Backend.Domain.Specifications;
 using Moq;
 using System.Linq.Expressions;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador.Property;
+using Integration.Orchestrator.Backend.Domain.Specifications;
 
 namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
 {
@@ -185,28 +189,62 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
         }
 
         [Fact]
+        public async Task GetByEntityIdAsync_ShouldReturnProperty_WhenPropertyExists()
+        {
+            // Arrange
+            var entityId = Guid.NewGuid();
+            var statusId = Guid.NewGuid();
+            var property = new PropertyEntity 
+            {
+                entity_id = entityId,
+                property_name = "ExistingProperty",
+                status_id = statusId,
+                entityName = "Entity test"                
+            };
+
+            _mockPropertyRepository.Setup(r => r.GetByEntityAsync(It.IsAny<Expression<Func<PropertyEntity, bool>>>()))
+                .ReturnsAsync(property);
+
+            // Act
+            var result = await _mockPropertyService.GetByEntityIdAsync(entityId, statusId);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal("ExistingProperty", result.property_name);
+            _mockPropertyRepository.Verify(repo => repo.GetByEntityAsync(It.IsAny<Expression<Func<PropertyEntity, bool>>>()), Times.Once);
+        }
+
+        [Fact]
         public async Task GetByEntityIdAsync_ShouldReturnProperties_WhenPropertiesExist()
         {
             // Arrange
             var entityId = Guid.NewGuid();
+            var statusId = Guid.NewGuid();
             var properties = new List<PropertyEntity>
             {
                 new PropertyEntity { property_name = "Property1", entity_id = entityId },
                 new PropertyEntity { property_name = "Property2", entity_id = entityId }
             };
 
+            var state = new StatusEntity
+            {
+                id = Guid.NewGuid()
+            };
+
             _mockPropertyRepository.Setup(r => r.GetByEntitysAsync(It.IsAny<Expression<Func<PropertyEntity, bool>>>()))
                 .ReturnsAsync(properties); // Simulamos que hay propiedades encontradas
 
+            _mockStatusService.Setup(x => x.GetByKeyAsync(It.IsAny<string>())).ReturnsAsync(state);
+
             // Act
-            var result = await _mockPropertyService.GetByEntitysIdAsync(entityId);
+            var result = await _mockPropertyService.GetByEntitysIdAsync(entityId, statusId);
 
             // Assert
             Assert.NotNull(result);
             Assert.Equal(2, result.Count());
             Assert.Contains(result, p => p.property_name == "Property1");
             Assert.Contains(result, p => p.property_name == "Property2");
-            _mockPropertyRepository.Verify(r => r.GetByEntityAsync(It.IsAny<Expression<Func<PropertyEntity, bool>>>()), Times.Once);
+            _mockPropertyRepository.Verify(r => r.GetByEntitysAsync(It.IsAny<Expression<Func<PropertyEntity, bool>>>()), Times.Once);
         }
 
         [Fact]
@@ -298,6 +336,64 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
             // Verificamos que el mensaje de la excepción sea el correcto
             Assert.Equal((int)ResponseCode.NotFoundSuccessfully, exception.Details.Code);
             Assert.Equal(AppMessages.Domain_PropertyExists, exception.Details.Description);
+        }
+
+        [Fact]
+        public async Task GetAllPaginatedAsync_ShouldReturnPaginatedAdapters_WhenCalled()
+        {
+            // Arrange
+            var paginatedModel = new PaginatedModel
+            {
+                First = 0,
+                Rows = 10,
+                Sort_field = "",
+                Sort_order = SortOrdering.Ascending,
+                Search = "Property",
+                activeOnly = true
+            };
+
+            var adapterEntities = new List<PropertyResponseModel>
+            {
+                new PropertyResponseModel { property_name = "Property 1" },
+                new PropertyResponseModel { property_name = "Property 2" }
+            };
+
+            _mockPropertyRepository.Setup(x => x.GetAllAsync(It.IsAny<ISpecification<PropertyEntity>>()))
+                .ReturnsAsync(adapterEntities);
+
+            // Act
+            var result = await _mockPropertyService.GetAllPaginatedAsync(paginatedModel);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(2, result.Count());
+            _mockPropertyRepository.Verify(x => x.GetAllAsync(It.IsAny<ISpecification<PropertyEntity>>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetTotalRowsAsync_ShouldReturnLong_WhenCalled()
+        {
+            var count = 2;
+            // Arrange
+            var paginatedModel = new PaginatedModel
+            {
+                First = 0,
+                Rows = 10,
+                Sort_field = "name",
+                Sort_order = SortOrdering.Ascending,
+                Search = "Property",
+                activeOnly = true
+            };
+
+            _mockPropertyRepository.Setup(x => x.GetTotalRows(It.IsAny<ISpecification<PropertyEntity>>()))
+                .ReturnsAsync(count);
+
+            // Act
+            var result = await _mockPropertyService.GetTotalRowsAsync(paginatedModel);
+
+            // Assert
+            Assert.Equal(count, result);
+            _mockPropertyRepository.Verify(x => x.GetTotalRows(It.IsAny<ISpecification<PropertyEntity>>()), Times.Once);
         }
 
     }

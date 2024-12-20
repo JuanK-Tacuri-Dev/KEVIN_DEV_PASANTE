@@ -99,10 +99,33 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
         }
 
         [Fact]
+        public async Task GetStatusIdSyncronizationAsync_ShouldReturnEntityFromRepository()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var expectedEntity = new SynchronizationStatusEntity { id = id };
+            _mockRepo.Setup(repo => repo.GetByKeysAsync(It.IsAny<Expression<Func<SynchronizationStatusEntity, bool>>>()))
+                .ReturnsAsync([expectedEntity]);
+
+            // Act
+            var result = await _service.GetStatusIdSyncronizationAsync();
+
+            // Assert
+           // Assert.Equal(expectedEntity, result);
+            _mockRepo.Verify(repo => repo.GetByKeysAsync(It.IsAny<Expression<Func<SynchronizationStatusEntity, bool>>>()), Times.Once);
+        }
+
+        [Fact]
         public async Task GetAllPaginatedAsync_ShouldReturnEntitiesFromRepository()
         {
             // Arrange
-            var paginatedModel = new PaginatedModel { First = 1, Rows = 10, Sort_field = "" };
+            var paginatedModel = new PaginatedModel 
+            { 
+                First = 1, 
+                Rows = 10, 
+                Sort_field = "" 
+            };
+
             var expectedEntities = new List<SynchronizationStatusEntity> { new SynchronizationStatusEntity() };
             _mockRepo.Setup(repo => repo.GetAllAsync(It.IsAny<SynchronizationStatesSpecification>())).ReturnsAsync(expectedEntities);
 

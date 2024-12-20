@@ -9,7 +9,7 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Synch
         public Guid? FranchiseId { get; set; }
         public List<IntegrationRequest> Integrations { get; set; }
         public Guid? UserId { get; set; }
-        public string? HourToExecute { get; set; }
+        public string HourToExecute { get; set; } = string.Empty;
         public Guid StatusId { get; set; }
     }
 

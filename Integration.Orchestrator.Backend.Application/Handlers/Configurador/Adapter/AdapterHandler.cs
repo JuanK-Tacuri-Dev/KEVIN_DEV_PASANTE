@@ -77,8 +77,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ada
 
                 var adapterMap = MapAdapter(request.Adapter.AdapterRequest, request.Id);
 
-                var StatusIsActive = await _statusService.GetStatusIsActive(adapterMap.status_id);
-                var ExistRelationConectionActive = await _connectionService.GetByAdapterIdAsync(adapterMap.id, await _statusService.GetIdActiveStatus());
+                var StatusIsActive = await _statusService.GetStatusIsActiveAsync(adapterMap.status_id);
+                var ExistRelationConectionActive = await _connectionService.GetByAdapterIdAsync(adapterMap.id, await _statusService.GetIdActiveStatusAsync());
 
                 if (!StatusIsActive && ExistRelationConectionActive != null)
                 {

@@ -41,38 +41,129 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
         }
 
         [Fact]
-        public async Task GetAllPaginatedAsync_ShouldReturnPaginatedCatalogEntities()
+        public async Task GetAllPaginatedAsync_ShouldReturnPaginatedCatalogEntities_OrderByAscendingAndDescending()
         {
-            var paginatedModel = new PaginatedModel()
+            var paginatedModelAsc = new PaginatedModel()
             {
-                First = 1,
-                Rows = 1,
-                Search = "",
-                Sort_field = "",
-                Sort_order = SortOrdering.Ascending
+                First = 0,
+                Rows = 10,
+                Search = "Catalog",
+                Sort_field = "code",  // Ordena por un campo específico
+                Sort_order = SortOrdering.Ascending,
+                activeOnly = true
             };
-            var catalog = new CatalogEntity
+
+            var paginatedModelDesc = new PaginatedModel()
+            {
+                First = 0,
+                Rows = 10,
+                Search = "Catalog",
+                Sort_field = "code",  // Ordena por el mismo campo
+                Sort_order = SortOrdering.Descending,
+                activeOnly = true
+            };
+
+            var catalog1 = new CatalogEntity
             {
                 id = Guid.NewGuid(),
                 catalog_code = 10,
-                catalog_name = "Catlog",
-                catalog_value = "value",
+                catalog_name = "Catalog1",
+                catalog_value = "value1",
                 father_code = 1,
-                catalog_detail = "details of catalog",
+                catalog_detail = "details of catalog 1",
                 status_id = Guid.NewGuid(),
                 is_father = true,
                 created_at = DateTime.Now.ToString(),
                 updated_at = DateTime.Now.ToString()
-
             };
-            var catalogs = new List<CatalogEntity> { catalog };
-            var spec = new CatalogSpecification(paginatedModel);
-            _mockRepo.Setup(repo => repo.GetAllAsync(It.IsAny<ISpecification<CatalogEntity>>())).ReturnsAsync(catalogs);
 
-            var result = await _service.GetAllPaginatedAsync(paginatedModel);
-            List<CatalogEntity> r = result.ToList();
-            Assert.Equal(catalogs, result);
+            var catalog2 = new CatalogEntity
+            {
+                id = Guid.NewGuid(),
+                catalog_code = 20,
+                catalog_name = "Catalog2",
+                catalog_value = "value2",
+                father_code = 1,
+                catalog_detail = "details of catalog 2",
+                status_id = Guid.NewGuid(),
+                is_father = true,
+                created_at = DateTime.Now.ToString(),
+                updated_at = DateTime.Now.ToString()
+            };
+
+            var catalogs = new List<CatalogEntity> { catalog1, catalog2 };
+
+            var specAsc = new CatalogSpecification(paginatedModelAsc);
+            var specDesc = new CatalogSpecification(paginatedModelDesc);
+
+            _mockRepo.Setup(repo => repo.GetAllAsync(It.IsAny<ISpecification<CatalogEntity>>()))
+                     .ReturnsAsync(catalogs);
+
+            // Verificación del orden ascendente
+            var resultAsc = await _service.GetAllPaginatedAsync(paginatedModelAsc);
+            var orderedAsc = resultAsc.OrderBy(c => c.catalog_code).ToList();
+            Assert.Equal(orderedAsc, resultAsc);
             _mockRepo.Verify(repo => repo.GetAllAsync(It.IsAny<CatalogSpecification>()), Times.Once);
+
+            // Verificación del orden descendente
+            var resultDesc = await _service.GetAllPaginatedAsync(paginatedModelDesc);
+            _mockRepo.Verify(repo => repo.GetAllAsync(It.IsAny<CatalogSpecification>()), Times.Exactly(2));
+        }
+        
+        [Fact]
+        public async Task GetAllPaginatedAsync_ShouldReturnPaginatedCatalogEntities_SortFieldEmpty()
+        {
+            var paginatedModelAsc = new PaginatedModel()
+            {
+                First = 0, 
+                Rows = 10,
+                Search = "Catalog",
+                Sort_field = "", 
+                Sort_order = SortOrdering.Ascending,
+                activeOnly = true
+            };
+
+            var catalog1 = new CatalogEntity
+            {
+                id = Guid.NewGuid(),
+                catalog_code = 10,
+                catalog_name = "Catalog1",
+                catalog_value = "value1",
+                father_code = 1,
+                catalog_detail = "details of catalog 1",
+                status_id = Guid.NewGuid(),
+                is_father = true,
+                created_at = DateTime.Now.ToString(),
+                updated_at = DateTime.Now.ToString()
+            };
+
+            var catalog2 = new CatalogEntity
+            {
+                id = Guid.NewGuid(),
+                catalog_code = 20,
+                catalog_name = "Catalog2",
+                catalog_value = "value2",
+                father_code = 1,
+                catalog_detail = "details of catalog 2",
+                status_id = Guid.NewGuid(),
+                is_father = true,
+                created_at = DateTime.Now.ToString(),
+                updated_at = DateTime.Now.ToString()
+            };
+
+            var catalogs = new List<CatalogEntity> { catalog1, catalog2 };
+
+            var specAsc = new CatalogSpecification(paginatedModelAsc);
+
+            _mockRepo.Setup(repo => repo.GetAllAsync(It.IsAny<ISpecification<CatalogEntity>>()))
+                     .ReturnsAsync(catalogs);
+
+            // Verificación del orden ascendente
+            var resultAsc = await _service.GetAllPaginatedAsync(paginatedModelAsc);
+            var orderedAsc = resultAsc.OrderBy(c => c.catalog_code).ToList();
+            Assert.Equal(orderedAsc, resultAsc);
+            _mockRepo.Verify(repo => repo.GetAllAsync(It.IsAny<CatalogSpecification>()), Times.Once);
+
         }
 
         [Fact]

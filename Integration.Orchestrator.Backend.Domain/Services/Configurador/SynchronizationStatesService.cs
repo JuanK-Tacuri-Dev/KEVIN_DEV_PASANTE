@@ -63,6 +63,12 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
             return await _synchronizationStatesStatesRepository.GetTotalRows(spec);
         }
 
+        public async Task<Guid> GetStatusIdSyncronizationAsync()
+        {
+            var SytatusKey = await GetStatusIdSyncronization([Constants.SynchronizationStatesKey.Cancelado]);
+            return SytatusKey.FirstOrDefault().id;
+        }
+
         private async Task ValidateBussinesLogic(SynchronizationStatusEntity synchronizationStatesEntity, bool create = false)
         {
             if (create)
@@ -87,11 +93,6 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurador
             return await _synchronizationStatesStatesRepository.GetByKeysAsync(specification);
         }
 
-        public async Task<Guid> GetStatusIdSyncronization()
-        {
-            var SytatusKey = await GetStatusIdSyncronization([Constants.SynchronizationStatesKey.Cancelado]);
-            return SytatusKey.FirstOrDefault().id;
-
-        }
+        
     }   
 }

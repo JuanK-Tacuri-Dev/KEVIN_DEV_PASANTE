@@ -89,14 +89,14 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
                     synchronizationMap.synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault();
                 }
 
-                var SynchronizationIsActive = await _statusService.GetStatusIsActive(synchronizationMap.status_id);
+                var SynchronizationIsActive = await _statusService.GetStatusIsActiveAsync(synchronizationMap.status_id);
                 if (SynchronizationIsActive)
                 {
                     foreach (var integration in synchronizationMap.integrations)
                     {
                         var repositoryFound = await _integrationService.GetByIdAsync(integration);
 
-                        if (repositoryFound != null && !await _statusService.GetStatusIsActive(repositoryFound.status_id))
+                        if (repositoryFound != null && !await _statusService.GetStatusIsActiveAsync(repositoryFound.status_id))
                         {
                             throw new OrchestratorArgumentException(string.Empty,
                                 new DetailsArgumentErrors

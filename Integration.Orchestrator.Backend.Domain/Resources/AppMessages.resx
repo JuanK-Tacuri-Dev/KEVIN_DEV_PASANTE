@@ -177,9 +177,6 @@
   <data name="Application_Validator_Required" xml:space="preserve">
     <value>se requiere</value>
   </data>
-  <data name="Domain_EntityRepositoryExists" xml:space="preserve">
-    <value>El nombre de entidad para este repositorio ya existe</value>
-  </data>
   <data name="Domain_PropertyEntityExists" xml:space="preserve">
     <value>El nombre de la propiedad para esta entidad ya existe</value>
   </data>

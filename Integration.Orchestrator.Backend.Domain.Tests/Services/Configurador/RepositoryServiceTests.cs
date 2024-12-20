@@ -3,11 +3,15 @@ using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador.Property;
+using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Configurador;
 using Moq;
 using System.Linq.Expressions;
+using Integration.Orchestrator.Backend.Domain.Specifications;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador;
 
 namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
 {
@@ -288,6 +292,64 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
 
             // Assert
             _mockRepositoryRepository.Verify(x => x.ValidateDbPortUser(It.IsAny<RepositoryEntity>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAllPaginatedAsync_ShouldReturnPaginatedAdapters_WhenCalled()
+        {
+            // Arrange
+            var paginatedModel = new PaginatedModel
+            {
+                First = 0,
+                Rows = 10,
+                Sort_field = "",
+                Sort_order = SortOrdering.Ascending,
+                Search = "Repository",
+                activeOnly = true
+            };
+
+            var adapterEntities = new List<RepositoryResponseModel>
+            {
+                new RepositoryResponseModel { repository_databaseName = "Repository 1" },
+                new RepositoryResponseModel { repository_databaseName = "Repository 2" }
+            };
+
+            _mockRepositoryRepository.Setup(x => x.GetAllAsync(It.IsAny<ISpecification<RepositoryEntity>>()))
+                .ReturnsAsync(adapterEntities);
+
+            // Act
+            var result = await _mockRepositoryService.GetAllPaginatedAsync(paginatedModel);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(2, result.Count());
+            _mockRepositoryRepository.Verify(x => x.GetAllAsync(It.IsAny<ISpecification<RepositoryEntity>>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetTotalRowsAsync_ShouldReturnLong_WhenCalled()
+        {
+            var count = 2;
+            // Arrange
+            var paginatedModel = new PaginatedModel
+            {
+                First = 0,
+                Rows = 10,
+                Sort_field = "name",
+                Sort_order = SortOrdering.Ascending,
+                Search = "Property",
+                activeOnly = true
+            };
+
+            _mockRepositoryRepository.Setup(x => x.GetTotalRows(It.IsAny<ISpecification<RepositoryEntity>>()))
+                .ReturnsAsync(count);
+
+            // Act
+            var result = await _mockRepositoryService.GetTotalRowsAsync(paginatedModel);
+
+            // Assert
+            Assert.Equal(count, result);
+            _mockRepositoryRepository.Verify(x => x.GetTotalRows(It.IsAny<ISpecification<RepositoryEntity>>()), Times.Once);
         }
 
     }

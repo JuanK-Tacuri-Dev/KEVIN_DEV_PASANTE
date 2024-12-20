@@ -84,13 +84,13 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Rep
                 }
 
                 var repositoryMap = MapRepository(request.Repository.RepositoryRequest, request.Id);
-                var idstatusActive = await _statusService.GetIdActiveStatus();
-                var statusIsActive = await _statusService.GetStatusIsActive(repositoryMap.status_id);
+                var idstatusActive = await _statusService.GetIdActiveStatusAsync();
+                var statusIsActive = await _statusService.GetStatusIsActiveAsync(repositoryMap.status_id);
 
                 var relationConnectionActive = await _connectionService.GetByRepositoryIdAsync(repositoryMap.id, idstatusActive);
                 
 
-                var relationEntitys = await _entitiesService.GetByRepositoryIdAsync(repositoryMap.id, await _statusService.GetIdActiveStatus());
+                var relationEntitys = await _entitiesService.GetByRepositoryIdAsync(repositoryMap.id, await _statusService.GetIdActiveStatusAsync());
 
                 if (!statusIsActive && (relationConnectionActive != null || (relationEntitys!= null && relationEntitys.Count()>0)))
                 {

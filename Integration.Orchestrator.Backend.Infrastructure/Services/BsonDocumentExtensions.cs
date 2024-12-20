@@ -1,13 +1,10 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Services
 {
+    [ExcludeFromCodeCoverage]
     public static class BsonDocumentExtensions
     {
         public static T GetValueOrDefault<T>(this BsonDocument doc, string key, T defaultValue)
@@ -27,7 +24,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Services
                     if (typeof(T) == typeof(bool)) return (T)(object)value.AsBoolean;
                     if (typeof(T) == typeof(DateTime)) return (T)(object)value.ToUniversalTime();
 
-                    return (T)Convert.ChangeType(value.RawValue, typeof(T));
+                    return (T)Convert.ChangeType(value, typeof(T));
                 }
                 catch
                 {

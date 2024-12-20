@@ -11,6 +11,7 @@ using Integration.Orchestrator.Backend.Domain.Services.Configurador;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using Moq;
 using System.Linq.Expressions;
+using System;
 
 namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
 {
@@ -91,6 +92,31 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
             Assert.Equal(synchronization, result);
             _mockSynchronizationRepo.Verify(repo => repo.GetByIdAsync(It.Is<Expression<Func<SynchronizationEntity, bool>>>(expr =>
                 expr.Compile()(synchronization))), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetByIntegrationIdAsync_ShouldReturnEntityFromRepository()
+        {
+            var statusId = Guid.NewGuid();
+            var integrationId = Guid.NewGuid();
+            var synchronization = new SynchronizationEntity
+            {
+                id = Guid.NewGuid(),
+                integrations = [ integrationId ],
+                franchise_id = Guid.NewGuid(),
+                status_id = statusId,
+                synchronization_observations = "Observation",
+                user_id = Guid.NewGuid(),
+                synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault()
+            };
+
+            _mockSynchronizationRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<SynchronizationEntity, bool>>>())).ReturnsAsync(synchronization);
+
+            var result = await _service.GetByIntegrationIdAsync(integrationId, statusId);
+
+            Assert.Equal(synchronization, result);
+            _mockSynchronizationRepo.Verify(repo => repo.GetByIdAsync(It.IsAny<Expression<Func<SynchronizationEntity, bool>>>()), Times.Exactly(1));
+            
         }
 
         [Fact]

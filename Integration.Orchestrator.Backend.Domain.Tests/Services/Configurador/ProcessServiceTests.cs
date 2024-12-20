@@ -4,6 +4,7 @@ using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Configurador;
@@ -253,6 +254,163 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
         }
 
         [Fact]
+        public async Task GetByEntityActiveIdAsync_ShouldReturnProcess_WhenValidIdProvided()
+        {
+            // Arrange
+            var entityId = Guid.NewGuid();
+            var statusId = Guid.NewGuid();
+            var process = new ProcessEntity
+            {
+                id = Guid.NewGuid(),
+                process_name = "process_name",
+                process_code = "Y001",
+                process_type_id = Guid.NewGuid(),
+                entities = new List<ObjectEntity>
+                {
+                    new ObjectEntity
+                    {
+                        id =entityId,
+                        Properties = new List<PropertiesEntity>
+                        {
+                            new PropertiesEntity
+                            {
+                                internal_status_id = Guid.NewGuid(),
+                                property_id = Guid.NewGuid()
+                            }
+                        },
+                        filters = new List<FiltersEntity>
+                        {
+                            new FiltersEntity
+                            {
+                                operator_id = Guid.NewGuid(),
+                                property_id = Guid.NewGuid(),
+                                value = "value"
+                            }
+                        }
+
+                    }
+                },
+                status_id = statusId
+            };
+
+            _mockRepo.Setup(x => x.GetByEntitiesIdAsync(It.IsAny<Expression<Func<ProcessEntity, bool>>>()))
+                .ReturnsAsync([process]);
+
+            // Act
+            var result = await _service.GetByEntityActiveIdAsync(entityId, statusId);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.True(result.Any());
+            _mockRepo.Verify(x => x.GetByEntitiesIdAsync(It.IsAny<Expression<Func<ProcessEntity, bool>>>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetByPropertyActiveIdAsync_ShouldReturnProcess_WhenValidIdProvided()
+        {
+            // Arrange
+            var propertyId = Guid.NewGuid();
+            var statusId = Guid.NewGuid();
+            var process = new ProcessEntity
+            {
+                id = Guid.NewGuid(),
+                process_name = "process_name",
+                process_code = "Y001",
+                process_type_id = Guid.NewGuid(),
+                entities = new List<ObjectEntity>
+                {
+                    new ObjectEntity
+                    {
+                        id = Guid.NewGuid(),
+                        Properties = new List<PropertiesEntity>
+                        {
+                            new PropertiesEntity
+                            {
+                                internal_status_id = Guid.NewGuid(),
+                                property_id = propertyId
+                            }
+                        },
+                        filters = new List<FiltersEntity>
+                        {
+                            new FiltersEntity
+                            {
+                                operator_id = Guid.NewGuid(),
+                                property_id = Guid.NewGuid(),
+                                value = "value"
+                            }
+                        }
+
+                    }
+                },
+                status_id = statusId
+            };
+
+            _mockRepo.Setup(x => x.GetByPropertiesIdAsync(It.IsAny<Expression<Func<ProcessEntity, bool>>>()))
+                .ReturnsAsync([process]);
+
+            // Act
+            var result = await _service.GetByPropertyActiveIdAsync(propertyId, statusId);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.True(result.Any());
+            _mockRepo.Verify(x => x.GetByPropertiesIdAsync(It.IsAny<Expression<Func<ProcessEntity, bool>>>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetByConnectionIdAsync_ShouldReturnProcess_WhenValidIdProvided()
+        {
+            // Arrange
+            var connectionId = Guid.NewGuid();
+            var statusId = Guid.NewGuid();
+            var process = new ProcessEntity
+            {
+                id = Guid.NewGuid(),
+                process_name = "process_name",
+                process_code = "Y001",
+                process_type_id = Guid.NewGuid(),
+                connection_id = connectionId,
+                entities = new List<ObjectEntity>
+                {
+                    new ObjectEntity
+                    {
+                        id = Guid.NewGuid(),
+                        Properties = new List<PropertiesEntity>
+                        {
+                            new PropertiesEntity
+                            {
+                                internal_status_id = Guid.NewGuid(),
+                                property_id = Guid.NewGuid()
+                            }
+                        },
+                        filters = new List<FiltersEntity>
+                        {
+                            new FiltersEntity
+                            {
+                                operator_id = Guid.NewGuid(),
+                                property_id = Guid.NewGuid(),
+                                value = "value"
+                            }
+                        }
+
+                    }
+                },
+                status_id = statusId
+            };
+
+            _mockRepo.Setup(x => x.GetByIdAsync(It.IsAny<Expression<Func<ProcessEntity, bool>>>()))
+                .ReturnsAsync(process);
+
+            // Act
+            var result = await _service.GetByConnectionIdAsync(connectionId, statusId);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(process, result);
+            _mockRepo.Verify(x => x.GetByIdAsync(It.IsAny<Expression<Func<ProcessEntity, bool>>>()), Times.Once);
+        }
+        
+        [Fact]
         public async Task GetByCodeAsync_ShouldReturnProcess_WhenValidCodeProvided()
         {
             // Arrange
@@ -315,8 +473,14 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
                 new ProcessEntity { process_code = "P002", status_id = Guid.NewGuid() }
             };
 
+            var state = new StatusEntity 
+            {
+                id = Guid.NewGuid(),
+                
+            };
             _mockRepo.Setup(x => x.GetByTypeAsync(It.IsAny<Expression<Func<ProcessEntity, bool>>>()))
                 .ReturnsAsync(processes);
+            _mockStatusService.Setup(x => x.GetByKeyAsync(It.IsAny<string>())).ReturnsAsync(state);
 
             // Act
             var result = await _service.GetByTypeAsync(typeId);
@@ -335,15 +499,16 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
             {
                 First = 0,
                 Rows = 2,
-                Sort_field = "updated_at",
+                Sort_field = "",
                 Sort_order = SortOrdering.Descending,
-                Search = ""
+                Search = "",
+                activeOnly = true
             };
 
-            var processes = new List<ProcessEntity>
+            var processes = new List<ProcessResponseModel>
         {
-            new ProcessEntity { process_code = "P001" },
-            new ProcessEntity { process_code = "P002" }
+            new ProcessResponseModel { process_code = "P001" },
+            new ProcessResponseModel { process_code = "P002" }
         };
 
             _mockRepo.Setup(x => x.GetAllAsync(It.IsAny<ISpecification<ProcessEntity>>()))
@@ -356,6 +521,32 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
             Assert.NotNull(result);
             Assert.Equal(2, result.Count());
             _mockRepo.Verify(x => x.GetAllAsync(It.IsAny<ISpecification<ProcessEntity>>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetTotalRowsAsync_ShouldReturnLong_WhenCalled()
+        {
+            var count = 2;
+            // Arrange
+            var paginatedModel = new PaginatedModel
+            {
+                First = 0,
+                Rows = 10,
+                Sort_field = "name",
+                Sort_order = SortOrdering.Ascending,
+                Search = "",
+                activeOnly = true
+            };
+
+            _mockRepo.Setup(x => x.GetTotalRows(It.IsAny<ISpecification<ProcessEntity>>()))
+                .ReturnsAsync(count);
+
+            // Act
+            var result = await _service.GetTotalRowsAsync(paginatedModel);
+
+            // Assert
+            Assert.Equal(count, result);
+            _mockRepo.Verify(x => x.GetTotalRows(It.IsAny<ISpecification<ProcessEntity>>()), Times.Once);
         }
 
         [Fact]

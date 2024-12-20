@@ -4,6 +4,7 @@ using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Configurador;
@@ -231,15 +232,16 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
             {
                 First = 0,
                 Rows = 10,
-                Sort_field = "name",
+                Sort_field = "",
                 Sort_order = SortOrdering.Ascending,
-                Search = "Adapter"
+                Search = "Adapter",
+                activeOnly = true
             };
 
-            var adapterEntities = new List<AdapterEntity>
+            var adapterEntities = new List<AdapterResponseModel>
     {
-        new AdapterEntity { adapter_name = "Adapter 1" },
-        new AdapterEntity { adapter_name = "Adapter 2" }
+        new AdapterResponseModel { adapter_name = "Adapter 1" },
+        new AdapterResponseModel { adapter_name = "Adapter 2" }
     };
 
             _mockRepo.Setup(x => x.GetAllAsync(It.IsAny<ISpecification<AdapterEntity>>()))
@@ -252,6 +254,32 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
             Assert.NotNull(result);
             Assert.Equal(2, result.Count());
             _mockRepo.Verify(x => x.GetAllAsync(It.IsAny<ISpecification<AdapterEntity>>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetTotalRowsAsync_ShouldReturnLong_WhenCalled()
+        {
+            var count = 2;
+            // Arrange
+            var paginatedModel = new PaginatedModel
+            {
+                First = 0,
+                Rows = 10,
+                Sort_field = "name",
+                Sort_order = SortOrdering.Ascending,
+                Search = "Adapter",
+                activeOnly = true
+            };
+
+            _mockRepo.Setup(x => x.GetTotalRows(It.IsAny<ISpecification<AdapterEntity>>()))
+                .ReturnsAsync(count);
+
+            // Act
+            var result = await _service.GetTotalRowsAsync(paginatedModel);
+
+            // Assert
+            Assert.Equal(count, result);
+            _mockRepo.Verify(x => x.GetTotalRows(It.IsAny<ISpecification<AdapterEntity>>()), Times.Once);
         }
     }
 }

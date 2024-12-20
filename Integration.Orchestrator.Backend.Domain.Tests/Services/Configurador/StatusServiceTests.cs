@@ -105,6 +105,46 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
         }
 
         [Fact]
+        public async Task GetStatusIsActiveAsync_Should_Return_StatusEntity_When_Found()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var expectedStatus = new StatusEntity { status_key = "KEY123" };
+
+            _mockStatusRepository.Setup(x => x.GetStatusIsActiveAsync(It.IsAny<Expression<Func<StatusEntity, bool>>>()))
+                .ReturnsAsync(true);
+
+            // Act
+            var result = await _statusService.GetStatusIsActiveAsync(id);
+
+            // Assert
+            Assert.True(result);
+            _mockStatusRepository.Verify(x => x.GetStatusIsActiveAsync(It.IsAny<Expression<Func<StatusEntity, bool>>>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetIdActiveStatusAsync_Should_Return_StatusEntity_When_Found()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var expectedStatus = new StatusEntity { status_key = "KEY123" };
+
+            _mockStatusRepository.Setup(x => x.GetIdActiveStatusAsync(It.IsAny<Expression<Func<StatusEntity, bool>>>()))
+                .ReturnsAsync(id);
+
+            // Act
+            var result = await _statusService.GetIdActiveStatusAsync();
+
+            // Assert
+            Assert.Equal(id, result);
+            _mockStatusRepository.Verify(x => x.GetIdActiveStatusAsync(It.IsAny<Expression<Func<StatusEntity, bool>>>()), Times.Once);
+        }
+
+        
+
+
+
+        [Fact]
         public async Task GetByKeyAsync_Should_Return_StatusEntity_When_Found()
         {
             // Arrange
@@ -126,7 +166,12 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
         public async Task GetAllPaginatedAsync_Should_Return_Paginated_StatusEntities()
         {
             // Arrange
-            var paginatedModel = new PaginatedModel { First = 0, Rows = 10 };
+            var paginatedModel = new PaginatedModel
+            { 
+                First = 0, 
+                Rows = 10,
+                activeOnly = true
+            };
             var statuses = new List<StatusEntity> { new StatusEntity { status_key = "KEY123" } };
 
             _mockStatusRepository.Setup(x => x.GetAllAsync(It.IsAny<ISpecification<StatusEntity>>()))
@@ -150,7 +195,8 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurador
                 First = 0,
                 Rows = 10,
                 Sort_field = nameof(StatusEntity.updated_at).Split("_")[0],
-                Sort_order = SortOrdering.Descending
+                Sort_order = SortOrdering.Descending,
+                activeOnly = true
             };
 
             var totalRows = 10;

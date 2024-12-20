@@ -87,8 +87,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Con
 
                 var connectionMap = MapConnection(request.Connection.ConnectionRequest, request.Id);
 
-                var StatusIsActive = await _statusService.GetStatusIsActive(connectionMap.status_id);
-                var RelationProcessActive = await _processService.GetByConnectionIdAsync(connectionMap.id, await _statusService.GetIdActiveStatus());
+                var StatusIsActive = await _statusService.GetStatusIsActiveAsync(connectionMap.status_id);
+                var RelationProcessActive = await _processService.GetByConnectionIdAsync(connectionMap.id, await _statusService.GetIdActiveStatusAsync());
 
                 if (!StatusIsActive && RelationProcessActive != null)
                 {
@@ -105,15 +105,15 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Con
                     var entityMessage = new List<string>();
 
                     var serverFound = await _serverService.GetByIdAsync(connectionMap.server_id);
-                    if (serverFound != null && !await _statusService.GetStatusIsActive(serverFound.status_id))
+                    if (serverFound != null && !await _statusService.GetStatusIsActiveAsync(serverFound.status_id))
                         entityMessage.Add("Server");
 
                     var adapterFound = await _adapterService.GetByIdAsync(connectionMap.adapter_id);
-                    if (adapterFound != null && !await _statusService.GetStatusIsActive(adapterFound.status_id))
+                    if (adapterFound != null && !await _statusService.GetStatusIsActiveAsync(adapterFound.status_id))
                         entityMessage.Add("Adapter");
 
                     var repositoryFound = await _repositoryService.GetByIdAsync(connectionMap.repository_id);
-                    if (adapterFound != null && !await _statusService.GetStatusIsActive(repositoryFound.status_id))
+                    if (adapterFound != null && !await _statusService.GetStatusIsActiveAsync(repositoryFound.status_id))
                         entityMessage.Add("Repositorio");
 
                     if (entityMessage.Count > 0)

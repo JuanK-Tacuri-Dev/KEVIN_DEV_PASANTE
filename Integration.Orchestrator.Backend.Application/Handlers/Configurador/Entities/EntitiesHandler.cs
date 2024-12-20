@@ -86,10 +86,10 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
                         });
 
                 var entitiesMap = MapEntities(request.Entities.EntitiesRequest, request.Id);
-                var StatusIsActive = await _statusService.GetStatusIsActive(entitiesMap.status_id);
-                var RelationPropertyActive = await _propertyService.GetByEntityIdAsync(entitiesMap.id, await _statusService.GetIdActiveStatus());
+                var StatusIsActive = await _statusService.GetStatusIsActiveAsync(entitiesMap.status_id);
+                var RelationPropertyActive = await _propertyService.GetByEntityIdAsync(entitiesMap.id, await _statusService.GetIdActiveStatusAsync());
 
-                var RelationProcessActive = await _processService.GetByEntityActiveIdAsync(entitiesMap.id, await _statusService.GetIdActiveStatus());
+                var RelationProcessActive = await _processService.GetByEntityActiveIdAsync(entitiesMap.id, await _statusService.GetIdActiveStatusAsync());
 
                 if (!StatusIsActive && (RelationPropertyActive!=null || (RelationProcessActive!= null && RelationProcessActive.Count()>0)))
                 {
@@ -105,7 +105,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
                 {
                     var repositoryFound = await _repositoryService.GetByIdAsync(entitiesMap.repository_id);
 
-                    if (repositoryFound != null && !await _statusService.GetStatusIsActive(repositoryFound.status_id))
+                    if (repositoryFound != null && !await _statusService.GetStatusIsActiveAsync(repositoryFound.status_id))
                     {
                         throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors
@@ -306,7 +306,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ent
         {
             try
             {
-                var entitiesFound = await _entitiesService.GetByRepositoryIdAsync(request.Entities.RepositoryId, await _statusService.GetIdActiveStatus());
+                var entitiesFound = await _entitiesService.GetByRepositoryIdAsync(request.Entities.RepositoryId, await _statusService.GetIdActiveStatusAsync());
                 if (entitiesFound == null)
                     throw new OrchestratorArgumentException(string.Empty,
                         new DetailsArgumentErrors()

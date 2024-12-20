@@ -9,7 +9,7 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Serve
         public string Code { get; set; }
         public string Name { get; set; }
         public Guid? TypeServerId { get; set; }
-        public string? TypeServerName { get; set; }
+        public string TypeServerName { get; set; } = string.Empty;
         public string Url { get; set; }
         public Guid StatusId { get; set; }
 

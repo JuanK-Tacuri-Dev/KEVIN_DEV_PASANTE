@@ -1,5 +1,4 @@
-﻿using Integration.Orchestrator.Backend.Domain.Dto.Configurador;
-using Integration.Orchestrator.Backend.Domain.Models;
+﻿using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Models.Configurador.Entity;
 
 namespace Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces

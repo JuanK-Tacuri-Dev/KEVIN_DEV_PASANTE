@@ -77,8 +77,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Ser
                         });
 
                 var serverMap = MapServer(request.Server.ServerRequest, request.Id);
-                var StatusIsActive = await _statusService.GetStatusIsActive(serverMap.status_id);
-                var RelationConectionActive = await _connectionService.GetByServerIdAsync(serverMap.id, await _statusService.GetIdActiveStatus());
+                var StatusIsActive = await _statusService.GetStatusIsActiveAsync(serverMap.status_id);
+                var RelationConectionActive = await _connectionService.GetByServerIdAsync(serverMap.id, await _statusService.GetIdActiveStatusAsync());
 
                 if (!StatusIsActive && RelationConectionActive != null)
                 {

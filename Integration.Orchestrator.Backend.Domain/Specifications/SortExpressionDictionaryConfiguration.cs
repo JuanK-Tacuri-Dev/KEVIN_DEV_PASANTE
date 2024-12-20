@@ -1,5 +1,4 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Models.Configurador;
-using MongoDB.Bson;
 using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Domain.Specifications
@@ -32,7 +31,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
         }
 
-        public static string GetPropertyName<T>(Expression<Func<T, object>> expression)
+        public static string GetPropertyName<P>(Expression<Func<P, object>> expression)
         {
             if (expression.Body is MemberExpression member)
             {

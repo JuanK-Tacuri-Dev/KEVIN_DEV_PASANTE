@@ -99,8 +99,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Pr
 
                 var processMap = MapProcess(request.Process.ProcessRequest, request.Id);
 
-                var StatusIsActive = await _statusService.GetStatusIsActive(processMap.status_id);
-                var RelationIntegrationActive = await _integrationService.GetByProcessIdAsync(processMap.id, await _statusService.GetIdActiveStatus());
+                var StatusIsActive = await _statusService.GetStatusIsActiveAsync(processMap.status_id);
+                var RelationIntegrationActive = await _integrationService.GetByProcessIdAsync(processMap.id, await _statusService.GetIdActiveStatusAsync());
                 if (!StatusIsActive && RelationIntegrationActive != null)
                 {
                     throw new OrchestratorArgumentException(string.Empty,
@@ -116,7 +116,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Pr
                 if (StatusIsActive)
                 {
                     var connectionFound = await _connectionService.GetByIdAsync(processMap.connection_id);
-                    if (connectionFound != null && !await _statusService.GetStatusIsActive(connectionFound.status_id))
+                    if (connectionFound != null && !await _statusService.GetStatusIsActiveAsync(connectionFound.status_id))
                     {
                         throw new OrchestratorArgumentException(string.Empty,
                             new DetailsArgumentErrors

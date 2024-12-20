@@ -46,7 +46,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             return statusEntity;
         }
 
-        public async Task<bool> GetStatusIsActive(Expression<Func<StatusEntity, bool>> specification)
+        public async Task<bool> GetStatusIsActiveAsync(Expression<Func<StatusEntity, bool>> specification)
         {
             var filter = Builders<StatusEntity>.Filter.Where(specification);
             var statusEntity = await _collection
@@ -90,7 +90,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .CountDocumentsAsync();
         }
 
-        public async Task<Guid> GetIdActiveStatus(Expression<Func<StatusEntity, bool>> specification)
+        public async Task<Guid> GetIdActiveStatusAsync(Expression<Func<StatusEntity, bool>> specification)
         {
             var filter = Builders<StatusEntity>.Filter.Where(specification);
             var statusEntity = await _collection

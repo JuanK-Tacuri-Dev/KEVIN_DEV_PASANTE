@@ -9,7 +9,7 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Conne
         public Guid AdapterId { get; set; }
         public Guid RepositoryId { get; set; }
         public string Name { get; set; }
-        public string? Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         public Guid StatusId { get; set; }
         
         

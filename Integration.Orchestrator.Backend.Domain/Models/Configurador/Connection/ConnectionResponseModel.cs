@@ -5,7 +5,7 @@
         public Guid id { get; set; }
         public string connection_code { get; set; }
         public string connection_name { get; set; }
-        public string? connection_description { get; set; }
+        public string connection_description { get; set; } = string.Empty;
         public string serverName { get; set; }
         public string serverUrl { get; set; }
         public string adapterName { get; set; }

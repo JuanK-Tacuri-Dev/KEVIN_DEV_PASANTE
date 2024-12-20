@@ -12,7 +12,7 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurador.Synch
         public string Observations { get; set; }
         public List<IntegrationResponse> Integrations { get; set; }
 
-        public string? HourToExecute { get; set; }
+        public string HourToExecute { get; set; } = string.Empty;
         public Guid? UserId { get; set; }
     }
 
