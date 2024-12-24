@@ -7,8 +7,8 @@ namespace Integration.Orchestrator.Backend.Application.Models
     {
         public int Code { get; set; }
 
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
-        public T Data { get; set; }
+        public required T Data { get; set; }
     }
 }

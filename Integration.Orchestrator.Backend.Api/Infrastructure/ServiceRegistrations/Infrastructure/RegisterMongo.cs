@@ -1,7 +1,7 @@
 ﻿using Integration.Orchestrator.Backend.Api.Infrastructure.Extensions;
 using Integration.Orchestrator.Backend.Application.Options;
 using Integration.Orchestrator.Backend.Domain.Entities;
-using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+using Integration.Orchestrator.Backend.Domain.Entities.Configurator;
 using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
