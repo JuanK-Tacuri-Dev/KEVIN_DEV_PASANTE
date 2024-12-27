@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -65,5 +66,28 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Services
                 ? sortDefinitionBuilder.Ascending(sortField)
                 : sortDefinitionBuilder.Descending(sortField);
         }
+
+        public static FilterDefinition<BsonDocument> GetFilterDefinition(Expression<Func<BsonDocument, bool>>? criteria,Dictionary<string, object> additionalFilters,Dictionary<string, string> fieldMapping)
+        {
+            var filterBuilder = Builders<BsonDocument>.Filter;
+
+            // Inicializar el filtro con un filtro vacío o el criterio principal
+            var filter = criteria != null ? filterBuilder.Where(criteria) : filterBuilder.Empty;
+
+            // Agregar filtros adicionales dinámicamente
+            foreach (var filterItem in additionalFilters)
+            {
+                // Obtener el nombre del campo mapeado
+                string mappedField = fieldMapping.ContainsKey(filterItem.Key) ? fieldMapping[filterItem.Key] : filterItem.Key;
+
+                // Agregar el filtro al conjunto de filtros
+                filter = filter & filterBuilder.Eq(mappedField, filterItem.Value);
+            }
+
+            return filter;
+        }
+
+
+
     }
 }
