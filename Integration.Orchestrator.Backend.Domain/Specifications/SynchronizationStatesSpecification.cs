@@ -28,7 +28,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         }
 
         private static readonly Dictionary<string, Expression<Func<SynchronizationStatusEntity, object>>> sortExpressions = new()
-            {
+        {
             { nameof(SynchronizationStatusEntity.synchronization_status_key).Split("_")[2], x => x.synchronization_status_key },
             { nameof(SynchronizationStatusEntity.synchronization_status_text).Split("_")[2], x => x.synchronization_status_text },
             { nameof(SynchronizationStatusEntity.synchronization_status_color).Split("_")[2], x => x.synchronization_status_color },

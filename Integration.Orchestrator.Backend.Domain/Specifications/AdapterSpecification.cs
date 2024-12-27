@@ -31,7 +31,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { Utilities.GetSafeKey(nameof(AdapterEntity.adapter_name), 1), x => x.adapter_name },
             { Utilities.GetSafeKey(nameof(AdapterEntity.adapter_code), 1), x => x.adapter_code },
             { Utilities.GetSafeKey(nameof(AdapterEntity.adapter_version), 1), x => x.adapter_version },
-            { "typeAdapterId", x => x.type_id },
+            { "typeAdapterName", x => x.type_id },
             { "statusId", x => x.status_id },
             { Utilities.GetSafeKey(nameof(AdapterEntity.updated_at), 0), x => x.updated_at },
             { Utilities.GetSafeKey(nameof(AdapterEntity.created_at), 0), x => x.created_at }

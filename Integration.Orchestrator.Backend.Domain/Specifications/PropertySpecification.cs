@@ -33,7 +33,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { nameof(PropertyEntity.property_code).Split("_")[1], x => x.property_code },
             { "typeId", x => x.type_id },
             { "entityId", x => x.entity_id },
-            { "statusId", x => x.status_id },
+            { "status", x => x.status_id },
             { nameof(PropertyEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(PropertyEntity.created_at).Split("_")[0], x => x.created_at }
         };

@@ -35,7 +35,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { "serverUrl", x => x.server_id },
             { "adapterName", x => x.adapter_id },
             { "repositoryName", x => x.repository_id },
-            { "statusId", x => x.status_id },
+            { "status", x => x.status_id },
             { nameof(ConnectionEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(ConnectionEntity.created_at).Split("_")[0], x => x.created_at }
         };
