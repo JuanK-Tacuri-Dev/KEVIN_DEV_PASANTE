@@ -25,7 +25,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Services
                     if (typeof(T) == typeof(bool)) return (T)(object)value.AsBoolean;
                     if (typeof(T) == typeof(DateTime)) return (T)(object)value.ToUniversalTime();
 
-                    return (T)Convert.ChangeType(value, typeof(T));
+                    return (T)Convert.ChangeType(value.RawValue, typeof(T));
                 }
                 catch
                 {
