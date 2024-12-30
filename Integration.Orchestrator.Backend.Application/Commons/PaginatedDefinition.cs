@@ -7,9 +7,8 @@ namespace Integration.Orchestrator.Backend.Application.Commons
     {
         public string Search { get; set; } = string.Empty;
         public int Sort_order { get; set; }
-        public string Sort_field { get; set; }
-
-        public List< FilterDefinition>? filter_Option { get; set; }
+        public string Sort_field { get; set; } = string.Empty;
+        public IEnumerable<FilterDefinition>? filter_Option { get; set; }
         public int Rows { get; set; }
         public int First { get; set; }
         public bool activeOnly { get; set; }
@@ -18,7 +17,7 @@ namespace Integration.Orchestrator.Backend.Application.Commons
     }
     public class FilterDefinition
     {
-        public string filter_column { get; set; }
-        public string[] filter_search { get; set; }
+        public string filter_column { get; set; } = string.Empty;
+        public string[] filter_search { get; set; } = new string[].DefaultIfEmpty;
     }
 }
