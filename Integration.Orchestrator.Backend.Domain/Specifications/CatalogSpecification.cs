@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Models;
+using MongoDB.Bson.Serialization.Serializers;
 
 namespace Integration.Orchestrator.Backend.Domain.Specifications
 {
@@ -33,7 +34,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { Utilities.GetSafeKey(nameof(CatalogEntity.catalog_detail), 1), x => x.catalog_detail },
             { Utilities.GetSafeKey(nameof(CatalogEntity.catalog_value), 1), x => x.catalog_value },
             { Utilities.GetSafeKey(nameof(CatalogEntity.updated_at), 0), x => x.updated_at },
-            { Utilities.GetSafeKey(nameof(CatalogEntity.created_at), 0), x => x.created_at }
+            { Utilities.GetSafeKey(nameof(CatalogEntity.created_at), 0), x => x.created_at },
+            { "isfather", x => x.is_father },
+            { Utilities.GetSafeKey(nameof(CatalogEntity.status_id), 0), x => x.status_id }
         };
         private void SetupPagination(PaginatedModel model)
         {
@@ -81,6 +84,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
                 criteria = criteria.And(x =>
                 x.catalog_name.ToUpper().Contains(search.ToUpper()) ||
                 x.catalog_detail.ToUpper().Contains(search.ToUpper()) ||
+                x.is_father == (search.ToUpper() == "TRUE") ||
                 x.catalog_value.ToUpper().Contains(search.ToUpper()));
             }
 

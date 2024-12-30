@@ -52,23 +52,30 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         {
             return await FindByFilter(specification).FirstOrDefaultAsync();
         }
-
         public async Task<IEnumerable<CatalogEntity>> GetAllAsync(ISpecification<CatalogEntity> specification)
         {
             var filter = Builders<CatalogEntity>.Filter.Where(specification.Criteria);
 
-            var query =  _collection
-                .Find(filter)
+            var options = new FindOptions
+            {
+                Collation = new Collation("en", strength: CollationStrength.Primary)
+            };
+
+            var query = _collection
+                .Find(filter, options) 
                 .Sort(specification.OrderBy != null
                     ? Builders<CatalogEntity>.Sort.Ascending(specification.OrderBy)
                     : Builders<CatalogEntity>.Sort.Descending(specification.OrderByDescending));
 
+
             if (specification.Skip >= 0)
             {
                 query = query
-                    .Limit(specification.Limit)
-                    .Skip(specification.Skip);
+                    .Skip(specification.Skip)  
+                    .Limit(specification.Limit); 
             }
+
+            
             return await query.ToListAsync();
         }
 
