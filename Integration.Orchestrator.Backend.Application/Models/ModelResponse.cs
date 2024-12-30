@@ -7,9 +7,9 @@ namespace Integration.Orchestrator.Backend.Application.Models
     {
         public int Code { get; set; }
 
-        public string[] Messages { get; set; }
+        public string[] Messages { get; set; } = new string[0];
 
-        public T Data { get; set; }
+        public required T Data { get; set; }
 
     }
 }

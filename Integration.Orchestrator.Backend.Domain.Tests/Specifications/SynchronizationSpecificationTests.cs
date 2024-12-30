@@ -1,5 +1,5 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Commons;
-using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+using Integration.Orchestrator.Backend.Domain.Entities.Configurator;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 
@@ -100,8 +100,8 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Specifications
 
             var specification = new SynchronizationSpecification(paginatedModel);
 
-            Assert.NotNull(specification.OrderBy);
-            Assert.Null(specification.OrderByDescending);
+            Assert.Null(specification.OrderBy);
+            Assert.NotNull(specification.OrderByDescending);
         }
     }
 }

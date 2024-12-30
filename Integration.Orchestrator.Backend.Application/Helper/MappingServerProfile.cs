@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Integration.Orchestrator.Backend.Application.Models.Configurador.Server;
-using Integration.Orchestrator.Backend.Domain.Dto.Configurador;
 
 namespace Integration.Orchestrator.Backend.Application.Helper
 {

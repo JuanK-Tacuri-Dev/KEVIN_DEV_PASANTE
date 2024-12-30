@@ -1,6 +1,6 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
-using Integration.Orchestrator.Backend.Domain.Models.Configurador;
-using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
+﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurator;
+using Integration.Orchestrator.Backend.Domain.Models.Configurator;
+using Integration.Orchestrator.Backend.Domain.Ports.Configurator;
 using Integration.Orchestrator.Backend.Domain.Specifications;
 using Integration.Orchestrator.Backend.Infrastructure.Services;
 using MongoDB.Bson;

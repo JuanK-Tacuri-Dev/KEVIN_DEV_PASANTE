@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Integration.Orchestrator.Backend.Domain.Commons;
-using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+using Integration.Orchestrator.Backend.Domain.Entities.Configurator;
 using Integration.Orchestrator.Backend.Domain.Models;
 
 namespace Integration.Orchestrator.Backend.Domain.Specifications
@@ -105,11 +105,6 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         public static Expression<Func<CatalogEntity, bool>> GetByCodeExpression(int code)
         {
             return x => true && x.catalog_code == code;
-        }
-        public static Expression<Func<CatalogEntity, bool>> GetByNameAndFatherCodeExpression(string name, int? code)
-        {
-            return x => true && x.catalog_name.ToUpper() == name.ToUpper() &&
-                        (x.father_code != null ? x.father_code : x.father_code) == ( code != null ? code : code);
         }
     }
 }

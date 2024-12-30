@@ -11,8 +11,8 @@
     public class DetailsArgumentErrors
     {
         public int Code { get; set; }
-        public string Description { get; set; }
-        public object Data { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public object Data { get; set; } = string.Empty;
     }
 
 
