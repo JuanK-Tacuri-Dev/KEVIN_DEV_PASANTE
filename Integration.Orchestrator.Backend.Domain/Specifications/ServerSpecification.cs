@@ -14,6 +14,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         public List<LookupSpecification<ServerEntity>> Includes { get; } = [];
 
         public Expression<Func<ServerEntity, object>> OrderByDescending { get; private set; }
+        public Dictionary<string, object> AdditionalFilters { get; } = [];
 
         public int Skip { get; private set; }
 
