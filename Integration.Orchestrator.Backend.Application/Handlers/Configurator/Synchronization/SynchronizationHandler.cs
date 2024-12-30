@@ -270,8 +270,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
             try
             {
                 var model = request.Synchronization.Adapt<PaginatedModel>();
-                var rows = await _synchronizationService.GetTotalRowsAsync(model);
-                if (rows == 0)
+                var result = await _synchronizationService.GetAllPaginatedAsync(model);
+                if (result == null || !result.Any())
                 {
                     return new GetAllPaginatedSynchronizationCommandResponse(
                     new SynchronizationGetAllPaginatedResponse
@@ -280,13 +280,11 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
                         Description = ResponseMessageValues.GetResponseMessage(ResponseCode.NotFoundSuccessfully),
                         Data = new SynchronizationGetAllRows
                         {
-                            Total_rows = rows,
-                            Rows = Enumerable.Empty<SynchronizationGetAllPaginated>()
+                            Total_rows = 0,
+                            Rows = []
                         }
                     });
                 }
-
-                var result = await _synchronizationService.GetAllPaginatedAsync(model);
                 var statusIds = result.Select(r => r.status_id).Distinct().ToList();
                 var statusTasks = statusIds.Select(id => _synchronizationStatesService.GetByIdAsync(id));
                 var statuses = await Task.WhenAll(statusTasks);
@@ -304,7 +302,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
 
                 var dataRows = result.Select(synchronization => new SynchronizationGetAllPaginated
                 {
-                    Id = synchronization.id,
+                    Id = synchronization.Id,
                     Code = synchronization.synchronization_code,
                     Name = synchronization.synchronization_name,
                     FranchiseId = synchronization.franchise_id,
@@ -325,7 +323,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
                         Description = ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully),
                         Data = new SynchronizationGetAllRows
                         {
-                            Total_rows = rows,
+                            Total_rows = result.Count(),
                             Rows = dataRows
                         }
                     });

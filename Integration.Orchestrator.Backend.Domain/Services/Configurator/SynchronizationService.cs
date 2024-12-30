@@ -57,7 +57,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurator
             return await _synchronizationRepository.GetByFranchiseIdAsync(specification);
         }
 
-        public async Task<IEnumerable<SynchronizationEntity>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
+        public async Task<IEnumerable<SynchronizationResponseModel>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
         {
             if (string.IsNullOrEmpty(paginatedModel.Sort_field))
             {

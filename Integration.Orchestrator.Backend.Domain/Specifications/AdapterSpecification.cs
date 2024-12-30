@@ -13,6 +13,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         public Expression<Func<AdapterEntity, object>> OrderBy { get; private set; }
 
         public Expression<Func<AdapterEntity, object>> OrderByDescending { get; private set; }
+        public Dictionary<string, object> AdditionalFilters { get; } = [];
 
         public int Skip { get; private set; }
 
