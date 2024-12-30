@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Services
 {

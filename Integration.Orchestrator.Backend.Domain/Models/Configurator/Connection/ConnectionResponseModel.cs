@@ -3,13 +3,13 @@
     public class ConnectionResponseModel
     {
         public Guid id { get; set; }
-        public string connection_code { get; set; }
-        public string connection_name { get; set; }
+        public string connection_code { get; set; } = string.Empty;
+        public string connection_name { get; set; } = string.Empty;
         public string connection_description { get; set; } = string.Empty;
-        public string serverName { get; set; }
-        public string serverUrl { get; set; }
-        public string adapterName { get; set; }
-        public string repositoryName { get; set; }
+        public string serverName { get; set; } = string.Empty;
+        public string serverUrl { get; set; } = string.Empty;
+        public string adapterName { get; set; } = string.Empty;
+        public string repositoryName { get; set; } = string.Empty;
         public Guid server_id { get; set; }
         public Guid adapter_id { get; set; }
         public Guid repository_id { get; set; }

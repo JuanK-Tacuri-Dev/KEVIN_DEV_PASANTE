@@ -5,7 +5,7 @@ namespace Integration.Orchestrator.Backend.Domain.Commons
     public class ResponseMessage
     {
         public ResponseCode Key { get; set; }
-        public string Value { get; set; }
+        public string Value { get; set; } = string.Empty;
     }
     public static class ResponseMessageValues
     {

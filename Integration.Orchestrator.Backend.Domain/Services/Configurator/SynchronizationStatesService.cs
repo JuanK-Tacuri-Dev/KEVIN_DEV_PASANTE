@@ -65,8 +65,8 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurator
 
         public async Task<Guid> GetStatusIdSyncronizationAsync()
         {
-            var SytatusKey = await GetStatusIdSyncronization([Constants.SynchronizationStatesKey.Cancelado]);
-            return SytatusKey.FirstOrDefault().id;
+            var sytatusKey = await GetStatusIdSyncronization([Constants.SynchronizationStatesKey.Cancelado]);
+            return sytatusKey.FirstOrDefault().id;
         }
 
         private async Task ValidateBussinesLogic(SynchronizationStatusEntity synchronizationStatesEntity, bool create = false)

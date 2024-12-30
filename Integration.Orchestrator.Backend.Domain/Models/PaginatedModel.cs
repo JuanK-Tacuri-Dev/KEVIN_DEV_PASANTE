@@ -4,10 +4,10 @@ namespace Integration.Orchestrator.Backend.Domain.Models
 {
     public class PaginatedModel
     {
-        public string Search { get; set; }
+        public string Search { get; set; } = string.Empty;
         public SortOrdering Sort_order { get; set; }
-        public List<FilterModel> filter_Option { get; set; }
-        public string Sort_field { get; set; }
+        public IEnumerable<FilterModel> filter_Option { get; set; } = Enumerable.Empty<FilterModel>();
+        public string Sort_field { get; set; } = string.Empty;
         public int Rows { get; set; }
         public int First { get; set; }
         public bool activeOnly { get; set; }

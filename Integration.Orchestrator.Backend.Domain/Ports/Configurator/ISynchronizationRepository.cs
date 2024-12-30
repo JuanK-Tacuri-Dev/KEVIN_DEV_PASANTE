@@ -1,6 +1,6 @@
-﻿using System.Linq.Expressions;
-using Integration.Orchestrator.Backend.Domain.Entities.Configurator;
+﻿using Integration.Orchestrator.Backend.Domain.Models.Configurator;
 using Integration.Orchestrator.Backend.Domain.Specifications;
+using System.Linq.Expressions;
 
 namespace Integration.Orchestrator.Backend.Domain.Ports.Configurator
 {

@@ -100,8 +100,8 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Specifications
 
             var specification = new SynchronizationSpecification(paginatedModel);
 
-            Assert.NotNull(specification.OrderBy);
-            Assert.Null(specification.OrderByDescending);
+            Assert.Null(specification.OrderBy);
+            Assert.NotNull(specification.OrderByDescending);
         }
     }
 }

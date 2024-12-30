@@ -5,6 +5,7 @@ using Integration.Orchestrator.Backend.Domain.Entities.ModuleSequence;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Helper;
 using Integration.Orchestrator.Backend.Domain.Models;
+using Integration.Orchestrator.Backend.Domain.Models.Configurator;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurator;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Configurator;
@@ -178,21 +179,21 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurator
                 Sort_order = SortOrdering.Ascending
             };
 
-            var synchronization = new SynchronizationEntity
+            var synchronization = new SynchronizationResponseModel
             {
-                id = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 franchise_id = Guid.NewGuid(),
                 status_id = Guid.NewGuid(),
                 synchronization_observations = "Observation",
                 user_id = Guid.NewGuid(),
                 synchronization_hour_to_execute = ConfigurationSystem.DateTimeDefault()
             };
-            var synchronizations = new List<SynchronizationEntity> { synchronization };
+            var synchronizations = new List<SynchronizationResponseModel> { synchronization  };
             var spec = new SynchronizationSpecification(paginatedModel);
             _mockSynchronizationRepo.Setup(repo => repo.GetAllAsync(It.IsAny<ISpecification<SynchronizationEntity>>())).ReturnsAsync(synchronizations);
 
             var result = await _service.GetAllPaginatedAsync(paginatedModel);
-            List<SynchronizationEntity> r = result.ToList();
+            List<SynchronizationResponseModel> r = result.ToList();
             Assert.Equal(synchronizations, result);
             _mockSynchronizationRepo.Verify(repo => repo.GetAllAsync(It.IsAny<SynchronizationSpecification>()), Times.Once);
         }

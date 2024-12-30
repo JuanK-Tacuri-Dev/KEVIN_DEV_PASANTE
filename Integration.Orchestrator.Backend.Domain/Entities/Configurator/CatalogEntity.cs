@@ -6,9 +6,9 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Configurator
     public class CatalogEntity : Entity<Guid>
     {
         public int catalog_code { get; set; }
-        public string catalog_name { get; set; }
-        public string catalog_value { get; set; }
-        public string catalog_detail { get; set; }
+        public string catalog_name { get; set; } = string.Empty;
+        public string catalog_value { get; set; } = string.Empty;
+        public string catalog_detail { get; set; } = string.Empty;
         private int? _father_code;
         public int? father_code
         {
