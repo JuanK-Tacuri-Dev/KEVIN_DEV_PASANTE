@@ -235,7 +235,13 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurator
                 Sort_field = "",
                 Sort_order = SortOrdering.Ascending,
                 Search = "Adapter",
-                activeOnly = true
+                activeOnly = true,
+                filter_Option = [
+                    new FilterModel
+                    { 
+                        filter_column = "statusId",
+                        filter_search = ["Activo"]
+                    }]
             };
 
             var adapterEntities = new List<AdapterResponseModel>
