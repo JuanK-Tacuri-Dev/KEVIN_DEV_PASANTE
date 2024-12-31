@@ -10,7 +10,7 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurator.Catal
     {
         public long Total_rows { get; set; }
 
-        public IEnumerable<CatalogGetAllPaginated> Rows { get; set; } = Enumerable.Empty<CatalogGetAllPaginated>();
+        public IEnumerable<CatalogGetAllPaginated> Rows { get; set; } = [];
     }
 
     [ExcludeFromCodeCoverage]

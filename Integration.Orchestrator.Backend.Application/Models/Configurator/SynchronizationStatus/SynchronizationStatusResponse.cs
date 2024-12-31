@@ -10,6 +10,7 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurator.Synch
         public string Text { get; set; } = string.Empty;
         public string Color { get; set; } = string.Empty;
         public string Background { get; set; } = string.Empty;
+
     }
   
 }

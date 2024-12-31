@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Integration.Orchestrator.Backend.Application.Models.Configurador.Catalog;
+using Integration.Orchestrator.Backend.Application.Models.Configurator.Catalog;
 using Integration.Orchestrator.Backend.Domain.Models.Configurador.Catalog;
 
 namespace Integration.Orchestrator.Backend.Application.Mappers

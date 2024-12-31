@@ -1,13 +1,12 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
-using Integration.Orchestrator.Backend.Domain.Models.Configurador;
-using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
+﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurator;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador.Catalog;
+using Integration.Orchestrator.Backend.Domain.Ports.Configurator;
 using Integration.Orchestrator.Backend.Domain.Specifications;
-using MongoDB.Bson.Serialization;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
-using Integration.Orchestrator.Backend.Domain.Models.Configurador.Catalog;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {

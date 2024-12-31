@@ -35,10 +35,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { nameof(SynchronizationEntity.synchronization_observations).Split("_")[1], x => x.synchronization_observations },
             { nameof(SynchronizationEntity.synchronization_code).Split("_")[1], x => x.synchronization_code },
             { "hourToExecute", x => x.synchronization_hour_to_execute },
-            { "status.id", x => x.status_id },
+            { "statusid", x => x.status_id },
             { nameof(SynchronizationEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(SynchronizationEntity.created_at).Split("_")[0], x => x.created_at },
-             { "status_id", x => x.status_id },
         };
         private void SetupPagination(PaginatedModel model)
         {

@@ -4,7 +4,7 @@ using Integration.Orchestrator.Backend.Domain.Entities.Configurator.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Models.Configurador.Catalog;
-using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
+using Integration.Orchestrator.Backend.Domain.Ports.Configurator;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Maintainer;
 using Integration.Orchestrator.Backend.Domain.Specifications;

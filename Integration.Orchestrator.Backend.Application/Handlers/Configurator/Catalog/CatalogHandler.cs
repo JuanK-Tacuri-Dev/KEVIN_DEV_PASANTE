@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using Integration.Orchestrator.Backend.Application.Models.Configurador.Catalog;
-using Integration.Orchestrator.Backend.Application.Models.Configurador.Synchronization;
+using Integration.Orchestrator.Backend.Application.Models.Configurator.Catalog;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurator;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurator.Interfaces;
@@ -286,7 +285,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurator.Cat
                         Data = new CatalogGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = Enumerable.Empty<CatalogGetAllPaginated>()
+                            Rows = []
                         }
                     });
                 }
