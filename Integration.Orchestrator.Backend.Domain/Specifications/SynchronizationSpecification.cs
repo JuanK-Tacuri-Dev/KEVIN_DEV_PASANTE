@@ -80,24 +80,6 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         }
 
 
-        private Expression<Func<SynchronizationEntity, bool>> AddSearchCriteria(Expression<Func<SynchronizationEntity, bool>> criteria,string search,IEnumerable<SynchronizationStatusEntity> statusEntities)
-        {
-            if (!string.IsNullOrEmpty(search))
-            {
-                // Obtener los IDs de los estados que coinciden con la búsqueda
-                var matchingStatusIds = statusEntities
-                    .Where(status => status.synchronization_status_key.ToUpper().Contains(search.ToUpper()))
-                    .Select(status => status.id) // Id proviene de la herencia de Entity<Guid>
-                    .ToList();
-
-                // Agregar criterios basados en `synchronization_name` o `status_id` relacionado
-                criteria = criteria.And(x =>
-                    x.synchronization_name.ToUpper().Contains(search.ToUpper()) ||
-                    matchingStatusIds.Contains(x.status_id));
-            }
-
-            return criteria;
-        }
 
         private Expression<Func<SynchronizationEntity, bool>> AddSearchCriteria(Expression<Func<SynchronizationEntity, bool>> criteria, string search)
         {

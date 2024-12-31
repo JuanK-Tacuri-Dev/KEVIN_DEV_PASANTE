@@ -35,8 +35,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { Utilities.GetSafeKey(nameof(CatalogEntity.catalog_value), 1), x => x.catalog_value },
             { Utilities.GetSafeKey(nameof(CatalogEntity.updated_at), 0), x => x.updated_at },
             { Utilities.GetSafeKey(nameof(CatalogEntity.created_at), 0), x => x.created_at },
+            { "fatherCode", x => x.father_code },
             { "isfather", x => x.is_father },
-            { Utilities.GetSafeKey(nameof(CatalogEntity.status_id), 0), x => x.status_id }
+            { "statusId", x => x.status_id }
         };
         private void SetupPagination(PaginatedModel model)
         {
@@ -93,7 +94,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
         private void SetupIncludes()
         {
-   
+            Includes.Add(new LookupSpecification<CatalogEntity> { Collection = "Integration_Status", LocalField = "status_id", ForeignField = "_id", As = "Status" });
         }
         public static Expression<Func<CatalogEntity, bool>> GetByIdExpression(Guid id)
         {

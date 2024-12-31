@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Synchronization;
+﻿using AutoMapper;
+using Integration.Orchestrator.Backend.Application.Models.Configurador.Synchronization;
 using Integration.Orchestrator.Backend.Application.Models.Configurador.SynchronizationStatus;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
@@ -20,8 +21,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
         ISynchronizationService<SynchronizationEntity> synchronizationService,
         ISynchronizationStatesService<SynchronizationStatusEntity> synchronizationStatesService,
         IStatusService<StatusEntity> statusService,
-        IIntegrationService<IntegrationEntity> integrationService)
-        #region MediateR
+        IIntegrationService<IntegrationEntity> integrationService, 
+        IMapper mapper)
+    #region MediateR
         :
         IRequestHandler<CreateSynchronizationCommandRequest, CreateSynchronizationCommandResponse>,
         IRequestHandler<UpdateSynchronizationCommandRequest, UpdateSynchronizationCommandResponse>,
@@ -34,7 +36,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
         private readonly ISynchronizationService<SynchronizationEntity> _synchronizationService = synchronizationService;
         private readonly ISynchronizationStatesService<SynchronizationStatusEntity> _synchronizationStatesService = synchronizationStatesService;
         public readonly IStatusService<StatusEntity> _statusService = statusService;
-        public readonly IIntegrationService<IntegrationEntity> _integrationService = integrationService;        
+        public readonly IIntegrationService<IntegrationEntity> _integrationService = integrationService;
+        public readonly IMapper _mapper = mapper;
 
         public async Task<CreateSynchronizationCommandResponse> Handle(CreateSynchronizationCommandRequest request, CancellationToken cancellationToken)
         {
@@ -287,36 +290,39 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
                         }
                     });
                 }
-                var statusIds = result.Select(r => r.status_id).Distinct().ToList();
-                var statusTasks = statusIds.Select(id => _synchronizationStatesService.GetByIdAsync(id));
-                var statuses = await Task.WhenAll(statusTasks);
 
-                var statusDictionary = statuses
-                    .Where(status => status != null)
-                    .ToDictionary(status => status.id, status => new SynchronizationStatusResponse
-                    {
-                        Id = status.id,
-                        Key = status.synchronization_status_key,
-                        Text = status.synchronization_status_text,
-                        Color = status.synchronization_status_color,
-                        Background = status.synchronization_status_background
-                    });
+                var dataRows = _mapper.Map<List<SynchronizationGetAllPaginated>>(result.ToList());
 
-                var dataRows = result.Select(synchronization => new SynchronizationGetAllPaginated
-                {
-                    Id = synchronization.Id,
-                    Code = synchronization.synchronization_code,
-                    Name = synchronization.synchronization_name,
-                    FranchiseId = synchronization.franchise_id,
-                    Status = statusDictionary.TryGetValue(synchronization.status_id, out SynchronizationStatusResponse status) ? status : null,
-                    Observations = synchronization.synchronization_observations,
-                    Integrations = synchronization.integrations.Select(i => new IntegrationResponse
-                    {
-                        Id = i
-                    }).ToList(),
-                    HourToExecute = synchronization.synchronization_hour_to_execute,
-                    UserId = synchronization.user_id
-                }).ToList();
+                //var statusIds = result.Select(r => r.status_id).Distinct().ToList();
+                //var statusTasks = statusIds.Select(id => _synchronizationStatesService.GetByIdAsync(id));
+                //var statuses = await Task.WhenAll(statusTasks);
+
+                //var statusDictionary = statuses
+                //    .Where(status => status != null)
+                //    .ToDictionary(status => status.id, status => new SynchronizationStatusResponse
+                //    {
+                //        Id = status.id,
+                //        Key = status.synchronization_status_key,
+                //        Text = status.synchronization_status_text,
+                //        Color = status.synchronization_status_color,
+                //        Background = status.synchronization_status_background
+                //    });
+
+                //var dataRows = result.Select(synchronization => new SynchronizationGetAllPaginated
+                //{
+                //    Id = synchronization.Id,
+                //    Code = synchronization.synchronization_code,
+                //    Name = synchronization.synchronization_name,
+                //    FranchiseId = synchronization.franchise_id,
+                //    Status = statusDictionary.TryGetValue(synchronization.status_id, out SynchronizationStatusResponse status) ? status : null,
+                //    Observations = synchronization.synchronization_observations,
+                //    Integrations = synchronization.integrations.Select(i => new IntegrationResponse
+                //    {
+                //        Id = i
+                //    }).ToList(),
+                //    HourToExecute = synchronization.synchronization_hour_to_execute,
+                //    UserId = synchronization.user_id
+                //}).ToList();
 
                 return new GetAllPaginatedSynchronizationCommandResponse(
                     new SynchronizationGetAllPaginatedResponse

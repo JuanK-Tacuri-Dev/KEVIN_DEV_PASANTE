@@ -23,6 +23,8 @@ namespace Integration.Orchestrator.Backend.Domain.Models.Configurador
         public List< SynchronizationStateResponseModel> SynchronizationStates { get; set; }
 
     }
+
+
     public class SynchronizationStateResponseModel
     {
         public Guid Id { get; set; }

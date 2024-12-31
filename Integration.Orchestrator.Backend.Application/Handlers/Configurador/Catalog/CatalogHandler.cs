@@ -1,4 +1,6 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Configurador.Catalog;
+﻿using AutoMapper;
+using Integration.Orchestrator.Backend.Application.Models.Configurador.Catalog;
+using Integration.Orchestrator.Backend.Application.Models.Configurador.Synchronization;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurador.Interfaces;
@@ -12,7 +14,7 @@ using static Integration.Orchestrator.Backend.Application.Handlers.Configurador.
 namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Catalog
 {
     [ExcludeFromCodeCoverage]
-    public class CatalogHandler(ICatalogService<CatalogEntity> catalogService)
+    public class CatalogHandler(ICatalogService<CatalogEntity> catalogService,IMapper mapper )
         :
         IRequestHandler<CreateCatalogCommandRequest, CreateCatalogCommandResponse>,
         IRequestHandler<UpdateCatalogCommandRequest, UpdateCatalogCommandResponse>,
@@ -23,6 +25,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Cat
         IRequestHandler<GetAllPaginatedCatalogCommandRequest, GetAllPaginatedCatalogCommandResponse>
     {
         public readonly ICatalogService<CatalogEntity> _catalogService = catalogService;
+        public readonly IMapper _mapper = mapper;
 
         public async Task<CreateCatalogCommandResponse> Handle(CreateCatalogCommandRequest request, CancellationToken cancellationToken)
         {
@@ -289,6 +292,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Cat
                 }
                 var catalogsFound = await _catalogService.GetAllPaginatedAsync(model);
 
+                var dataRows = _mapper.Map<List<CatalogGetAllPaginated>>(catalogsFound.ToList());
+
+
                 return new GetAllPaginatedCatalogCommandResponse(
                     new CatalogGetAllPaginatedResponse
                     {
@@ -297,17 +303,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurador.Cat
                         Data = new CatalogGetAllRows
                         {
                             Total_rows = rows,
-                            Rows = catalogsFound.Select(catalog => new CatalogGetAllPaginated
-                            {
-                                Id = catalog.id,
-                                Code = catalog.catalog_code,
-                                Name = catalog.catalog_name,
-                                Value = catalog.catalog_value,
-                                FatherCode = catalog.father_code,
-                                Detail = catalog.catalog_detail,
-                                IsFather = catalog.is_father,
-                                StatusId = catalog.status_id
-                            }).ToList()
+                            Rows = dataRows
                         }
                     });
             }
