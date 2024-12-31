@@ -13,7 +13,7 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurator.Synch
     {
         public long Total_rows { get; set; }
 
-        public IEnumerable<SynchronizationGetAllPaginated> Rows { get; set; } = Enumerable.Empty<SynchronizationGetAllPaginated>();
+        public IEnumerable<SynchronizationGetAllPaginated> Rows { get; set; } = [];
     }
 
     [ExcludeFromCodeCoverage]

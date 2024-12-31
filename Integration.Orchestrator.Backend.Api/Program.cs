@@ -1,12 +1,13 @@
-using Autofac.Extensions.DependencyInjection;
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Integration.Orchestrator.Backend.Api;
 using Integration.Orchestrator.Backend.Api.Infrastructure.Extensions;
 using Integration.Orchestrator.Backend.Application;
+using Integration.Orchestrator.Backend.Application.Mappers;
+using Integration.Orchestrator.Backend.Application.Mapping;
 using Integration.Orchestrator.Backend.Domain;
 using Integration.Orchestrator.Backend.Infrastructure;
 using Integration.Orchestrator.Backend.Infrastructure.Extensions;
-using Integration.Orchestrator.Backend.Application.Helper;
 using System.Diagnostics.CodeAnalysis;
 
 
@@ -45,6 +46,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(configuration =>
 {
     configuration.AddProfile<MappingServerProfile>();
+    configuration.AddProfile<MappingCatalogProfile>();
+    configuration.AddProfile<MappingSynchronizationProfile>();
 
 });
 //builder.Configuration.AddEnvironmentVariables()

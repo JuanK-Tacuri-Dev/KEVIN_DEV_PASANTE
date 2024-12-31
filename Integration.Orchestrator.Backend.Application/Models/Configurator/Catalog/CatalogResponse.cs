@@ -13,5 +13,18 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurator.Catal
         public int? FatherCode { get; set; }
         public bool IsFather {  get; set; }
         public Guid StatusId { get; set; }
+        public StatusResponse Status { get; set; }
     }
+
+    public class StatusResponse
+    {
+        public string key { get; set; }
+        public string text { get; set; }
+        public string color { get; set; }
+        public string background { get; set; }
+        public string created { get; set; }
+        public string updated { get; set; }
+        public Guid Id { get; set; }
+    }
+
 }

@@ -35,10 +35,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { nameof(SynchronizationEntity.synchronization_observations).Split("_")[1], x => x.synchronization_observations },
             { nameof(SynchronizationEntity.synchronization_code).Split("_")[1], x => x.synchronization_code },
             { "hourToExecute", x => x.synchronization_hour_to_execute },
-            { "status.id", x => x.status_id },
+            { "statusid", x => x.status_id },
             { nameof(SynchronizationEntity.updated_at).Split("_")[0], x => x.updated_at },
             { nameof(SynchronizationEntity.created_at).Split("_")[0], x => x.created_at },
-             { "status_id", x => x.status_id },
         };
         private void SetupPagination(PaginatedModel model)
         {
@@ -80,24 +79,6 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         }
 
 
-        private Expression<Func<SynchronizationEntity, bool>> AddSearchCriteria(Expression<Func<SynchronizationEntity, bool>> criteria,string search,IEnumerable<SynchronizationStatusEntity> statusEntities)
-        {
-            if (!string.IsNullOrEmpty(search))
-            {
-                // Obtener los IDs de los estados que coinciden con la búsqueda
-                var matchingStatusIds = statusEntities
-                    .Where(status => status.synchronization_status_key.ToUpper().Contains(search.ToUpper()))
-                    .Select(status => status.id) // Id proviene de la herencia de Entity<Guid>
-                    .ToList();
-
-                // Agregar criterios basados en `synchronization_name` o `status_id` relacionado
-                criteria = criteria.And(x =>
-                    x.synchronization_name.ToUpper().Contains(search.ToUpper()) ||
-                    matchingStatusIds.Contains(x.status_id));
-            }
-
-            return criteria;
-        }
 
         private Expression<Func<SynchronizationEntity, bool>> AddSearchCriteria(Expression<Func<SynchronizationEntity, bool>> criteria, string search)
         {

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Integration.Orchestrator.Backend.Application.Helper
+namespace Integration.Orchestrator.Backend.Application.Mappers
 {
     public class MappingServerProfile : Profile
     {

@@ -1,4 +1,5 @@
-﻿using Integration.Orchestrator.Backend.Application.Models.Configurator.Synchronization;
+﻿using AutoMapper;
+using Integration.Orchestrator.Backend.Application.Models.Configurator.Synchronization;
 using Integration.Orchestrator.Backend.Application.Models.Configurator.SynchronizationStatus;
 using Integration.Orchestrator.Backend.Domain.Commons;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurator;
@@ -7,7 +8,6 @@ using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Helper;
 using Integration.Orchestrator.Backend.Domain.Models;
 using Integration.Orchestrator.Backend.Domain.Resources;
-using Integration.Orchestrator.Backend.Domain.Services.Configurator;
 using Mapster;
 using MediatR;
 using System.Diagnostics.CodeAnalysis;
@@ -20,7 +20,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
         ISynchronizationService<SynchronizationEntity> synchronizationService,
         ISynchronizationStatesService<SynchronizationStatusEntity> synchronizationStatesService,
         IStatusService<StatusEntity> statusService,
-        IIntegrationService<IntegrationEntity> integrationService)
+        IIntegrationService<IntegrationEntity> integrationService, 
+        IMapper mapper)
+    #region MediateR
         :
         IRequestHandler<CreateSynchronizationCommandRequest, CreateSynchronizationCommandResponse>,
         IRequestHandler<UpdateSynchronizationCommandRequest, UpdateSynchronizationCommandResponse>,
@@ -29,10 +31,12 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
         IRequestHandler<GetByFranchiseIdSynchronizationCommandRequest, GetByFranchiseIdSynchronizationCommandResponse>,
         IRequestHandler<GetAllPaginatedSynchronizationCommandRequest, GetAllPaginatedSynchronizationCommandResponse>
     {
+        #endregion
         private readonly ISynchronizationService<SynchronizationEntity> _synchronizationService = synchronizationService;
         private readonly ISynchronizationStatesService<SynchronizationStatusEntity> _synchronizationStatesService = synchronizationStatesService;
         public readonly IStatusService<StatusEntity> _statusService = statusService;
-        public readonly IIntegrationService<IntegrationEntity> _integrationService = integrationService;        
+        public readonly IIntegrationService<IntegrationEntity> _integrationService = integrationService;
+        public readonly IMapper _mapper = mapper;
 
         public async Task<CreateSynchronizationCommandResponse> Handle(CreateSynchronizationCommandRequest request, CancellationToken cancellationToken)
         {
@@ -285,6 +289,9 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
                         }
                     });
                 }
+
+
+
                 var statusIds = result.Select(r => r.status_id).Distinct().ToList();
                 var statusTasks = statusIds.Select(id => _synchronizationStatesService.GetByIdAsync(id));
                 var statuses = await Task.WhenAll(statusTasks);

@@ -10,16 +10,17 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurator.Synch
         public string Name { get; set; } = string.Empty;
         public Guid? FranchiseId { get; set; }
         public string Observations { get; set; } = string.Empty;
-        public IEnumerable<IntegrationResponse> Integrations { get; set; } = Enumerable.Empty<IntegrationResponse>();
+        public List<IntegrationResponse> Integrations { get; set; } = [];
 
         public string HourToExecute { get; set; } = string.Empty;
-        public Guid? UserId { get; set; }
+        public Guid? UserId { get; set; } 
     }
 
     [ExcludeFromCodeCoverage]
     public class IntegrationResponse
     {
         public Guid Id { get; set; }
-        
     }
+
+
 }

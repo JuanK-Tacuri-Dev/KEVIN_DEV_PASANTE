@@ -7,13 +7,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="Helper\**" />
-		<EmbeddedResource Remove="Helper\**" />
-		<None Remove="Helper\**" />
+		<Compile Remove="Mappers\**" />
+		<EmbeddedResource Remove="Mappers\**" />
+		<None Remove="Mappers\**" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Include="Helper\MappingServerProfile.cs" />
+	  <Compile Include="Mappers\MappingCatalogProfile.cs" />
+	  <Compile Include="Mappers\MappingServerProfile.cs" />
+	  <Compile Include="Mappers\MappingSynchronizationProfile.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -19,7 +19,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
         private Dictionary<string, string> SortMapping = new()
             {
-                { "status_id", "SynchronizationStates.synchronization_status_key" }
+                { "statusid", "SynchronizationStates.synchronization_status_key" }
             };
 
         public Task InsertAsync(SynchronizationEntity entity)
