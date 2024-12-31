@@ -1,14 +1,11 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Services
 {
+    [ExcludeFromCodeCoverage]
     public static class BsonDocumentExtensions
     {
         public static T GetValueOrDefault<T>(this BsonDocument doc, string key, T defaultValue)

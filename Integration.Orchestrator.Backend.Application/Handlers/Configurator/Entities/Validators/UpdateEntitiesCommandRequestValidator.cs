@@ -1,0 +1,22 @@
+﻿using FluentValidation;
+using Integration.Orchestrator.Backend.Domain.Resources;
+using System.Diagnostics.CodeAnalysis;
+using static Integration.Orchestrator.Backend.Application.Handlers.Configurator.Entities.EntitiesCommands;
+
+namespace Integration.Orchestrator.Backend.Application.Handlers.Configurator.Entities.Validators
+{
+    [ExcludeFromCodeCoverage]
+    public class UpdateEntitiesCommandRequestValidator : AbstractValidator<UpdateEntitiesCommandRequest>
+    {
+        public UpdateEntitiesCommandRequestValidator()
+        {
+            RuleFor(request => request.Entities.EntitiesRequest.Name)
+            .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
+
+            RuleFor(request => request.Entities.EntitiesRequest.TypeId)
+            .NotEmpty().WithMessage(AppMessages.Application_Validator_Required);
+
+            
+        }
+    }
+}

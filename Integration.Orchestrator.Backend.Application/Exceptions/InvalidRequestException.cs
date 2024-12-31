@@ -14,8 +14,8 @@ namespace Integration.Orchestrator.Backend.Application.Exceptions
     [ExcludeFromCodeCoverage]
     public class DetailsErrors
     {
-        public List<string> Messages { get; set; }
-        public object Data { get; set; }
+        public IEnumerable<string> Messages { get; set; } = Enumerable.Empty<string>();
+        public object Data { get; set; } = new object();
     }
 
 }

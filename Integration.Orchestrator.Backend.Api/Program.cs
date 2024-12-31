@@ -8,6 +8,8 @@ using Integration.Orchestrator.Backend.Application.Mapping;
 using Integration.Orchestrator.Backend.Domain;
 using Integration.Orchestrator.Backend.Infrastructure;
 using Integration.Orchestrator.Backend.Infrastructure.Extensions;
+using Integration.Orchestrator.Backend.Application.Helper;
+using System.Diagnostics.CodeAnalysis;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -81,4 +83,5 @@ app.UseRouting();
 app.MapControllers();
 app.Run();
 
+[ExcludeFromCodeCoverage]
 public partial class Program { }

@@ -1,8 +1,7 @@
-﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
-using Integration.Orchestrator.Backend.Domain.Models.Configurador;
-using Integration.Orchestrator.Backend.Domain.Ports.Configurador;
+﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurator;
+using Integration.Orchestrator.Backend.Domain.Models.Configurator;
+using Integration.Orchestrator.Backend.Domain.Ports.Configurator;
 using Integration.Orchestrator.Backend.Domain.Specifications;
-using Integration.Orchestrator.Backend.Infrastructure.Services;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
@@ -13,7 +12,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 {
     [ExcludeFromCodeCoverage]
     [Repository]
-    public class SynchronizationRepository(IMongoCollection<SynchronizationEntity> collection) 
+    public class SynchronizationRepository(IMongoCollection<SynchronizationEntity> collection)
         : ISynchronizationRepository<SynchronizationEntity>
     {
         private readonly IMongoCollection<SynchronizationEntity> _collection = collection;
@@ -118,7 +117,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
             if (!string.IsNullOrEmpty(orderByField))
             {
-                var sortDefinition = Builders<BsonDocument>.Sort.Ascending(orderByField); 
+                var sortDefinition = Builders<BsonDocument>.Sort.Ascending(orderByField);
                 aggregation = aggregation.Sort(sortDefinition);
             }
 

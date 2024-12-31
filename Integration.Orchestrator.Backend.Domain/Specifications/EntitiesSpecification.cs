@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Integration.Orchestrator.Backend.Domain.Commons;
-using Integration.Orchestrator.Backend.Domain.Entities.Configurador;
+using Integration.Orchestrator.Backend.Domain.Entities.Configurator;
 using Integration.Orchestrator.Backend.Domain.Models;
 
 namespace Integration.Orchestrator.Backend.Domain.Specifications
@@ -111,28 +111,6 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         public static Expression<Func<EntitiesEntity, bool>> GetByRepositoryIdExpression(Guid repositoryId, Guid idStatusActive)
         {
             return x => true && x.repository_id == repositoryId && x.status_id== idStatusActive;
-        }
-                
-        public static Expression<Func<EntitiesEntity, bool>> GetByNameAndRepositoryIdExpression(string name, Guid repositoryId)
-        {
-            return x => true && x.entity_name.ToUpper() == name.ToUpper() && x.repository_id == repositoryId;
-        }
-
-        private Expression<Func<EntitiesEntity, bool>> ValidateEntityProperties(PaginatedModel paginatedModel)
-        {
-            var criteria = (Expression<Func<EntitiesEntity, bool>>)(x => true);
-
-            return criteria;
-        }
-
-        public static Expression<Func<EntitiesEntity, bool>> ValidateEntityProperties(EntitiesEntity input)
-        {
-            return x =>
-                        x.entity_name.ToUpper() == input.entity_name.ToUpper() &&
-                        x.entity_code.ToUpper() == input.entity_code.ToUpper() &&
-                        x.type_id == input.type_id &&
-                        x.repository_id == input.repository_id &&
-                        x.status_id == input.status_id;
         }
     }
 }
