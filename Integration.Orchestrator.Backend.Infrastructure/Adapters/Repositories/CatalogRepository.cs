@@ -2,6 +2,7 @@
 using Integration.Orchestrator.Backend.Domain.Models.Configurador.Catalog;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurator;
 using Integration.Orchestrator.Backend.Domain.Specifications;
+using Integration.Orchestrator.Backend.Infrastructure.Services;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
@@ -19,7 +20,9 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
         private Dictionary<string, string> SortMappingAndFilter = new()
             {
-                { "status_id", "Status.text" }
+                //{ "status_id", "Status.text" },
+                { "isfather", "is_father" },
+                { "name", "catalog_name" }
             };
 
         public Task InsertAsync(CatalogEntity entity)
@@ -62,6 +65,23 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         }
         public async Task<IEnumerable<CatalogResponseModel>> GetAllAsync(ISpecification<CatalogEntity> specification)
         {
+            var aggregation = this.GetAllData(specification);
+
+            if (specification.Skip >= 0)
+            {
+                aggregation = aggregation.
+                    Skip(specification.Skip).
+                    Limit(specification.Limit);
+            }
+
+            var result = await aggregation.ToListAsync();
+
+            return result.Select(doc => BsonSerializer.Deserialize<CatalogResponseModel>(doc)).AsEnumerable();
+
+        }
+
+        private IAggregateFluent<BsonDocument> GetAllData(ISpecification<CatalogEntity> specification)
+        {
             var filterBuilder = Builders<BsonDocument>.Filter;
             var entityFilterBuilder = Builders<CatalogEntity>.Filter;
 
@@ -72,7 +92,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
             var collation = new Collation("en", strength: CollationStrength.Secondary);
             var aggregation = _collection.Aggregate(new AggregateOptions { Collation = collation })
                                          .Match(entityFilter)
-                                         .Unwind("Status", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true });
+                                           .Unwind("Status", new AggregateUnwindOptions<BsonDocument> { PreserveNullAndEmptyArrays = true });
 
             specification.Includes?.ForEach(join => aggregation = aggregation.Lookup(join.Collection, join.LocalField, join.ForeignField, join.As));
 
@@ -83,16 +103,35 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 {
                     string mappedField = SortMappingAndFilter.TryGetValue(filterItem.Key, out string? value) ? value : filterItem.Key;
 
-                    if (filterItem.Value is IEnumerable<object> values && values.Any())
+                    var processedValue = BsonDocumentExtensions.ProcessFilterValue(mappedField, filterItem.Value);
+
+
+                    if (processedValue is List<string> stringList)
                     {
-                        var valueList = values.Cast<string>().ToList();
-                        aggregation = aggregation.Match(filterBuilder.In(mappedField, valueList));
+                        aggregation = aggregation.Match(filterBuilder.In(mappedField, stringList));
                     }
-                    else if (filterItem.Value is string singleValue)
+                    else if (processedValue is List<bool> boolList)
                     {
-                        aggregation = aggregation.Match(filterBuilder.Eq(mappedField, singleValue));
+                        aggregation = aggregation.Match(filterBuilder.In(mappedField, boolList));
+                    }
+                    else if (processedValue is List<int> intList)
+                    {
+                        aggregation = aggregation.Match(filterBuilder.In(mappedField, intList));
+                    }
+                    else if (processedValue is string strValue)
+                    {
+                        aggregation = aggregation.Match(filterBuilder.Eq(mappedField, strValue));
+                    }
+                    else if (processedValue is bool boolValue)
+                    {
+                        aggregation = aggregation.Match(filterBuilder.Eq(mappedField, boolValue));
+                    }
+                    else if (processedValue is int intValue)
+                    {
+                        aggregation = aggregation.Match(filterBuilder.Eq(mappedField, intValue));
                     }
                 }
+
             }
             string? orderByField = specification.OrderBy != null
                 ? SortExpressionConfiguration<SynchronizationEntity>.GetPropertyName(specification.OrderBy)
@@ -106,27 +145,14 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 aggregation = aggregation.Sort(sortDefinition);
             }
 
-            if (specification.Skip >= 0)
-            {
-                aggregation = aggregation.
-                    Skip(specification.Skip).
-                    Limit(specification.Limit);
-            }
-
-            var result = await aggregation.ToListAsync();
-
-            return result.Select(doc => BsonSerializer.Deserialize<CatalogResponseModel>(doc)).ToList();
+           return aggregation;
 
         }
 
-
-
-
         public async Task<long> GetTotalRows(ISpecification<CatalogEntity> specification)
         {
-            return await _collection
-                .Find(specification.Criteria)
-                .CountDocumentsAsync();
+            var TotalRow = await (this.GetAllData(specification)).ToListAsync();
+            return TotalRow.Select(doc => BsonSerializer.Deserialize<CatalogResponseModel>(doc)).Count();
         }
 
         private IFindFluent<CatalogEntity, CatalogEntity> FindByFilter(Expression<Func<CatalogEntity, bool>> specification)

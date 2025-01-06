@@ -21,7 +21,8 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
        
         public CatalogSpecification(PaginatedModel paginatedModel)
         {
-            Criteria = BuildCriteria(paginatedModel);
+            Criteria = BuildCriteria(paginatedModel); 
+            AddFilterSearch(paginatedModel);
             SetupPagination(paginatedModel);
             SetupOrdering(paginatedModel);
             SetupIncludes();
@@ -64,6 +65,20 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             if (OrderBy == null && OrderByDescending == null)
             {
                 OrderBy = (x => x.id);
+            }
+        }
+        private void AddFilterSearch(PaginatedModel paginatedModel)
+        {
+            if (paginatedModel.filter_Option != null && paginatedModel.filter_Option.Any())
+            {
+                foreach (var item in paginatedModel.filter_Option)
+                {
+                    if (sortExpressions.TryGetValue(item.filter_column, out var filter))
+                    {
+                        AdditionalFilters.Add(item.filter_column, item.filter_search);
+                    }
+                }
+
             }
         }
         private Expression<Func<CatalogEntity, bool>> BuildCriteria(PaginatedModel paginatedModel)

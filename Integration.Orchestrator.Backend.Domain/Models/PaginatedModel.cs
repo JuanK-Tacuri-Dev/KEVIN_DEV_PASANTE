@@ -6,7 +6,7 @@ namespace Integration.Orchestrator.Backend.Domain.Models
     {
         public string Search { get; set; } = string.Empty;
         public SortOrdering Sort_order { get; set; }
-        public IEnumerable<FilterModel> filter_Option { get; set; } = Enumerable.Empty<FilterModel>();
+        public IEnumerable<FilterModel> filter_Option { get; set; } = [];
         public string Sort_field { get; set; } = string.Empty;
         public int Rows { get; set; }
         public int First { get; set; }
@@ -16,6 +16,6 @@ namespace Integration.Orchestrator.Backend.Domain.Models
     public class FilterModel
     {
         public string filter_column { get; set; }
-        public string[] filter_search { get; set; }
+        public object[] filter_search { get; set; }
     }
 }

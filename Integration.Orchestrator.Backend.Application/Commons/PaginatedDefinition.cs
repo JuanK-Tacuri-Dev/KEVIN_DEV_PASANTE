@@ -18,6 +18,6 @@ namespace Integration.Orchestrator.Backend.Application.Commons
     public class FilterDefinition
     {
         public string filter_column { get; set; } = string.Empty;
-        public string[] filter_search { get; set; } = Array.Empty<string>();
+        public object[] filter_search { get; set; } = [];
     }
 }
