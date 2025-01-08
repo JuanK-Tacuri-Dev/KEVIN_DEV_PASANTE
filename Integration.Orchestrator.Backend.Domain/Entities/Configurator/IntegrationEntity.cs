@@ -8,7 +8,7 @@ namespace Integration.Orchestrator.Backend.Domain.Entities.Configurator
         public string integration_observations { get; set; } = string.Empty;
         public Guid user_id { get; set; }
         public Guid status_id { get; set; }
-        public IEnumerable<Guid> process { get; set; } = Enumerable.Empty<Guid>();
+        public IEnumerable<Guid> process { get; set; } = [];
         public string created_at { get; private set; } = ConfigurationSystem.DateTimeDefault();
         public string updated_at { get; private set; } = ConfigurationSystem.DateTimeDefault();
 

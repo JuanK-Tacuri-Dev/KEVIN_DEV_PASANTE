@@ -98,6 +98,6 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return x => x.process.Contains(id) && x.status_id == idStatus;
         }
-
+        public static Expression<Func<IntegrationEntity, bool>> GetByExpression(Expression<Func<IntegrationEntity, bool>> expresion) => expresion;
     }
 }

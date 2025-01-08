@@ -110,7 +110,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return x => true && x.type_id == typeId;
         }
-
+        public static Expression<Func<ServerEntity, bool>> GetByExpression(Expression<Func<ServerEntity, bool>> expresion) => expresion;
 
     }
 }

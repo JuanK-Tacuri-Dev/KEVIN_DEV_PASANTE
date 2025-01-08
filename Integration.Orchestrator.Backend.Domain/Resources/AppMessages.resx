@@ -192,4 +192,13 @@
   <data name="Domain_ResponseCode_NotActivatedDueToInactiveRelationship" xml:space="preserve">
     <value>El registro no se puede activar porque el/los {0} no está(n) activo(s).</value>
   </data>
+  <data name="Domain_ResponseCode_NotUpdateFatherInactiveDueToRelationship" xml:space="preserve">
+    <value>No es posible inactivar el Catálogo porque se encuentra con una relación activa.</value>
+  </data>
+  <data name="Domain_ResponseCode_Catalog_FatherCode_NoParent" xml:space="preserve">
+    <value>El campo fatherCode no debe tener un código de referencia si el Catálogo es padre.</value>
+  </data>
+  <data name="Domain_ResponseCode_Requerired" xml:space="preserve">
+    <value>El campo {0} es requerido</value>
+  </data>
 </root>

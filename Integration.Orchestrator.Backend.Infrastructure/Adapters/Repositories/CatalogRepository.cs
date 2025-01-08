@@ -20,7 +20,6 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
         private Dictionary<string, string> SortMappingAndFilter = new()
             {
-                //{ "status_id", "Status.text" },
                 { "isfather", "is_father" },
                 { "name", "catalog_name" }
             };
@@ -39,7 +38,9 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 .Set(m => m.catalog_value, entity.catalog_value)
                 .Set(m => m.catalog_detail, entity.catalog_detail)
                 .Set(m => m.status_id, entity.status_id)
-                .Set(m => m.updated_at, entity.updated_at);
+                .Set(m => m.updated_at, entity.updated_at)
+                .Set(m => m.father_code, entity.father_code)
+                .Set(m => m.is_father, entity.is_father);
             return _collection.UpdateOneAsync(filter, update);
         }
 

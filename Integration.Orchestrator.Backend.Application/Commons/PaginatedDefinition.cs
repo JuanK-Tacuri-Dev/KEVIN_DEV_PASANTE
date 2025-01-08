@@ -8,7 +8,7 @@ namespace Integration.Orchestrator.Backend.Application.Commons
         public string Search { get; set; } = string.Empty;
         public int Sort_order { get; set; }
         public string Sort_field { get; set; } = string.Empty;
-        public IEnumerable<FilterDefinition> filter_Option { get; set; } = Enumerable.Empty<FilterDefinition>();
+        public IEnumerable<FilterDefinition> filter_Option { get; set; } = [];
         public int Rows { get; set; }
         public int First { get; set; }
         public bool activeOnly { get; set; }

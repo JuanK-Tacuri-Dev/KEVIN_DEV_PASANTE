@@ -3,6 +3,7 @@ using Integration.Orchestrator.Backend.Domain.Entities.Configurator;
 using Integration.Orchestrator.Backend.Domain.Entities.Configurator.Interfaces;
 using Integration.Orchestrator.Backend.Domain.Exceptions;
 using Integration.Orchestrator.Backend.Domain.Models;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador.Catalog;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurator;
 using Integration.Orchestrator.Backend.Domain.Resources;
 using Integration.Orchestrator.Backend.Domain.Services.Configurator;
@@ -63,9 +64,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurator
                 activeOnly = true
             };
 
-            var catalog1 = new CatalogEntity
+            var catalog1 = new CatalogResponseModel
             {
-                id = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 catalog_code = 10,
                 catalog_name = "Catalog1",
                 catalog_value = "value1",
@@ -77,9 +78,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurator
                 updated_at = DateTime.Now.ToString()
             };
 
-            var catalog2 = new CatalogEntity
+            var catalog2 = new CatalogResponseModel
             {
-                id = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 catalog_code = 20,
                 catalog_name = "Catalog2",
                 catalog_value = "value2",
@@ -91,7 +92,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurator
                 updated_at = DateTime.Now.ToString()
             };
 
-            var catalogs = new List<CatalogEntity> { catalog1, catalog2 };
+            var catalogs = new List<CatalogResponseModel> { catalog1, catalog2 };
 
             var specAsc = new CatalogSpecification(paginatedModelAsc);
             var specDesc = new CatalogSpecification(paginatedModelDesc);
@@ -123,9 +124,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurator
                 activeOnly = true
             };
 
-            var catalog1 = new CatalogEntity
+            var catalog1 = new CatalogResponseModel
             {
-                id = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 catalog_code = 10,
                 catalog_name = "Catalog1",
                 catalog_value = "value1",
@@ -137,9 +138,9 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurator
                 updated_at = DateTime.Now.ToString()
             };
 
-            var catalog2 = new CatalogEntity
+            var catalog2 = new CatalogResponseModel
             {
-                id = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 catalog_code = 20,
                 catalog_name = "Catalog2",
                 catalog_value = "value2",
@@ -151,7 +152,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurator
                 updated_at = DateTime.Now.ToString()
             };
 
-            var catalogs = new List<CatalogEntity> { catalog1, catalog2 };
+            var catalogs = new List<CatalogResponseModel> { catalog1, catalog2 };
 
             var specAsc = new CatalogSpecification(paginatedModelAsc);
 
