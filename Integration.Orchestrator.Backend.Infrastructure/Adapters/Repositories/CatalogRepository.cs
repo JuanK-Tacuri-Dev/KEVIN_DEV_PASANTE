@@ -139,14 +139,11 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 : specification.OrderByDescending != null
                     ? SortExpressionConfiguration<SynchronizationEntity>.GetPropertyName(specification.OrderByDescending)
                     : null;
+            var sortDefinition = BsonDocumentExtensions.GetSortDefinition(orderByField, specification.OrderBy != null, this.SortMappingAndFilter);
 
-            if (!string.IsNullOrEmpty(orderByField))
-            {
-                var sortDefinition = Builders<BsonDocument>.Sort.Ascending(orderByField);
-                aggregation = aggregation.Sort(sortDefinition);
-            }
+            aggregation = aggregation.Sort(sortDefinition);
 
-           return aggregation;
+            return aggregation;
 
         }
 

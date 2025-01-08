@@ -153,11 +153,9 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                     ? SortExpressionConfiguration<SynchronizationEntity>.GetPropertyName(specification.OrderByDescending)
                     : null;
 
-            if (!string.IsNullOrEmpty(orderByField))
-            {
-                var sortDefinition = Builders<BsonDocument>.Sort.Ascending(orderByField);
-                aggregation = aggregation.Sort(sortDefinition);
-            }
+            var sortDefinition = BsonDocumentExtensions.GetSortDefinition(orderByField, specification.OrderBy != null, this.SortMapping);
+
+            aggregation = aggregation.Sort(sortDefinition);
 
             return aggregation;
         }
