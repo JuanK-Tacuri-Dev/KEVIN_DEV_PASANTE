@@ -11,5 +11,7 @@ namespace Integration.Orchestrator.Backend.Application.Models.Configurator.Catal
         public string Detail { get; set; } = string.Empty;
         public int? FatherCode { get; set; }
         public Guid StatusId { get; set; }
+        public bool IsFather { get; set; } = false;
+
     }
 }

@@ -274,8 +274,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
             try
             {
                 var model = request.Synchronization.Adapt<PaginatedModel>();
-                var result = await _synchronizationService.GetAllPaginatedAsync(model);
-                if (result == null || !result.Any())
+                var TotalRow = await _synchronizationService.GetTotalRowsAsync(model);
+                if (TotalRow == 0)
                 {
                     return new GetAllPaginatedSynchronizationCommandResponse(
                     new SynchronizationGetAllPaginatedResponse
@@ -291,7 +291,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
                 }
 
 
-
+                var result = await _synchronizationService.GetAllPaginatedAsync(model);
                 var statusIds = result.Select(r => r.status_id).Distinct().ToList();
                 var statusTasks = statusIds.Select(id => _synchronizationStatesService.GetByIdAsync(id));
                 var statuses = await Task.WhenAll(statusTasks);
@@ -330,7 +330,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
                         Description = ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully),
                         Data = new SynchronizationGetAllRows
                         {
-                            Total_rows = result.Count(),
+                            Total_rows = TotalRow,
                             Rows = dataRows
                         }
                     });

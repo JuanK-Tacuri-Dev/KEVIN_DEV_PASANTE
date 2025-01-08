@@ -101,5 +101,6 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return x => true && x.repository_code == code;
         }
+        public static Expression<Func<RepositoryEntity, bool>> GetByExpression(Expression<Func<RepositoryEntity, bool>> expresion) => expresion;
     }
 }

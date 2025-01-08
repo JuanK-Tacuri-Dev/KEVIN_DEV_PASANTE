@@ -231,7 +231,7 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurator
             // Act & Assert
             var exception = await Assert.ThrowsAsync<OrchestratorArgumentException>(() => _service.InsertAsync(synchronization));
 
-            // Verificar que se lanzó la excepción y que contiene los detalles correctos
+            // Verificar que se lanzï¿½ la excepciï¿½n y que contiene los detalles correctos
             Assert.Equal((int)ResponseCode.NotFoundSuccessfully, exception.Details.Code);
             Assert.Equal(AppMessages.Application_StatusNotFound, exception.Details.Description);
             Assert.Equal(synchronization.status_id, exception.Details.Data);
@@ -253,14 +253,14 @@ namespace Integration.Orchestrator.Backend.Domain.Tests.Services.Configurator
 
             _mockCodeConfiguratorService.Setup(service => service.GenerateCodeAsync(Prefix.Synchronyzation)).ReturnsAsync(code);
 
-            // Simulamos que el código ya existe
+            // Simulamos que el cï¿½digo ya existe
             _mockSynchronizationRepo.Setup(repo => repo.GetByCodeAsync(It.IsAny<Expression<Func<SynchronizationEntity, bool>>>()))
                 .ReturnsAsync(new SynchronizationEntity { synchronization_code = synchronization.synchronization_code });
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<OrchestratorArgumentException>(() => _service.InsertAsync(synchronization));
 
-            // Verificar que se lanzó la excepción y que contiene los detalles correctos
+            // Verificar que se lanzï¿½ la excepciï¿½n y que contiene los detalles correctos
             Assert.Equal((int)ResponseCode.NotFoundSuccessfully, exception.Details.Code);
             Assert.Equal(AppMessages.Domain_Response_CodeInUse, exception.Details.Description);
             Assert.Equal(synchronization.synchronization_code, exception.Details.Data);

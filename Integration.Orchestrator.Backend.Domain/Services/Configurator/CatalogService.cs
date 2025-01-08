@@ -13,46 +13,58 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurator
 {
     [DomainService]
     public class CatalogService(
-        ICatalogRepository<CatalogEntity> processRepository,
+        ICatalogRepository<CatalogEntity> CatalogRepository,
+        IAdapterRepository<AdapterEntity> adapterRepository,
+        IEntitiesRepository<EntitiesEntity> entitiesRepository,
+        IProcessRepository<ProcessEntity> processRepository,
+        IPropertyRepository<PropertyEntity> propertyRepository,
+        IRepositoryRepository<RepositoryEntity> repositoryRepository,
+        IServerRepository<ServerEntity> serverRepository,
         IStatusService<StatusEntity> statusService)
         : ICatalogService<CatalogEntity>
     {
-        private readonly ICatalogRepository<CatalogEntity> _processRepository = processRepository;
+        private readonly ICatalogRepository<CatalogEntity> _catalogRepository = CatalogRepository;
+        private readonly IAdapterRepository<AdapterEntity> _adapterRepository = adapterRepository;
+        private readonly IEntitiesRepository<EntitiesEntity> _entitiesRepository = entitiesRepository;
+        private readonly IProcessRepository<ProcessEntity> _processRepository = processRepository;
+        private readonly IPropertyRepository<PropertyEntity> _propertyRepository = propertyRepository;
+        private readonly IServerRepository<ServerEntity> _serverRepository = serverRepository;
+        private readonly IRepositoryRepository<RepositoryEntity> _repositoryRepository = repositoryRepository;
         private readonly IStatusService<StatusEntity> _statusService = statusService;
 
         public async Task InsertAsync(CatalogEntity process)
         {
             await ValidateBussinesLogic(process, true);
-            await _processRepository.InsertAsync(process);
+            await _catalogRepository.InsertAsync(process);
         }
 
         public async Task UpdateAsync(CatalogEntity process)
         {
             await ValidateBussinesLogic(process);
-            await _processRepository.UpdateAsync(process);
+            await _catalogRepository.UpdateAsync(process);
         }
 
         public async Task DeleteAsync(CatalogEntity process)
         {
-            await _processRepository.DeleteAsync(process);
+            await _catalogRepository.DeleteAsync(process);
         }
 
         public async Task<CatalogEntity> GetByIdAsync(Guid id)
         {
             var specification = CatalogSpecification.GetByIdExpression(id);
-            return await _processRepository.GetByIdAsync(specification);
+            return await _catalogRepository.GetByIdAsync(specification);
         }
 
         public async Task<CatalogEntity> GetByCodeAsync(int code)
         {
             var specification = CatalogSpecification.GetByCodeExpression(code);
-            return await _processRepository.GetByCodeAsync(specification);
+            return await _catalogRepository.GetByCodeAsync(specification);
         }
 
         public async Task<IEnumerable<CatalogEntity>> GetByFatherAsync(int fatherCode)
         {
             var specification = CatalogSpecification.GetByFatherExpression(fatherCode);
-            return await _processRepository.GetByFatherAsync(specification);
+            return await _catalogRepository.GetByFatherAsync(specification);
         }
 
         public async Task<IEnumerable<CatalogResponseModel>> GetAllPaginatedAsync(PaginatedModel paginatedModel)
@@ -63,18 +75,19 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurator
                 paginatedModel.Sort_order = SortOrdering.Descending;
             }
             var spec = new CatalogSpecification(paginatedModel);
-            return await _processRepository.GetAllAsync(spec);
+            return await _catalogRepository.GetAllAsync(spec);
         }
 
         public async Task<long> GetTotalRowsAsync(PaginatedModel paginatedModel)
         {
             var spec = new CatalogSpecification(paginatedModel);
-            return await _processRepository.GetTotalRows(spec);
+            return await _catalogRepository.GetTotalRows(spec);
         }
 
         private async Task ValidateBussinesLogic(CatalogEntity entity, bool create = false)
         {
             await EnsureStatusExists(entity.status_id);
+            await ValidateCatalog(entity);
         }
         private async Task EnsureStatusExists(Guid statusId)
         {
@@ -82,13 +95,76 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurator
             if (statusFound == null)
             {
                 throw new OrchestratorArgumentException(string.Empty,
-                        new DetailsArgumentErrors()
-                        {
-                            Code = (int)ResponseCode.NotFoundSuccessfully,
-                            Description = AppMessages.Application_StatusNotFound,
-                            Data = statusId
-                        });
+                        new DetailsArgumentErrors((int)ResponseCode.NotFoundSuccessfully, AppMessages.Application_StatusNotFound, statusId));
             }
         }
+        private async Task ValidateCatalog(CatalogEntity entity)
+        {
+            if (!entity.is_father)
+            {
+                await ValidateInactiveFatherCatalog(entity);
+               
+                if (entity.father_code == null)
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors((int)ResponseCode.NotFoundSuccessfully,
+                        AppMessages.Domain_ResponseCode_Catalog_FatherCode_NoParent, entity));
+                }
+            }
+            else
+            {
+                
+
+                if(entity.father_code != null)
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors((int)ResponseCode.NotFoundSuccessfully,
+                        string.Format(AppMessages.Domain_ResponseCode_Requerired, "fatherCode"), entity));
+                }
+            }
+            await ValidateCatalogStatus(entity);
+        }
+
+        private async Task ValidateInactiveFatherCatalog(CatalogEntity entity)
+        {
+            var specification = CatalogSpecification.GetByFatherExpression(entity.catalog_code);
+            var catalogFound = await _catalogRepository.GetByFatherAsync(specification);
+
+            if (catalogFound != null && catalogFound.Any())
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors((int)ResponseCode.NotFoundSuccessfully,
+                        AppMessages.Domain_ResponseCode_NotUpdateFatherInactiveDueToRelationship, entity));
+            }
+        }
+
+        private async Task ValidateCatalogStatus(CatalogEntity entity)
+        {
+
+            if (!await _statusService.GetStatusIsActiveAsync(entity.status_id))
+            {
+                var relations = new List<Task<object>>
+                {
+                    _adapterRepository.GetByIdAsync(AdapterSpecification.GetByExpression(x => x.type_id == entity.id)).ContinueWith(t => (object)t.Result),
+                    _entitiesRepository.GetByIdAsync(EntitiesSpecification.GetByExpression(x => x.type_id == entity.id)).ContinueWith(t => (object)t.Result),
+                    _processRepository.GetByIdAsync(ProcessSpecification.GetByExpression(x => x.process_type_id == entity.id)).ContinueWith(t => (object)t.Result),
+                    _propertyRepository.GetByIdAsync(PropertySpecification.GetByExpression(x => x.type_id == entity.id)).ContinueWith(t => (object)t.Result),
+                    _serverRepository.GetByIdAsync(ServerSpecification.GetByExpression(x => x.type_id == entity.id)).ContinueWith(t => (object)t.Result),
+                    _repositoryRepository.GetByIdAsync(RepositorySpecification.GetByExpression(x => x.auth_type_id == entity.id)).ContinueWith(t => (object)t.Result)
+                };
+
+                var results = await Task.WhenAll(relations);
+
+                if (results.Any(result => result != null))
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                        new DetailsArgumentErrors((int)ResponseCode.NotFoundSuccessfully,
+                            AppMessages.Domain_ResponseCode_NotDeleteDueToRelationship, entity));
+                }
+            }
+                
+            
+        }
+
     }
 }

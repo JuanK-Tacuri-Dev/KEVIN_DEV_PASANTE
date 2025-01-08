@@ -120,7 +120,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return x => x.entities.Any(e => e.Properties.Any(p=>p.property_id == Propertyid)) && x.status_id== idStatusActive;
         }
-
+        public static Expression<Func<ProcessEntity, bool>> GetByExpression(Expression<Func<ProcessEntity, bool>> expresion) => expresion;
 
     }
 }

@@ -326,7 +326,8 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurator.Cat
                 catalog_value = request.Value?.Trim() ?? string.Empty,
                 catalog_detail = request.Detail?.Trim() ?? string.Empty,
                 father_code = request.FatherCode,
-                status_id = request.StatusId
+                status_id = request.StatusId,
+                is_father=request.IsFather
             };
         }
     }

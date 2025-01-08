@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+using System.Text.Json;
 
 namespace Integration.Orchestrator.Backend.Infrastructure.Services
 {
@@ -84,6 +85,62 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Services
             return filter;
         }
 
+        public static object ProcessFilterValue(string mappedField, object filterValue)
+        {
+            if (filterValue is IEnumerable<object> values && values.Any())
+            {
+                var firstValue = values.First();
+
+                if (firstValue is JsonElement jsonElement)
+                {
+                    // Detectar tipo en JsonElement
+                    return jsonElement.ValueKind switch
+                    {
+                        JsonValueKind.String => values.Cast<JsonElement>().Select(v => v.GetString()).ToList(),
+                        JsonValueKind.Number => values.Cast<JsonElement>().Select(v => v.GetInt32()).ToList(),
+                        JsonValueKind.True or JsonValueKind.False => values.Cast<JsonElement>().Select(v => v.GetBoolean()).ToList(),
+                        _ => throw new InvalidOperationException($"Unsupported JSON ValueKind {jsonElement.ValueKind}")
+                    };
+                }
+                else
+                {
+                    // Manejo estándar de otros tipos
+                    Type valueType = firstValue.GetType();
+
+                    return valueType switch
+                    {
+                        Type _ when valueType == typeof(string) => values.Cast<string>().ToList(),
+                        Type _ when valueType == typeof(bool) => values.Cast<bool>().ToList(),
+                        Type _ when valueType == typeof(int) => values.Cast<int>().ToList(),
+                        _ => throw new InvalidOperationException($"Unsupported filter value type {valueType}")
+                    };
+                }
+            }
+            else if (filterValue is JsonElement jsonElement)
+            {
+                // Manejar valor único JsonElement
+                return jsonElement.ValueKind switch
+                {
+                    JsonValueKind.String => jsonElement.GetString(),
+                    JsonValueKind.Number => jsonElement.GetInt32(), // Usa el método adecuado (GetDecimal, GetDouble, etc.)
+                    JsonValueKind.True or JsonValueKind.False => jsonElement.GetBoolean(),
+                    _ => throw new InvalidOperationException($"Unsupported JSON ValueKind {jsonElement.ValueKind}")
+                };
+            }
+            else
+            {
+                // Manejo estándar para valores únicos no JsonElement
+                Type valueType = filterValue?.GetType();
+
+                return valueType switch
+                {
+                    Type _ when valueType == typeof(string) => (string)filterValue,
+                    Type _ when valueType == typeof(bool) => (bool)filterValue,
+                    Type _ when valueType == typeof(int) => (int)filterValue,
+                    _ => throw new InvalidOperationException($"Unsupported filter value type {valueType}")
+                };
+            }
+        }
 
 
     }

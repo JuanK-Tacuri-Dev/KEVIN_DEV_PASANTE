@@ -1,7 +1,9 @@
 ﻿using Integration.Orchestrator.Backend.Domain.Entities.Configurator;
+using Integration.Orchestrator.Backend.Domain.Models.Configurador.Catalog;
 using Integration.Orchestrator.Backend.Domain.Models.Configurator;
 using Integration.Orchestrator.Backend.Domain.Ports.Configurator;
 using Integration.Orchestrator.Backend.Domain.Specifications;
+using Integration.Orchestrator.Backend.Infrastructure.Services;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
@@ -77,6 +79,23 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
         public async Task<IEnumerable<SynchronizationResponseModel>> GetAllAsync(ISpecification<SynchronizationEntity> specification)
         {
+            var aggregation = this.GetAllData(specification);
+
+            if (specification.Skip >= 0)
+            {
+                aggregation = aggregation.
+                    Skip(specification.Skip).
+                    Limit(specification.Limit);
+            }
+
+            var result = await aggregation.ToListAsync();
+
+            return result.Select(doc => BsonSerializer.Deserialize<SynchronizationResponseModel>(doc)).AsEnumerable();
+        }
+
+
+        private IAggregateFluent<BsonDocument> GetAllData(ISpecification<SynchronizationEntity> specification)
+        {
             var filterBuilder = Builders<BsonDocument>.Filter;
             var entityFilterBuilder = Builders<SynchronizationEntity>.Filter;
 
@@ -98,16 +117,35 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 {
                     string mappedField = SortMapping.TryGetValue(filterItem.Key, out string? value) ? value : filterItem.Key;
 
-                    if (filterItem.Value is IEnumerable<object> values && values.Any())
+                    var processedValue = BsonDocumentExtensions.ProcessFilterValue(mappedField, filterItem.Value);
+
+
+                    if (processedValue is List<string> stringList)
                     {
-                        var valueList = values.Cast<string>().ToList();
-                        aggregation = aggregation.Match(filterBuilder.In(mappedField, valueList));
+                        aggregation = aggregation.Match(filterBuilder.In(mappedField, stringList));
                     }
-                    else if (filterItem.Value is string singleValue)
+                    else if (processedValue is List<bool> boolList)
                     {
-                        aggregation = aggregation.Match(filterBuilder.Eq(mappedField, singleValue));
+                        aggregation = aggregation.Match(filterBuilder.In(mappedField, boolList));
+                    }
+                    else if (processedValue is List<int> intList)
+                    {
+                        aggregation = aggregation.Match(filterBuilder.In(mappedField, intList));
+                    }
+                    else if (processedValue is string strValue)
+                    {
+                        aggregation = aggregation.Match(filterBuilder.Eq(mappedField, strValue));
+                    }
+                    else if (processedValue is bool boolValue)
+                    {
+                        aggregation = aggregation.Match(filterBuilder.Eq(mappedField, boolValue));
+                    }
+                    else if (processedValue is int intValue)
+                    {
+                        aggregation = aggregation.Match(filterBuilder.Eq(mappedField, intValue));
                     }
                 }
+
             }
             string? orderByField = specification.OrderBy != null
                 ? SortExpressionConfiguration<SynchronizationEntity>.GetPropertyName(specification.OrderBy)
@@ -121,22 +159,15 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
                 aggregation = aggregation.Sort(sortDefinition);
             }
 
-            if (specification.Skip >= 0)
-            {
-                aggregation = aggregation.
-                    Skip(specification.Skip).
-                    Limit(specification.Limit);
-            }
-
-            var result = await aggregation.ToListAsync();
-
-            return result.Select(doc => BsonSerializer.Deserialize<SynchronizationResponseModel>(doc)).AsEnumerable();
+            return aggregation;
         }
+
 
 
         public async Task<long> GetTotalRows(ISpecification<SynchronizationEntity> specification)
         {
-            return (await GetAllAsync(specification)).Count();
+            var TotalRow = await (this.GetAllData(specification)).ToListAsync();
+            return TotalRow.Select(doc => BsonSerializer.Deserialize<SynchronizationResponseModel>(doc)).Count();
         }
 
     }

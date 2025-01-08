@@ -102,6 +102,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         {
             return x => true && x.entity_code == code;
         }
+        public static Expression<Func<EntitiesEntity, bool>> GetByExpression(Expression<Func<EntitiesEntity, bool>> expresion) => expresion;
 
         public static Expression<Func<EntitiesEntity, bool>> GetByTypeExpression(Guid typeId)
         {
