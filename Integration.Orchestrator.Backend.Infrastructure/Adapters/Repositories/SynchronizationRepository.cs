@@ -97,6 +97,8 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         private IAggregateFluent<BsonDocument> GetAllData(ISpecification<SynchronizationEntity> specification)
         {
             var filterBuilder = Builders<BsonDocument>.Filter;
+
+
             var entityFilterBuilder = Builders<SynchronizationEntity>.Filter;
 
             var entityFilter = specification.Criteria != null

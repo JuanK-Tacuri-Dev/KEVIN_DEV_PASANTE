@@ -201,4 +201,7 @@
   <data name="Domain_ResponseCode_Requerired" xml:space="preserve">
     <value>El campo {0} es requerido</value>
   </data>
+  <data name="Domain_ResponseCode_Duplicate" xml:space="preserve">
+    <value>El campo {0} no puede contener el mismo {1} debido que existe en otro registro.</value>
+  </data>
 </root>

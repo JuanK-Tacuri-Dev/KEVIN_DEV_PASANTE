@@ -187,6 +187,15 @@ namespace Integration.Orchestrator.Backend.Domain.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a El campo {0} no puede contener el mismo {1} debido que existe en otro registro..
+        /// </summary>
+        public static string Domain_ResponseCode_Duplicate {
+            get {
+                return ResourceManager.GetString("Domain_ResponseCode_Duplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Encontrado Correctamente.
         /// </summary>
         public static string Domain_ResponseCode_FoundSuccessfully {

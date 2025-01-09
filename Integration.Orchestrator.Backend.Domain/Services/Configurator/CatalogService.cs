@@ -100,10 +100,20 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurator
         }
         private async Task ValidateCatalog(CatalogEntity entity)
         {
+
+            var CodeExist = await _catalogRepository.GetByIdAsync(CatalogSpecification.GetByExpression(x => x.catalog_code == entity.catalog_code && x.id != entity.id)); 
+ 
+            if (CodeExist!= null)
+            {
+                throw new OrchestratorArgumentException(string.Empty,
+                   new DetailsArgumentErrors((int)ResponseCode.NotFoundSuccessfully,
+                       string.Format(AppMessages.Domain_ResponseCode_Duplicate, "fatherCode","código"), entity));
+            }
+
             if (!entity.is_father)
             {
                 await ValidateInactiveFatherCatalog(entity);
-               
+
                 if (entity.father_code == null)
                 {
                     throw new OrchestratorArgumentException(string.Empty,
@@ -113,15 +123,41 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurator
             }
             else
             {
-                
 
-                if(entity.father_code != null)
+
+                if (entity.father_code != null)
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                     new DetailsArgumentErrors((int)ResponseCode.NotFoundSuccessfully,
                         AppMessages.Domain_ResponseCode_Catalog_FatherCode_NoParent, entity));
                 }
             }
+
+            if (entity.is_father)
+            {
+
+                var CatalogName = await _catalogRepository.GetByIdAsync(x => x.catalog_name == entity.catalog_name && x.id != entity.id && x.is_father);
+                if (CatalogName != null)
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                       new DetailsArgumentErrors((int)ResponseCode.NotFoundSuccessfully,
+                           string.Format(AppMessages.Domain_ResponseCode_Duplicate, "name", "nombre"), entity));
+                }
+            }
+            else
+            {
+                var CatalogName = await _catalogRepository.GetByIdAsync(x => x.catalog_name == entity.catalog_name && x.father_code==entity.father_code && x.is_father==false && x.id != entity.id );
+                if (CatalogName != null)
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                       new DetailsArgumentErrors((int)ResponseCode.NotFoundSuccessfully,
+                           string.Format(AppMessages.Domain_ResponseCode_Duplicate, "name", "nombre"), entity));
+                }
+
+            }
+
+
+            
             await ValidateCatalogStatus(entity);
         }
 
