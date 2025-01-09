@@ -108,7 +108,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurator
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                     new DetailsArgumentErrors((int)ResponseCode.NotFoundSuccessfully,
-                        AppMessages.Domain_ResponseCode_Catalog_FatherCode_NoParent, entity));
+                        string.Format(AppMessages.Domain_ResponseCode_Requerired, "fatherCode"), entity));
                 }
             }
             else
@@ -119,7 +119,7 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurator
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                     new DetailsArgumentErrors((int)ResponseCode.NotFoundSuccessfully,
-                        string.Format(AppMessages.Domain_ResponseCode_Requerired, "fatherCode"), entity));
+                        AppMessages.Domain_ResponseCode_Catalog_FatherCode_NoParent, entity));
                 }
             }
             await ValidateCatalogStatus(entity);
