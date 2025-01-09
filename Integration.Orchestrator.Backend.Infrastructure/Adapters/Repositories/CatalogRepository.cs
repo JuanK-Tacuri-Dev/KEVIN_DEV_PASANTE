@@ -21,7 +21,8 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
         private Dictionary<string, string> SortMappingAndFilter = new()
             {
                 { "isfather", "is_father" },
-                { "name", "catalog_name" }
+                { "name", "catalog_name" },
+                { "statusId", "status_id" }
             };
 
         public Task InsertAsync(CatalogEntity entity)
