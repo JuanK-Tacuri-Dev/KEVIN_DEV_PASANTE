@@ -110,32 +110,16 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurator
                        string.Format(AppMessages.Domain_ResponseCode_Duplicate, "fatherCode","código"), entity));
             }
 
-            if (!entity.is_father)
+
+            if (entity.is_father)
             {
-                await ValidateInactiveFatherCatalog(entity);
-
-                if (entity.father_code == null)
-                {
-                    throw new OrchestratorArgumentException(string.Empty,
-                    new DetailsArgumentErrors((int)ResponseCode.NotFoundSuccessfully,
-                        string.Format(AppMessages.Domain_ResponseCode_Requerired, "fatherCode"), entity));
-                }
-            }
-            else
-            {
-
-
                 if (entity.father_code != null)
                 {
                     throw new OrchestratorArgumentException(string.Empty,
                     new DetailsArgumentErrors((int)ResponseCode.NotFoundSuccessfully,
                         AppMessages.Domain_ResponseCode_Catalog_FatherCode_NoParent, entity));
                 }
-            }
-
-            if (entity.is_father)
-            {
-
+                //Valida si tiene el nombre del catalogo duplicado solo entre padres
                 var CatalogName = await _catalogRepository.GetByIdAsync(x => x.catalog_name == entity.catalog_name && x.id != entity.id && x.is_father);
                 if (CatalogName != null)
                 {
@@ -143,9 +127,20 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurator
                        new DetailsArgumentErrors((int)ResponseCode.NotFoundSuccessfully,
                            string.Format(AppMessages.Domain_ResponseCode_Duplicate, "name", "nombre"), entity));
                 }
+
+
             }
             else
             {
+                await ValidateInactiveCatalogFather(entity);
+
+                if (entity.father_code == null)
+                {
+                    throw new OrchestratorArgumentException(string.Empty,
+                    new DetailsArgumentErrors((int)ResponseCode.NotFoundSuccessfully,
+                        string.Format(AppMessages.Domain_ResponseCode_Requerired, "fatherCode"), entity));
+                }
+
                 var CatalogName = await _catalogRepository.GetByIdAsync(x => x.catalog_name == entity.catalog_name && x.father_code==entity.father_code && x.is_father==false && x.id != entity.id );
                 if (CatalogName != null)
                 {
@@ -161,11 +156,11 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurator
             await ValidateCatalogStatus(entity);
         }
 
-        private async Task ValidateInactiveFatherCatalog(CatalogEntity entity)
+        private async Task ValidateInactiveCatalogFather(CatalogEntity entity)
         {
-            var specification = CatalogSpecification.GetByFatherExpression(entity.catalog_code);
-            var catalogFound = await _catalogRepository.GetByFatherAsync(specification);
+            
 
+            var catalogFound = await _catalogRepository.GetByFatherAsync(x => true && x.father_code == entity.catalog_code);
             if (catalogFound != null && catalogFound.Any())
             {
                 throw new OrchestratorArgumentException(string.Empty,
@@ -176,8 +171,10 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurator
 
         private async Task ValidateCatalogStatus(CatalogEntity entity)
         {
+            //Obtiene el catalogo desde la base antes de actualizar
+            var Catalog = await _catalogRepository.GetByIdAsync(CatalogSpecification.GetByIdExpression(entity.id));
 
-            if (!await _statusService.GetStatusIsActiveAsync(entity.status_id))
+            if (!await _statusService.GetStatusIsActiveAsync(entity.status_id) && Catalog.status_id!= entity.status_id)
             {
                 var relations = new List<Task<object>>
                 {
@@ -186,7 +183,8 @@ namespace Integration.Orchestrator.Backend.Domain.Services.Configurator
                     _processRepository.GetByIdAsync(ProcessSpecification.GetByExpression(x => x.process_type_id == entity.id)).ContinueWith(t => (object)t.Result),
                     _propertyRepository.GetByIdAsync(PropertySpecification.GetByExpression(x => x.type_id == entity.id)).ContinueWith(t => (object)t.Result),
                     _serverRepository.GetByIdAsync(ServerSpecification.GetByExpression(x => x.type_id == entity.id)).ContinueWith(t => (object)t.Result),
-                    _repositoryRepository.GetByIdAsync(RepositorySpecification.GetByExpression(x => x.auth_type_id == entity.id)).ContinueWith(t => (object)t.Result)
+                    _repositoryRepository.GetByIdAsync(RepositorySpecification.GetByExpression(x => x.auth_type_id == entity.id)).ContinueWith(t => (object)t.Result),
+                    _catalogRepository.GetByIdAsync(CatalogSpecification.GetByExpression(x => x.father_code == Catalog.catalog_code)).ContinueWith(t => (object)t.Result)
                 };
 
                 var results = await Task.WhenAll(relations);

@@ -124,7 +124,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         }
 
         public static Expression<Func<CatalogEntity, bool>> GetByCodeExpression(int code)
-        {
+        {   
             return x => true && x.catalog_code == code;
         }
     }
