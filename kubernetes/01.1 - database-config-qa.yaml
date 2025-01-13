@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: arquitectura-integracion-backend-database-config
-  namespace: ns-arquitectura-integracion-backend
-type: Opaque
-stringData:
-  sync-limit: "mongodb://192.168.15.90:27017"

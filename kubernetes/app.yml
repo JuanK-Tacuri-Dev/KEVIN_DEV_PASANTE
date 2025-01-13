@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mxpv2-orchestrator
+  name: mxpv2-integration-admin-back
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mxpv2-orchestrator
+      app: mxpv2-integration-admin-back
   template:
     metadata:
       labels:
-        app: mxpv2-orchestrator
+        app: mxpv2-integration-admin-back
     spec:
       containers:
-      - name: mxpv2-orchestrator
-        image: kfcregistry.azurecr.io/mxpv2-orchestrator:1.0.56
+      - name: mxpv2-integration-admin-back
+        image: kfcregistry.azurecr.io/mxpv2-integration-admin-back:1.0.1
         ports:
         - containerPort: 8080
         env:

@@ -9,7 +9,7 @@ resources:
 - repo: self
 
 variables:
-  tag: 1.0.56 #'$(Build.BuildId)'
+  tag: 1.0.1 #'$(Build.BuildId)'
 
 stages:
 - stage: buildAndPush
@@ -24,15 +24,16 @@ stages:
       displayName: Build and push an image to container registry
       inputs:
         command: buildAndPush
-        containerRegistry: SC_ACR_GRUPOKFC_DEV_2
-        repository: mxpv2-orchestrator
+        containerRegistry: SC_DEV_KFC
+        repository: mxpv2-integration-admin-back
         buildContext: '$(Build.SourcesDirectory)/'
         dockerfile: '$(Build.SourcesDirectory)/Integration.Orchestrator.Backend.Api/Dockerfile'
         tags: |
           $(tag)
 
     - task: PublishPipelineArtifact@1
+      displayName: 'Publish Pipeline Artifact'
       inputs:
         targetPath: '$(Pipeline.Workspace)'
-        artifact: 'publisAksMxpv2Orchestrator'
+        artifact: 'publishAksMxpv2IntegrationAdminBack'
         publishLocation: 'pipeline'

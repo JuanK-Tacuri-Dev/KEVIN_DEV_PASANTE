@@ -24,7 +24,6 @@
      ```
 
 ## Paso 2: Abrir el Proyecto en Visual Studio 2022
-
 1. **Abrir Visual Studio 2022**:
    - Abre Visual Studio 2022 desde tu menú de inicio o buscándolo en tu sistema.
 
@@ -72,4 +71,42 @@
 
 ---
 
-¡Listo! Ahora has clonado, abierto y publicado tu microservicio desde Azure DevOps usando Visual Studio 2022.
+## Paso 6: Abrir el Proyecto en Visual Studio code
+1. **Abrir Visual Studio code**:
+   - Abre Visual Studio code desde tu menú de inicio o buscándolo en tu sistema.
+
+2. **Abrir terminal**:
+   - Abre una terminal en la raíz del proyecto donde se encuentra el archivo de  solución `Integration.Orchestrator.Backend.sln`.
+
+3. **Restaurar Paquetes NuGet**:
+   - Ejecuta el siguiente comando para restaurar los paquetes NuGet necesarios:
+   ```bash
+     dotnet restore Integration.Orchestrator.Backend.sln
+   ``` 
+
+4. **Configurar Variables de Entorno (si es necesario)**:
+   - Asegúrate de que todas las variables de entorno necesarias estén configuradas. Puedes hacerlo en el archivo `appsettings.json`.
+
+5. **Compilar proyecto**:
+   - Luego, ejecuta el siguiente comando para compilar el proyecto:
+   ```bash
+     dotnet build Integration.Orchestrator.Backend.sln
+   ```
+
+6. **Ejecutar proyecto**:
+   - Finalmente, para ejecutar el proyecto, usa el siguiente comando:
+   ```bash
+     dotnet run --project Integration.Orchestrator.Backend.Api/Integration.Orchestrator.Backend.Api.csproj
+   ```
+
+7. **Verificar proyecto**:
+   - Para verificar que el proyecto es iniciado o levantado correctamente, debes ingresar a la siguiente URL:
+   ```bash
+     http://localhost:5052/swagger
+   ```
+   
+   
+
+---
+
+¡Listo! Ahora has clonado, abierto y publicado tu microservicio desde Azure DevOps usando Visual Studio 2022 o Visual studio code.
