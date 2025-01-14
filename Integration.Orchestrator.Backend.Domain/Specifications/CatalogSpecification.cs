@@ -37,7 +37,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
             { Utilities.GetSafeKey(nameof(CatalogEntity.updated_at), 0), x => x.updated_at },
             { Utilities.GetSafeKey(nameof(CatalogEntity.created_at), 0), x => x.created_at },
             { "fatherCode", x => x.father_code },
-            { "isfather", x => x.is_father },
+            { "isFather", x => x.is_father },
             { "statusId", x => x.status_id }
         };
         private void SetupPagination(PaginatedModel model)
@@ -124,7 +124,7 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
         }
 
         public static Expression<Func<CatalogEntity, bool>> GetByCodeExpression(int code)
-        {
+        {   
             return x => true && x.catalog_code == code;
         }
     }

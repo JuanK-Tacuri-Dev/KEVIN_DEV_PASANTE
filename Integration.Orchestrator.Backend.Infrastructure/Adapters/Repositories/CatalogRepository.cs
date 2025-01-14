@@ -20,7 +20,7 @@ namespace Integration.Orchestrator.Backend.Infrastructure.Adapters.Repositories
 
         private Dictionary<string, string> SortMappingAndFilter = new()
             {
-                { "isfather", "is_father" },
+                { "isFather", "is_father" },
                 { "name", "catalog_name" },
                 { "statusId", "status_id" }
             };
