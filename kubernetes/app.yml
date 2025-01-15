@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mxpv2-integration-admin-back
-        image: kfcregistry.azurecr.io/mxpv2-integration-admin-back:1.0.2
+        image: kfcregistry.azurecr.io/mxpv2-integration-admin-back:1.0.3
         ports:
         - containerPort: 8080
         env:
