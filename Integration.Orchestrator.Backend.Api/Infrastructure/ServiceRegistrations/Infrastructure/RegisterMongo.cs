@@ -60,6 +60,7 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             var adapterCollection = mongoSetting.Collections!?.Adapter;
             var catalogCollection = mongoSetting.Collections!?.Catalog; 
             var codeConfiguratorCollection = mongoSetting.Collections!?.CodeConfigurator;
+            var transformationCollection = mongoSetting.Collections!?.Transformation;
 
             services.AddSingleton(s => database.GetCollection<SynchronizationEntity>(synchronizationCollection));
             services.AddSingleton(s => database.GetCollection<SynchronizationStatusEntity>(synchronizationStatesCollection));
@@ -74,6 +75,7 @@ namespace Integration.Orchestrator.Backend.Api.Infrastructure.ServiceRegistratio
             services.AddSingleton(s => database.GetCollection<AdapterEntity>(adapterCollection));
             services.AddSingleton(s => database.GetCollection<CatalogEntity>(catalogCollection));
             services.AddSingleton(s => database.GetCollection<CodeConfiguratorEntity>(codeConfiguratorCollection)); 
+            services.AddSingleton(s => database.GetCollection<TransformationEntity>(transformationCollection)); 
 
             BsonClassMap.RegisterClassMap<Entity<Guid>>(
                 map =>

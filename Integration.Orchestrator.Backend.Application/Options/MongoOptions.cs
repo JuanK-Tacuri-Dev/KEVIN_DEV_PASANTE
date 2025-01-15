@@ -50,6 +50,7 @@ namespace Integration.Orchestrator.Backend.Application.Options
         public string Adapter { get; set; } = string.Empty;
         public string Catalog { get; set; } = string.Empty;
         public string CodeConfigurator { get; set; } = string.Empty;
+        public string Transformation { get; set; } = string.Empty;
 
     }
 }

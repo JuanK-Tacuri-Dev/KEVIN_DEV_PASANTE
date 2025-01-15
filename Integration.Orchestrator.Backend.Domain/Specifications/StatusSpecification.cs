@@ -77,6 +77,9 @@ namespace Integration.Orchestrator.Backend.Domain.Specifications
 
         private Expression<Func<StatusEntity, bool>> AddSearchCriteria(Expression<Func<StatusEntity, bool>> criteria, string search)
         {
+
+
+
             if (!string.IsNullOrEmpty(search))
             {
                 criteria = criteria.And(x =>

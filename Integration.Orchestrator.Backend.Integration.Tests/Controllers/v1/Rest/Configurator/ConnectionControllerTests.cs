@@ -58,7 +58,7 @@ namespace Integration.Orchestrator.Backend.Integration.Tests.Controllers.v1.Rest
                 paginatedDefinition.Rows = (i + 1) * RowsPerPage;
 
                 // Act
-                var result = await PostResponseAsync<ConnectionGetAllPaginatedResponse>("getAllPaginated", paginatedDefinition);
+                var result = await PostResponseAsync<ConnectioTransformationGetAllPaginatedResponse>("getAllPaginated", paginatedDefinition);
 
                 // Assert
                 AssertResponse(result, ResponseCode.FoundSuccessfully, ResponseMessageValues.GetResponseMessage(ResponseCode.FoundSuccessfully));

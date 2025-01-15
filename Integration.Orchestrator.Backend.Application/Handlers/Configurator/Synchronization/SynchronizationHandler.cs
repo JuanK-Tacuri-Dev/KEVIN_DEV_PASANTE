@@ -425,7 +425,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configuradors.Sy
                 synchronization_name = request.Name?.Trim() ?? string.Empty,
                 franchise_id = request.FranchiseId,
                 status_id = request.StatusId,
-                synchronization_hour_to_execute = request.HourToExecute != null ? DateTimeOffset.Parse(request.HourToExecute).ToString(ConfigurationSystem.DateTimeFormat) : ConfigurationSystem.DateTimeDefault(),
+                synchronization_hour_to_execute = !string.IsNullOrEmpty(request.HourToExecute)? DateTimeOffset.Parse(request.HourToExecute).ToString(ConfigurationSystem.DateTimeFormat) : ConfigurationSystem.DateTimeDefault(),
                 integrations = request.Integrations.Select(i => i.Id).ToList(),
                 user_id = request.UserId
             };

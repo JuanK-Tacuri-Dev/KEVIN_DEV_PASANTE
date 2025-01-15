@@ -20,7 +20,7 @@ namespace Integration.Orchestrator.Backend.Application.Handlers.Configurator.Syn
         IRequestHandler<GetByIdSynchronizationStatusCommandRequest, GetByIdSynchronizationStatusCommandResponse>,
         IRequestHandler<GetAllPaginatedSynchronizationStatusCommandRequest, GetAllPaginatedSynchronizationStatusCommandResponse>
     {
-        public readonly ISynchronizationStatesService<SynchronizationStatusEntity> _synchronizationStatesService = SynchronizationStatesService;
+            public readonly ISynchronizationStatesService<SynchronizationStatusEntity> _synchronizationStatesService = SynchronizationStatesService;
 
         public async Task<CreateSynchronizationStatusCommandResponse> Handle(CreateSynchronizationStatusCommandRequest request, CancellationToken cancellationToken)
         {
