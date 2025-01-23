@@ -18,7 +18,7 @@ namespace MiApiSencilla.Controllers
             };
             return Ok(objc);
         }
-        // GET: api/Saludo/Hora
+        // GET: api/Saludoo/Hora
         [HttpGet("Hora")]
         public IActionResult GetHora()
         {
