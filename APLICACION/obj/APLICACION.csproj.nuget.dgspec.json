@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\APLICACION\\APLICACION.csproj": {}
+    "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\Aplicacion\\Aplicacion.csproj": {}
   },
   "projects": {
-    "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\APLICACION\\APLICACION.csproj": {
+    "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\Aplicacion\\Aplicacion.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\APLICACION\\APLICACION.csproj",
-        "projectName": "APLICACION",
-        "projectPath": "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\APLICACION\\APLICACION.csproj",
+        "projectUniqueName": "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\Aplicacion\\Aplicacion.csproj",
+        "projectName": "Aplicacion",
+        "projectPath": "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\Aplicacion\\Aplicacion.csproj",
         "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\APLICACION\\obj\\",
+        "outputPath": "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\Aplicacion\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

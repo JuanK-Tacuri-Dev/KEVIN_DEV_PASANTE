@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\INFRAESTRUCTURA\\Infraestructura.csproj": {}
+    "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\Infraestructura\\Infraestructura.csproj": {}
   },
   "projects": {
-    "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\INFRAESTRUCTURA\\Infraestructura.csproj": {
+    "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\Infraestructura\\Infraestructura.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\INFRAESTRUCTURA\\Infraestructura.csproj",
+        "projectUniqueName": "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\Infraestructura\\Infraestructura.csproj",
         "projectName": "Infraestructura",
-        "projectPath": "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\INFRAESTRUCTURA\\Infraestructura.csproj",
+        "projectPath": "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\Infraestructura\\Infraestructura.csproj",
         "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\INFRAESTRUCTURA\\obj\\",
+        "outputPath": "C:\\KFC\\Proyecto_1\\KEVIN_DEV_PASANTE\\Infraestructura\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -49,6 +49,12 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
