@@ -13,9 +13,10 @@ namespace MiApiSencilla.Controllers
             var objc = new 
             {
                 Mensaje ="¡Hola, mundo!",
-                NombreDev= "KEVIN ....."
+                NombreDev= "KEVIN ..... ",
+
             };
-            return Ok("¡Hola, mundo!, como estas");
+            return Ok(objc);
         }
         // POST: api/Saludo
         [HttpPost]
