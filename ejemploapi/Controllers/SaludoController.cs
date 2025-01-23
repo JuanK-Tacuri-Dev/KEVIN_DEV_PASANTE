@@ -18,7 +18,7 @@ namespace MiApiSencilla.Controllers
                 NombreDev= "KEVIN ..... ",
 
             };
-            return Ok(objc);
+            return Ok(objc);// se trajo del Main{ primero de la Rama1 paso al  Main, del MAin como tiene los cambios actualizo la Rama 2, LISTO
         }
         // POST: api/Saludo
         [HttpPost]
