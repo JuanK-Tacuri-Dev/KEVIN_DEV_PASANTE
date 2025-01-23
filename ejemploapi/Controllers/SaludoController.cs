@@ -10,6 +10,8 @@ namespace MiApiSencilla.Controllers
         [HttpGet]
         public IActionResult GetSaludo()
         {
+            
+
             var objc = new 
             {
                 Mensaje ="¡Hola, mundo!",
