@@ -18,6 +18,14 @@ namespace MiApiSencilla.Controllers
             };
             return Ok(objc);
         }
+        // GET: api/Saludo/Hora
+        [HttpGet("Hora")]
+        public IActionResult GetHora()
+        {
+            var horaActual = DateTime.Now.ToString("HH:mm:ss");
+            return Ok($"La hora actual es: {horaActual}");
+        }
+
         // POST: api/Saludo
         [HttpPost]
         public IActionResult PostSaludo([FromBody] string nombre)
