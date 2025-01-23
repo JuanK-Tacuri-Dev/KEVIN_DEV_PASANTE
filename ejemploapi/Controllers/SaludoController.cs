@@ -47,6 +47,13 @@ namespace MiApiSencilla.Controllers
         {
             return Ok($"¡Saludos, {nombre}!");
         }
+        // POST: api/Saludo/EnviarObjeto
+        [HttpPost("EnviarObjeto")]
+        public IActionResult EnviarObjeto([FromBody] object objeto)
+        {
+            return Ok(objeto);
+        }
+
 
         // GET: api/Saludo/{nombre}
         [HttpGet("{nombre}")]
