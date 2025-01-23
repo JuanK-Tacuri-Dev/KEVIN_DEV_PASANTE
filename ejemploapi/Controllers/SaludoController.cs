@@ -10,7 +10,12 @@ namespace MiApiSencilla.Controllers
         [HttpGet]
         public IActionResult GetSaludo()
         {
-            return Ok("¡Hola, mundo!");
+            var objc = new 
+            {
+                Mensaje ="¡Hola, mundo!",
+                NombreDev= "KEVIN ....."
+            };
+            return Ok("¡Hola, mundo!, como estas");
         }
         // POST: api/Saludo
         [HttpPost]
