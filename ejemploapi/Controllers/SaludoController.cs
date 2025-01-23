@@ -25,6 +25,12 @@ namespace MiApiSencilla.Controllers
             var horaActual = DateTime.Now.ToString("HH:mm:ss");
             return Ok($"La hora actual es: {horaActual}");
         }
+        // GET: api/bienvenida
+        [HttpGet("Bienvenida")]
+        public IActionResult GetBienvenida()
+        {
+            return Ok("¡Bienvenido a mi API, desarrollada por KEVIN!");
+        }
 
         // POST: api/Saludo
         [HttpPost]
