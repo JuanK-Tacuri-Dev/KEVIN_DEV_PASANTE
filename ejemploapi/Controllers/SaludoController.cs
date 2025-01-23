@@ -61,5 +61,13 @@ namespace MiApiSencilla.Controllers
         {
             return Ok($"¡Hola, {nombre}!");
         }
+        // GET: api/Saludo/ListaSaludos
+        [HttpGet("ListaSaludos")]
+        public IActionResult GetListaSaludos()
+        {
+            var saludos = new List<string> { "¡Hola!", "¡Buenos días!", "¡Buenas tardes!", "¡Buenas noches!" };
+            return Ok(saludos);
+        }
+
     }
 }
