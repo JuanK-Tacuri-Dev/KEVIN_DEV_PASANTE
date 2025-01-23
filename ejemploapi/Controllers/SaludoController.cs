@@ -31,6 +31,15 @@ namespace MiApiSencilla.Controllers
         {
             return Ok("¡Bienvenido a mi API, desarrollada por KEVIN!");
         }
+        // GET: api/respuesta
+        [HttpGet("MensajeAleatorio")]
+        public IActionResult GetMensajeAleatorio()
+        {
+            var mensajes = new[] { "¡Hola!", "¡Buenos días!", "¡Saludos!" };
+            var random = new Random();
+            var mensajeAleatorio = mensajes[random.Next(mensajes.Length)];
+            return Ok(mensajeAleatorio);
+        }
 
         // POST: api/Saludo
         [HttpPost]
